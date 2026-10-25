@@ -1,0 +1,31 @@
+{
+  "status": {
+    "state": "done",
+    "run_id": "92d49b35-b9c9-49d1-b09d-b3cbcec4b3fc",
+    "version": 3,
+    "registered": [
+      "large",
+      "small"
+    ],
+    "pending": [],
+    "nodes": [
+      "small",
+      "large"
+    ],
+    "failure": null,
+    "validation_loss": 3.713829755783081
+  },
+  "initial_validation_loss": 6.058713912963867,
+  "final_validation_loss": 3.713829755783081,
+  "elapsed_seconds": 0.8170675830042455,
+  "backend": "mlx-gpu",
+  "transport": "HTTP over loopback",
+  "physical_machines": 1,
+  "worker_processes": 2,
+  "batch_sizes": [
+    2,
+    4
+  ],
+  "wifi_tested": false,
+  "ane_execution_tested": false
+}

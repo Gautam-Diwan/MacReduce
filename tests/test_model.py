@@ -1,11 +1,15 @@
 import contextlib
+import hashlib
 import io
+import json
 
 import numpy as np
 import pytest
 
 from macreduce.model import (
+    CONFIG_KEY,
     MODEL,
+    ModelConfig,
     TorchBackend,
     batch,
     corpus,
@@ -70,6 +74,60 @@ def test_causal_attention():
     x[:, 16:] = 200
     after = trainer.forward(x).detach().numpy()
     np.testing.assert_allclose(before[:, :16], after[:, :16], atol=1e-6)
+
+
+def test_model_config_validation():
+    with pytest.raises(ValueError, match="divisible"):
+        ModelConfig(width=30, heads=4)
+    with pytest.raises(ValueError, match="float32"):
+        ModelConfig(dtype="float16")
+    with pytest.raises(ValueError, match="tokenizer"):
+        ModelConfig(tokenizer="other")
+    with pytest.raises(ValueError, match="disagree"):
+        ModelConfig.from_mapping({"sequence": 16, "context": 32})
+    restored = ModelConfig.from_mapping(MODEL)
+    assert restored == ModelConfig()
+    assert restored.to_dict()["context"] == 32 and restored.to_dict()["layers"] == 1
+
+
+def test_default_config_preserves_original_parameters():
+    weights = initial_weights()
+    assert sum(value.size for value in weights.values()) == 29888
+    digest = hashlib.sha256()
+    for name, value in weights.items():
+        digest.update(name.encode())
+        digest.update(str(value.shape).encode())
+        digest.update(value.tobytes())
+    assert digest.hexdigest() == "4ffc935be927e3ac8405301d1a28e5a9a1fabeec14bccef64d3cded1a5a38676"
+    encoded = encode_weights(weights, ModelConfig())
+    with np.load(io.BytesIO(encoded), allow_pickle=False) as archive:
+        saved = ModelConfig.from_mapping(json.loads(archive[CONFIG_KEY].tobytes()))
+    assert saved == ModelConfig()
+
+
+def test_two_layer_checkpoint_round_trip_and_train():
+    config = ModelConfig(layers=2)
+    weights = initial_weights(config)
+    assert sum(value.size for value in weights.values()) == 42304
+    assert "b0_q" in weights and "b1_ff2" in weights and "q" not in weights
+    restored = decode_weights(encode_weights(weights, config), config=config)
+    for name, value in weights.items():
+        np.testing.assert_array_equal(restored[name], value)
+    with pytest.raises(ValueError, match="config mismatch"):
+        decode_weights(encode_weights(weights, config), config=ModelConfig(layers=1))
+    data, _digest = corpus()
+    tokens, target = batch(data, np.random.default_rng(0), 2, config.context)
+    trainer = TorchBackend(config, weights)
+    before = trainer.export()
+    loss = trainer.step(tokens, target, 0.05)
+    assert np.isfinite(loss)
+    after = trainer.export()
+    assert any(not np.array_equal(before[name], after[name]) for name in before)
+    inputs = trainer.t.ones((1, config.context), dtype=trainer.t.long)
+    first = trainer.forward(inputs).detach().numpy()
+    inputs[:, config.context // 2 :] = 200
+    second = trainer.forward(inputs).detach().numpy()
+    np.testing.assert_allclose(first[:, : config.context // 2], second[:, : config.context // 2], atol=1e-6)
 
 
 def test_zip_duplicate_rejected():

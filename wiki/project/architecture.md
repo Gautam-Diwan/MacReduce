@@ -2,7 +2,7 @@
 title: "Training architecture and extension points"
 type: design
 status: active
-updated: 2026-10-23
+updated: 2026-10-24
 sources: ["S04", "S20"]
 ---
 
@@ -27,9 +27,10 @@ This is iterative map/reduce in a narrow training sense, not a general Hadoop-co
 
 | File | Responsibility | Extension seam |
 |---|---|---|
-| [model.py](../../src/macreduce/model.py) | Shared parameter layout, CPU and MLX implementations, serialization | Model config, multiple blocks, gradients, optional ANE backend |
-| [cluster.py](../../src/macreduce/cluster.py) | Cohort, versioning, validation, reduction, commit | Round plans, aggregation policy, optimizer state, streamed artifacts |
-| [worker.py](../../src/macreduce/worker.py) | Backend execution, batches, upload retries | Microbatch accumulation, calibration, durable pending update |
+| [model.py](../../src/macreduce/model.py) | `ModelConfig`, shared parameter layout, repeated blocks, CPU and MLX implementations, NumPy checkpoints | Gradients API, optional ANE backend, optimizer state |
+| [artifacts.py](../../src/macreduce/artifacts.py) | Manifests, chunk hashing, temp files, size cap | Compression, durable client-side pending bytes |
+| [cluster.py](../../src/macreduce/cluster.py) | Cohort, versioning, validation, reduction, commit, artifact HTTP routes | Round plans, aggregation policy, optimizer state |
+| [worker.py](../../src/macreduce/worker.py) | Backend execution, batches, chunked upload and download | Microbatch accumulation, calibration, durable pending update |
 | [observe.py](../../src/macreduce/observe.py) | Capabilities, events, collectors, reports | Thermal/memory sampling, uncertainty, sustained-window statistics |
 | [benchmark.py](../../src/macreduce/benchmark.py) | Public Accelerate SGEMM | Shape-dependent CPU/GPU comparison with matched precision |
 | [cli.py](../../src/macreduce/cli.py) | User commands | Config files, plan validation, benchmark runner |

@@ -10,7 +10,23 @@ from urllib.parse import urlencode
 
 import numpy as np
 
-from .model import MODEL, backend, batch, corpus, decode_weights, encode_weights, initial_weights
+from .artifacts import (
+    CONTROL_RESPONSE_BYTES,
+    MAX_CHUNK_SIZE,
+    assemble_chunks,
+    build_manifest,
+    plan_sha256,
+    validate_manifest,
+)
+from .model import (
+    ModelConfig,
+    backend,
+    batch,
+    corpus,
+    decode_weights,
+    encode_weights,
+    initial_weights,
+)
 from .observe import Events, Sampler, capabilities
 
 
@@ -22,7 +38,7 @@ class Client:
         self.context = ssl.create_default_context(cafile=ca_file)
         self.retry_seconds = retry_seconds
 
-    def request(self, endpoint, payload=None, **query):
+    def request(self, endpoint, payload=None, max_bytes=CONTROL_RESPONSE_BYTES, **query):
         url = self.url + endpoint + ("?" + urlencode(query) if query else "")
         data = json.dumps(payload).encode() if isinstance(payload, dict) else payload
         deadline = time.monotonic() + self.retry_seconds
@@ -51,9 +67,9 @@ class Client:
                 )
                 with self.events.span("http" + endpoint, attempt=attempts):
                     with opener.open(req, timeout=min(30, self.retry_seconds)) as response:
-                        raw = response.read(2_000_001)
-                        if len(raw) > 2_000_000:
-                            raise ValueError("server response exceeds prototype limit")
+                        raw = response.read(max_bytes + 1)
+                        if len(raw) > max_bytes:
+                            raise ValueError("server response exceeds transfer response cap")
                         kind = response.headers.get("Content-Type", "")
                 self.events.emit(
                     "transfer",
@@ -80,6 +96,52 @@ class Client:
                 raise TimeoutError(f"coordinator unavailable for {self.retry_seconds}s: {error}")
             time.sleep(min(0.2 * 2 ** min(attempts, 4), 2))
 
+    def fetch_artifact(self, version, run_id, expected_sha256):
+        manifest = validate_manifest(
+            self.request("/artifact/manifest", kind="checkpoint", version=version, run_id=run_id)
+        )
+        if manifest["sha256"] != expected_sha256:
+            raise ValueError("checkpoint transfer checksum mismatch")
+
+        def read_chunk(index):
+            return self.request(
+                "/artifact/chunk",
+                max_bytes=manifest["chunk_size"],
+                kind="checkpoint",
+                version=version,
+                index=index,
+                run_id=run_id,
+            )
+
+        return assemble_chunks(manifest, read_chunk)
+
+    def push_artifact(
+        self, raw, *, node, version, tokens, run_id, parameter_names, plan, chunk_size=MAX_CHUNK_SIZE
+    ):
+        manifest = build_manifest(
+            raw,
+            run_id=run_id,
+            version=version,
+            role="update",
+            parameter_names=parameter_names,
+            plan=plan,
+            node=node,
+            chunk_size=chunk_size,
+        )
+        started = self.request(
+            "/artifact/update", manifest, node=node, version=version, tokens=tokens, run_id=run_id
+        )
+        if started.get("duplicate"):
+            return started
+        upload_id = started["upload_id"]
+        for index, expected in enumerate(manifest["chunk_hashes"]):
+            start = index * manifest["chunk_size"]
+            chunk = raw[start : start + manifest["chunk_size"]]
+            if hashlib.sha256(chunk).hexdigest() != expected:
+                raise ValueError("local chunk hash mismatch")
+            self.request("/artifact/chunk", chunk, upload_id=upload_id, index=index)
+        return self.request("/artifact/complete", b"", upload_id=upload_id)
+
 
 def run_worker(
     url,
@@ -98,8 +160,9 @@ def run_worker(
     events = Events(directory, node)
     client = Client(url, token, events, ca_file)
     data, digest = corpus(seed=1, path=train_text)
-    with events.span("backend_init"):
-        trainer = backend(backend_name, MODEL, initial_weights())
+    with events.span("backend_probe"):
+        # Fail before joining the cohort if the requested runtime cannot start.
+        backend(backend_name, ModelConfig(), initial_weights())
     info = {
         "backend": backend_name,
         "batch_size": batch_size,
@@ -110,6 +173,9 @@ def run_worker(
     registration = client.request("/register", info, node=node)
     events.run_id = registration["run_id"]
     rank = registration["rank"]
+    model = ModelConfig.from_mapping(registration["config"]["model"])
+    with events.span("backend_init"):
+        trainer = backend(backend_name, model, initial_weights(model))
     events.emit("worker_started", info=info)
     captured = False
     profiled = False
@@ -132,17 +198,17 @@ def run_worker(
             if job["state"] == "failed":
                 raise RuntimeError(job["failure"])
             version, config = job["version"], job["config"]
-            raw = client.request("/checkpoint", version=version)
-            if hashlib.sha256(raw).hexdigest() != job["checkpoint_sha256"]:
-                raise ValueError("checkpoint transfer checksum mismatch")
+            if ModelConfig.from_mapping(config["model"]) != model:
+                raise RuntimeError("coordinator changed the model configuration")
+            raw = client.fetch_artifact(version, events.run_id, job["checkpoint_sha256"])
             with events.span("checkpoint_load", version=version):
-                trainer.load(decode_weights(raw, initial_weights(config["model"])))
+                trainer.load(decode_weights(raw, config=model))
             # A replay of an uncommitted round samples exactly the same local mini-batches.
             rng = np.random.default_rng(np.random.SeedSequence([config["seed"], rank, version]))
             tokens, loss = 0, None
             for step in range(config["steps"]):
                 with events.span("data_batch", version=version, step=step):
-                    x, y = batch(data, rng, batch_size, MODEL["sequence"])
+                    x, y = batch(data, rng, batch_size, model.context)
                 capture_now = capture is not None and not captured and step == 1
                 profile_now = torch_trace is not None and not profiled and step == 1
                 operator_profile = (
@@ -189,7 +255,8 @@ def run_worker(
                 tokens += int(y.size)
                 events.emit("training_loss", version=version, step=step, loss=loss)
             with events.span("checkpoint_export", version=version):
-                outgoing = encode_weights(trainer.export())
+                exported = trainer.export()
+                outgoing = encode_weights(exported, model)
             events.emit(
                 "round_local_complete",
                 version=version,
@@ -197,6 +264,12 @@ def run_worker(
                 loss=loss,
                 **trainer.memory(),
             )
-            client.request(
-                "/update", outgoing, node=node, version=version, tokens=tokens, run_id=events.run_id
+            client.push_artifact(
+                outgoing,
+                node=node,
+                version=version,
+                tokens=tokens,
+                run_id=events.run_id,
+                parameter_names=list(exported),
+                plan=plan_sha256(model),
             )

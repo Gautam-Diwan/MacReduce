@@ -2,7 +2,7 @@
 title: "Unknowns contradictions and next literature searches"
 type: research-ledger
 status: active
-updated: 2026-10-23
+updated: 2026-10-24
 sources: ["S03", "S06", "S07", "S08", "S09", "S10", "S12"]
 ---
 
@@ -13,9 +13,9 @@ This ledger distinguishes missing implementation, missing evidence, and incomple
 | Priority | Gap or contradiction | Why it matters | Resolution |
 |---|---|---|---|
 | P0 | No physical multi-Mac/Wi-Fi result | Loopback cannot predict airtime contention or heterogeneous hardware | Run [Wi-Fi protocol](../guides/wifi.md), preserve raw measurements |
-| P0 | MLX GPU path not validated in this sandbox | Implemented code is not numerical or device evidence | Run [MLX gates](../guides/mlx-validation.md) in a GPU-capable terminal |
+| P0 | MLX GPU path only partly validated | Parity and a short loopback demo are not a trace, gradient audit, or 100-step study | Finish the remaining [MLX gates](../guides/mlx-validation.md); do not treat the 2026-10-24 demo as that audit |
 | P0 | Current token weighting changes source influence with work | A faster run may optimize a different objective | Define p_i and test [objective-preserving aggregation](../guides/heterogeneity.md) |
-| P1 | Fixed tiny model and 2 MB response cap | Current transport is unsuitable for materially larger models | Extend model configuration and bounded transfers together |
+| P1 | Default model is still the 29,888-parameter toy | Config and a 64 MiB chunked transfer exist; a real corpus and 1M-parameter run do not | Continue [model scaling](../guides/model-scaling.md) after memory measurements |
 | P1 | ANE repository documentation covers multiple execution modes | “ANE training” may include host optimizer/state traffic | Pin code; inspect selected mode; validate gradients and full costs |
 | P1 | Closest adaptive/heterogeneous methods not fully reviewed | Broad novelty claims would be unsupported | Read full AdaComm, FedNova, HEW-LocalSGD, DiLoCo and Streaming DiLoCo methods |
 | P1 | FusionML reports limited training benefit from CPU/GPU co-execution | Adding devices may reduce speed | Reproduce matched workload before a co-execution scheduler |

@@ -19,7 +19,7 @@ See [how to maintain the wiki](wiki/how-to-use.md) for source intake and agent p
 
 Two independent CPU worker processes completed eight rounds over real loopback HTTP with batch sizes 2 and 4. Fixed synthetic validation loss decreased from **6.0587 to 1.7681**. Tests verify the pooled-SGD numerical identity at one local step, causal masking, weighted reduction, checkpoint validation, recovery, authentication, and idempotent retries after a lost response.
 
-The host is an M4 MacBook Air with 24 GiB RAM and macOS 26.5. This execution sandbox blocks Metal initialization and mactop hardware queries. The MLX backend and Metal capture code therefore remain **implemented but unvalidated on hardware**. Wi-Fi, multiple physical Macs, ANE execution, and M5 GPU neural accelerators have not been tested. The CPU operator trace and Apple Accelerate matrix probe did run.
+On 2026-10-24 the same M4 ran `macreduce doctor --smoke` (Metal matmul result 4096.0), the opt-in MLX parity test for the default model and a 2-layer config, and a loopback `mlx-gpu` demo of 3 rounds and 4 steps (validation loss 6.058713912963867 to 3.713829755783081). That demo is one machine. There is no Metal capture: `xctrace` was not installed. Wi-Fi, multiple physical Macs, ANE execution, and M5 GPU neural accelerators have not been tested. The CPU operator trace and Apple Accelerate matrix probe did run. See [evidence/mlx-validation](evidence/mlx-validation/README.md).
 
 See [evidence](evidence/README.md) for measured results and [the profiling guide](docs/profiling.md) for measurement methods and limitations.
 
@@ -34,6 +34,8 @@ python -m pip install -e '.[cpu,mlx,dev]'
 macreduce doctor --smoke --output runs/hardware.json
 pytest -q
 ```
+
+If `python3.12 -m venv` fails because a uv-managed interpreter looks for its standard library under `/install`, use `uv venv .venv --python 3.12` and `uv pip install --python .venv/bin/python -e '.[cpu,mlx,dev]'` instead.
 
 The `cpu` extra installs the explicit PyTorch CPU reference backend. The `mlx` extra installs MLX on Apple silicon. GPU access must be available to the terminal process. There is no silent backend fallback. `requirements-tested.txt` records the exact versions used for the delivered CPU tests; the project extras allow a broader development range.
 
@@ -137,15 +139,16 @@ Each worker samples random windows from its local corpus. The synthetic default 
 
 - Membership, batch sizes, backend choices, data fingerprints, learning rate, and local steps are fixed during a run. Faster workers may have larger configured batches, but automatic calibration is future work.
 - Each accepted update is identified by run ID, model version, node, token count, and content checksum. A lost-response retry reuses the exact update bytes. A different update for the same identity is rejected.
-- The coordinator stores float32 checkpoints without pickle and validates parameter names, shapes, dtypes, finiteness, and archive size. Updates are averaged in float64 and returned to float32.
-- Committed checkpoints and receipts survive restart. Pending updates are not durable: an interrupted round restarts from its previous checkpoint. Restart the coordinator with the same settings plus `--resume`; reconnect or restart failed workers with the same IDs and settings. An orphan checkpoint written before a failed manifest commit is ignored.
+- The coordinator stores float32 checkpoints without pickle and validates the embedded model config, parameter names, shapes, dtypes, finiteness, and archive size. Updates are averaged in float64 and returned to float32.
+- Workers move checkpoints in chunks. Each artifact has a manifest, a 64 MiB size cap, and per-chunk hashes. A partial or corrupted upload is not averaged. Retrying the same update does not apply it twice.
+- Committed checkpoints and receipts survive restart. Pending updates and in-flight chunk uploads are not durable: an interrupted round restarts from its previous checkpoint. Restart the coordinator with the same settings plus `--resume`; reconnect or restart failed workers with the same IDs and settings. An orphan checkpoint written before a failed manifest commit is ignored.
 - A round timeout fails the fixed cohort; it does not switch to partial averaging. A worker's connection retries are bounded to approximately 60 seconds, so longer outages may require restarting that worker. A running coordinator serializes update validation and reduction; it is not a high-availability service.
 - For K=1, weighted local SGD matches the pooled-gradient update. For K>1 it is local SGD with averaging, not exact synchronous training and not DiLoCo. There is no momentum or optimizer-state merge in v0.1.
 
 ## Development layout and next milestones
 
-`model.py` defines the shared model and CPU/MLX backends. `cluster.py` owns the protocol and durable state. `worker.py` trains and retries requests. `observe.py` records events, inventories hardware, collects telemetry, and builds reports. `benchmark.py` probes public Accelerate BLAS.
+`model.py` defines `ModelConfig`, the shared model, and the CPU/MLX backends. `artifacts.py` hashes and assembles chunked checkpoints. `cluster.py` owns membership, reduction, and durable state. `worker.py` trains and retries requests. `observe.py` records events, inventories hardware, collects telemetry, and builds reports. `benchmark.py` probes public Accelerate BLAS.
 
-The next milestones are physical two-Mac Wi-Fi validation, validated MLX parity, a larger configurable model and real dataset, calibrated batch selection, and an ANE adapter with independent gradient checks. Chunked transfers, automatic memory admission, compression, LoRA, dynamic membership, and sharded large-model inference are not implemented. The transport caps responses at 2 MB and is intentionally bounded around the current small model; do not simply raise the model size without extending the protocol and memory plan.
+The default trainer is still local SGD with token-weighted averaging of the 29,888-parameter model. The next milestones are a second physical Mac over Wi-Fi, the remaining MLX gradient and capture checks, a real corpus, calibrated batch selection, and an ANE adapter with independent gradient checks. Automatic memory admission, compression, LoRA, dynamic membership, and sharded large-model inference are not implemented. Artifacts larger than 64 MiB are rejected. Do not treat a wider model as finished scaling until memory and a real data split are measured.
 
 The hardware inventory distinguishes M5 GPU neural accelerators from ANE and detects CPU SME/SME2 features where permitted. It also records media engines as a future preprocessing opportunity. Inferred presence never counts as verified execution, and unknown future chip generations are not automatically declared supported.

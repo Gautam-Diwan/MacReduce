@@ -15,8 +15,16 @@ from urllib.parse import parse_qs, urlsplit
 
 import numpy as np
 
+from .artifacts import (
+    CONTROL_RESPONSE_BYTES,
+    MAX_CHUNK_SIZE,
+    IncomingArtifact,
+    build_manifest,
+    plan_sha256,
+    validate_manifest,
+)
 from .model import (
-    MODEL,
+    ModelConfig,
     backend,
     batch,
     corpus,
@@ -54,6 +62,7 @@ class Coordinator:
         round_timeout=120,
         resume=False,
         validation_text=None,
+        model_config=None,
     ):
         if (
             not nodes
@@ -68,11 +77,15 @@ class Coordinator:
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
         self.pending = {}
+        self.uploads = {}
+        self.uploads_by_id = {}
+        self.chunk_size = MAX_CHUNK_SIZE
         self.failure = None
         self.round_timeout = round_timeout
         self.started = None  # First registration starts the admission deadline.
+        self.model = ModelConfig.from_mapping(model_config)
         self.config = {
-            "model": MODEL,
+            "model": self.model.to_dict(),
             "rounds": rounds,
             "steps": steps,
             "lr": lr,
@@ -83,28 +96,30 @@ class Coordinator:
         }
         data, digest = corpus(seed=999, path=validation_text)
         self.config["validation_sha256"] = digest
-        self.validation = batch(data, np.random.default_rng(1234), 32, MODEL["sequence"])
+        self.validation = batch(data, np.random.default_rng(1234), 32, self.model.context)
         manifest = self.root / "state.json"
-        self.weights = initial_weights()
+        self.weights = initial_weights(self.model)
         self.version, self.registered, self.receipts = 0, {}, {}
         self.run_id = str(uuid.uuid4())
         if manifest.exists():
             if not resume:
                 raise ValueError("run directory already has state; use --resume or a new directory")
             state = json.loads(manifest.read_text())
+            if state.get("schema") != 2:
+                raise ValueError("unsupported run schema")
             if self.config != state["config"]:
                 raise ValueError("resume configuration does not match saved run")
             raw = (self.root / state["checkpoint"]).read_bytes()
             if hashlib.sha256(raw).hexdigest() != state["checkpoint_sha256"]:
                 raise ValueError("checkpoint checksum mismatch")
-            self.weights = decode_weights(raw, self.weights)
+            self.weights = decode_weights(raw, config=self.model)
             self.version, self.run_id = state["version"], state["run_id"]
             self.registered, self.receipts = state["registered"], state["receipts"]
         self.events = Events(self.root / "events", "coordinator", self.run_id)
         with self.events.span("evaluator_init"):
-            self.evaluator = backend(evaluator, MODEL, self.weights)
+            self.evaluator = backend(evaluator, self.model, self.weights)
         self.validation_loss = self.evaluator.evaluate(*self.validation)
-        self.raw = encode_weights(self.weights)
+        self.raw = encode_weights(self.weights, self.model)
         self.save()
         self.events.emit(
             "run_started",
@@ -121,7 +136,7 @@ class Coordinator:
         filename = f"checkpoint-{self.version:05}.npz"
         atomic_write(self.root / filename, self.raw)
         state = {
-            "schema": 1,
+            "schema": 2,
             "run_id": self.run_id,
             "version": self.version,
             "config": self.config,
@@ -228,9 +243,7 @@ class Coordinator:
                 raise Conflict("run is not accepting updates")
             if node not in self.registered or version != self.version:
                 raise Conflict("unregistered worker or stale/future update")
-            expected = (
-                self.registered[node]["batch_size"] * self.config["steps"] * MODEL["sequence"]
-            )
+            expected = self.registered[node]["batch_size"] * self.config["steps"] * self.model.context
             if tokens != expected:
                 raise ValueError("processed token count differs from assigned work")
             if node in self.pending:
@@ -238,7 +251,7 @@ class Coordinator:
                     raise Conflict("conflicting retry for pending update")
                 return {"accepted": True, "duplicate": True, "version": self.version}
             with self.events.span("decode_update", worker=node, version=version):
-                weights = decode_weights(raw, self.weights)
+                weights = decode_weights(raw, config=self.model)
             self.pending[node] = (weights, tokens, receipt)
             self.events.emit(
                 "update_received",
@@ -258,7 +271,7 @@ class Coordinator:
                         loss = self.evaluator.evaluate(*self.validation)
                         if not np.isfinite(loss):
                             raise ValueError("non-finite validation loss")
-                    self.weights, self.raw = merged, encode_weights(merged)
+                    self.weights, self.raw = merged, encode_weights(merged, self.model)
                     self.version += 1
                     self.validation_loss = loss
                     for n, (_, _, r) in self.pending.items():
@@ -279,6 +292,109 @@ class Coordinator:
                     self.events.emit("run_failed", reason=self.failure)
                     raise
             return {"accepted": True, "duplicate": False, "version": self.version}
+
+    def checkpoint_manifest(self, version, run_id):
+        with self.lock:
+            if run_id != self.run_id:
+                raise Conflict("checkpoint belongs to another run")
+            if version != self.version:
+                raise Conflict("checkpoint version has changed")
+            return build_manifest(
+                self.raw,
+                run_id=self.run_id,
+                version=self.version,
+                role="checkpoint",
+                parameter_names=list(self.weights),
+                plan=plan_sha256(self.model),
+                chunk_size=self.chunk_size,
+                dtype=self.model.dtype,
+            )
+
+    def checkpoint_chunk(self, version, index, run_id):
+        with self.lock:
+            manifest = self.checkpoint_manifest(version, run_id)
+            start = index * manifest["chunk_size"]
+            if type(index) is not int or index < 0 or start >= manifest["length"]:
+                raise ValueError("chunk index out of range")
+            return self.raw[start : start + manifest["chunk_size"]]
+
+    def _check_update_request(self, node, version, tokens, run_id, manifest):
+        validate_manifest(manifest)
+        if run_id != self.run_id or manifest["run_id"] != self.run_id:
+            raise Conflict("update belongs to another run")
+        if manifest["role"] != "update" or manifest["version"] != version:
+            raise ValueError("update manifest does not match the request")
+        if manifest.get("node") != node:
+            raise Conflict("manifest node does not match")
+        if manifest["dtype"] != self.model.dtype or manifest["plan_sha256"] != plan_sha256(self.model):
+            raise ValueError("update manifest does not match the run")
+        if manifest["parameter_schema"] != list(self.weights):
+            raise ValueError("parameter schema does not match the run")
+        if node not in self.registered:
+            raise Conflict("unregistered worker or stale/future update")
+        expected = self.registered[node]["batch_size"] * self.config["steps"] * self.model.context
+        if tokens != expected:
+            raise ValueError("processed token count differs from assigned work")
+        if self.failure:
+            raise Conflict(self.failure)
+        return {"sha256": manifest["sha256"], "tokens": tokens}
+
+    def begin_update(self, node, version, tokens, run_id, manifest):
+        with self.lock:
+            receipt = self._check_update_request(node, version, tokens, run_id, manifest)
+            key = f"{version}:{node}"
+            if key in self.receipts:
+                if self.receipts[key] != receipt:
+                    raise Conflict("conflicting retry for an already committed update")
+                return {"accepted": True, "duplicate": True, "version": self.version, "upload_id": None}
+            if version == self.version and node in self.pending:
+                if self.pending[node][2] != receipt:
+                    raise Conflict("conflicting retry for pending update")
+                return {"accepted": True, "duplicate": True, "version": self.version, "upload_id": None}
+            if self.status()["state"] != "running" or version != self.version:
+                raise Conflict("run is not accepting updates")
+            existing = self.uploads.get(key)
+            if existing is not None:
+                if existing.manifest["sha256"] != manifest["sha256"]:
+                    raise Conflict("conflicting upload for the same update")
+                return {
+                    "accepted": True,
+                    "duplicate": existing.completed,
+                    "version": self.version,
+                    "upload_id": existing.upload_id,
+                }
+            upload_id = uuid.uuid4().hex
+            artifact = IncomingArtifact(self.root / "incoming", upload_id, manifest)
+            artifact.tokens = tokens
+            self.uploads[key] = artifact
+            self.uploads_by_id[upload_id] = artifact
+            return {"accepted": True, "duplicate": False, "version": self.version, "upload_id": upload_id}
+
+    def receive_chunk(self, upload_id, index, data):
+        with self.lock:
+            artifact = self.uploads_by_id.get(upload_id)
+            if artifact is None:
+                raise ValueError("unknown upload")
+            artifact.write_chunk(index, data)
+            return {"accepted": True, "duplicate": artifact.completed}
+
+    def complete_update(self, upload_id):
+        with self.lock:
+            artifact = self.uploads_by_id.get(upload_id)
+            if artifact is None:
+                raise ValueError("unknown upload")
+            if artifact.completed and hasattr(artifact, "result"):
+                return {**artifact.result, "duplicate": True}
+            raw = artifact.finish()
+            result = self.submit(
+                artifact.manifest["node"],
+                artifact.manifest["version"],
+                artifact.tokens,
+                raw,
+                artifact.manifest["run_id"],
+            )
+            artifact.result = result
+            return result
 
 
 def make_server(coordinator, host, port, token):
@@ -319,6 +435,21 @@ def make_server(coordinator, host, port, token):
                             coordinator.checkpoint(int(q["version"][0])),
                             content_type="application/octet-stream",
                         )
+                    if parsed.path == "/artifact/manifest":
+                        if q.get("kind", [""])[0] != "checkpoint":
+                            raise ValueError("unsupported artifact manifest")
+                        return self.respond(
+                            coordinator.checkpoint_manifest(int(q["version"][0]), q["run_id"][0])
+                        )
+                    if parsed.path == "/artifact/chunk":
+                        if q.get("kind", [""])[0] != "checkpoint":
+                            raise ValueError("unsupported artifact chunk")
+                        return self.respond(
+                            coordinator.checkpoint_chunk(
+                                int(q["version"][0]), int(q["index"][0]), q["run_id"][0]
+                            ),
+                            content_type="application/octet-stream",
+                        )
                     if parsed.path == "/metrics":
                         s = coordinator.status()
                         text = (
@@ -333,12 +464,22 @@ def make_server(coordinator, host, port, token):
                         return self.respond(text.encode(), content_type="text/plain; version=0.0.4")
                 elif method == "POST":
                     length = int(self.headers.get("Content-Length", "-1"))
-                    limit = len(coordinator.raw) + 65536 if parsed.path == "/update" else 65536
-                    if not 0 <= length <= limit:
-                        return self.respond({"error": "invalid payload size"}, 413)
-                    raw = self.rfile.read(length)
-                    if len(raw) != length:
-                        raise ValueError("truncated request")
+                    if parsed.path == "/artifact/complete" and length in (-1, 0):
+                        raw = b""
+                    else:
+                        if parsed.path == "/artifact/chunk":
+                            limit = MAX_CHUNK_SIZE
+                        elif parsed.path == "/artifact/update":
+                            limit = CONTROL_RESPONSE_BYTES
+                        elif parsed.path == "/update":
+                            limit = len(coordinator.raw) + 65536
+                        else:
+                            limit = 65536
+                        if not 0 <= length <= limit:
+                            return self.respond({"error": "invalid payload size"}, 413)
+                        raw = self.rfile.read(length)
+                        if len(raw) != length:
+                            raise ValueError("truncated request")
                     if parsed.path == "/register":
                         return self.respond(coordinator.register(node, json.loads(raw)))
                     if parsed.path == "/update":
@@ -347,6 +488,22 @@ def make_server(coordinator, host, port, token):
                                 node, int(q["version"][0]), int(q["tokens"][0]), raw, q["run_id"][0]
                             )
                         )
+                    if parsed.path == "/artifact/update":
+                        return self.respond(
+                            coordinator.begin_update(
+                                node,
+                                int(q["version"][0]),
+                                int(q["tokens"][0]),
+                                q["run_id"][0],
+                                json.loads(raw),
+                            )
+                        )
+                    if parsed.path == "/artifact/chunk":
+                        return self.respond(
+                            coordinator.receive_chunk(q["upload_id"][0], int(q["index"][0]), raw)
+                        )
+                    if parsed.path == "/artifact/complete":
+                        return self.respond(coordinator.complete_update(q["upload_id"][0]))
                 self.respond({"error": "unknown endpoint"}, 404)
             except Conflict as exc:
                 self.respond({"error": str(exc)}, 409)

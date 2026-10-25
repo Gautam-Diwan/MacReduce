@@ -1,8 +1,8 @@
 ---
 title: "Implementation order and completion gates"
 type: plan
-status: proposed
-updated: 2026-10-23
+status: active
+updated: 2026-10-24
 sources: ["S02", "S10", "S18"]
 ---
 
@@ -23,9 +23,9 @@ Complete a small coherent experiment before expanding every axis. These are engi
 
 ## First three concrete tasks
 
-1. Use the renamed setup commands in [README](../../README.md), execute the opt-in MLX test on the M4, and save failures or results without changing tolerances post hoc.
-2. Connect a second physical Mac using explicit IP addresses. Keep the model, optimizer, K, and data policy fixed. Capture host identity, transport, and collector availability.
-3. Add a serializable model configuration and larger-transfer protocol together. The current 2 MB response ceiling prevents treating a model-width edit as a finished scaling solution.
+1. **Partial, measured 2026-10-24.** The opt-in MLX test passed on this M4 for the default model and a 2-layer config, and a short `mlx-gpu` loopback demo finished. Tolerances were not changed. A GPU trace and the longer gradient audit are still open because `xctrace` was unavailable and that audit is not written yet. See [MLX validation](../guides/mlx-validation.md).
+2. **Not started.** Connect a second physical Mac using explicit IP addresses. Keep the model, optimizer, K, and data policy fixed. Capture host identity, transport, and collector availability.
+3. **Minimal slice done.** `ModelConfig` is serialized with checkpoints, and model transfer uses a bounded chunked artifact protocol instead of the old 2 MB response ceiling. A real corpus and a 1M-parameter model are still future work. See [model scaling](../guides/model-scaling.md) and [transport](../guides/transport.md).
 
 Choose **one** primary research direction from [the novelty assessment](../research/novelty.md). ANE and M5 work can remain a bounded optional experiment if the Wi-Fi scheduling study is the main contribution. Do not require unavailable M5 hardware for the core deliverable.
 

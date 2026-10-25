@@ -1,20 +1,22 @@
 ---
 title: "Scale transport and preserve recovery semantics"
 type: implementation
-status: proposed
-updated: 2026-10-23
+status: active
+updated: 2026-10-24
 sources: ["S05"]
 ---
 
 # Scale transport and preserve recovery semantics
 
-Current checkpoints are complete uncompressed NumPy archives. The client limits responses to 2 MB, and the coordinator retains full worker updates. These are explicit prototype limits, not a production transport design.
+Checkpoints remain complete uncompressed NumPy archives, now with an embedded model config. Workers download and upload those archives as chunked artifacts. A single HTTP response is capped at 1 MiB for control messages and at 256 KiB for one chunk. The whole artifact is rejected above 64 MiB before a payload buffer is allocated. The coordinator still retains each validated worker update until the round commits. Compression, blockwise deltas, and physical Wi-Fi timing are not implemented.
 
 ## Streamed artifact protocol
 
-Add a manifest with run ID, round-plan hash, model version, node, parameter schema, dtype, total length, content hash, and chunk hashes. Validate maximum size before allocation. Write incoming chunks to a temporary file, cap concurrent buffers, and atomically mark a completed artifact only after all hashes match. Reduce from validated artifacts or bounded parameter blocks. Keep parsing free of executable serialization formats.
+**Implemented.** A manifest carries schema, run ID, version, role, node, parameter schema, dtype, plan hash, total length, content hash, chunk size, and chunk hashes. Size is checked before the temp file is created, and the declared length is not preallocated. Chunks are written to a temporary file. The file is renamed to a completed artifact only after every chunk hash and the content hash match. The reducer then runs once on those bytes. Parsing stays on NumPy archives with `allow_pickle=False`.
 
-Assign an update identity independently of chunk retries. Retransmitting a chunk or acknowledgement must not trigger another optimizer step. A client should persist the outgoing update and metadata until it receives a durable receipt. After restart, recover the pending artifact or recompute only from a documented common checkpoint and deterministic inputs. Never average partially received updates.
+Update identity is the run, version, and node, independent of chunk retries. Resending the same bytes returns the existing receipt and does not apply the update again. A different payload for that identity is rejected. A complete call before every chunk arrives does not enter the reducer. In-flight uploads live in process memory: a coordinator restart drops them and replays the round from the last committed checkpoint. The client rebuilds an update from that checkpoint and the deterministic local batches; it does not yet persist the outgoing bytes across its own restart.
+
+Tests cover the happy path, a corrupted chunk, a duplicate retry, an oversize manifest, and a partial upload. They do not cover every case below.
 
 ## Fault-injection plan
 

@@ -1,8 +1,8 @@
 ---
 title: "Move beyond the synthetic Transformer"
 type: implementation
-status: proposed
-updated: 2026-10-23
+status: active
+updated: 2026-10-24
 sources: ["S19"]
 ---
 
@@ -12,12 +12,12 @@ The initial 29,888-parameter model is a learning and protocol smoke test. Its co
 
 ## Implement in this order
 
-1. Introduce an immutable `ModelConfig` carrying vocabulary, width, heads, layers, context length, dtype, and tokenizer identity. Validate divisibility of width by heads and serialize it in every run and checkpoint. Remove the global-MODEL assumptions in coordinator initialization, worker batching, token-count checks, and checkpoint decoding together.
-2. Generalize repeated Transformer blocks with deterministic parameter names shared across backends. Keep a small configuration in tests. Add save/load round-trip and CPU/MLX parity for two or more layers.
-3. Prepare a licensed corpus with document-level train/validation/test separation, deduplication rules, exact tokenizer revision, and hashes of splits. Record bytes and tokens; token counts across tokenizers are not directly comparable. Freeze validation before hyperparameter selection.
-4. Start with a 1M–10M model and scale toward 30M only after memory and transport are measured. Add chunked or streamed model transfer before exceeding the current 2 MB response limit; see [transport](transport.md).
-5. Introduce an optimizer abstraction. Momentum/Adam state needs explicit resume and averaging semantics. Matching model weights alone does not restore the same optimizer trajectory. Keep the current SGD path as the numerical oracle.
-6. Add accumulation and activation checkpointing with equivalence tests. Set a safe working-set budget using observed memory pressure, not total RAM minus a guessed constant. Calibrate outside production training first.
+1. **Done.** `ModelConfig` is immutable and carries vocabulary, width, heads, layers, context length, dtype, and tokenizer identity. Width must be divisible by heads. Only float32 and the `utf-8-bytes` tokenizer are accepted. The config is stored in run state and inside the NumPy checkpoint. Coordinator initialization, worker batching, token-count checks, and checkpoint decoding use that config.
+2. **Done for a small config.** Repeated blocks use deterministic names shared by the CPU and MLX backends. The default remains the original one-block, 29,888-parameter layout, including its parameter bytes. A 2-layer config round-trips, trains on CPU, and matches MLX for one forward and one SGD step when the opt-in test runs.
+3. **Not done.** Prepare a licensed corpus with document-level train/validation/test separation, deduplication rules, exact tokenizer revision, and hashes of splits. Record bytes and tokens; token counts across tokenizers are not directly comparable. Freeze validation before hyperparameter selection.
+4. **Not done.** Start with a 1M–10M model and scale toward 30M only after memory and transport are measured. The 2 MB response ceiling is gone; checkpoints and updates use the bounded chunked protocol in [transport](transport.md). Current configs are still capped well below a 1M-parameter run (`width <= 256`, `layers <= 8`, artifact cap 64 MiB).
+5. **Not done.** Introduce an optimizer abstraction. Momentum/Adam state needs explicit resume and averaging semantics. Matching model weights alone does not restore the same optimizer trajectory. Keep the current SGD path as the numerical oracle.
+6. **Not done.** Add accumulation and activation checkpointing with equivalence tests. Set a safe working-set budget using observed memory pressure, not total RAM minus a guessed constant. Calibrate outside production training first.
 
 ## Memory accounting
 

@@ -1,0 +1,232 @@
+{
+  "schema": 2,
+  "run_id": "92d49b35-b9c9-49d1-b09d-b3cbcec4b3fc",
+  "version": 3,
+  "config": {
+    "model": {
+      "vocab": 256,
+      "width": 32,
+      "heads": 4,
+      "layers": 1,
+      "context": 32,
+      "dtype": "float32",
+      "tokenizer": "utf-8-bytes"
+    },
+    "rounds": 3,
+    "steps": 4,
+    "lr": 0.05,
+    "nodes": [
+      "small",
+      "large"
+    ],
+    "optimizer": "SGD without momentum",
+    "algorithm": "token-weighted local SGD",
+    "seed": 7,
+    "validation_sha256": "8b396f3c7a8c8c810533ffa1ebf4fc365f98ad11d286cb7038f1641d8042bb37"
+  },
+  "checkpoint": "checkpoint-00003.npz",
+  "checkpoint_sha256": "e5e59c444e0cbd301aa3a5ca1dd305a454fd40e4e5a6f186df1a606704623570",
+  "registered": {
+    "large": {
+      "backend": "mlx-gpu",
+      "batch_size": 4,
+      "data_sha256": "ccf6d3a87db5250702c661fe7c4528275bb4fed92ba4cd483d34bce270453f05",
+      "capabilities": {
+        "schema": 1,
+        "os": "macOS-26.5-arm64-arm-64bit",
+        "architecture": "arm64",
+        "model": "Mac16,12",
+        "chip": {
+          "status": "available",
+          "value": "Apple M4",
+          "reason": null
+        },
+        "memory": {
+          "total_bytes": 25769803776,
+          "available_bytes": 4953571328,
+          "source": "psutil"
+        },
+        "cpu_features": {
+          "FEAT_SME": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          },
+          "FEAT_SME2": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          },
+          "FEAT_BF16": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          },
+          "FEAT_DotProd": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          }
+        },
+        "accelerators": {
+          "cpu_simd": {
+            "hardware": "inferred",
+            "operator_dispatch": "not_verified"
+          },
+          "cpu_matrix": {
+            "hardware": "probe cpu_features SME/SME2",
+            "access": "Accelerate/SME; no dedicated backend in v0.1",
+            "operator_dispatch": "not_verified"
+          },
+          "gpu": {
+            "hardware": "inferred",
+            "mlx": {
+              "installed": true,
+              "execution": "not_tested"
+            }
+          },
+          "ane": {
+            "hardware": "inferred",
+            "basis": "Apple M-series specification; hardware presence is not execution",
+            "training_backend": "not_implemented",
+            "execution": "not_tested"
+          },
+          "gpu_neural_accelerators": {
+            "hardware": "not_present",
+            "basis": "Apple M5 GPU specification; future generations require verification",
+            "operator_dispatch": "not_verified",
+            "execution": "not_tested"
+          },
+          "media_engines": {
+            "hardware": "inferred",
+            "use": "future video preprocessing; not Transformer training"
+          }
+        },
+        "tools": {
+          "mactop": "/opt/homebrew/bin/mactop",
+          "powermetrics": "/usr/bin/powermetrics",
+          "xctrace": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "xcrun: error: unable to find utility \"xctrace\", not a developer tool or in PATH"
+          }
+        }
+      },
+      "backend_execution": "initialized"
+    },
+    "small": {
+      "backend": "mlx-gpu",
+      "batch_size": 2,
+      "data_sha256": "ccf6d3a87db5250702c661fe7c4528275bb4fed92ba4cd483d34bce270453f05",
+      "capabilities": {
+        "schema": 1,
+        "os": "macOS-26.5-arm64-arm-64bit",
+        "architecture": "arm64",
+        "model": "Mac16,12",
+        "chip": {
+          "status": "available",
+          "value": "Apple M4",
+          "reason": null
+        },
+        "memory": {
+          "total_bytes": 25769803776,
+          "available_bytes": 4962697216,
+          "source": "psutil"
+        },
+        "cpu_features": {
+          "FEAT_SME": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          },
+          "FEAT_SME2": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          },
+          "FEAT_BF16": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          },
+          "FEAT_DotProd": {
+            "status": "available",
+            "value": "1",
+            "reason": null
+          }
+        },
+        "accelerators": {
+          "cpu_simd": {
+            "hardware": "inferred",
+            "operator_dispatch": "not_verified"
+          },
+          "cpu_matrix": {
+            "hardware": "probe cpu_features SME/SME2",
+            "access": "Accelerate/SME; no dedicated backend in v0.1",
+            "operator_dispatch": "not_verified"
+          },
+          "gpu": {
+            "hardware": "inferred",
+            "mlx": {
+              "installed": true,
+              "execution": "not_tested"
+            }
+          },
+          "ane": {
+            "hardware": "inferred",
+            "basis": "Apple M-series specification; hardware presence is not execution",
+            "training_backend": "not_implemented",
+            "execution": "not_tested"
+          },
+          "gpu_neural_accelerators": {
+            "hardware": "not_present",
+            "basis": "Apple M5 GPU specification; future generations require verification",
+            "operator_dispatch": "not_verified",
+            "execution": "not_tested"
+          },
+          "media_engines": {
+            "hardware": "inferred",
+            "use": "future video preprocessing; not Transformer training"
+          }
+        },
+        "tools": {
+          "mactop": "/opt/homebrew/bin/mactop",
+          "powermetrics": "/usr/bin/powermetrics",
+          "xctrace": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "xcrun: error: unable to find utility \"xctrace\", not a developer tool or in PATH"
+          }
+        }
+      },
+      "backend_execution": "initialized"
+    }
+  },
+  "receipts": {
+    "0:small": {
+      "sha256": "8b70654c209c4146436ad0b28185e07073553472ac7cb4d08f40dac557ef473a",
+      "tokens": 256
+    },
+    "0:large": {
+      "sha256": "bec159a39256c7360a648b7e1827469edf567a8f426207b43a9007f005bd6425",
+      "tokens": 512
+    },
+    "1:large": {
+      "sha256": "1becf2d7b6482a71710a9966b351550d7d8caeead2861668bab9358269cf64ed",
+      "tokens": 512
+    },
+    "1:small": {
+      "sha256": "9dffd3120f1e84fa3f3407ed19d5b8f8568c4062355c07afd7ee3a52dbf04290",
+      "tokens": 256
+    },
+    "2:small": {
+      "sha256": "a8f39f7b133d05a36d4754a0386f37e9a6d0ad85f4493c27fdfd7b5063bc169f",
+      "tokens": 256
+    },
+    "2:large": {
+      "sha256": "47684bbb0b15dfd1e5908cc29c61f4220e160f553f7f8f9fc10b14a7a97ab655",
+      "tokens": 512
+    }
+  },
+  "validation_loss": 3.713829755783081
+}

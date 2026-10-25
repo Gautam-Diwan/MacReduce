@@ -2,13 +2,13 @@
 title: "MacReduce knowledge index"
 type: index
 status: active
-updated: 2026-10-23
+updated: 2026-10-24
 sources: []
 ---
 
 # MacReduce knowledge index
 
-MacReduce is an observable distributed trainer for heterogeneous Macs, with physical Wi-Fi as the target network. The current measured result is a small CPU model trained by two processes on one Mac. ANE training, physical multi-Mac performance, and large-model inference remain unvalidated or unimplemented as detailed below.
+MacReduce is an observable distributed trainer for heterogeneous Macs, with physical Wi-Fi as the target network. The measured results are a small CPU model trained by two processes on one Mac, and a short MLX GPU loopback run of that same default model on the M4. ANE training, physical multi-Mac performance, and large-model inference remain unvalidated or unimplemented as detailed below.
 
 **Start with [current state](project/state.md), then [what to build next](project/roadmap.md), and [research candidates](research/novelty.md).** For the proposal, read [the active project proposal](../docs/proposal.md). For runnable commands, use [the project README](../README.md).
 
