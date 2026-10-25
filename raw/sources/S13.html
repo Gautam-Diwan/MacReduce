@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+	<meta charset="utf-8" />
+<meta name="Author" content="Apple Inc." />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="mask-icon" href="/apple-logo.svg" color="#333333">
+
+<link rel="stylesheet" href="/assets/styles/global.dist.css?19212626191" type="text/css" />
+<link rel="stylesheet" href="/assets/styles/dark-mode.css?34212621148" type="text/css" media="(prefers-color-scheme: dark)" data-color-scheme="dark" />
+<link rel="stylesheet" href="/assets/styles/localization.css?34212621148" type="text/css" />
+
+<script src="/assets/scripts/lib/jquery/jquery-3.6.0.min.js?35212621148"></script>
+<script src="/assets/scripts/settings.js?35212621148"></script>
+<script src="/assets/scripts/language-locales.js?50222638203"></script>
+<script src="/assets/scripts/DeveloperBreadcrumbs.js?35212621148"></script>
+<script src="/assets/metrics/scripts/analytics-module.js?35212621148"></script>
+
+<script async src="/assets/scripts/retinate.js?35212621148"></script>
+<script src="/assets/scripts/global-logout.js?35212621148"></script>
+
+<script async crossorigin src="https://sfss.cdn-apple.com/2.0.0-beta.2/sf-symbol.js?01032621296"></script>
+
+
+
+<template id="account-menu-authenticated-template">
+  <div
+    class="account-menu-user-header"
+    role="banner"
+    aria-label="User information"
+    data-aria-label="userInformation"
+  >
+    <div
+      class="account-menu-avatar"
+      data-slot="initial"
+      aria-hidden="true"
+    ></div>
+    <div class="account-menu-user-info">
+      <div class="account-menu-user-name" data-slot="name"></div>
+      <div class="account-menu-user-email" data-slot="email"></div>
+    </div>
+  </div>
+  <hr class="account-menu-divider" role="separator" />
+  <nav aria-label="Account actions" data-aria-label="accountActions">
+    <a href="/account" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 117.045 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.17045em; overflow: visible;">
+        <path fill="currentColor" d="M58.496 84.972C85.999 84.972 108.321 62.701 108.321 35.198C108.321 7.695 85.999-14.575 58.496-14.575C31.045-14.575 8.723 7.695 8.723 35.198C8.723 62.701 31.045 84.972 58.496 84.972ZM58.496 76.704C35.551 76.704 17.031 58.143 17.031 35.198C17.031 12.254 35.551-6.308 58.496-6.308C81.441-6.308 100.002 12.254 100.002 35.198C100.002 58.143 81.441 76.704 58.496 76.704ZM91.931 67.386L91.775 66.837C89.342 59.663 76.437 51.8 58.496 51.8C40.576 51.8 27.723 59.652 25.269 66.805L25.113 67.386C33.938 76.078 49.004 81.148 58.507 81.148C68.082 81.148 83.032 76.12 91.931 67.386ZM58.496 43.534C67.894 43.637 75.255 35.61 75.255 25.113C75.255 15.238 67.862 7.065 58.496 7.065C49.182 7.065 41.727 15.238 41.789 25.113C41.841 35.61 49.099 43.43 58.496 43.534Z"/>
+        </svg>
+      </span>
+      <span data-slot="accountOverview"><!-- Account --></span>
+    </a>
+    <a href="https://appstoreconnect.apple.com" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.927 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.14927em; overflow: visible;">
+        <defs>
+          <mask id="sf-app-badge-mask-0">
+            <rect x="-25" y="-25" width="164.927" height="120.459" fill="white"/>
+            <path d="M94.508 21.908C107.427 21.908 118.135 11.252 118.135-1.719C118.135-14.637 107.427-25.294 94.508-25.294C81.59-25.294 70.933-14.637 70.933-1.719C70.933 11.252 81.59 21.908 94.508 21.908Z" fill="black"/>
+          </mask>
+        </defs>
+        <path fill="currentColor" mask="url(#sf-app-badge-mask-0)" d="M39.031 80.204L75.902 80.204C84.459 80.204 91.145 77.713 95.537 73.321C100.084 68.877 102.472 62.18 102.472 53.633L102.472 16.825C102.472 8.279 100.095 1.592 95.537-2.862C91.083-7.316 84.459-9.745 75.902-9.745L39.031-9.745C30.475-9.745 23.736-7.254 19.344-2.862C14.849 1.582 12.461 8.279 12.461 16.825L12.461 53.633C12.461 62.18 14.838 68.867 19.344 73.321C23.757 77.734 30.475 80.204 39.031 80.204ZM39.031 72.35C32.941 72.35 28.223 70.626 25.125 67.591C21.987 64.442 20.314 59.776 20.314 53.633L20.314 16.825C20.314 10.683 21.987 6.017 25.125 2.868C28.171-0.115 32.941-1.891 39.031-1.891L75.902-1.891C81.941-1.891 86.7-0.167 89.797 2.868C92.946 6.017 94.619 10.683 94.619 16.825L94.619 53.633C94.619 59.776 92.946 64.442 89.797 67.591C86.752 70.574 81.941 72.35 75.902 72.35Z"/>
+        <path fill="currentColor" d="M94.508 15.282C103.767 15.282 111.458 7.643 111.458-1.667C111.458-10.936 103.767-18.565 94.508-18.565C85.25-18.565 77.61-10.936 77.61-1.667C77.61 7.643 85.25 15.282 94.508 15.282Z"/>
+        </svg>
+      </span>
+      <span data-slot="appStoreConnect"><!-- App Store Connect --></span>
+    </a>
+    <a href="/account/resources/" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128.282 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.28282em; overflow: visible;">
+        <path fill="currentColor" d="M34.577 77.349L45.175 77.349C46.163 77.349 46.88 77.608 47.607 78.336L55.151 85.817C61.313 92.021 66.975 91.969 73.137 85.817L80.681 78.336C81.409 77.608 82.126 77.349 83.165 77.349L93.712 77.349C102.405 77.349 106.47 73.325 106.47 64.59L106.47 53.991C106.47 53.004 106.792 52.287 107.509 51.549L114.939 44.015C121.142 37.853 121.091 32.192 114.939 25.967L107.509 18.486C106.792 17.758 106.47 16.989 106.47 15.991L106.47 5.455C106.47-3.239 102.457-7.366 93.712-7.366L83.165-7.366C82.126-7.366 81.409-7.626 80.681-8.353L73.137-15.772C66.965-21.997 61.313-22.007 55.141-15.772L47.607-8.353C46.89-7.636 46.163-7.366 45.175-7.366L34.577-7.366C25.831-7.366 21.818-3.342 21.818 5.455L21.818 15.991C21.818 16.989 21.548 17.758 20.831 18.486L13.349 25.967C7.146 32.192 7.198 37.853 13.349 44.015L20.831 51.549C21.548 52.287 21.818 53.004 21.818 53.991L21.818 64.59C21.818 73.284 25.831 77.349 34.577 77.349ZM34.577 69.599C30.256 69.599 29.568 68.911 29.568 64.59L29.568 51.431C29.568 49.926 29.091 48.795 28.063 47.768L18.81 38.555C15.745 35.45 15.745 34.585 18.81 31.427L28.063 22.277C29.091 21.198 29.568 20.056 29.568 18.603L29.568 5.455C29.568 1.009 30.193 0.436 34.577 0.436L47.725 0.436C49.23 0.436 50.371 0.01 51.399-1.121L60.601-10.323C63.707-13.428 64.582-13.428 67.688-10.323L76.889-1.121C77.969 0.01 79.11 0.436 80.564 0.436L93.712 0.436C98.033 0.436 98.731 1.071 98.731 5.455L98.731 18.603C98.731 20.056 99.208 21.198 100.277 22.277L109.489 31.427C112.595 34.585 112.595 35.45 109.489 38.555L100.277 47.768C99.208 48.795 98.731 49.926 98.731 51.431L98.731 64.59C98.731 68.911 98.033 69.599 93.712 69.599L80.564 69.599C79.11 69.599 77.969 70.024 76.889 71.103L67.688 80.357C64.582 83.411 63.707 83.411 60.601 80.357L51.399 71.103C50.371 70.024 49.23 69.599 47.725 69.599Z"/>
+        <path fill="currentColor" d="M58.849 58.158C60.475 58.158 61.832 57.391 62.776 55.89L85.125 20.782C85.653 19.819 86.296 18.721 86.296 17.643C86.296 15.478 84.337 14.079 82.317 14.079C81.063 14.079 79.799 14.805 78.918 16.265L58.631 48.77L49.02 36.306C47.881 34.742 46.793 34.348 45.466 34.348C43.301 34.348 41.695 36.036 41.695 38.223C41.695 39.269 42.089 40.316 42.804 41.259L54.663 55.89C55.917 57.505 57.201 58.158 58.849 58.158Z"/>
+        </svg>
+      </span>
+      <span data-slot="certificatesIDsProfiles"
+        ><!-- Certificates, IDs & Profiles --></span
+      >
+    </a>
+    <a href="/events/view/my-events" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 107.046 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.07046em; overflow: visible;">
+        <path fill="currentColor" d="M27.572 87.552L79.423 87.552C89.479 87.552 94.586 82.415 94.586 72.234L94.586-1.796C94.586-12.028 89.51-17.113 79.423-17.113L64.916-17.113C63.29-17.113 62.15-15.963 62.15-14.171C62.15-9.111 58.679-5.566 53.523-5.566C48.327-5.566 44.793-9.111 44.793-14.171C44.793-15.963 43.705-17.113 42.027-17.113L27.572-17.113C17.495-17.113 12.461-12.028 12.461-1.796L12.461 72.234C12.461 82.415 17.516 87.552 27.572 87.552ZM28.007 79.699C22.924 79.699 20.314 76.944 20.314 72.11L20.314-1.671C20.314-6.547 22.924-9.26 28.007-9.26L41.902-9.26L37.353-12.068C38.234-3.494 44.566 2.08 53.523 2.08C62.439 2.08 68.813-3.494 69.693-12.068L65.093-9.26L79.04-9.26C84.071-9.26 86.691-6.547 86.691-1.671L86.691 72.11C86.691 76.944 84.071 79.699 79.04 79.699Z"/>
+        <path fill="currentColor" d="M35.043 19.226L72.065 19.226C73.786 19.226 75.061 17.91 75.061 16.179C75.061 14.5 73.786 13.225 72.065 13.225L35.043 13.225C33.271 13.225 31.986 14.5 31.986 16.179C31.986 17.91 33.271 19.226 35.043 19.226Z"/>
+        <path fill="currentColor" d="M35.043 36.582L52.571 36.582C54.302 36.582 55.587 35.245 55.587 33.587C55.587 31.866 54.302 30.54 52.571 30.54L35.043 30.54C33.271 30.54 31.986 31.866 31.986 33.587C31.986 35.245 33.271 36.582 35.043 36.582Z"/>
+        </svg>
+      </span>
+      <span data-slot="viewEvents"><!-- Events --></span>
+    </a>
+    <a href="https://feedbackassistant.apple.com" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132.507 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.32507em; overflow: visible;">
+        <path fill="currentColor" d="M42.493 88.831C44.907 88.831 46.565 87.566 49.465 84.946L66.353 69.961L97.694 69.961C112.219 69.961 120.056 61.896 120.056 47.599L120.056 10.188C120.056-4.109 112.219-12.174 97.694-12.174L34.823-12.174C20.298-12.174 12.461-4.13 12.461 10.188L12.461 47.599C12.461 61.917 20.298 69.961 34.823 69.961L37.126 69.961L37.126 82.645C37.126 86.427 39.064 88.831 42.493 88.831ZM44.492 79.91L44.492 65.776C44.492 63.103 43.497 62.108 40.824 62.108L34.844 62.108C24.95 62.108 20.314 57.099 20.314 47.578L20.314 10.209C20.314 0.729 24.95-4.269 34.844-4.269L97.673-4.269C107.524-4.269 112.202 0.729 112.202 10.209L112.202 47.578C112.202 57.099 107.524 62.108 97.673 62.108L66.034 62.108C63.349 62.108 61.95 62.512 60.104 64.43Z"/>
+        <path fill="currentColor" d="M66.232 37.704C68.595 37.704 69.943 36.398 69.994 33.827L70.709 8.082C70.709 5.615 68.792 3.739 66.181 3.739C63.558 3.739 61.693 5.563 61.745 8.03L62.419 33.827C62.47 36.346 63.808 37.704 66.232 37.704ZM66.232 53.574C69.053 53.574 71.511 51.365 71.511 48.503C71.511 45.641 69.105 43.432 66.232 43.432C63.401 43.432 60.995 45.693 60.995 48.503C60.995 51.313 63.453 53.574 66.232 53.574Z"/>
+        </svg>
+      </span>
+      <span data-slot="feedbackAssistant"><!-- Feedback Assistant --></span>
+    </a>
+    <a href="/forums/" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 165.127 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.65127em; overflow: visible;">
+        <defs>
+          <mask id="sf-bubble-left-and-bubble-right-mask-0">
+            <rect x="-25" y="-25" width="215.127" height="120.459" fill="white"/>
+            <path d="M85.887 73.343L101.693 73.343L117.981 87.274C120.963 89.832 122.58 91.127 124.952 91.127C128.308 91.127 130.225 88.734 130.225 85.046L130.225 73.343L131.212 73.343C145.253 73.343 152.669 65.782 152.669 51.948L152.669 25.538C152.669 11.693 145.253 4.122 131.212 4.122L85.887 4.122C71.835 4.122 64.471 11.693 64.471 25.538L64.471 51.969C64.471 65.803 71.835 73.343 85.887 73.343Z" fill="black"/>
+          </mask>
+        </defs>
+        <path fill="currentColor" mask="url(#sf-bubble-left-and-bubble-right-mask-0)" d="M34.823 61.571L37.126 61.571L37.126 74.317C37.126 78.036 39.064 80.451 42.493 80.451C44.907 80.451 46.565 79.176 49.465 76.556L66.353 61.571L97.694 61.571C112.219 61.571 120.056 53.506 120.056 39.209L120.056 1.86C120.056-12.448 112.219-20.502 97.694-20.502L34.823-20.502C20.298-20.502 12.461-12.521 12.461 1.86L12.461 39.209C12.461 53.579 20.298 61.571 34.823 61.571ZM34.844 53.717C24.95 53.717 20.314 48.719 20.314 39.188L20.314 1.881C20.314-7.651 24.95-12.659 34.844-12.659L97.673-12.659C107.524-12.659 112.202-7.651 112.202 1.881L112.202 39.188C112.202 48.719 107.524 53.717 97.673 53.717L66.034 53.717C63.349 53.717 61.95 54.122 60.104 56.05L44.492 71.52L44.492 57.385C44.492 54.712 43.497 53.717 40.824 53.717Z"/>
+        <path fill="currentColor" d="M85.887 73.343L101.693 73.343L117.981 87.274C120.963 89.832 122.58 91.127 124.952 91.127C128.308 91.127 130.225 88.734 130.225 85.046L130.225 73.343L131.212 73.343C145.253 73.343 152.669 65.782 152.669 51.948L152.669 25.538C152.669 11.693 145.253 4.122 131.212 4.122L85.887 4.122C71.835 4.122 64.471 11.693 64.471 25.538L64.471 51.969C64.471 65.803 71.835 73.343 85.887 73.343ZM86.023 65.489C76.477 65.489 72.324 61.006 72.324 51.822L72.335 25.622C72.335 16.49 76.477 11.975 86.023 11.975L131.117 11.975C140.675 11.975 144.764 16.49 144.764 25.622L144.764 51.79C144.764 60.934 140.664 65.489 131.117 65.489L126.671 65.489C124.548 65.489 122.859 66.743 122.859 69.509L122.859 82.278L106.39 67.532C104.72 65.987 103.373 65.489 101.392 65.489Z"/>
+        </svg>
+      </span>
+      <span data-slot="forums"><!-- Forums --></span>
+    </a>
+  </nav>
+  <hr class="account-menu-divider" role="separator" />
+  <nav aria-label="Sign out" data-aria-label="signOut">
+    <a href="/logout/" class="account-menu-link">
+      <span class="account-menu-link-icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 138.282 70.459" focusable="false" class="account-menu-link-icon" aria-hidden="true" style="width: 1.38282em; overflow: visible;">
+        <defs>
+          <mask id="sf-rectangle-portrait-and-arrow-right-mask-0">
+            <rect x="-25" y="-25" width="188.282" height="120.459" fill="white"/>
+            <path d="M58.186 48.243L120.556 48.243C127.658 48.243 133.497 42.353 133.497 35.198C133.497 28.043 127.658 22.154 120.556 22.154L58.186 22.154C51.083 22.154 45.193 28.043 45.193 35.198C45.193 42.353 51.083 48.243 58.186 48.243Z" fill="black"/>
+          </mask>
+        </defs>
+        <path fill="currentColor" mask="url(#sf-rectangle-portrait-and-arrow-right-mask-0)" d="M32.893 87.552L74.164 87.552C87.266 87.552 94.586 80.285 94.586 67.12L94.586 3.318C94.586-9.794 87.266-17.113 74.164-17.113L32.893-17.113C19.791-17.113 12.461-9.794 12.461 3.318L12.461 67.12C12.461 80.285 19.791 87.552 32.893 87.552ZM32.882 79.699C24.847 79.699 20.314 75.156 20.314 67.12L20.314 3.308C20.314-4.717 24.847-9.26 32.882-9.26L74.175-9.26C82.2-9.26 86.691-4.717 86.691 3.308L86.691 67.12C86.691 75.156 82.2 79.699 74.175 79.699Z"/>
+        <path fill="currentColor" d="M54.363 35.198C54.363 37.271 56.103 39.073 58.186 39.073L107.808 39.073L120.98 38.494C122.783 38.39 124.275 37.001 124.275 35.198C124.275 33.396 122.783 32.007 120.98 31.903L107.808 31.323L58.186 31.323C56.103 31.323 54.363 33.126 54.363 35.198ZM102.999 18.645C102.999 19.578 103.393 20.614 104.159 21.329L112.206 28.858L118.971 35.198L112.206 41.528L104.159 49.057C103.393 49.772 102.999 50.756 102.999 51.689C102.999 53.74 104.439 55.284 106.46 55.284C107.485 55.284 108.252 54.849 109.019 54.082L124.515 38.027C125.489 37.053 125.821 36.183 125.821 35.198C125.821 34.214 125.489 33.344 124.515 32.37L109.019 16.304C108.252 15.537 107.485 15.102 106.46 15.102C104.439 15.102 102.999 16.584 102.999 18.645Z"/>
+        </svg>
+      </span>
+      <span data-slot="signOut"><!-- Sign out --></span>
+    </a>
+  </nav>
+</template>
+
+<link rel="stylesheet" href="/assets/includes/global-session-nav/session.css" type="text/css" />
+
+<script>
+  // Synchronously disables the account link before first paint so the user
+  // cannot navigate away before session.js registers its click listener.
+  (function () {
+    var accountLink = document.querySelector(".globalnav-link-account");
+
+    if (accountLink) {
+      var href = accountLink.getAttribute("href");
+
+      if (href) {
+        accountLink.dataset.pendingHref = href;
+        accountLink.removeAttribute("href");
+        accountLink.style.cursor = "default";
+      }
+    }
+  })();
+</script>
+
+<script type="module" src="/assets/includes/global-session-nav/session.js"></script>
+
+
+	<link rel="stylesheet" href="https://www.apple.com/wss/fonts?families=SF+Pro,v3|SF+Pro+Icons,v3">
+<link rel="stylesheet" href="https://www.apple.com/wss/fonts?family=SF+Mono&v=2" type="text/css" />
+<link rel="stylesheet" href="https://www.apple.com/wss/fonts?family=Apple+Icons&v=1" type="text/css" />
+
+	<title>Accelerate your machine learning workloads with the M5 and A19 GPUs - Tech Talks - Videos - Apple Developer</title>
+	<meta name="omni_page" content="Accelerate your machine learning workloads with the M5 and A19 GPUs - Tech Talks - Videos" />
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<link type="text/css" rel="stylesheet" href="/videos/styles/videos.css?3">
+	<link type="text/css" rel="stylesheet" href="/videos/styles/video-overlay.css?3">
+	<meta name="description" content="Discover how to take advantage of the M5 and A19 GPUs to accelerate machine learning. Find out how to use the Neural Accelerators inside...">
+
+	<meta property="og:url" content="https://developer.apple.com/videos/play/tech-talks/111432/" />
+	<meta property="og:title" content="Accelerate your machine learning workloads with the M5 and A19 GPUs - Tech Talks - Videos - Apple Developer" />
+	<meta property="og:description" content="Discover how to take advantage of the M5 and A19 GPUs to accelerate machine learning. Find out how to use the Neural Accelerators inside..." />
+	<meta property="og:site_name" content="Apple Developer" />
+	<meta property="og:type" content="website" />
+	<meta property="og:video" content="https://devstreaming-cdn.apple.com/videos/tech-talks/111432/5/630efa61-e3e0-4023-bfc4-02755ff7fc0c/cmaf.m3u8" /> 
+	<meta property="og:video_secure_url" content="https://devstreaming-cdn.apple.com/videos/tech-talks/111432/5/630efa61-e3e0-4023-bfc4-02755ff7fc0c/cmaf.m3u8" /> 
+	<meta property="og:video:type" content="vnd.apple.mpegURL" /> 
+	<meta property="og:video:width" content="1280" />
+	<meta property="og:video:height" content="720" />
+		<meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/8/10698/10698_wide_250x141_2x.jpg" />
+		<meta property="og:locale" content="en_US" />
+	<meta itemprop="datePublished" content="2026-03-20">
+	<meta itemprop="uploadDate" content="2026-03-20">	
+
+	<link rel="alternate" href="https://developer.apple.com/videos/play/tech-talks/111432/" hreflang="en">
+	<link rel="alternate" href="https://developer.apple.com/kr/videos/play/tech-talks/111432/" hreflang="ko-KR">
+	<link rel="alternate" href="https://developer.apple.com/cn/videos/play/tech-talks/111432/" hreflang="zh-CN">
+    <link rel="alternate" href="https://developer.apple.com/jp/videos/play/tech-talks/111432/" hreflang="ja-JP">
+	<link rel="alternate" href="https://developer.apple.com/la/videos/play/tech-talks/111432/" hreflang="es-lamr">
+	<link rel="alternate" href="https://developer.apple.com/fr/videos/play/tech-talks/111432/" hreflang="fr-FR">
+	<link rel="alternate" href="https://developer.apple.com/br/videos/play/tech-talks/111432/" hreflang="pt-BR">		
+    <link rel="canonical" href="https://developer.apple.com/videos/play/tech-talks/111432/" />
+
+</head>
+<body class="view-play"
+	>
+	
+	<script>
+	// Execute immediately to avoid UI flash
+	(function () {
+		// Prevent React dev mode from running this multiple times
+		if (window.__didRunColorThemeScript) {
+			return;
+		}
+
+		if (window.angular) {
+			return;
+		}
+
+		window.__didRunColorThemeScript = true;
+
+		const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		const body = document.body;
+
+		// If theme-dark or theme-light is already applied, do nothing and lock it
+		if (body.classList.contains("theme-dark") || body.classList.contains("theme-light")) {
+
+			// Set the data-color-scheme attribute based on the existing theme
+			body.setAttribute('data-color-scheme', body.classList.contains("theme-dark") ? "dark" : "light");
+
+			// Prevent future modifications
+			window.__disableColorScheme = true;
+
+			// Hide the color picker immediately
+			const style = document.createElement('style');
+			style.textContent = '.color-scheme-toggle { display: none !important; }';
+			document.head.appendChild(style);
+
+			return;
+		}
+
+		// Otherwise, set theme normally based on user settings or system preference
+		if (window.Settings && window.Settings.preferredColorScheme) {
+			const colorTheme = (window.Settings.preferredColorScheme === 'auto') && !prefersDark ? 'light'
+				: (window.Settings.preferredColorScheme === 'light') ? 'light' : 'dark';
+			body.setAttribute('data-color-scheme', colorTheme);
+			colorTheme === "dark" ? body.classList.add("theme-dark") : body.classList.add("theme-light");
+		} else {
+			const colorTheme = prefersDark ? 'dark' : 'light';
+			body.setAttribute('data-color-scheme', colorTheme);
+			prefersDark ? body.classList.add("theme-dark") : body.classList.add("theme-light");
+		}
+	})();
+</script>
+
+<link rel="stylesheet" href="/assets/styles/suggest-lang.css?34212621148" type="text/css" />
+<div id="suggest-lang" class="ribbon hide" lang="en">
+	<div class="ribbon-content-wrapper">
+		<div class="ribbon-content row">
+			<div class="column large-12 large-centered">
+				<p><a href="#" id="suggest-link" class="ribbon-link more">View in English</a></p>
+				<button id="suggest-closer" class="icon icon-after icon-reset" aria-label="Dismiss language suggestion" tabindex="0"></button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/assets/scripts/suggest-lang.js?50222638203"></script>
+<link rel="stylesheet" href="/assets/styles/globalnav.css?01192605271" type="text/css" />
+<nav id="globalnav" lang="en-US" dir="ltr" aria-label="Global" class="globalnav js" style="--r-globalnav-text-zoom-scale: 1;" data-aa-content-module="global-header">
+	<div class="globalnav-content">
+		<div class="globalnav-item globalnav-menuback"><button aria-label="Main menu" class="globalnav-menuback-button"><span class="globalnav-chevron-icon"><svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+						<path d="m1.5618 24.0621 6.5581-6.4238c.2368-.2319.2407-.6118.0088-.8486-.2324-.2373-.6123-.2407-.8486-.0088l-7 6.8569c-.1157.1138-.1807.2695-.1802.4316.001.1621.0674.3174.1846.4297l7 6.7241c.1162.1118.2661.1675.4155.1675.1577 0 .3149-.062.4326-.1846.2295-.2388.2222-.6187-.0171-.8481z"></path>
+					</svg></span></button></div>
+		<ul id="globalnav-list" class="globalnav-list">
+			<li class="
+	globalnav-item
+	globalnav-item-apple
+	ac-gn-item
+	ac-gn-apple
+">
+				<a href="/" aria-label="Apple Developer" class="globalnav-link globalnav-link-apple ac-gn-link ac-gn-link-apple-developer" id="ac-gn-firstfocus-small">
+					<span class="ac-gn-link-text globalnav-link-text">Apple Developer</span>
+				</a>
+			</li>
+			<li class="globalnav-item globalnav-menu">
+				<div class="globalnav-flyout" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0;">
+					<div class="globalnav-menu-list" style="--r-globalnav-flyout-item-total: 7;">
+						<div class="
+    globalnav-item
+    globalnav-item-getting-started
+    globalnav-item-menu
+    globalnav-item-submenu
+" style="--r-globalnav-flyout-item-number: 0;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/get-started/" data-topnav-flyout-trigger-compact="true" aria-label="Get Started" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-getting-started">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Get Started</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-getting-started" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-getting-started" aria-label="Get Started menu" data-topnav-flyout-trigger-regular="true">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-getting-started" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-getting-started" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 240ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 4;">
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="apple-getting-started-heading" style="--r-globalnav-flyout-item-number: 1;">Explore Get Started</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="apple-getting-started-heading">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/get-started/" class="globalnav-submenu-link">Overview</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/learn/" class="globalnav-submenu-link">Learn</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/programs/" class="globalnav-submenu-link">Apple Developer Program</a></li>
+											</ul>
+										</div>
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="apple-learn-heading" style="--r-globalnav-flyout-item-number: 1;">Stay Updated</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="apple-learn-heading">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/news/" class="globalnav-submenu-link">Latest News</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/hello/" class="globalnav-submenu-link">Hello Developer</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="
+  globalnav-item
+  globalnav-item-platforms
+  globalnav-item-menu
+  globalnav-item-submenu
+" style="--r-globalnav-flyout-item-number: 1;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/platforms/" aria-label="Platforms" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-platforms">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Platforms</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-platforms" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-platforms" aria-label="Platforms menu">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-platforms" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-platforms" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 240ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 9;">
+										<!-- Explore -->
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="platforms-apple-heading" style="--r-globalnav-flyout-item-number: 1;">Explore Platforms</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="platforms-apple-heading">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/platforms/" class="globalnav-submenu-link">Apple Platforms</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/ios/" class="globalnav-submenu-link">iOS</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/ipados/" class="globalnav-submenu-link">iPadOS</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 5;"><a href="/macos/" class="globalnav-submenu-link">macOS</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 6;"><a href="/tvos/" class="globalnav-submenu-link">tvOS</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 7;"><a href="/visionos/" class="globalnav-submenu-link">visionOS</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 8;"><a href="/watchos/" class="globalnav-submenu-link">watchOS</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 9;"><a href="/app-store/" class="globalnav-submenu-link">App Store</a></li>
+											</ul>
+										</div>
+										<!-- Featured -->
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="platforms-learn-heading" style="--r-globalnav-flyout-item-number: 1;">Featured</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="platforms-learn-heading">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/design/" class="globalnav-submenu-link">Design</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/distribute/" class="globalnav-submenu-link">Distribution</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 4;"><a href="/games/" class="globalnav-submenu-link">Games</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 5;"><a href="/accessories/" class="globalnav-submenu-link">Accessories</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 6;"><a href="/safari/" class="globalnav-submenu-link">Web</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 7;"><a href="/apple-home/" class="globalnav-submenu-link">Home</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 8;"><a href="/carplay/" class="globalnav-submenu-link">CarPlay</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="
+  globalnav-item
+  globalnav-item-technologies
+  globalnav-item-menu
+  globalnav-item-submenu
+" style="--r-globalnav-flyout-item-number: 2;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/technologies/" aria-label="Technologies" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-technologies">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Technologies</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-technologies" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-technologies" aria-label="Technologies menu">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-technologies" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-technologies" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 254ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 8;">
+										<!-- Explore -->
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="technologies-learn-heading" style="--r-globalnav-flyout-item-number: 1;">Explore Technologies</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="technologies-learn-heading">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/technologies/" class="globalnav-submenu-link">Overview</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/xcode/" class="globalnav-submenu-link">Xcode</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/swift/" class="globalnav-submenu-link">Swift</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 5;"><a href="/swiftui/" class="globalnav-submenu-link">SwiftUI</a></li>
+											</ul>
+										</div>
+										<!-- Featured -->
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="technologies-featured-heading" style="--r-globalnav-flyout-item-number: 1;">Featured</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="technologies-featured-heading">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/documentation/accessibility" class="globalnav-submenu-link">Accessibility</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/machine-learning/" class="globalnav-submenu-link">AI &amp; Machine Learning</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 4;"><a href="/documentation/appintents" class="globalnav-submenu-link">App Intents</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 5;"><a href="/apple-intelligence/" class="globalnav-submenu-link">Apple Intelligence</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 6;"><a href="/games/" class="globalnav-submenu-link">Games</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 7;"><a href="/security/" class="globalnav-submenu-link">Security</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 8;"><a href="/xcode-cloud/" class="globalnav-submenu-link">Xcode Cloud</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="
+  globalnav-item
+  globalnav-item-community
+  globalnav-item-menu
+  globalnav-item-submenu
+" style="--r-globalnav-flyout-item-number: 3;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/community/" aria-label="Community" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-community">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Community</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-community" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-community" aria-label="Community menu">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-community" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-community" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 240ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 7;">
+										<!-- Explore -->
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="community-engage-heading" style="--r-globalnav-flyout-item-number: 1;">Explore Community</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="community-engage-heading">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/community/" class="globalnav-submenu-link">Overview</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/events/" class="globalnav-submenu-link">Meet with Apple events</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/community/events/" class="globalnav-submenu-link">Community events</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 5;"><a href="/forums/" class="globalnav-submenu-link">Developer Forums</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 6;"><a href="https://opensource.apple.com" class="globalnav-submenu-link">Open Source</a></li>
+											</ul>
+										</div>
+										<!-- Featured -->
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="community-contribute-heading" style="--r-globalnav-flyout-item-number: 1;">Featured</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="community-contribute-heading">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/wwdc/" class="globalnav-submenu-link">WWDC</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/swift-student-challenge/" class="globalnav-submenu-link">Swift Student Challenge</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 4;"><a href="/developer-stories/" class="globalnav-submenu-link">Developer Stories</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 5;"><a href="/app-store/app-store-awards/" class="globalnav-submenu-link">App Store Awards</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 6;"><a href="/design/awards/" class="globalnav-submenu-link">Apple Design Awards</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 7;"><a href="/events/developer-centers/" class="globalnav-submenu-link">Apple Developer Centers</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="
+							    globalnav-item
+							    globalnav-item-documentation
+							    globalnav-item-menu
+							    globalnav-item-submenu
+							" style="--r-globalnav-flyout-item-number: 4;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/documentation/" aria-label="Documentation" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-documentation">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Documentation</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-documentation" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-documentation" aria-label="Documentation menu">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-documentation" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-documentation" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 240ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 9;">
+										<!-- Explore -->
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="docs-explore" style="--r-globalnav-flyout-item-number: 1;">Explore Documentation</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="docs-explore">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/documentation/" class="globalnav-submenu-link">Documentation Library</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/documentation/TechnologyOverviews" class="globalnav-submenu-link">Technology Overviews</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/documentation/SampleCode" class="globalnav-submenu-link">Sample Code</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 5;"><a href="/design/human-interface-guidelines/" class="globalnav-submenu-link">Human Interface Guidelines</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 6;"><a href="/videos/" class="globalnav-submenu-link">Videos</a></li>
+											</ul>
+										</div>
+										<!-- Release Notes -->
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="docs-release-notes" style="--r-globalnav-flyout-item-number: 1;">Release Notes</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="docs-release-notes">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/documentation/Updates" class="globalnav-submenu-link">Featured Updates</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/documentation/ios-ipados-release-notes" class="globalnav-submenu-link">iOS</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 4;"><a href="/documentation/ios-ipados-release-notes" class="globalnav-submenu-link">iPadOS</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 5;"><a href="/documentation/macos-release-notes" class="globalnav-submenu-link">macOS</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 6;"><a href="/documentation/watchos-release-notes" class="globalnav-submenu-link">watchOS</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 7;"><a href="/documentation/visionos-release-notes/" class="globalnav-submenu-link">visionOS</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 8;"><a href="/documentation/tvos-release-notes" class="globalnav-submenu-link">tvOS</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 9;"><a href="/documentation/Updates/xcode" class="globalnav-submenu-link">Xcode</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="
+  globalnav-item
+  globalnav-item-downloads
+  globalnav-item-menu
+  globalnav-item-submenu
+" style="--r-globalnav-flyout-item-number: 5;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/download/" aria-label="Downloads" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-downloads">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Downloads</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-downloads" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-downloads" aria-label="Downloads menu">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-downloads" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-downloads" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 240ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 6;">
+										<!-- Explore -->
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="downloads-explore-heading" style="--r-globalnav-flyout-item-number: 1;">Explore Downloads</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="downloads-explore-heading">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/download/" class="globalnav-submenu-link">All Downloads</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/download/os/" class="globalnav-submenu-link">Operating Systems</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/download/applications/" class="globalnav-submenu-link">Applications</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 5;"><a href="/design/resources/" class="globalnav-submenu-link">Design Resources</a></li>
+											</ul>
+										</div>
+										<!-- Featured -->
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="downloads-featured-heading" style="--r-globalnav-flyout-item-number: 1;">Featured</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="downloads-featured-heading">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/xcode/" class="globalnav-submenu-link">Xcode</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/testflight/" class="globalnav-submenu-link">TestFlight</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 4;"><a href="/fonts/" class="globalnav-submenu-link">Fonts</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 5;"><a href="/sf-symbols/" class="globalnav-submenu-link">SF Symbols</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 6;"><a href="/icon-composer/" class="globalnav-submenu-link">Icon Composer</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="
+  globalnav-item
+  globalnav-item-support
+  globalnav-item-menu
+  globalnav-item-submenu
+" style="--r-globalnav-flyout-item-number: 6;">
+							<ul class="globalnav-submenu-trigger-group">
+								<li class="globalnav-submenu-trigger-item">
+									<a href="/support/" aria-label="Support" class="globalnav-link globalnav-submenu-trigger-link globalnav-link-support">
+										<span class="globalnav-link-text-container">
+											<span class="globalnav-link-text">Support</span>
+										</span>
+										<span class="globalnav-link-chevron">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m8.1155 30.358a.6.6 0 1 1 -.831.8653l-7-6.7242a.6.6 0 0 1 -.0045-.8613l7-6.8569a.6.6 0 1 1 .84.8574l-6.5582 6.4238z"></path>
+											</svg>
+										</span>
+									</a>
+								</li>
+								<li class="globalnav-submenu-trigger-item">
+									<button id="globalnav-menubutton-link-support" class="globalnav-submenu-trigger-button" aria-expanded="false" aria-controls="globalnav-submenu-link-support" aria-label="Support menu">
+										<span class="globalnav-image-regular globalnav-submenu-button-icon">
+											<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
+												<path d="m4.6725 6.635-2.655-2.667a.445.445 0 0 1 -.123-.304.4331.4331 0 0 1 .427-.439h.006a.447.447 0 0 1 .316.135l2.357 2.365 2.356-2.365a.458.458 0 0 1 .316-.135.433.433 0 0 1 .433.433v.006a.4189.4189 0 0 1 -.123.3l-2.655 2.671a.4451.4451 0 0 1 -.327.14.464.464 0 0 1 -.328-.14z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact globalnav-submenu-button-icon">
+											<svg height="48" viewBox="0 0 9 48" width="9" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7.4382 24.0621-6.5581-6.4238c-.2368-.2319-.2407-.6118-.0088-.8486.2324-.2373.6123-.2407.8486-.0088l7 6.8569c.1157.1138.1807.2695.1802.4316-.001.1621-.0674.3174-.1846.4297l-7 6.7242c-.1162.1118-.2661.1675-.4155.1675-.1577 0-.3149-.062-.4326-.1846-.2295-.2388-.2222-.6187.0171-.8481l6.5537-6.2959z"></path>
+											</svg>
+										</span>
+									</button>
+								</li>
+							</ul>
+							<div id="globalnav-submenu-link-support" class="globalnav-flyout globalnav-submenu" aria-labelledby="globalnav-menubutton-link-support" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: auto; --r-globalnav-flyout-rate: 240ms;">
+								<div class="globalnav-flyout-scroll-container">
+									<div class="globalnav-flyout-content globalnav-submenu-content" style="--r-globalnav-flyout-elevated-group-count: 1; --r-globalnav-flyout-group-total: 2; --r-globalnav-flyout-item-total: 7;">
+										<!-- Explore -->
+										<div class="globalnav-submenu-group globalnav-submenu-group-elevated" style="--r-globalnav-flyout-group-number: 0;">
+
+											<h2 class="globalnav-submenu-header" id="explore-support" style="--r-globalnav-flyout-item-number: 1;">Explore Support</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="explore-support">
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 2;"><a href="/support/" class="globalnav-submenu-link">Overview</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 3;"><a href="/help/" class="globalnav-submenu-link">Help Guides</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 4;"><a href="/forums/" class="globalnav-submenu-link">Developer Forums</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 5;"><a href="/feedback-assistant/" class="globalnav-submenu-link">Feedback Assistant</a></li>
+												<li class="globalnav-submenu-list-item-elevated" style="--r-globalnav-flyout-item-number: 6;"><a href="/contact/" class="globalnav-submenu-link">Contact Us</a></li>
+											</ul>
+										</div>
+										<!-- Featured -->
+										<div class="globalnav-submenu-group" style="--r-globalnav-flyout-group-number: 1;">
+
+											<h2 class="globalnav-submenu-header" id="support-help" style="--r-globalnav-flyout-item-number: 1;">Featured</h2>
+											<ul class="globalnav-submenu-list" aria-labelledby="support-help">
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 2;"><a href="/help/account/" class="globalnav-submenu-link">Account Help</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 3;"><a href="/app-store/review/guidelines/" class="globalnav-submenu-link">App Review Guidelines</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 4;"><a href="/help/app-review/" class="globalnav-submenu-link">App Review Help</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 5;"><a href="/help/app-store-connect/" class="globalnav-submenu-link">App Store Connect Help</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 6;"><a href="/news/upcoming-requirements/" class="globalnav-submenu-link">Upcoming Requirements</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 7;"><a href="/support/terms/" class="globalnav-submenu-link">Agreements and Guidelines</a></li>
+												<li class="globalnav-submenu-list-item" style="--r-globalnav-flyout-item-number: 8;"><a href="/system-status/" class="globalnav-submenu-link">System Status</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<!-- Search -->
+			<li data-topnav-flyout-label="Search" class="globalnav-item globalnav-search shift-0-1" data-globalnav-iconflyout-enabled="true">
+				<a role="button" id="globalnav-menubutton-link-search" href="/search/" data-topnav-flyout-trigger-regular="true" data-topnav-flyout-trigger-compact="true" aria-label="Search" class="globalnav-link globalnav-link-search">
+					<span class="globalnav-image-regular">
+						<svg xmlns="http://www.w3.org/2000/svg" width="15px" height="44px" viewBox="0 0 15 44">
+							<path d="M14.298,27.202l-3.87-3.87c0.701-0.929,1.122-2.081,1.122-3.332c0-3.06-2.489-5.55-5.55-5.55c-3.06,0-5.55,2.49-5.55,5.55 c0,3.061,2.49,5.55,5.55,5.55c1.251,0,2.403-0.421,3.332-1.122l3.87,3.87c0.151,0.151,0.35,0.228,0.548,0.228 s0.396-0.076,0.548-0.228C14.601,27.995,14.601,27.505,14.298,27.202z M1.55,20c0-2.454,1.997-4.45,4.45-4.45 c2.454,0,4.45,1.997,4.45,4.45S8.454,24.45,6,24.45C3.546,24.45,1.55,22.454,1.55,20z"></path>
+						</svg>
+					</span>
+					<span class="globalnav-image-compact">
+						<svg height="48" viewBox="0 0 17 48" width="17" xmlns="http://www.w3.org/2000/svg">
+							<path d="m16.2294 29.9556-4.1755-4.0821a6.4711 6.4711 0 1 0 -1.2839 1.2625l4.2005 4.1066a.9.9 0 1 0 1.2588-1.287zm-14.5294-8.0017a5.2455 5.2455 0 1 1 5.2455 5.2527 5.2549 5.2549 0 0 1 -5.2455-5.2527z"></path>
+						</svg>
+					</span>
+				</a>
+				<div id="globalnav-submenu-search" aria-labelledby="globalnav-menubutton-link-search" class="globalnav-flyout globalnav-submenu" style="--r-globalnav-flyout-item-total: 0; --r-globalnav-flyout-group-number: 0; --r-globalnav-flyout-height: 388px; --r-globalnav-flyout-rate: 240ms;">
+					<div class="globalnav-flyout-scroll-container">
+						<div class="globalnav-flyout-content globalnav-submenu-content">
+							<form action="/search/" method="get" class="globalnav-searchfield">
+								<div class="globalnav-searchfield-wrapper">
+									<input placeholder="Ask Apple Developer" name="q" aria-label="Ask Apple Developer" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" class="globalnav-searchfield-input">
+									<input id="globalnav-searchfield-src" type="hidden" name="src" value="globalnav">
+									<button aria-label="Clear search" tabindex="-1" type="button" class="globalnav-searchfield-reset" disabled="" aria-hidden="true">
+										<span class="globalnav-image-regular">
+											<svg height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg">
+												<path d="m7 .0339a6.9661 6.9661 0 1 0 6.9661 6.9661 6.9661 6.9661 0 0 0 -6.9661-6.9661zm2.798 8.9867a.55.55 0 0 1 -.778.7774l-2.02-2.02-2.02 2.02a.55.55 0 0 1 -.7784-.7774l2.0206-2.0206-2.0204-2.02a.55.55 0 0 1 .7782-.7778l2.02 2.02 2.02-2.02a.55.55 0 0 1 .778.7778l-2.0203 2.02z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact">
+											<svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+												<path d="m0 8a8.0474 8.0474 0 0 1 7.9922-8 8.0609 8.0609 0 0 1 8.0078 8 8.0541 8.0541 0 0 1 -8 8 8.0541 8.0541 0 0 1 -8-8zm5.6549 3.2863 2.3373-2.353 2.3451 2.353a.6935.6935 0 0 0 .4627.1961.6662.6662 0 0 0 .6667-.6667.6777.6777 0 0 0 -.1961-.4706l-2.3451-2.3373 2.3529-2.3607a.5943.5943 0 0 0 .1961-.4549.66.66 0 0 0 -.6667-.6589.6142.6142 0 0 0 -.447.1961l-2.3686 2.3606-2.353-2.3527a.6152.6152 0 0 0 -.447-.1883.6529.6529 0 0 0 -.6667.651.6264.6264 0 0 0 .1961.4549l2.3451 2.3529-2.3451 2.353a.61.61 0 0 0 -.1961.4549.6661.6661 0 0 0 .6667.6667.6589.6589 0 0 0 .4627-.1961z"></path>
+											</svg>
+										</span>
+									</button>
+									<button aria-label="Submit search" tabindex="-1" aria-hidden="true" type="submit" class="globalnav-searchfield-submit" disabled="">
+										<span class="globalnav-image-regular">
+											<svg height="32" viewBox="0 0 30 32" width="30" xmlns="http://www.w3.org/2000/svg">
+												<path d="m23.3291 23.3066-4.35-4.35c-.0105-.0105-.0247-.0136-.0355-.0235a6.8714 6.8714 0 1 0 -1.5736 1.4969c.0214.0256.03.0575.0542.0815l4.35 4.35a1.1 1.1 0 1 0 1.5557-1.5547zm-15.4507-8.582a5.6031 5.6031 0 1 1 5.603 5.61 5.613 5.613 0 0 1 -5.603-5.61z"></path>
+											</svg>
+										</span>
+										<span class="globalnav-image-compact">
+											<svg width="38" height="40" viewBox="0 0 38 40" xmlns="http://www.w3.org/2000/svg">
+												<path d="m28.6724 27.8633-5.07-5.07c-.0095-.0095-.0224-.0122-.032-.0213a7.9967 7.9967 0 1 0 -1.8711 1.7625c.0254.03.0357.0681.0642.0967l5.07 5.07a1.3 1.3 0 0 0 1.8389-1.8379zm-18.0035-10.0033a6.5447 6.5447 0 1 1 6.545 6.5449 6.5518 6.5518 0 0 1 -6.545-6.5449z"></path>
+											</svg>
+										</span>
+									</button>
+								</div>
+							</form>
+							<div class="globalnav-searchresults">
+								<div class="globalnav-searchresults-current">
+									<div class="globalnav-searchresults-container" style="--r-globalnav-flyout-group-number: 0;">
+
+										<h2 class="globalnav-searchresults-header" style="--r-globalnav-flyout-item-number: 0;">Quick Links</h2>
+										<ul class="globalnav-searchresults-list" role="list">
+											<li class="globalnav-searchresults-list-item" role="listitem" style="--r-globalnav-flyout-item-number: 1;">
+												<a class="globalnav-searchresults-list-link" href="/events/" data-query="no keyword" data-section="quicklinks" data-items="5" data-index="0" data-label="Events">
+													<span class="globalnav-searchresults-list-icon">
+														<span class="globalnav-image-regular globalnav-link-image">
+															<svg height="16" viewBox="0 0 9 16" width="9" xmlns="http://www.w3.org/2000/svg">
+																<path d="m8.6124 8.1035-2.99 2.99a.5.5 0 0 1 -.7071-.7071l2.1366-2.1364h-6.316a.5.5 0 0 1 0-1h6.316l-2.1368-2.1367a.5.5 0 0 1 .7071-.7071l2.99 2.99a.5.5 0 0 1 .0002.7073z"></path>
+															</svg>
+														</span>
+														<span class="globalnav-image-compact globalnav-link-image">
+															<svg height="25" viewBox="0 0 13 25" width="13" xmlns="http://www.w3.org/2000/svg">
+																<path d="m12.3577 13.4238-4.4444 4.4444a.6.6 0 0 1 -.8486-.8477l3.37-3.37h-9.3231a.65.65 0 0 1 0-1.3008h9.3232l-3.37-3.37a.6.6 0 0 1 .8486-.8477l4.4444 4.4444a.5989.5989 0 0 1 -.0001.8474z"></path>
+															</svg>
+														</span>
+													</span>
+													<span class="globalnav-searchresults-list-text">Events</span>
+												</a>
+											</li>
+											<li class="globalnav-searchresults-list-item" role="listitem" style="--r-globalnav-flyout-item-number: 2;">
+												<a class="globalnav-searchresults-list-link" href="/news/" data-query="no keyword" data-section="quicklinks" data-items="5" data-index="1" data-label="News">
+													<span class="globalnav-searchresults-list-icon">
+														<span class="globalnav-image-regular globalnav-link-image">
+															<svg height="16" viewBox="0 0 9 16" width="9" xmlns="http://www.w3.org/2000/svg">
+																<path d="m8.6124 8.1035-2.99 2.99a.5.5 0 0 1 -.7071-.7071l2.1366-2.1364h-6.316a.5.5 0 0 1 0-1h6.316l-2.1368-2.1367a.5.5 0 0 1 .7071-.7071l2.99 2.99a.5.5 0 0 1 .0002.7073z"></path>
+															</svg>
+														</span>
+														<span class="globalnav-image-compact globalnav-link-image">
+															<svg height="25" viewBox="0 0 13 25" width="13" xmlns="http://www.w3.org/2000/svg">
+																<path d="m12.3577 13.4238-4.4444 4.4444a.6.6 0 0 1 -.8486-.8477l3.37-3.37h-9.3231a.65.65 0 0 1 0-1.3008h9.3232l-3.37-3.37a.6.6 0 0 1 .8486-.8477l4.4444 4.4444a.5989.5989 0 0 1 -.0001.8474z"></path>
+															</svg>
+														</span>
+													</span>
+													<span class="globalnav-searchresults-list-text">News</span>
+												</a>
+											</li>
+											<li class="globalnav-searchresults-list-item" role="listitem" style="--r-globalnav-flyout-item-number: 3;">
+												<a class="globalnav-searchresults-list-link" href="/forums/" data-query="no keyword" data-section="quicklinks" data-items="5" data-index="2" data-label="Forums">
+													<span class="globalnav-searchresults-list-icon">
+														<span class="globalnav-image-regular globalnav-link-image">
+															<svg height="16" viewBox="0 0 9 16" width="9" xmlns="http://www.w3.org/2000/svg">
+																<path d="m8.6124 8.1035-2.99 2.99a.5.5 0 0 1 -.7071-.7071l2.1366-2.1364h-6.316a.5.5 0 0 1 0-1h6.316l-2.1368-2.1367a.5.5 0 0 1 .7071-.7071l2.99 2.99a.5.5 0 0 1 .0002.7073z"></path>
+															</svg>
+														</span>
+														<span class="globalnav-image-compact globalnav-link-image">
+															<svg height="25" viewBox="0 0 13 25" width="13" xmlns="http://www.w3.org/2000/svg">
+																<path d="m12.3577 13.4238-4.4444 4.4444a.6.6 0 0 1 -.8486-.8477l3.37-3.37h-9.3231a.65.65 0 0 1 0-1.3008h9.3232l-3.37-3.37a.6.6 0 0 1 .8486-.8477l4.4444 4.4444a.5989.5989 0 0 1 -.0001.8474z"></path>
+															</svg>
+														</span>
+													</span>
+													<span class="globalnav-searchresults-list-text">Forums</span>
+												</a>
+											</li>
+											<li class="globalnav-searchresults-list-item" role="listitem" style="--r-globalnav-flyout-item-number: 4;">
+												<a class="globalnav-searchresults-list-link" href="/documentation/samplecode/" data-query="no keyword" data-section="quicklinks" data-items="5" data-index="3" data-label="Sample Code">
+													<span class="globalnav-searchresults-list-icon">
+														<span class="globalnav-image-regular globalnav-link-image">
+															<svg height="16" viewBox="0 0 9 16" width="9" xmlns="http://www.w3.org/2000/svg">
+																<path d="m8.6124 8.1035-2.99 2.99a.5.5 0 0 1 -.7071-.7071l2.1366-2.1364h-6.316a.5.5 0 0 1 0-1h6.316l-2.1368-2.1367a.5.5 0 0 1 .7071-.7071l2.99 2.99a.5.5 0 0 1 .0002.7073z"></path>
+															</svg>
+														</span>
+														<span class="globalnav-image-compact globalnav-link-image">
+															<svg height="25" viewBox="0 0 13 25" width="13" xmlns="http://www.w3.org/2000/svg">
+																<path d="m12.3577 13.4238-4.4444 4.4444a.6.6 0 0 1 -.8486-.8477l3.37-3.37h-9.3231a.65.65 0 0 1 0-1.3008h9.3232l-3.37-3.37a.6.6 0 0 1 .8486-.8477l4.4444 4.4444a.5989.5989 0 0 1 -.0001.8474z"></path>
+															</svg>
+														</span>
+													</span>
+													<span class="globalnav-searchresults-list-text">Sample Code</span>
+												</a>
+											</li>
+											<li class="globalnav-searchresults-list-item" role="listitem" style="--r-globalnav-flyout-item-number: 5;">
+												<a class="globalnav-searchresults-list-link" href="/videos/" data-query="no keyword" data-section="quicklinks" data-items="5" data-index="4" data-label="Videos">
+													<span class="globalnav-searchresults-list-icon">
+														<span class="globalnav-image-regular globalnav-link-image">
+															<svg height="16" viewBox="0 0 9 16" width="9" xmlns="http://www.w3.org/2000/svg">
+																<path d="m8.6124 8.1035-2.99 2.99a.5.5 0 0 1 -.7071-.7071l2.1366-2.1364h-6.316a.5.5 0 0 1 0-1h6.316l-2.1368-2.1367a.5.5 0 0 1 .7071-.7071l2.99 2.99a.5.5 0 0 1 .0002.7073z"></path>
+															</svg>
+														</span>
+														<span class="globalnav-image-compact globalnav-link-image">
+															<svg height="25" viewBox="0 0 13 25" width="13" xmlns="http://www.w3.org/2000/svg">
+																<path d="m12.3577 13.4238-4.4444 4.4444a.6.6 0 0 1 -.8486-.8477l3.37-3.37h-9.3231a.65.65 0 0 1 0-1.3008h9.3232l-3.37-3.37a.6.6 0 0 1 .8486-.8477l4.4444 4.4444a.5989.5989 0 0 1 -.0001.8474z"></path>
+															</svg>
+														</span>
+													</span>
+													<span class="globalnav-searchresults-list-text">Videos</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<!-- Account -->
+			<li id="globalnav-account" class="globalnav-item globalnav-account">
+				<div class="globalnav-account-wrapper">
+					<a href="/account/" aria-label="Account" class="globalnav-link globalnav-link-account">
+						<span class="globalnav-image-regular globalnav-link-image" aria-hidden="true">
+							<svg width="17" height="47" viewBox="0 0 117.045 120" xmlns="http://www.w3.org/2000/svg" focusable="false" preserveAspectRatio="xMidYMid meet">
+								<path fill="currentColor" d="M58.496,109.742c27.503,0 49.825,-22.271 49.825,-49.774c0,-27.503 -22.322,-49.773 -49.825,-49.773c-27.451,0 -49.773,22.27 -49.773,49.773c0,27.503 22.322,49.774 49.773,49.774zM58.496,101.474c-22.945,0 -41.465,-18.561 -41.465,-41.506c0,-22.944 18.52,-41.506 41.465,-41.506c22.945,0 41.506,18.562 41.506,41.506c0,22.945 -18.561,41.506 -41.506,41.506zM91.931,92.156l-0.156,-0.549c-2.433,-7.174 -15.338,-15.037 -33.279,-15.037c-17.92,0 -30.773,7.852 -33.227,15.005l-0.156,0.581c8.825,8.692 23.891,13.762 33.394,13.762c9.575,0 24.525,-5.028 33.424,-13.762zM58.496,68.304c9.398,0.103 16.759,-7.924 16.759,-18.421c0,-9.875 -7.393,-18.048 -16.759,-18.048c-9.314,0 -16.769,8.173 -16.707,18.048c0.052,10.497 7.31,18.317 16.707,18.421z" />
+							</svg>
+						</span>
+						<span class="globalnav-image-compact globalnav-link-image" aria-hidden="true">
+							<svg width="20" height="51" viewBox="0 0 117.045 120" xmlns="http://www.w3.org/2000/svg" focusable="false" preserveAspectRatio="xMidYMid meet">
+								<path fill="currentColor" d="M58.496,109.742c27.503,0 49.825,-22.271 49.825,-49.774c0,-27.503 -22.322,-49.773 -49.825,-49.773c-27.451,0 -49.773,22.27 -49.773,49.773c0,27.503 22.322,49.774 49.773,49.774zM58.496,101.474c-22.945,0 -41.465,-18.561 -41.465,-41.506c0,-22.944 18.52,-41.506 41.465,-41.506c22.945,0 41.506,18.562 41.506,41.506c0,22.945 -18.561,41.506 -41.506,41.506zM91.931,92.156l-0.156,-0.549c-2.433,-7.174 -15.338,-15.037 -33.279,-15.037c-17.92,0 -30.773,7.852 -33.227,15.005l-0.156,0.581c8.825,8.692 23.891,13.762 33.394,13.762c9.575,0 24.525,-5.028 33.424,-13.762zM58.496,68.304c9.398,0.103 16.759,-7.924 16.759,-18.421c0,-9.875 -7.393,-18.048 -16.759,-18.048c-9.314,0 -16.769,8.173 -16.707,18.048c0.052,10.497 7.31,18.317 16.707,18.421z" />
+							</svg>
+						</span>
+					</a>
+				</div>
+			</li>
+		</ul>
+		<div class="globalnav-menutrigger">
+			<button id="globalnav-menutrigger-button" aria-controls="globalnav-list" aria-label="Menu" class="globalnav-menutrigger-button"><svg width="18" height="18" viewBox="0 0 18 18">
+					<polyline id="globalnav-menutrigger-bread-bottom" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="2 12, 16 12" class="globalnav-menutrigger-bread globalnav-menutrigger-bread-bottom">
+						<animate id="globalnav-anim-menutrigger-bread-bottom-open" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 2 12, 16 12; 2 9, 16 9; 3.5 15, 15 3.5"></animate>
+						<animate id="globalnav-anim-menutrigger-bread-bottom-close" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 3.5 15, 15 3.5; 2 9, 16 9; 2 12, 16 12"></animate>
+					</polyline>
+					<polyline id="globalnav-menutrigger-bread-top" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="2 5, 16 5" class="globalnav-menutrigger-bread globalnav-menutrigger-bread-top">
+						<animate id="globalnav-anim-menutrigger-bread-top-open" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 2 5, 16 5; 2 9, 16 9; 3.5 3.5, 15 15"></animate>
+						<animate id="globalnav-anim-menutrigger-bread-top-close" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 3.5 3.5, 15 15; 2 9, 16 9; 2 5, 16 5"></animate>
+					</polyline>
+				</svg>
+			</button>
+		</div>
+	</div>
+	<span style="visibility: hidden; position: absolute; top: 0px; z-index: -1;">&nbsp;</span>
+</nav>
+<!-- <div class="globalnav-placeholder"></div> -->
+<script src="/assets/scripts/ac-globalnav.built.js?35212621148"></script>
+	<!-- metrics -->
+<script>
+	/* RSID: */
+	var s_account="awdappledeveloper"
+</script>	
+<script src="/assets/metrics/scripts/analytics.js"></script>
+<script>
+	s_sections = [
+		{
+			"pattern": "^/documentation",
+			"channel": "www.documentation.developer"
+		},
+		{
+			"pattern": "^/library",
+			"channel": "www.documentation.developer"
+		},
+		{
+			"pattern": "^/tutorials",
+			"channel": "www.documentation.developer"
+		},	
+		{
+			"pattern": "human\\-interface\\-guidelines",
+			"channel": "www.hig.developer"
+		},
+		{
+			"pattern": "/testflight/",
+			"channel": "www.appstoreconnect.developer"
+		},
+		{
+			"pattern": "/app\\-store\\-connect/",
+			"channel": "www.appstoreconnect.developer"
+		},
+		{
+			"pattern": "/support/app\\-store\\-connect/",
+			"channel": "www.appstoreconnect.developer"
+		},
+		{
+			"pattern": "/help/app\\-store\\-connect/",
+			"channel": "www.appstoreconnect.developer"
+		},
+		{
+			"pattern": "/wwdc/",
+			"channel": "www.wwdc.developer"
+		},
+		{
+			"pattern": "/wwdc\\d{2}/",
+			"channel": "www.wwdc.developer"
+		},
+		{
+			"pattern": "/videos/",
+			"channel": "www.videos.developer"
+		},
+		{
+			"pattern": "^/account",
+			"channel": "www.account.developer"
+		},
+		{
+			"pattern": "downloads?",
+			"channel": "www.download.developer"
+		},
+		{
+			"pattern": "/localization/",
+			"channel": "www.appstore.developer"
+		},	
+		{
+			"pattern": "/app\\-store/",
+			"channel": "www.appstore.developer"
+		},
+		{
+			"pattern": "/in\\-app\\-purchase/",
+			"channel": "www.appstore.developer"
+		},
+		{
+			"pattern": "/cn/",
+			"channel": "www.cn.developer"
+		},
+		{
+			"pattern": "/jp/",
+			"channel": "www.jp.developer"
+		},
+		{
+			"pattern": "/kr/",
+			"channel": "www.kr.developer"
+		},
+		{
+			"pattern": "/de/",
+			"channel": "www.de.developer"
+		},
+		{
+			"pattern": "/la/",
+			"channel": "www.la.developer"
+		},
+		{
+			"pattern": "/fr/",
+			"channel": "www.fr.developer"
+		},
+		{
+			"pattern": "/it/",
+			"channel": "www.it.developer"
+		},
+		{
+			"pattern": "/br/",
+			"channel": "www.br.developer"
+		}
+	];
+	
+	s.pageName= AC && AC.Tracking && AC.Tracking.pageName();
+	s.channel="www.en.developer";
+	
+	s_sections.forEach((s_section) => {
+		var regex = new RegExp(s_section.pattern);
+		
+		if(location.pathname.search(regex) !== -1) {
+			s.channel=s_section.channel;
+		}
+	});
+	
+	/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+	var s_code=s.t();if(s_code)document.write(s_code)
+</script>
+<!-- /metrics -->
+
+	<link rel="stylesheet" property="stylesheet" href="/assets/styles/localnav.css" type="text/css" />
+<input type="checkbox" id="localnav-menustate" class="localnav-menustate"/>
+<nav id="localnav" class="localnav localnav-scrim" data-sticky role="navigation">
+	<div class="localnav-wrapper">
+		<div class="localnav-background"></div>
+		<div class="localnav-content">
+			<h2 class="localnav-title">
+				<a href="/videos/">Videos</a>
+			</h2>
+
+			<div class="localnav-menu">
+				<a href="#localnav-menustate" class="localnav-menucta-anchor localnav-menucta-anchor-open" id="localnav-menustate-open">
+					<span class="localnav-menucta-anchor-label">Open Menu</span>
+				</a>
+				<a href="#" class="localnav-menucta-anchor localnav-menucta-anchor-close" id="localnav-menustate-close">
+					<span class="localnav-menucta-anchor-label">Close Menu</span>
+				</a>
+				<div class="localnav-menu-tray">
+					<ul class="localnav-menu-items">
+						<li class="localnav-menu-item">
+							<a href="/videos/" class="localnav-menu-link">Collections</a>
+						</li>
+						<li class="localnav-menu-item">
+							<a href="/videos/all-videos/" class="localnav-menu-link">All Videos</a>
+						</li>
+						<li class="localnav-menu-item">
+							<a href="/videos/about/" class="localnav-menu-link">About</a>
+						</li>
+					</ul>
+				</div>
+				<div class="localnav-actions localnav-actions-center">
+					<div class="localnav-action localnav-action-menucta" aria-hidden="true">
+						<label for="localnav-menustate" class="localnav-menucta">
+							<span class="localnav-menucta-chevron"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+<label id="localnav-curtain" for="localnav-menustate"></label>
+<script src="/assets/scripts/ac-localnav.built.js"></script>
+<script type="text/javascript" src="/assets/scripts/localnav.js"></script>
+	<main id="main" class="main " role="main">
+
+		<section >
+
+			<div class="section-content">
+								<section class="row">
+					<section class="column large-12 small-12  padding-top-small large-centered no-padding-bottom">
+						<!-- back link -->
+						<p class="back-link smaller">
+														<a class="icon icon-before icon-chevronleft" href="/videos/">More Videos</a>
+													</p>
+					</section>
+				</section>
+								
+				<!-- video player -->
+				<section class="video-wrapper row">
+					<section class="column large-12 small-12  padding-top-small padding-bottom-small large-centered">
+												<div class="developer-video-player">
+							<div id="video-status-overlay" class="developer-video-overlay" style="display: none">
+								<div class="video-status-content">
+									<div id="video-status-text"></div>
+									<img class="video-status-icon" id="icon-backward" src="/assets/elements/icons/symbols/gobackward5.svg" style="display: none" />
+									<img class="video-status-icon" id="icon-forward" src="/assets/elements/icons/symbols/goforward5.svg" style="display: none" />
+								</div>
+							</div>
+							<video id="video" class="video large-centered" poster="https://devimages-cdn.apple.com/wwdc-services/images/8/10698/10698_wide_900x506_2x.jpg" controls="" preload="none" src="https://devstreaming-cdn.apple.com/videos/tech-talks/111432/5/630efa61-e3e0-4023-bfc4-02755ff7fc0c/cmaf.m3u8" data-id="tech-talks-111432" data-locale="en" data-hero-source="https://devimages-cdn.apple.com/wwdc-services/images/8/10698/10698_wide_900x506_2x.jpg"></video>
+						</div>
+						<div class="no-video-banner hidden">
+							<div class="no-video-copy">
+								<img src="https://devimages-cdn.apple.com/wwdc-services/images/8/10698/10698_wide_900x506_2x.jpg" style="width:100%">
+							</div>
+							</span>
+						</div>
+
+											</section>
+				</section>
+
+			</section>
+
+		</section>
+
+		<section class="bg-light padding-top-small padding-bottom">
+
+			<div class="section-content">
+		
+			<!-- tab menu -->
+			<section class="tab-menu row divider-bottom">
+
+				<section class="column large-11 small-12  padding-top-small padding-bottom-small large-centered tab-menu-container">
+										 
+																				<ul class="tabs">
+						
+						<li class="tab"
+							data-supplement-id="details"
+							data-language-code="en"
+							data-video-id="tech-talks-111432"
+													>
+							<a href="#">
+								<span class="smaller">
+									About
+								</span>
+							</a>
+						</li>
+						
+						
+												<li class="tab"
+							data-supplement-id="transcript"
+							data-language-code="en"
+							data-video-id="tech-talks-111432"
+						>
+							<a href="#">
+								<span class="smaller">
+									Transcript
+								</span>
+							</a>
+						</li>
+						
+												
+					</ul>
+									</section>
+
+			</section>
+
+			<!-- supplements -->
+			<section class="row">
+
+				<section class="column large-11 small-12  large-centered no-padding-top no-padding-bottom">
+
+					<ul class="supplements hidden">
+
+						<!-- details -->
+						<li class="supplement details " data-supplement-id="details">
+							
+							<div class="badge-available-on-wrapper">
+																<h1>Accelerate your machine learning workloads with the M5 and A19 GPUs</h1>
+							</div>
+
+							<p>Discover how to take advantage of the M5 and A19 GPUs to accelerate machine learning. Find out how to use the Neural Accelerators inside each GPU core to perform accelerated tensor and matrix operations for AI training and inference, and learn how to optimize performance using the Metal debugger and Metal system trace.</p>
+
+							
+														<h2>Resources</h2>
+
+							<ul class="links small">
+																																					<li class="download"><a href="https://developer.apple.com/download/files/Metal-Performance-Primitives-Programming-Guide.pdf" target="_blank">Download the Metal Performance Primitives (MPP) Programming Guide</a></li>
+																											
+																	<li class="download">
+										<ul class="options">
+																						<li><a href="https://devstreaming-cdn.apple.com/videos/tech-talks/111432/5/630efa61-e3e0-4023-bfc4-02755ff7fc0c/downloads/tech-talks-111432_hd.mp4?dl=1">HD Video</a></li>
+																																	<li><a href="https://devstreaming-cdn.apple.com/videos/tech-talks/111432/5/630efa61-e3e0-4023-bfc4-02755ff7fc0c/downloads/tech-talks-111432_sd.mp4?dl=1">SD Video</a></li>
+																					</ul>
+									</li>
+																
+															</ul>
+							
+														<div class="divider-top margin-top-small padding-bottom-small"></div>
+							<h2>Related Videos</h2>
+														<h4>Tech Talks</h4>
+								<ul class="links small">
+																			<li class="video">
+											<a href="/videos/play/tech-talks/111431">Boost your graphics performance with the M5 and A19 GPUs</a>
+										</li>
+																			<li class="video">
+											<a href="/videos/play/tech-talks/111375">Explore GPU advancements in M3 and A17 Pro</a>
+										</li>
+																	</ul>
+														<h4>WWDC25</h4>
+								<ul class="links small">
+																			<li class="video">
+											<a href="/videos/play/wwdc2025/262">Combine Metal 4 machine learning and graphics</a>
+										</li>
+																	</ul>
+														
+						</li>
+
+						<!-- transcript -->
+						<li class="supplement transcript" data-supplement-id="transcript" data-shortcut-base-url="/videos/play/tech-talks/111432/">
+							<div class="grid grid-gutterless margin-bottom-small">
+								<div class="grid-item large-span-11 medium-span-11 small-span-11">
+									<div class="form-textbox form-textbox-with-lefticon form-textbox-with-righticon">
+										<input type="text" id="transcript-search-box" class="transcript-search searchbar form-textbox-input" aria-labelledby="textbox-label"  />
+										<span class="form-textbox-label" id="textbox-label" aria-hidden="true">Search this video…</span>
+										<div class="form-textbox-lefticon form-icons-focusable">
+											<span class="form-icons form-icons-search15"></span>
+										</div>
+									</div>
+								</div>
+								<div class="grid-item large-span-1 medium-span-1 small-span-1">									
+									<div style="font-size:34px" id="get-transcript">
+										<sf-symbol name="arrow.down.document" weight="light" scale="small" mode="hierarchical"></sf-symbol>
+									</div>
+
+								</div>
+							</div>
+
+							<section id="transcript-content">
+								<p><span class="sentence"><span data-start="4.0">Hi, I’m Zak and I manage the GPU Driver Performance team at Apple. </span></span><span class="sentence"><span data-start="8.0">And today we're going to talk about the M5 and A19 family of GPUs </span></span><span class="sentence"><span data-start="12.0">and what they mean for AI and ML on Apple silicon. </span></span><span class="sentence"><span data-start="15.0">We've added some powerful new capabilities to the GPU specifically designed </span></span><span class="sentence"><span data-start="19.0">to accelerate machine learning workloads, </span></span><span class="sentence"><span data-start="21.0">and we'll be diving into what they are </span></span><span class="sentence"><span data-start="23.0">and how you can take advantage of them in your own applications. </span></span><span class="sentence"><span data-start="26.0">Now, AI and ML are not new to Apple platforms. </span></span><span class="sentence"><span data-start="30.0">They're already deeply integrated into the tools and experiences you use every day.</p><p></span></span><span class="sentence"><span data-start="35.0">MetalFX uses ML for temporal upscaling and denoising, </span></span><span class="sentence"><span data-start="39.0">letting games hit higher frame rates at larger resolutions. </span></span><span class="sentence"><span data-start="43.0">AirPods use it for spatial audio noise removal </span></span><span class="sentence"><span data-start="46.0">and real time translation in the fusion camera system </span></span><span class="sentence"><span data-start="49.0">on iPhone powers features like Deep Fusion cinematic video </span></span><span class="sentence"><span data-start="53.0">and portrait mode, all driven by ML.</p><p></span></span><span class="sentence"><span data-start="57.0">For developers, we have a rich set of frameworks to bring ML into your apps.</p><p></span></span><span class="sentence"><span data-start="62.0">There’s Core ML for on device inference.</p><p></span></span><span class="sentence"><span data-start="64.0">Create ML for building and training models.</p><p></span></span><span class="sentence"><span data-start="68.0">And intelligent coding features built right into Xcode. </span></span><span class="sentence"><span data-start="72.0">These are just a few examples.</p><p></span></span><span class="sentence"><span data-start="74.0">ML is foundational across Apple platforms.</p><p></span></span><span class="sentence"><span data-start="77.0">And with the M5 GPU we're taking a major step forward, </span></span><span class="sentence"><span data-start="80.0">accelerating the workloads you're already running </span></span><span class="sentence"><span data-start="83.0">and making it possible to run more powerful models than ever before.</p><p></span></span><span class="sentence"><span data-start="87.0">In this talk, we're going to cover four main areas. </span></span><span class="sentence"><span data-start="91.0">First, we'll look at the ML performance gains in the M5, </span></span><span class="sentence"><span data-start="94.0">GPU and what developers are already seeing in real world applications.</p><p></span></span><span class="sentence"><span data-start="99.0">Next, we'll introduce neural accelerators what they are, how they work, </span></span><span class="sentence"><span data-start="104.0">and why they matter for ML performance.</p><p></span></span><span class="sentence"><span data-start="107.0">Then we'll walk through the tensor APIs introduced in metal four, </span></span><span class="sentence"><span data-start="110.0">including recent updates that make it easier </span></span><span class="sentence"><span data-start="112.0">to get your ML workloads running efficiently on Apple silicon.</p><p></span></span><span class="sentence"><span data-start="117.0">And finally, we'll show you how to use the developer tools to profile </span></span><span class="sentence"><span data-start="120.0">and optimize your ML applications.</p><p></span></span><span class="sentence"><span data-start="124.0">So let's jump into ML on the M5 GPU.</p><p></span></span><span class="sentence"><span data-start="127.0">This is a significant step forward for machine learning on Apple silicon. </span></span><span class="sentence"><span data-start="131.0">The M5 introduces neural accelerators inside the GPU, along with faster math rates, </span></span><span class="sentence"><span data-start="136.0">more bandwidth, and larger caches, </span></span><span class="sentence"><span data-start="139.0">all of which combine to deliver a major performance boost to your ML workloads.</p><p></span></span><span class="sentence"><span data-start="144.0">And customers are seeing these performance gains </span></span><span class="sentence"><span data-start="146.0">on their existing applications today. </span></span><span class="sentence"><span data-start="148.0">For example, on the new iPad Pro with M5, AI image generation, </span></span><span class="sentence"><span data-start="153.0">apps like Draw Things can produce images up </span></span><span class="sentence"><span data-start="155.0">to four times faster over M4 using the latest diffusion models </span></span><span class="sentence"><span data-start="158.0">like Qwen-image and Flux.</p><p></span></span><span class="sentence"><span data-start="160.0">And on the new 14 inch MacBook Pro with M5, </span></span><span class="sentence"><span data-start="164.0">AI video enhancement and Topaz video is up to 7.7 times faster than on M1.</p><p></span></span><span class="sentence"><span data-start="169.0">And for large language models, the gains are even more dramatic. </span></span><span class="sentence"><span data-start="173.0">Time to first token is up to four times faster </span></span><span class="sentence"><span data-start="176.0">and token generation is up to 25% faster. </span></span><span class="sentence"><span data-start="179.0">We'll dive deeper into how the M5 GPU achieves this later. </span></span><span class="sentence"><span data-start="183.0">But the key point is that these speed ups come from the new hardware, </span></span><span class="sentence"><span data-start="186.0">not code changes. So to summarize, </span></span><span class="sentence"><span data-start="189.0">this is a major performance update for ML on Apple silicon </span></span><span class="sentence"><span data-start="193.0">with neural accelerators in every shader core. </span></span><span class="sentence"><span data-start="196.0">Your inference and training workloads run faster right out </span></span><span class="sentence"><span data-start="198.0">of the box using the same APIs and frameworks you use today.</p><p></span></span><span class="sentence"><span data-start="203.0">And as you move up the M5, </span></span><span class="sentence"><span data-start="204.0">family workloads that efficiently use neural accelerators will scale well </span></span><span class="sentence"><span data-start="208.0">with the increased core counts.</p><p></span></span><span class="sentence"><span data-start="210.0">We've also made substantial improvements to math rates and memory bandwidth, </span></span><span class="sentence"><span data-start="214.0">which combined with neural accelerators to deliver even greater speedups. </span></span><span class="sentence"><span data-start="218.0">And finally, we have new tooling support to help you profile your workloads, </span></span><span class="sentence"><span data-start="221.0">identify bottlenecks, and squeeze out maximum performance.</p><p></span></span><span class="sentence"><span data-start="225.0">While this talk focuses on ML, </span></span><span class="sentence"><span data-start="227.0">we're also releasing a companion talk on M5 for graphics and gaming, </span></span><span class="sentence"><span data-start="231.0">which covers the rendering features and capabilities of the new architecture </span></span><span class="sentence"><span data-start="234.0">in detail. Both talks build on foundational concepts from our M3 architecture, </span></span><span class="sentence"><span data-start="239.0">tech talk like dynamic caching and occupancy management. </span></span><span class="sentence"><span data-start="242.0">So I'd recommend checking those out as well. </span></span><span class="sentence"><span data-start="245.0">Before we dive into neural accelerators, </span></span><span class="sentence"><span data-start="247.0">let's take a quick look at what's new in the M5 GPU. </span></span><span class="sentence"><span data-start="250.0">Overall, this will help you see where the ML features fit in. At the top, </span></span><span class="sentence"><span data-start="255.0">all new neural accelerators for AI and ML. </span></span><span class="sentence"><span data-start="258.0">That's our main focus today. </span></span><span class="sentence"><span data-start="260.0">And we'll be spending most of our time here. </span></span><span class="sentence"><span data-start="262.0">But there's a lot more.</p><p></span></span><span class="sentence"><span data-start="264.0">There are major improvements for graphics and gaming, </span></span><span class="sentence"><span data-start="267.0">which are covered in detail in the companion talk. </span></span><span class="sentence"><span data-start="270.0">Second generation dynamic caching, </span></span><span class="sentence"><span data-start="272.0">which automatically improves performance by adjusting </span></span><span class="sentence"><span data-start="274.0">your occupancy based on cache usage.</p><p></span></span><span class="sentence"><span data-start="278.0">Universal image compression reduces memory bandwidth by compressing texture resources </span></span><span class="sentence"><span data-start="282.0">in more use case, improving power performance and thermals.</p><p></span></span><span class="sentence"><span data-start="287.0">Ray tracing gets faster, too, </span></span><span class="sentence"><span data-start="289.0">with third generation hardware acceleration for metal RT instanced workloads.</p><p></span></span><span class="sentence"><span data-start="294.0">And we have a new suite of developer tools tailored specifically to M5, </span></span><span class="sentence"><span data-start="297.0">which we'll see in action later. </span></span><span class="sentence"><span data-start="300.0">So that's the big picture. </span></span><span class="sentence"><span data-start="301.0">Let's look at the key rates that make this such a big leap for ML.</p><p></span></span><span class="sentence"><span data-start="305.0">Beyond the new features, </span></span><span class="sentence"><span data-start="307.0">M5 also delivers significant rate improvements that directly benefit ML workloads.</p><p></span></span><span class="sentence"><span data-start="312.0">Matrix multiplication operations, often called gems, are up to 4 to 8 times faster, </span></span><span class="sentence"><span data-start="317.0">depending on precision.</p><p></span></span><span class="sentence"><span data-start="319.0">We also have larger GPU caches and more memory bandwidth. </span></span><span class="sentence"><span data-start="323.0">Combined, these improvements make M5 our most powerful GPU ever for AI and ML.</p><p></span></span><span class="sentence"><span data-start="329.0">That was a quick overview of the new M5 GPU.</p><p></span></span><span class="sentence"><span data-start="333.0">Now let's dive deeper into neural accelerators.</p><p></span></span><span class="sentence"><span data-start="336.0">The key takeaway is simple neural accelerators dramatically speed </span></span><span class="sentence"><span data-start="340.0">up matrix multiplication.</p><p></span></span><span class="sentence"><span data-start="342.0">Combined with the rate and bandwidth improvements we've discussed, </span></span><span class="sentence"><span data-start="345.0">this is what makes ML workloads run so fast. </span></span><span class="sentence"><span data-start="348.0">On M5. Before we go further, </span></span><span class="sentence"><span data-start="351.0">let's briefly cover matrix multiplication and why it matters </span></span><span class="sentence"><span data-start="354.0">so much for ML matrix multiplication and really matrix multiply accumulate. </span></span><span class="sentence"><span data-start="360.0">It's a straightforward operation. </span></span><span class="sentence"><span data-start="362.0">Multiply two matrices A and B and add the result to a third matrix C. Simple concept, </span></span><span class="sentence"><span data-start="369.0">but matrix multiplication is the fundamental building block that modern AI </span></span><span class="sentence"><span data-start="373.0">and ML are built on. The large language models that power intelligent assistants. </span></span><span class="sentence"><span data-start="379.0">Vision models, which enable computational photography and diffusion models </span></span><span class="sentence"><span data-start="383.0">which generate AI images, are all powered by matrix multiplication. </span></span><span class="sentence"><span data-start="387.0">Under the hood, </span></span><span class="sentence"><span data-start="389.0">and in modern ML models, we're not just multiplying a few small matrices. </span></span><span class="sentence"><span data-start="394.0">A single LLM inference pass can involve hundreds of matrix multiplications, </span></span><span class="sentence"><span data-start="399.0">each with millions of elements.</p><p></span></span><span class="sentence"><span data-start="402.0">An important thing to note here is that the size </span></span><span class="sentence"><span data-start="404.0">and shape of these matrices significantly impacts their dynamic </span></span><span class="sentence"><span data-start="407.0">performance characteristics. </span></span><span class="sentence"><span data-start="409.0">Let's explain what we mean here.</p><p></span></span><span class="sentence"><span data-start="412.0">Depending on the size and shape of the matrices, </span></span><span class="sentence"><span data-start="415.0">the performance bottlenecks shift between different GPU resources.</p><p></span></span><span class="sentence"><span data-start="419.0">For large matrices where both inputs have lots of elements, </span></span><span class="sentence"><span data-start="423.0">we have high arithmetic intensity, </span></span><span class="sentence"><span data-start="425.0">meaning that the math we need to do greatly exceeds the amount of memory we need </span></span><span class="sentence"><span data-start="429.0">to load. We call this being compute bound, </span></span><span class="sentence"><span data-start="432.0">and the performance of this scales with math rates. </span></span><span class="sentence"><span data-start="434.0">GPU frequency and core count.</p><p></span></span><span class="sentence"><span data-start="437.0">On the other end, there are cases where one of the matrices may be skinny, </span></span><span class="sentence"><span data-start="441.0">sometimes just a single row where we have low arithmetic intensity, </span></span><span class="sentence"><span data-start="445.0">meaning we only do a little math before needing to load more data from memory </span></span><span class="sentence"><span data-start="448.0">for the next operation, which becomes our bottleneck. </span></span><span class="sentence"><span data-start="451.0">We call this being bandwidth bound, </span></span><span class="sentence"><span data-start="454.0">and the performance of this scales with how fast we can move data in </span></span><span class="sentence"><span data-start="457.0">and out of memory.</p><p></span></span><span class="sentence"><span data-start="459.0">Keeping these scenarios in mind is key to understanding how neural accelerators, </span></span><span class="sentence"><span data-start="462.0">along with the other rate bandwidth and cache improvements in the M5 GPU, </span></span><span class="sentence"><span data-start="467.0">work together to accelerate your ML workloads.</p><p></span></span><span class="sentence"><span data-start="470.0">Let’s see these concepts in action with a real example - LLM inference. </span></span><span class="sentence"><span data-start="475.0">We’re not going to cover modern LLM architectures in detail here, </span></span><span class="sentence"><span data-start="478.0">but introduce a few key concepts </span></span><span class="sentence"><span data-start="480.0">to help showcase where the M5 GPU architecture improves the performance </span></span><span class="sentence"><span data-start="483.0">of these types of workloads.</p><p></span></span><span class="sentence"><span data-start="486.0">LLM inference happens in two distinct phases.</p><p></span></span><span class="sentence"><span data-start="490.0">First is the prefill phase.</p><p></span></span><span class="sentence"><span data-start="493.0">This is where the model processes your entire input prompt using </span></span><span class="sentence"><span data-start="496.0">large matrix multiplication operations to compute the first output token.</p><p></span></span><span class="sentence"><span data-start="500.0">It's compute bound, meaning the GPU is doing heavy math. </span></span><span class="sentence"><span data-start="503.0">The prefill phase ends when we generate the first output token.</p><p></span></span><span class="sentence"><span data-start="509.0">The time from submitting your prompt to receiving the first token is called time </span></span><span class="sentence"><span data-start="513.0">to first token. You can intuitively think of this </span></span><span class="sentence"><span data-start="515.0">as how long it takes your AI assistant to come back to you with a response </span></span><span class="sentence"><span data-start="519.0">after you've asked a question or assigned it a task to do.</p><p></span></span><span class="sentence"><span data-start="523.0">The faster the time to first token, the more responsive the LLM feels.</p><p></span></span><span class="sentence"><span data-start="527.0">After Prefill, we enter the decode phase.</p><p></span></span><span class="sentence"><span data-start="531.0">This is where the stream of output tokens is generated one at a time, </span></span><span class="sentence"><span data-start="534.0">until the complete response is produced by the model. </span></span><span class="sentence"><span data-start="538.0">The performance characteristics of this phase are at the other end of the spectrum. </span></span><span class="sentence"><span data-start="542.0">Now, tokens are processed one at a time </span></span><span class="sentence"><span data-start="545.0">and represented by the tall skinny matrices introduced earlier. </span></span><span class="sentence"><span data-start="548.0">While the full weights still need to be loaded from memory </span></span><span class="sentence"><span data-start="550.0">to perform the multiplication in this phase, </span></span><span class="sentence"><span data-start="553.0">the time spent generating each token is dominated by reading data from memory </span></span><span class="sentence"><span data-start="557.0">to feed the compute units, and is thus memory bound.</p><p></span></span><span class="sentence"><span data-start="561.0">The decode speed is typically represented as a rate in tokens per second, </span></span><span class="sentence"><span data-start="565.0">and you can intuitively think about this as how fast it takes the model </span></span><span class="sentence"><span data-start="568.0">to complete a response.</p><p></span></span><span class="sentence"><span data-start="572.0">Combining these together on M5, </span></span><span class="sentence"><span data-start="574.0">the time to first token performance in the prefill phase is up to four times faster, </span></span><span class="sentence"><span data-start="579.0">thanks to the neural accelerators, </span></span><span class="sentence"><span data-start="581.0">and in the decode phase, </span></span><span class="sentence"><span data-start="583.0">the increased memory bandwidth </span></span><span class="sentence"><span data-start="584.0">and larger GPU caches in M5 speed up token generation by up to 25%, </span></span><span class="sentence"><span data-start="591.0">And we can see these gains on M5 in real LLMs such as Qwen3 and gpt-oss, </span></span><span class="sentence"><span data-start="596.0">where both time to first token </span></span><span class="sentence"><span data-start="598.0">and token generation performance are dramatically improved. </span></span><span class="sentence"><span data-start="601.0">These performance gains are not limited to LLMs, </span></span><span class="sentence"><span data-start="604.0">but really any workloads that make heavy use of matmul operations, </span></span><span class="sentence"><span data-start="607.0">such as convolutions and running diffusion models.</p><p></span></span><span class="sentence"><span data-start="611.0">And as we go up the M5 family tree, </span></span><span class="sentence"><span data-start="614.0">we see great scaling as the neural accelerator capacities and GPU bandwidth increase.</p><p></span></span><span class="sentence"><span data-start="619.0">Now that we understand why matrix multiplication matters, </span></span><span class="sentence"><span data-start="623.0">let's look at what neural accelerators actually are and why they're </span></span><span class="sentence"><span data-start="626.0">so efficient for compute heavy workloads.</p><p></span></span><span class="sentence"><span data-start="629.0">A few key points. Neural accelerators are dedicated hardware </span></span><span class="sentence"><span data-start="633.0">and M5 purpose built for matrix multiplication.</p><p></span></span><span class="sentence"><span data-start="637.0">They're built into each shader core right alongside the other GPU pipelines such </span></span><span class="sentence"><span data-start="641.0">as ALU, raytracing, and so on.</p><p></span></span><span class="sentence"><span data-start="644.0">This makes them inherently scalable </span></span><span class="sentence"><span data-start="646.0">and efficient for algorithms that mix matrix multiplication </span></span><span class="sentence"><span data-start="649.0">with traditional ALU operations.</p><p></span></span><span class="sentence"><span data-start="653.0">Here is a simplified diagram of the M5 GPU.</p><p></span></span><span class="sentence"><span data-start="656.0">It contains the shader cores arranged behind the last level cache, </span></span><span class="sentence"><span data-start="659.0">alongside the command stream processors that load vertex, fragment, </span></span><span class="sentence"><span data-start="663.0">and compute programs onto the cores. </span></span><span class="sentence"><span data-start="665.0">If we zoom in to a single shader core, </span></span><span class="sentence"><span data-start="668.0">we can see that it is composed of a few key units.</p><p></span></span><span class="sentence"><span data-start="671.0">First, the scheduler blocks which schedule and dispatch SIMD groups onto the core.</p><p></span></span><span class="sentence"><span data-start="677.0">Next, the ALU pipelines, which execute the math operations in your shaders.</p><p></span></span><span class="sentence"><span data-start="682.0">Memory pipelines for reading and writing to textures and buffers. </span></span><span class="sentence"><span data-start="686.0">And the dynamic cache memory, which keeps all shader storage on chip.</p><p></span></span><span class="sentence"><span data-start="690.0">The neural accelerators sit right here alongside the ALU pipelines.</p><p></span></span><span class="sentence"><span data-start="695.0">This physical locality enables fast, </span></span><span class="sentence"><span data-start="697.0">seamless interoperation with code running on other GPU pipelines.</p><p></span></span><span class="sentence"><span data-start="701.0">It also means neural accelerator capacity scales directly with core count. </span></span><span class="sentence"><span data-start="705.0">So workloads that use them efficiently will scale well as you move up the M5 family.</p><p></span></span><span class="sentence"><span data-start="711.0">Zooming back out to our M5 diagram. </span></span><span class="sentence"><span data-start="713.0">Note that each shader core has its own neural accelerator, </span></span><span class="sentence"><span data-start="717.0">and as we move up to the M5 max, </span></span><span class="sentence"><span data-start="719.0">the same pattern continues the neural accelerators </span></span><span class="sentence"><span data-start="722.0">and the performance boost that they provide scale directly </span></span><span class="sentence"><span data-start="725.0">with the shader core count.</p><p></span></span><span class="sentence"><span data-start="728.0">So to recap, neural accelerators are a new hardware block in M5 </span></span><span class="sentence"><span data-start="733.0">which dramatically accelerates matrix multiplication. </span></span><span class="sentence"><span data-start="736.0">They're inherently scalable, accelerate operations at the heart of ML, </span></span><span class="sentence"><span data-start="741.0">and interoperate seamlessly with other GPU, CPU, and A&E work.</p><p></span></span><span class="sentence"><span data-start="747.0">So how do you actually use neural accelerators? </span></span><span class="sentence"><span data-start="750.0">The good news is, if you're already running on Apple silicon with Apple frameworks, </span></span><span class="sentence"><span data-start="754.0">it just works. The APIs you're using today are automatically accelerated on M5, </span></span><span class="sentence"><span data-start="759.0">and if you're new to the platform, </span></span><span class="sentence"><span data-start="761.0">you'll find a rich set of frameworks and APIs to help get you started. </span></span><span class="sentence"><span data-start="765.0">Here's how the stack looks At the top, </span></span><span class="sentence"><span data-start="768.0">you have domain specific frameworks like MetalFX that use ML internally. </span></span><span class="sentence"><span data-start="772.0">You get the benefit of neural accelerators automatically in the middle. </span></span><span class="sentence"><span data-start="777.0">We have host side frameworks like Metal Performance Shaders, MPSGraph and Core ML.</p><p></span></span><span class="sentence"><span data-start="782.0">These are great for deploying ML models with minimal code, </span></span><span class="sentence"><span data-start="786.0">and you can expect great performance out of the box for ML training and research. </span></span><span class="sentence"><span data-start="791.0">Open source tools like MLX, llama.cpp, </span></span><span class="sentence"><span data-start="795.0">and PyTorch already leverage neural accelerators under the hood, </span></span><span class="sentence"><span data-start="799.0">and at the bottom we have metal performance primitives and TensorOps. </span></span><span class="sentence"><span data-start="803.0">This is the lowest level </span></span><span class="sentence"><span data-start="804.0">and give you direct access to neural accelerators from your metal shaders. </span></span><span class="sentence"><span data-start="808.0">Most developers won't need to go this deep, but if you're building custom ML kernels, </span></span><span class="sentence"><span data-start="814.0">optimizing a specific operation, </span></span><span class="sentence"><span data-start="816.0">or doing research that requires fine grained control, </span></span><span class="sentence"><span data-start="819.0">this is what you should be using.</p><p></span></span><span class="sentence"><span data-start="821.0">And if you're already writing your own custom kernels </span></span><span class="sentence"><span data-start="823.0">in metal using SIMD Group matrix API, </span></span><span class="sentence"><span data-start="826.0">you should move your workloads over to adopt TensorOps instead.</p><p></span></span><span class="sentence"><span data-start="831.0">So when would you actually use tensor Ops instead of a higher level framework? </span></span><span class="sentence"><span data-start="836.0">First, when you're building custom ML kernels </span></span><span class="sentence"><span data-start="838.0">and need specific optimizations that the frameworks don't expose.</p><p></span></span><span class="sentence"><span data-start="843.0">Second, when you need to mix matrix operations with other shader code, </span></span><span class="sentence"><span data-start="847.0">TensorOps integrates directly into your metal kernels </span></span><span class="sentence"><span data-start="850.0">so you can combine Matmul with custom pre or post-processing in a single pass.</p><p></span></span><span class="sentence"><span data-start="856.0">And third, when you need fine grained control over how the work is tiled, </span></span><span class="sentence"><span data-start="860.0">how memory is managed, and how threads are scheduled. </span></span><span class="sentence"><span data-start="863.0">If any of these apply to you, </span></span><span class="sentence"><span data-start="865.0">TensorOps gives you direct access to neural accelerators with full control.</p><p></span></span><span class="sentence"><span data-start="871.0">So that's neural accelerators dedicated matrix multiplication hardware </span></span><span class="sentence"><span data-start="875.0">in every shader core designed to dramatically accelerate ML workloads.</p><p></span></span><span class="sentence"><span data-start="880.0">The frameworks you're already using leverage them automatically. </span></span><span class="sentence"><span data-start="883.0">But if you need to go deeper, </span></span><span class="sentence"><span data-start="885.0">building custom kernels or optimizing specific operations. </span></span><span class="sentence"><span data-start="888.0">That's where TensorOps comes in. We'll cover TensorOps in three parts.</p><p></span></span><span class="sentence"><span data-start="893.0">First, a quick overview of the API and recent updates.</p><p></span></span><span class="sentence"><span data-start="897.0">Then we'll build up a tiled matrix multiplication kernel step by step. </span></span><span class="sentence"><span data-start="902.0">You'll see exactly how to structure TensorOps code. </span></span><span class="sentence"><span data-start="905.0">And finally we'll cover optimization techniques to get the most out </span></span><span class="sentence"><span data-start="908.0">of neural accelerators.</p><p></span></span><span class="sentence"><span data-start="911.0">Let's start with the overview. </span></span><span class="sentence"><span data-start="913.0">TensorOps are matrix multiplication </span></span><span class="sentence"><span data-start="915.0">and convolution primitives purpose built to leverage neural accelerators </span></span><span class="sentence"><span data-start="919.0">on M5. The API is portable. </span></span><span class="sentence"><span data-start="923.0">The same code runs across Apple's entire GPU family from M1 to M5.</p><p></span></span><span class="sentence"><span data-start="928.0">On older GPUs without neural accelerators, </span></span><span class="sentence"><span data-start="930.0">TensorOps falls back to optimized shader implementations.</p><p></span></span><span class="sentence"><span data-start="934.0">And because TensorOps lives inside your metal shaders, </span></span><span class="sentence"><span data-start="937.0">you can seamlessly mix it with other metal shader code. </span></span><span class="sentence"><span data-start="940.0">Custom activations, data transformations, or whatever else you need. </span></span><span class="sentence"><span data-start="945.0">We introduced TensorOps at Dock 25 in the combined metal </span></span><span class="sentence"><span data-start="949.0">for machine learning and graphics session. </span></span><span class="sentence"><span data-start="951.0">If you haven't seen it, I'd recommend checking it out. </span></span><span class="sentence"><span data-start="954.0">It covers the fundamentals we'll be building on here.</p><p></span></span><span class="sentence"><span data-start="958.0">Since we introduced TensorOps, </span></span><span class="sentence"><span data-start="959.0">we've continued expanding the API in iOS and Mac OS 26. In 26.1, </span></span><span class="sentence"><span data-start="965.0">we added bfloat tensor support, </span></span><span class="sentence"><span data-start="967.0">critical for modern ML models that use Bfloat16 in 26.3. We added support </span></span><span class="sentence"><span data-start="974.0">for cooperative tensors as inputs to matmul. </span></span><span class="sentence"><span data-start="976.0">This lets you build custom dequantization routines inside your kernel, </span></span><span class="sentence"><span data-start="980.0">essential for running quantized models efficiently.</p><p></span></span><span class="sentence"><span data-start="984.0">And in 26.4, we added four bit and eight bit integer tensors, </span></span><span class="sentence"><span data-start="988.0">so quantized map models can fully leverage neural accelerators.</p><p></span></span><span class="sentence"><span data-start="993.0">So let's put this into practice. </span></span><span class="sentence"><span data-start="995.0">We'll build up a tiled matrix multiplication kernel step by step using TensorOps.</p><p></span></span><span class="sentence"><span data-start="1000.0">When performing large matrix multiplications. </span></span><span class="sentence"><span data-start="1003.0">Calling a single tensor op on the full matrices would not be efficient. </span></span><span class="sentence"><span data-start="1007.0">The key to getting great performance is tiling. </span></span><span class="sentence"><span data-start="1010.0">We slice the input matrices into smaller tiles </span></span><span class="sentence"><span data-start="1012.0">and then perform tile wise matrix multiplications using TensorOps. </span></span><span class="sentence"><span data-start="1016.0">This approach allows the neural accelerators to work on data that fits well </span></span><span class="sentence"><span data-start="1020.0">in the cache, maximizing throughput and data reuse.</p><p></span></span><span class="sentence"><span data-start="1024.0">Let's look at some code. </span></span><span class="sentence"><span data-start="1025.0">If you're using metal four, </span></span><span class="sentence"><span data-start="1027.0">you can declare your tensors on the host side using metal tensor </span></span><span class="sentence"><span data-start="1030.0">and simply pass them directly into your metal kernel. </span></span><span class="sentence"><span data-start="1033.0">Here we're creating three tensors with fp16 precision.</p><p></span></span><span class="sentence"><span data-start="1037.0">The dynamic extent or d extents value </span></span><span class="sentence"><span data-start="1040.0">of two indicates that these tensors have a 2D coordinate layout, </span></span><span class="sentence"><span data-start="1044.0">which is exactly what you'd expect for standard matrix operations. </span></span><span class="sentence"><span data-start="1048.0">There is also support for creating a tensor directly from a pointer </span></span><span class="sentence"><span data-start="1051.0">inside your compute kernel. </span></span><span class="sentence"><span data-start="1052.0">Using tensor inline to create a tensor. </span></span><span class="sentence"><span data-start="1055.0">This way, you specify the data, </span></span><span class="sentence"><span data-start="1057.0">type the coordinate extents and mark it as tensor inline.</p><p></span></span><span class="sentence"><span data-start="1062.0">You then pass in the buffer, holding your data along with the extents and strides.</p><p></span></span><span class="sentence"><span data-start="1067.0">This is particularly useful </span></span><span class="sentence"><span data-start="1068.0">when you need to work with data that's already in a buffer format, </span></span><span class="sentence"><span data-start="1072.0">or when you want more dynamic control over your tensor creation.</p><p></span></span><span class="sentence"><span data-start="1076.0">For now, let's stick with the host bound tensor approach to keep things clear. </span></span><span class="sentence"><span data-start="1081.0">To extract the slice of data that each threadgroup will work on, we need two things. </span></span><span class="sentence"><span data-start="1085.0">The tile size we've chosen and the threadgroup IDs.</p><p></span></span><span class="sentence"><span data-start="1089.0">Remember, we've partitioned our matrix multiplication across a 2D grid </span></span><span class="sentence"><span data-start="1092.0">of thread groups, so each one is responsible </span></span><span class="sentence"><span data-start="1095.0">for computing a specific tile of the output.</p><p></span></span><span class="sentence"><span data-start="1098.0">We use the slice function on our input tensors </span></span><span class="sentence"><span data-start="1100.0">to extract exactly the portion each thread group needs.</p><p></span></span><span class="sentence"><span data-start="1104.0">As you can see here, we slice matrix A, </span></span><span class="sentence"><span data-start="1107.0">matrix B and matrix C to get the relevant tiles based </span></span><span class="sentence"><span data-start="1110.0">on our thread group's position in the grid.</p><p></span></span><span class="sentence"><span data-start="1114.0">Now that we have our slices, </span></span><span class="sentence"><span data-start="1115.0">let's set up the actual Matmul operation that each thread group will execute. </span></span><span class="sentence"><span data-start="1120.0">First, we create a descriptor that defines the shape of our tile computation. </span></span><span class="sentence"><span data-start="1124.0">Notice here that we're using a dynamic shape for the k dimension. </span></span><span class="sentence"><span data-start="1128.0">This tells TensorOps to loop over the full extent of the tensor for you, </span></span><span class="sentence"><span data-start="1131.0">rather than a static k dimension. </span></span><span class="sentence"><span data-start="1133.0">We can also configure whether we want to transpose the left or right input matrix. </span></span><span class="sentence"><span data-start="1138.0">This is useful for many ML algorithms that require transposed weight matrices.</p><p></span></span><span class="sentence"><span data-start="1143.0">Next, we specify how many SIMD groups will participate </span></span><span class="sentence"><span data-start="1146.0">in this operation using execution SIMD group.</p><p></span></span><span class="sentence"><span data-start="1149.0">In this example, we're using four SIMD groups working together.</p><p></span></span><span class="sentence"><span data-start="1154.0">And finally we simply call the run function on our extracted tensor slices. </span></span><span class="sentence"><span data-start="1158.0">That's really all there is to the basic setup. </span></span><span class="sentence"><span data-start="1161.0">But of course, in real world ML applications, </span></span><span class="sentence"><span data-start="1164.0">you often want to do something more sophisticated with your results. </span></span><span class="sentence"><span data-start="1167.0">Let's look at that next.</p><p></span></span><span class="sentence"><span data-start="1169.0">A very common pattern in AI </span></span><span class="sentence"><span data-start="1171.0">and ML is to apply an activation function to the output of a matrix multiplication.</p><p></span></span><span class="sentence"><span data-start="1176.0">These activation functions are crucial building blocks in neural networks </span></span><span class="sentence"><span data-start="1180.0">With the basic approach we just covered, </span></span><span class="sentence"><span data-start="1183.0">you would need to write the output tensor to device memory </span></span><span class="sentence"><span data-start="1185.0">after the Matmul completes. </span></span><span class="sentence"><span data-start="1187.0">Then read it back in to apply the activation function and finally write it out again. </span></span><span class="sentence"><span data-start="1191.0">This double trip to memory is costly and can significantly impact your performance.</p><p></span></span><span class="sentence"><span data-start="1197.0">This is exactly the problem. </span></span><span class="sentence"><span data-start="1198.0">Cooperative tensors solve with cooperative tensors. </span></span><span class="sentence"><span data-start="1201.0">The output of your matrix multiplication stays in fast </span></span><span class="sentence"><span data-start="1204.0">on chip memory distributed across the threads </span></span><span class="sentence"><span data-start="1207.0">which are participating in your operation. </span></span><span class="sentence"><span data-start="1209.0">You can then modify these elements in place, </span></span><span class="sentence"><span data-start="1212.0">applying your activation or any other operation while they're still in thread memory. </span></span><span class="sentence"><span data-start="1217.0">Only after you've finished your modifications do you write the final result </span></span><span class="sentence"><span data-start="1220.0">to device memory. This eliminates the inefficient round trip entirely </span></span><span class="sentence"><span data-start="1225.0">and can make a substantial difference to your kernel's performance.</p><p></span></span><span class="sentence"><span data-start="1229.0">So what exactly is a cooperative tensor? </span></span><span class="sentence"><span data-start="1231.0">It behaves just like a regular tensor, but with one key difference. </span></span><span class="sentence"><span data-start="1234.0">The data is distributed across multiple threads in the threadgroup. </span></span><span class="sentence"><span data-start="1238.0">Each thread owns a subset of the tensor elements.</p><p></span></span><span class="sentence"><span data-start="1242.0">This minimizes how much thread memory each individual thread uses, </span></span><span class="sentence"><span data-start="1246.0">while still allowing every thread to manipulate its portion of the data in place. </span></span><span class="sentence"><span data-start="1250.0">This essentially keeps data local </span></span><span class="sentence"><span data-start="1251.0">while spreading the storage burden across your thread group. </span></span><span class="sentence"><span data-start="1255.0">Looking at this diagram, you can see how the elements are laid out. </span></span><span class="sentence"><span data-start="1258.0">Thread zero holds the first two elements shown </span></span><span class="sentence"><span data-start="1260.0">in blue thread one holds the next two elements in green, and so on.</p><p></span></span><span class="sentence"><span data-start="1265.0">The data is interleaved across threads in a way that maximizes parallelism </span></span><span class="sentence"><span data-start="1269.0">while keeping memory usage efficient. </span></span><span class="sentence"><span data-start="1271.0">Let's see how we can use cooperative tensors </span></span><span class="sentence"><span data-start="1273.0">to build a kernel that applies an activation function to our matmul output.</p><p></span></span><span class="sentence"><span data-start="1278.0">First, we need to create the destination cooperative tensor for our operation.</p><p></span></span><span class="sentence"><span data-start="1283.0">In the template arguments, you provide the types corresponding to your input tensors. </span></span><span class="sentence"><span data-start="1287.0">The Decltype keyword helps you infer these automatically. </span></span><span class="sentence"><span data-start="1291.0">The last argument specifies the data type for your destination tensor. </span></span><span class="sentence"><span data-start="1294.0">Here we're creating a half precision tensor.</p><p></span></span><span class="sentence"><span data-start="1297.0">Next we run the matrix multiplication just as before, </span></span><span class="sentence"><span data-start="1301.0">but instead of passing the regular tensor tk, we pass in our cooperative tensor t.</p><p></span></span><span class="sentence"><span data-start="1307.0">The matmul result now lives </span></span><span class="sentence"><span data-start="1309.0">in thread memory distributed across the threads participating in this operation.</p><p></span></span><span class="sentence"><span data-start="1314.0">From here, we iterate over all the elements in the cooperative tensor we use. </span></span><span class="sentence"><span data-start="1318.0">Get capacity to find out how many elements this thread owns, </span></span><span class="sentence"><span data-start="1322.0">then extract each element and apply our activation function, </span></span><span class="sentence"><span data-start="1325.0">in this case a rectified linear unit or ReLU operation directly.</p><p></span></span><span class="sentence"><span data-start="1331.0">Once we've modified all our elements, </span></span><span class="sentence"><span data-start="1333.0">we write the results back to device memory by calling the store function on co op t </span></span><span class="sentence"><span data-start="1337.0">with our output slice as the parameter.</p><p></span></span><span class="sentence"><span data-start="1340.0">Notice how we've gone from device memory to thread memory, </span></span><span class="sentence"><span data-start="1343.0">applied our activation and written back all in a single efficient pass.</p><p></span></span><span class="sentence"><span data-start="1348.0">These are the fundamentals of using TensorOps </span></span><span class="sentence"><span data-start="1350.0">to implement tiled matrix multiplication with custom operations.</p><p></span></span><span class="sentence"><span data-start="1354.0">But if you really want to squeeze every last bit of performance out </span></span><span class="sentence"><span data-start="1357.0">of the neural accelerators. </span></span><span class="sentence"><span data-start="1358.0">There are some important optimizations to consider. </span></span><span class="sentence"><span data-start="1361.0">Let's walk through the main ones.</p><p></span></span><span class="sentence"><span data-start="1363.0">The first optimization involves tile sizes.</p><p></span></span><span class="sentence"><span data-start="1366.0">A fixed tile size won't be optimal for all input shapes. </span></span><span class="sentence"><span data-start="1370.0">The performance characteristics shift depending on your matrix dimensions. </span></span><span class="sentence"><span data-start="1374.0">Increasing the tile size in the M </span></span><span class="sentence"><span data-start="1376.0">and N directions allow better data reuse among SIMD groups within the Threadgroup.</p><p></span></span><span class="sentence"><span data-start="1381.0">This means less redundant loading from memory. </span></span><span class="sentence"><span data-start="1384.0">On the other hand, increasing the SIMD group tile size can reduce </span></span><span class="sentence"><span data-start="1388.0">traffic between cache levels, but be careful if you go too large, </span></span><span class="sentence"><span data-start="1392.0">you may start spilling registers, which hurts performance.</p><p></span></span><span class="sentence"><span data-start="1396.0">Templating your kernel so you can easily adjust tile sizes </span></span><span class="sentence"><span data-start="1398.0">for different workloads is a good idea.</p><p></span></span><span class="sentence"><span data-start="1401.0">Refer to the Programing Guide for detailed examples of how </span></span><span class="sentence"><span data-start="1404.0">to find the optimal tile sizes for your specific use case.</p><p></span></span><span class="sentence"><span data-start="1409.0">The second optimization is about keeping your SIMD groups in sync </span></span><span class="sentence"><span data-start="1413.0">when processing the k dimension, </span></span><span class="sentence"><span data-start="1415.0">TensorOps will tile and loop over it for you automatically, </span></span><span class="sentence"><span data-start="1419.0">but there's a subtlety here that's worth understanding. </span></span><span class="sentence"><span data-start="1421.0">As execution proceeds, SIMD groups within a thread group can start to diverge </span></span><span class="sentence"><span data-start="1426.0">in their progress through those K tiles.</p><p></span></span><span class="sentence"><span data-start="1429.0">If we look at the matrix data actively being used by SIMD groups in a thread group, </span></span><span class="sentence"><span data-start="1433.0">each SIMD group represented by a dark square. </span></span><span class="sentence"><span data-start="1435.0">In this diagram, we see that they start out synchronized, </span></span><span class="sentence"><span data-start="1439.0">but over time they drift apart.</p><p></span></span><span class="sentence"><span data-start="1441.0">When SIMD groups drift apart, you end up with larger, </span></span><span class="sentence"><span data-start="1444.0">more scattered cache usage patterns. </span></span><span class="sentence"><span data-start="1446.0">This hurts your cache hit rates and overall performance.</p><p></span></span><span class="sentence"><span data-start="1451.0">The fix is to manually synchronize your SIMD groups using thread group barrier. </span></span><span class="sentence"><span data-start="1455.0">To do this, you will want to tile the k dimension explicitly in your code </span></span><span class="sentence"><span data-start="1459.0">so that you can insert barriers every few iterations. </span></span><span class="sentence"><span data-start="1462.0">This keeps your SIMD groups moving together through the k dimension, </span></span><span class="sentence"><span data-start="1465.0">maintaining good cache locality.</p><p></span></span><span class="sentence"><span data-start="1468.0">Refer to the programing guide for examples of how </span></span><span class="sentence"><span data-start="1470.0">to tune the barrier frequency for your workloads.</p><p></span></span><span class="sentence"><span data-start="1474.0">The final optimization I want </span></span><span class="sentence"><span data-start="1475.0">to highlight is about how your thread groups traverse memory. </span></span><span class="sentence"><span data-start="1479.0">The default approach is a linear raster order traversal thread </span></span><span class="sentence"><span data-start="1483.0">groups march through row by row. </span></span><span class="sentence"><span data-start="1485.0">Simple and intuitive. But from the perspective of your last level cache, </span></span><span class="sentence"><span data-start="1489.0">this doesn't give you great data reuse in the Y dimension.</p><p></span></span><span class="sentence"><span data-start="1493.0">A better approach is to use a space filling curve like Morton Order or Hilbert order. </span></span><span class="sentence"><span data-start="1498.0">These traversal patterns keep thread groups that are close in time also close </span></span><span class="sentence"><span data-start="1501.0">in space, which significantly improves cache locality </span></span><span class="sentence"><span data-start="1505.0">and hit rates in the last level cache. </span></span><span class="sentence"><span data-start="1507.0">In. The performance difference can be substantial, especially for large matrices. </span></span><span class="sentence"><span data-start="1512.0">Again, refer to the programing guide for examples of how </span></span><span class="sentence"><span data-start="1515.0">to implement these traversal optimizations in your kernels.</p><p></span></span><span class="sentence"><span data-start="1519.0">So we've covered TensorOps and how to build efficient matrix multiplication kernels.</p><p></span></span><span class="sentence"><span data-start="1524.0">Now let's talk about optimization, </span></span><span class="sentence"><span data-start="1526.0">specifically how to use the developer tools to profile your workloads </span></span><span class="sentence"><span data-start="1530.0">and make sure you're getting the most out of neural accelerators.</p><p></span></span><span class="sentence"><span data-start="1534.0">We're going to profile a real workload and see exactly what's happening on the GPU. </span></span><span class="sentence"><span data-start="1539.0">I have a simple app that performs a 4K by 4K matrix multiplication, </span></span><span class="sentence"><span data-start="1543.0">which is a large compute bound workload three different ways.</p><p></span></span><span class="sentence"><span data-start="1547.0">First, using SIMD group matrix, which is how you might do it today. </span></span><span class="sentence"><span data-start="1550.0">This will serve as our baseline.</p><p></span></span><span class="sentence"><span data-start="1553.0">Then we'll look at an implementation using TensorOps in order to run </span></span><span class="sentence"><span data-start="1557.0">on the neural accelerators.</p><p></span></span><span class="sentence"><span data-start="1559.0">And finally we'll add in Morton ordered Threadgroup dispatch the optimization </span></span><span class="sentence"><span data-start="1564.0">technique we just discussed. </span></span><span class="sentence"><span data-start="1566.0">We'll use two tools. First metal system trace, </span></span><span class="sentence"><span data-start="1569.0">which is our live timeline viewer that shows you exactly what's happening </span></span><span class="sentence"><span data-start="1572.0">on the GPU in real time.</p><p></span></span><span class="sentence"><span data-start="1575.0">Then we'll dive into the Xcode Metal debugger to profile the workload </span></span><span class="sentence"><span data-start="1579.0">for deeper analysis. We'll look at the overall latencies of the different variants, </span></span><span class="sentence"><span data-start="1583.0">as well as performance counter metrics </span></span><span class="sentence"><span data-start="1585.0">to help us understand how well the workloads are utilizing the hardware.</p><p></span></span><span class="sentence"><span data-start="1590.0">Let's take a look at the demo.</p><p></span></span><span class="sentence"><span data-start="1592.0">Here's the Xcode project containing our three 4K by 4K gem variants.</p><p></span></span><span class="sentence"><span data-start="1597.0">When run, the app will execute each variant sequentially.</p><p></span></span><span class="sentence"><span data-start="1601.0">Here we see our metal shaders, which implement our variants V1, </span></span><span class="sentence"><span data-start="1605.0">which is the classic SIMD Group matrix Implementation V2, </span></span><span class="sentence"><span data-start="1609.0">which moves to TensorOps in order to use neural accelerators, </span></span><span class="sentence"><span data-start="1612.0">and v3 which optimizes v2 with a Morton ordered Threadgroup dispatch.</p><p></span></span><span class="sentence"><span data-start="1617.0">Let's first build the project with command B, </span></span><span class="sentence"><span data-start="1621.0">then we launch instruments with command I. When instruments comes up. </span></span><span class="sentence"><span data-start="1627.0">We'll choose the metal system trace template from the list, </span></span><span class="sentence"><span data-start="1630.0">and then we can optionally select any parameters that we'd like to. </span></span><span class="sentence"><span data-start="1633.0">For the capture. For this example, I'll select the performance limiters counter set.</p><p></span></span><span class="sentence"><span data-start="1638.0">This gives us GPU performance counter data to understand what the workload is doing </span></span><span class="sentence"><span data-start="1642.0">and how well it's utilizing the hardware.</p><p></span></span><span class="sentence"><span data-start="1646.0">Next, we hit record, which will launch the program </span></span><span class="sentence"><span data-start="1649.0">and capture a trace of the execution.</p><p></span></span><span class="sentence"><span data-start="1651.0">I have an example trace already captured here, which we'll look at now.</p><p></span></span><span class="sentence"><span data-start="1657.0">Here's what a metal system trace timeline looks like. </span></span><span class="sentence"><span data-start="1660.0">It captures everything happening on the system, including CPU, GPU, memory, </span></span><span class="sentence"><span data-start="1664.0">and display, and shows what is happening and when.</p><p></span></span><span class="sentence"><span data-start="1668.0">This is where you start </span></span><span class="sentence"><span data-start="1669.0">when you want to quickly understand the execution dynamics of your workload. </span></span><span class="sentence"><span data-start="1673.0">Each track in the main window represents a different set of events in the system, </span></span><span class="sentence"><span data-start="1677.0">with time increasing in the X dimension for our workload. </span></span><span class="sentence"><span data-start="1681.0">We will focus on the M5 metal device events, which I'll expand now.</p><p></span></span><span class="sentence"><span data-start="1687.0">Inside the M5 Metal Events track. </span></span><span class="sentence"><span data-start="1689.0">There are many different useful metrics to help us understand the workload. </span></span><span class="sentence"><span data-start="1693.0">There are memory tracks which tell us the wired footprint and allocation </span></span><span class="sentence"><span data-start="1696.0">and deallocation activities. </span></span><span class="sentence"><span data-start="1698.0">There are CPU side driver processing, </span></span><span class="sentence"><span data-start="1701.0">which shows us where the metal driver stack is processing </span></span><span class="sentence"><span data-start="1703.0">and submitting work to the GPU itself.</p><p></span></span><span class="sentence"><span data-start="1706.0">And below this we have our vertex fragment and compute tracks, </span></span><span class="sentence"><span data-start="1709.0">which show us exactly when command </span></span><span class="sentence"><span data-start="1711.0">buffers are actually being executed on the hardware. </span></span><span class="sentence"><span data-start="1714.0">Using this flow, you can track work from your API calls down to the GPU hardware.</p><p></span></span><span class="sentence"><span data-start="1720.0">In this example, we have run our application </span></span><span class="sentence"><span data-start="1722.0">and captured it on the Mac that we're using for development. </span></span><span class="sentence"><span data-start="1725.0">Notice that we have vertex, fragment and compute work all happening at the same time. </span></span><span class="sentence"><span data-start="1730.0">This is what is really happening on your system when you run workloads. </span></span><span class="sentence"><span data-start="1733.0">UI is still updating. Other apps which may be using the GPU are still running, </span></span><span class="sentence"><span data-start="1738.0">and this is all captured in the trace. </span></span><span class="sentence"><span data-start="1741.0">Despite this, we can still clearly see that we have our three </span></span><span class="sentence"><span data-start="1744.0">GPU compute command buffers from our example app running </span></span><span class="sentence"><span data-start="1746.0">on the hardware right here in green.</p><p></span></span><span class="sentence"><span data-start="1749.0">We have gem v1, which takes over two seconds to execute, followed by v2, </span></span><span class="sentence"><span data-start="1754.0">which takes over just a half second to run. </span></span><span class="sentence"><span data-start="1756.0">Followed by v3, which takes around a third of a second to complete.</p><p></span></span><span class="sentence"><span data-start="1760.0">This matches what we expect given that v1 is not using TensorOps, </span></span><span class="sentence"><span data-start="1765.0">v2 is and v3 is using the Morton Walk order optimization </span></span><span class="sentence"><span data-start="1768.0">techniques we discussed earlier. </span></span><span class="sentence"><span data-start="1771.0">Let's pin this track so we can look at it in line with performance counters.</p><p></span></span><span class="sentence"><span data-start="1776.0">You can see that there are many counters captured in line </span></span><span class="sentence"><span data-start="1778.0">to help us understand our GPU activity. </span></span><span class="sentence"><span data-start="1781.0">And you can search for specific counters using the track filter. </span></span><span class="sentence"><span data-start="1785.0">I'll use this to find and pin the neural accelerator utilization counter.</p><p></span></span><span class="sentence"><span data-start="1793.0">Notice that during v1, our neural accelerator utilization is 0%.</p><p></span></span><span class="sentence"><span data-start="1798.0">All of this compute work is happening on the ALU, </span></span><span class="sentence"><span data-start="1801.0">which means the dedicated matrix hardware is sitting completely idle as we move </span></span><span class="sentence"><span data-start="1805.0">to V2, which uses TensorOps. </span></span><span class="sentence"><span data-start="1808.0">We're doing the same math, </span></span><span class="sentence"><span data-start="1809.0">but now we are well above 50% utilization and also over four times faster than V1.</p><p></span></span><span class="sentence"><span data-start="1815.0">But the utilization percentage tells us that the neural accelerators </span></span><span class="sentence"><span data-start="1818.0">could be doing more. They're waiting for data. </span></span><span class="sentence"><span data-start="1822.0">And here's v3 which uses Morton ordered Threadgroup dispatch. </span></span><span class="sentence"><span data-start="1826.0">Same TensorOps but with a different traversal order utilization jumps to close </span></span><span class="sentence"><span data-start="1831.0">to 100% and the workload gets substantially faster.</p><p></span></span><span class="sentence"><span data-start="1836.0">So Metal System Trace gives you that quick system level view. </span></span><span class="sentence"><span data-start="1840.0">You can see your workload in the context of everything else running on the system. </span></span><span class="sentence"><span data-start="1844.0">It's great for rapid iteration and understanding the big picture. </span></span><span class="sentence"><span data-start="1847.0">But sometimes you need to go deeper. </span></span><span class="sentence"><span data-start="1849.0">You want to isolate just your GPU work. </span></span><span class="sentence"><span data-start="1852.0">Minimize external influences and get more detailed metrics. </span></span><span class="sentence"><span data-start="1856.0">That's when you use the Xcode metal debugger.</p><p></span></span><span class="sentence"><span data-start="1861.0">With the metal debugger. </span></span><span class="sentence"><span data-start="1862.0">You capture a GPU trace of your workload and then replay it through Xcode. </span></span><span class="sentence"><span data-start="1866.0">This isolates just your GPU work and removes outside system activity.</p><p></span></span><span class="sentence"><span data-start="1871.0">I've captured a GPU trace of a single K loop iteration for each variant.</p><p></span></span><span class="sentence"><span data-start="1875.0">This keeps the capture small </span></span><span class="sentence"><span data-start="1877.0">while preserving the performance characteristics we care about. </span></span><span class="sentence"><span data-start="1880.0">Here are the same three variants, but now in isolation.</p><p></span></span><span class="sentence"><span data-start="1885.0">The metal debugger gives you a much more detailed breakdown </span></span><span class="sentence"><span data-start="1887.0">of what's happening inside each compute pass.</p><p></span></span><span class="sentence"><span data-start="1891.0">We can again see that each variant is getting faster, </span></span><span class="sentence"><span data-start="1894.0">and also that V2 and v3 are using neural accelerators </span></span><span class="sentence"><span data-start="1897.0">and also seeing much higher cache bandwidth.</p><p></span></span><span class="sentence"><span data-start="1901.0">Additionally, the cost graph view lets us see where you're spending time </span></span><span class="sentence"><span data-start="1905.0">in your shaders directly in line with your metal source. </span></span><span class="sentence"><span data-start="1909.0">You can pull up the runtime statistics to get a breakdown of the register, usage, </span></span><span class="sentence"><span data-start="1913.0">divergence, and types of instructions executed.</p><p></span></span><span class="sentence"><span data-start="1917.0">Note that in this v1 example, which uses SIMD group matrix, </span></span><span class="sentence"><span data-start="1921.0">the majority of our instruction types are math. </span></span><span class="sentence"><span data-start="1924.0">In this v3 example, almost all </span></span><span class="sentence"><span data-start="1926.0">of the instructions are being executed by neural accelerators. </span></span><span class="sentence"><span data-start="1930.0">This is where you go when you need </span></span><span class="sentence"><span data-start="1932.0">to really understand exactly what your code is doing </span></span><span class="sentence"><span data-start="1935.0">and how it is executing on the hardware.</p><p></span></span><span class="sentence"><span data-start="1937.0">I won't go deep into the metal debugger today, but I encourage you to explore it, </span></span><span class="sentence"><span data-start="1941.0">especially the per shader performance counters in the cough graph. </span></span><span class="sentence"><span data-start="1944.0">Views between metal system trace for the big picture </span></span><span class="sentence"><span data-start="1948.0">and the metal debugger for deep dives. </span></span><span class="sentence"><span data-start="1949.0">You have everything you need to understand and optimize your GPU workloads.</p><p></span></span><span class="sentence"><span data-start="1954.0">So that's the workflow. </span></span><span class="sentence"><span data-start="1956.0">Start with metal System trace for the quick system level view. </span></span><span class="sentence"><span data-start="1959.0">When you need deeper analysis, </span></span><span class="sentence"><span data-start="1961.0">capture a GPU trace and use the Xcode Metal debugger </span></span><span class="sentence"><span data-start="1964.0">and the results demonstrate the performance potential here across all three variants. </span></span><span class="sentence"><span data-start="1968.0">It's the same 4K by 4K matrix multiplication running on the exact same hardware. </span></span><span class="sentence"><span data-start="1973.0">The difference is almost seven times faster execution just by understanding how </span></span><span class="sentence"><span data-start="1977.0">to use and feed neural accelerators efficiently.</p><p></span></span><span class="sentence"><span data-start="1981.0">All right, let's recap what was covered about the M5 </span></span><span class="sentence"><span data-start="1984.0">and A19 GPUs for machine learning.</p><p></span></span><span class="sentence"><span data-start="1987.0">First, the performance improvements in the M5 GPU family.</p><p></span></span><span class="sentence"><span data-start="1991.0">You're getting up to four times faster. </span></span><span class="sentence"><span data-start="1993.0">Time to first token for LLMs and 25% faster token generation performance gains. </span></span><span class="sentence"><span data-start="1999.0">You’ll see without changing a single line of code. </span></span><span class="sentence"><span data-start="2002.0">Then neural accelerators the new dedicated matrix multiplication </span></span><span class="sentence"><span data-start="2006.0">hardware in each shader core. </span></span><span class="sentence"><span data-start="2008.0">Understanding compute bound versus memory bound workloads </span></span><span class="sentence"><span data-start="2010.0">and arithmetic intensity is key to getting the most out of this hardware.</p><p></span></span><span class="sentence"><span data-start="2015.0">Next, the metal tensor APIs, </span></span><span class="sentence"><span data-start="2017.0">which give you first class tensor support directly in your shaders. </span></span><span class="sentence"><span data-start="2020.0">Cooperative tensors keep intermediate results in thread memory </span></span><span class="sentence"><span data-start="2024.0">and tiled matrix multiplication with activation. </span></span><span class="sentence"><span data-start="2026.0">Fusion lets you build highly efficient ML kernels.</p><p></span></span><span class="sentence"><span data-start="2030.0">And finally, optimizing your workload profile first to identify bottlenecks </span></span><span class="sentence"><span data-start="2035.0">and use metal system trace in the Xcode Metal debugger </span></span><span class="sentence"><span data-start="2038.0">to understand how your workloads are utilizing the hardware. </span></span><span class="sentence"><span data-start="2042.0">And be sure to check out the Metal Performance Primitives Programing Guide </span></span><span class="sentence"><span data-start="2045.0">for more in-depth details on how to best use TensorOps, </span></span><span class="sentence"><span data-start="2048.0">as well as the companion graphics talk for more details on the graphics </span></span><span class="sentence"><span data-start="2051.0">and rendering capabilities of the GPU.</p><p></span></span><span class="sentence"><span data-start="2054.0">Thanks for watching.</span></span></p>
+							</section>
+						</li>
+
+						<!-- sample code -->
+						<li class="supplement sample-code" data-supplement-id="sample-code">
+							<section>
+								<ul class="no-bullet padding-top-small margin-bottom">
+									
+								</ul>
+							</section>
+						</li>
+
+						
+					</ul>
+
+				</section>
+
+			</section>
+			</div>
+
+		</section>
+
+		<input id="analytics-meta" type="hidden" data-event-name="Tech Talks" 
+		data-event-id="tech-talks-111432" 
+		data-session-id="111432" 
+		data-video-name="Accelerate your machine learning workloads with the M5 and A19 GPUs" 
+		data-session-response-id="">
+	</main>
+
+	<link rel="stylesheet" href="/assets/styles/footer.dist.css?34212621148">
+<footer data-aa-content-module="global-footer" id="footer" class="footer" role="contentinfo" aria-labelledby="footer-label">
+    <div class="footer-content">
+        <h2 class="footer-label" id="footer-label">Developer Footer</h2>
+	<developer-breadcrumbs>
+		<li class="footer-breadcrumbs-item"><a href="/videos/">Videos</a></li>
+		<li class="footer-breadcrumbs-item"><a href="/videos/tech-talks/">Tech Talks</a></li>		<li class="footer-breadcrumbs-item">Accelerate your machine learning workloads with the M5 and A19 GPUs</li>
+	</developer-breadcrumbs>
+	        <nav class="footer-directory" aria-label="Apple Developer Directory" role="navigation">
+	<!--googleoff: all-->
+	<div class="footer-directory-column">
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-platform" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-platform">
+				<h3 class="footer-directory-column-section-title">Platforms</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-platform" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/ios/">iOS</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/ipados/">iPadOS</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/macos/">macOS</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/tvos/">tvOS</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/visionos/">visionOS</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/watchos/">watchOS</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/app-store/">App Store</a></li>
+			</ul>
+		</div>
+
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-tools" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-tools">
+				<h3 class="footer-directory-column-section-title">Tools</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-tools" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/swift/">Swift</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/swiftui/">SwiftUI</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/swift-playground/">Swift Playground</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/testflight/">TestFlight</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/xcode/">Xcode</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/xcode-cloud/">Xcode Cloud</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/icon-composer/">Icon Composer</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/sf-symbols/">SF Symbols</a></li>
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="footer-directory-column">
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-topics" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-topics">
+				<h3 class="footer-directory-column-section-title">Technologies</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-topics" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/documentation/accessibility/">Accessibility</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/accessories/">Accessories</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/machine-learning/">AI & Machine Learning</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/in-app-purchase/">Apple In-App Purchase</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/apple-intelligence/">Apple Intelligence</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/audio/">Audio &amp; Video</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/augmented-reality/">Augmented Reality</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/business/">Business</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/design/">Design</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/distribute/">Distribution</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/education/">Education</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/games/">Games</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/health-fitness/">Health &amp; Fitness</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/localization/">Localization</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/maps/">Maps &amp; Location</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/security/">Security</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/safari/">Safari &amp; Web</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="footer-directory-column">
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-resources" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-resources">
+				<h3 class="footer-directory-column-section-title">Resources</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-resources" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/documentation/">Documentation</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/download/">Downloads</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/documentation/samplecode/">Sample Code</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/videos/">Videos</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/library/archive/navigation/">Documentation Archive</a></li>
+			</ul>
+		</div>
+
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-support" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-support">
+				<h3 class="footer-directory-column-section-title">Support</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-support" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/help/">Help Guides & Articles</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/contact/">Contact Us</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/forums/">Forums</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/bug-reporting/">Feedback & Bug Reporting</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/system-status/">System Status</a></li>
+			</ul>
+		</div>
+
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-account" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-account">
+				<h3 class="footer-directory-column-section-title">Account</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-account" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/account/">Apple Developer</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="https://appstoreconnect.apple.com/">App Store Connect</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/account/ios/certificate/">Certificates, IDs, &amp; Profiles</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="https://feedbackassistant.apple.com/">Feedback Assistant</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="footer-directory-column">
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-programs" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-programs">
+				<h3 class="footer-directory-column-section-title">Programs</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-programs" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/">Apple Developer Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/enterprise/">Apple Developer Enterprise Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/app-store/small-business-program/">App Store Small Business Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="https://mfi.apple.com/">MFi Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/mini-apps-partner/">Mini Apps Partner Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/news-partner/">News Partner Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/video-partner/">Video Partner Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/security-bounty/">Security Bounty Program</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/programs/security-research-device/">Security Research Device Program</a></li>
+			</ul>
+		</div>
+
+		<input class="footer-directory-column-section-state" type="checkbox" id="footer-directory-column-section-state-events" />
+		<div class="footer-directory-column-section">
+			<label class="footer-directory-column-section-label" for="footer-directory-column-section-state-events">
+				<h3 class="footer-directory-column-section-title">Events</h3>
+			</label>
+			<a href="#footer-directory-column-section-state-events" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-open"> <span class="footer-directory-column-section-anchor-label">Open Menu</span> </a>
+			<a href="#" class="footer-directory-column-section-anchor footer-directory-column-section-anchor-close"> <span class="footer-directory-column-section-anchor-label">Close Menu</span> </a>
+			<ul class="footer-directory-column-section-list">
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/events/">Meet with Apple</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/events/developer-centers/">Apple Developer Centers</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/app-store/app-store-awards/">App Store Awards</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/design/awards/">Apple Design Awards</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/academies/">Apple Developer Academies</a></li>
+				<li class="footer-directory-column-section-item"><a class="footer-directory-column-section-link" href="/wwdc/">WWDC</a></li>
+			</ul>
+		</div>
+	</div>
+	<!--googleon: all-->
+</nav>
+        <section class="footer-mini" vocab="http://schema.org/" typeof="Organization">
+	<div class="footer-mini-news">
+		<div class="copy">
+			<div class="footer-mini-legal-link">Read the <a href="/news/">latest news</a>.</div> <div class="footer-mini-legal-link">Get the <a href="https://apps.apple.com/us/app/apple-developer/id640199958">Apple Developer app</a>.</div> Follow us on <a href="https://space.bilibili.com/429911174">bilibili</a>, <a href="https://www.linkedin.com/showcase/appledeveloper/">LinkedIn</a>, <a href="https://mp.weixin.qq.com/s/slhQ1RBYUpJ71gwEUlwSTg">WeChat</a>, and <a href="https://www.youtube.com/@AppleDeveloper">YouTube</a>.
+		</div>
+		<div class="content">
+			<div class="color-scheme-toggle"
+				role="radiogroup"
+				tabindex="0"
+				aria-label="Select a color scheme preference">
+
+				<label data-color-scheme-option="light">
+
+					<input type="radio" value="light" autocomplete="off"
+						onchange="window.setPreferredColorScheme(event.target.value)" />
+
+					<div class="text">Light</div>
+
+				</label>
+
+				<label data-color-scheme-option="dark">
+
+					<input type="radio" value="dark" autocomplete="off"
+						onchange="window.setPreferredColorScheme(event.target.value)" />
+
+					<div class="text">Dark</div>
+
+				</label>
+
+				<label data-color-scheme-option="auto">
+
+					<input type="radio" value="auto" autocomplete="off"
+						onchange="window.setPreferredColorScheme(event.target.value)" />
+
+					<div class="text">Auto</div>
+
+				</label>
+
+			</div>
+			<script async src="/assets/scripts/color-scheme-toggle.js"></script>
+		</div>
+	</div>
+	<link rel="stylesheet" href="/assets/styles/language-dropdown.css?35212621148">
+	<div class="language-dropdown dropdown-container legacy-form hidden">
+		<select class="dropdown" aria-label="Language Dropdown"></select>
+		<span class="dropdown-icon icon icon-chevrondown" aria-hidden="true"></span>
+	</div>
+	<script src="/assets/scripts/language-dropdown.js?51212659264"></script>
+	<div class="footer-mini-legal">
+		<div class="footer-mini-legal-copyright">Copyright ©  2026 <a href="https://www.apple.com">Apple Inc.</a> All rights reserved.</div>
+		<div class="footer-mini-legal-links">
+			<a class="footer-mini-legal-link" href="https://www.apple.com/legal/internet-services/terms/site.html" class="first">Terms of Use</a>
+			<a class="footer-mini-legal-link" href="https://www.apple.com/legal/privacy/">Privacy Policy</a>
+			<a class="footer-mini-legal-link" href="/support/terms/">Agreements and Guidelines</a>
+		</div>
+	</div>
+</section>
+    </div>
+</footer>
+
+	<script src="/videos/scripts/collection/form-input.js?7"></script>
+	<script src="/assets/scripts/params.js"></script>
+	<script src="/assets/scripts/watchable.js"></script>
+	<script src="/assets/scripts/timeout.js"></script>
+	
+	<script src="/videos/scripts/play/play.js?37202648194"></script>
+	<script src="/videos/scripts/hls/rtc.min.js?18162640138"></script>
+	<script src="/videos/scripts/hls/hls.min.js?18162640138"></script>
+</body>
+</html>

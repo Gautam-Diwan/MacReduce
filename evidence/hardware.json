@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "os": "macOS-26.5-arm64-arm-64bit",
+  "architecture": "arm64",
+  "model": "Mac16,12",
+  "chip": {
+    "status": "available",
+    "value": "Apple M4",
+    "reason": null,
+    "source": "system_profiler"
+  },
+  "memory": {
+    "total_bytes": 25769803776,
+    "available_bytes": 7404961792,
+    "source": "psutil"
+  },
+  "cpu_features": {
+    "FEAT_SME": {
+      "status": "unavailable",
+      "value": null,
+      "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+    },
+    "FEAT_SME2": {
+      "status": "unavailable",
+      "value": null,
+      "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+    },
+    "FEAT_BF16": {
+      "status": "unavailable",
+      "value": null,
+      "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+    },
+    "FEAT_DotProd": {
+      "status": "unavailable",
+      "value": null,
+      "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+    }
+  },
+  "accelerators": {
+    "cpu_simd": {
+      "hardware": "inferred",
+      "operator_dispatch": "not_verified"
+    },
+    "cpu_matrix": {
+      "hardware": "probe cpu_features SME/SME2",
+      "access": "Accelerate/SME; no dedicated backend in v0.1",
+      "operator_dispatch": "not_verified"
+    },
+    "gpu": {
+      "hardware": "inferred",
+      "mlx": {
+        "installed": true,
+        "execution": "unavailable",
+        "probe": {
+          "status": "unavailable",
+          "value": null,
+          "reason": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nImportError: [metal::load_device] No Metal device available. This typically occurs in headless, sandboxed, or virtualized macOS sessions where the GPU is not accessible."
+        }
+      }
+    },
+    "ane": {
+      "hardware": "inferred",
+      "basis": "Apple M-series specification; hardware presence is not execution",
+      "training_backend": "not_implemented",
+      "execution": "not_tested"
+    },
+    "gpu_neural_accelerators": {
+      "hardware": "not_present",
+      "basis": "Apple M5 GPU specification; future generations require verification",
+      "operator_dispatch": "not_verified",
+      "execution": "not_tested"
+    },
+    "media_engines": {
+      "hardware": "inferred",
+      "use": "future video preprocessing; not Transformer training"
+    }
+  },
+  "tools": {
+    "mactop": "/opt/homebrew/bin/mactop",
+    "powermetrics": "/usr/bin/powermetrics",
+    "xctrace": {
+      "status": "unavailable",
+      "value": null,
+      "reason": "xcrun: error: unable to find utility \"xctrace\", not a developer tool or in PATH"
+    }
+  }
+}

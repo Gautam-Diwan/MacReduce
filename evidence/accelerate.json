@@ -1,0 +1,13 @@
+{
+  "backend": "Apple Accelerate cblas_sgemm",
+  "size": 512,
+  "dtype": "float32",
+  "repeats": 10,
+  "warmup_calls": 3,
+  "median_seconds": 0.0001598545,
+  "p95_seconds": 0.00016313124999999998,
+  "median_gflops": 1679.2486667563314,
+  "sampled_max_absolute_error": 6.747651866589877e-06,
+  "matrix_unit_dispatch": "not_verified",
+  "note": "Public CPU BLAS executed. This does not prove AMX/SME/SME2 dispatch or ANE use."
+}

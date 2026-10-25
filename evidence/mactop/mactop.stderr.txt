@@ -1,0 +1,1 @@
+failed to get CPU core count: sysctl int query failed for machdep.cpu.core_count

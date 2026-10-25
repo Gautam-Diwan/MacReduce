@@ -1,0 +1,31 @@
+{
+  "status": {
+    "state": "done",
+    "run_id": "316b5108-7527-4c51-ab8d-4acb0fd23094",
+    "version": 8,
+    "registered": [
+      "large",
+      "small"
+    ],
+    "pending": [],
+    "nodes": [
+      "small",
+      "large"
+    ],
+    "failure": null,
+    "validation_loss": 1.7680625915527344
+  },
+  "initial_validation_loss": 6.058714389801025,
+  "final_validation_loss": 1.7680625915527344,
+  "elapsed_seconds": 2.037215542000922,
+  "backend": "torch-cpu",
+  "transport": "HTTP over loopback",
+  "physical_machines": 1,
+  "worker_processes": 2,
+  "batch_sizes": [
+    2,
+    4
+  ],
+  "wifi_tested": false,
+  "ane_execution_tested": false
+}

@@ -1,0 +1,20 @@
+{
+  "status": "unavailable",
+  "returncode": 1,
+  "reason": "failed to get CPU core count: sysctl int query failed for machdep.cpu.core_count\n",
+  "command": [
+    "mactop",
+    "--headless",
+    "--format",
+    "json",
+    "--count",
+    "1",
+    "--interval",
+    "1000"
+  ],
+  "version": {
+    "status": "available",
+    "value": "mactop version: v2.1.5",
+    "reason": null
+  }
+}

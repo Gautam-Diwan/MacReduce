@@ -1,0 +1,19 @@
+{
+  "committed_tokens": 15360,
+  "completed_rounds": 8,
+  "successful_request_payload_sent_bytes": 1975316,
+  "successful_request_payload_received_bytes": 1985367,
+  "retry_events": 0,
+  "node_training": {
+    "large": {
+      "tokens": 10240,
+      "seconds": 0.061232501,
+      "tokens_per_training_second": 167231.4511536937
+    },
+    "small": {
+      "tokens": 5120,
+      "seconds": 0.075317003,
+      "tokens_per_training_second": 67979.33794577568
+    }
+  }
+}

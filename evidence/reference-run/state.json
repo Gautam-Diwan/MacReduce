@@ -1,0 +1,271 @@
+{
+  "schema": 1,
+  "run_id": "48c9ff89-7ade-482a-9381-42517fbebe51",
+  "version": 8,
+  "config": {
+    "model": {
+      "width": 32,
+      "heads": 4,
+      "sequence": 32,
+      "vocab": 256
+    },
+    "rounds": 8,
+    "steps": 10,
+    "lr": 0.05,
+    "nodes": [
+      "small",
+      "large"
+    ],
+    "optimizer": "SGD without momentum",
+    "algorithm": "token-weighted local SGD",
+    "seed": 7,
+    "validation_sha256": "8b396f3c7a8c8c810533ffa1ebf4fc365f98ad11d286cb7038f1641d8042bb37"
+  },
+  "checkpoint": "checkpoint-00008.npz",
+  "checkpoint_sha256": "eb210dae4d28b9ab465d3b9f3de5f2bf64ae3481b5bc3b790eaa768c2e67766b",
+  "registered": {
+    "small": {
+      "backend": "torch-cpu",
+      "batch_size": 2,
+      "data_sha256": "ccf6d3a87db5250702c661fe7c4528275bb4fed92ba4cd483d34bce270453f05",
+      "capabilities": {
+        "schema": 1,
+        "os": "macOS-26.5-arm64-arm-64bit",
+        "architecture": "arm64",
+        "model": "Mac16,12",
+        "chip": {
+          "status": "available",
+          "value": "Apple M4",
+          "reason": null,
+          "source": "system_profiler"
+        },
+        "memory": {
+          "total_bytes": 25769803776,
+          "available_bytes": 5152325632,
+          "source": "psutil"
+        },
+        "cpu_features": {
+          "FEAT_SME": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          },
+          "FEAT_SME2": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          },
+          "FEAT_BF16": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          },
+          "FEAT_DotProd": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          }
+        },
+        "accelerators": {
+          "cpu_simd": {
+            "hardware": "inferred",
+            "operator_dispatch": "not_verified"
+          },
+          "cpu_matrix": {
+            "hardware": "probe cpu_features SME/SME2",
+            "access": "Accelerate/SME; no dedicated backend in v0.1",
+            "operator_dispatch": "not_verified"
+          },
+          "gpu": {
+            "hardware": "inferred",
+            "mlx": {
+              "installed": true,
+              "execution": "not_tested"
+            }
+          },
+          "ane": {
+            "hardware": "inferred",
+            "basis": "Apple M-series specification; hardware presence is not execution",
+            "training_backend": "not_implemented",
+            "execution": "not_tested"
+          },
+          "gpu_neural_accelerators": {
+            "hardware": "not_present",
+            "basis": "Apple M5 GPU specification; future generations require verification",
+            "operator_dispatch": "not_verified",
+            "execution": "not_tested"
+          },
+          "media_engines": {
+            "hardware": "inferred",
+            "use": "future video preprocessing; not Transformer training"
+          }
+        },
+        "tools": {
+          "mactop": "/opt/homebrew/bin/mactop",
+          "powermetrics": "/usr/bin/powermetrics",
+          "xctrace": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "xcrun: error: unable to find utility \"xctrace\", not a developer tool or in PATH"
+          }
+        }
+      },
+      "backend_execution": "initialized"
+    },
+    "large": {
+      "backend": "torch-cpu",
+      "batch_size": 4,
+      "data_sha256": "ccf6d3a87db5250702c661fe7c4528275bb4fed92ba4cd483d34bce270453f05",
+      "capabilities": {
+        "schema": 1,
+        "os": "macOS-26.5-arm64-arm-64bit",
+        "architecture": "arm64",
+        "model": "Mac16,12",
+        "chip": {
+          "status": "available",
+          "value": "Apple M4",
+          "reason": null,
+          "source": "system_profiler"
+        },
+        "memory": {
+          "total_bytes": 25769803776,
+          "available_bytes": 5146705920,
+          "source": "psutil"
+        },
+        "cpu_features": {
+          "FEAT_SME": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          },
+          "FEAT_SME2": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          },
+          "FEAT_BF16": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          },
+          "FEAT_DotProd": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "sysctl: sysctl fmt -1 1024 1: Operation not permitted"
+          }
+        },
+        "accelerators": {
+          "cpu_simd": {
+            "hardware": "inferred",
+            "operator_dispatch": "not_verified"
+          },
+          "cpu_matrix": {
+            "hardware": "probe cpu_features SME/SME2",
+            "access": "Accelerate/SME; no dedicated backend in v0.1",
+            "operator_dispatch": "not_verified"
+          },
+          "gpu": {
+            "hardware": "inferred",
+            "mlx": {
+              "installed": true,
+              "execution": "not_tested"
+            }
+          },
+          "ane": {
+            "hardware": "inferred",
+            "basis": "Apple M-series specification; hardware presence is not execution",
+            "training_backend": "not_implemented",
+            "execution": "not_tested"
+          },
+          "gpu_neural_accelerators": {
+            "hardware": "not_present",
+            "basis": "Apple M5 GPU specification; future generations require verification",
+            "operator_dispatch": "not_verified",
+            "execution": "not_tested"
+          },
+          "media_engines": {
+            "hardware": "inferred",
+            "use": "future video preprocessing; not Transformer training"
+          }
+        },
+        "tools": {
+          "mactop": "/opt/homebrew/bin/mactop",
+          "powermetrics": "/usr/bin/powermetrics",
+          "xctrace": {
+            "status": "unavailable",
+            "value": null,
+            "reason": "xcrun: error: unable to find utility \"xctrace\", not a developer tool or in PATH"
+          }
+        }
+      },
+      "backend_execution": "initialized"
+    }
+  },
+  "receipts": {
+    "0:large": {
+      "sha256": "7435a6096a4bc394b677fb27a083fd48319ebed143e1221719377a3c5f835695",
+      "tokens": 1280
+    },
+    "0:small": {
+      "sha256": "d9caf2bca29bee44d8a8da41913b79d353a0c689816de32596e9808f244e7663",
+      "tokens": 640
+    },
+    "1:small": {
+      "sha256": "1ddd26e4c580008119db3582a712164be4efd10439793eada5f92a433d7700d1",
+      "tokens": 640
+    },
+    "1:large": {
+      "sha256": "953026f51293962e9f678cae08a67c46b71336438e8081a2f8b3be022076593b",
+      "tokens": 1280
+    },
+    "2:large": {
+      "sha256": "8ce8d3a4da1a20b670c2490a52982e7786ba52a25755f7b408ec312d01041199",
+      "tokens": 1280
+    },
+    "2:small": {
+      "sha256": "852d0b350ee578310c751a7d0ed0551a6ac379e22811d833d321151ed7eddbdc",
+      "tokens": 640
+    },
+    "3:small": {
+      "sha256": "54392ccb0c722e5a9d0759b89b4d8cae14666fedb75b4d3e778dd47cf017e3e5",
+      "tokens": 640
+    },
+    "3:large": {
+      "sha256": "0e2ecf8d86950f77183a62b24abce4fa530801c98129ca4a9dcafdbe64fe5343",
+      "tokens": 1280
+    },
+    "4:large": {
+      "sha256": "36d66f89784b08dc68cc2b9084b27d9b6164cc299f0b5eeb9cdafef30b2c617b",
+      "tokens": 1280
+    },
+    "4:small": {
+      "sha256": "0fe0e88aeea3ce9306c68d85d13d2bdbc40de35c1466116d66323d0fdf588527",
+      "tokens": 640
+    },
+    "5:small": {
+      "sha256": "74fc25b82d7bc2e62d68f8e486d8a581189be659a7a7cdc0df8c9fc0092436aa",
+      "tokens": 640
+    },
+    "5:large": {
+      "sha256": "c2ad3fdcc64d4078f4a2fe66c2f269b73eb6d57a7918d9b3a613bd3b49bbeddb",
+      "tokens": 1280
+    },
+    "6:large": {
+      "sha256": "191aa69f8904ab48ca75daee43dfdc52e7087f920d6a8ab7849abca4d8a31a2a",
+      "tokens": 1280
+    },
+    "6:small": {
+      "sha256": "a8a29c24c5dbb9d66643f0dd785a1855ab41201644030f3b398f1950d11d1bc2",
+      "tokens": 640
+    },
+    "7:small": {
+      "sha256": "d9dbd2b01cce474da762e94a4757da96a3fbf214355bcbb38d851fed375459f9",
+      "tokens": 640
+    },
+    "7:large": {
+      "sha256": "f21f71f2406d6ca2a45f0d4bf172a1c8470348b094a2a8fc01bf589507371e0c",
+      "tokens": 1280
+    }
+  },
+  "validation_loss": 1.7680625915527344
+}
