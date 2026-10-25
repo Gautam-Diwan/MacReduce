@@ -14,7 +14,48 @@ from .cluster import Coordinator, make_server
 from .observe import capabilities, collect_mactop, report
 from .placement import CostTable, EngineCost, choose
 from .serving import MlxLmExecutor, builtin_trace, sweep_order
+from .study import execute as execute_study
 from .worker import run_worker
+
+
+def _dump_trial(path, payload):
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    body = dict(payload)
+    if "tokens" in body:
+        body["tokens"] = list(body["tokens"])
+    destination.write_text(json.dumps(body, indent=2) + "\n")
+
+
+def _bench_trial(args):
+    prompt = next(item for item in builtin_trace() if item.segment == args.segment)
+    executor = MlxLmExecutor()
+    if args.mode == "prefix":
+        _dump_trial(
+            args.output,
+            {
+                "status": "ok",
+                **executor.prefix_trial(prompt.text, Path(args.output).parent / "prefix-cache"),
+            },
+        )
+        return
+    if args.mode == "cpu":
+        try:
+            payload = executor.cpu_draft_trial(prompt.text, args.max_tokens, args.depth)
+        except Exception as exc:
+            payload = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
+        _dump_trial(args.output, payload)
+        return
+    from .placement import fixed
+
+    executor.generate("Hi", max_tokens=1, placement=fixed("none", 0, "recompute"))
+    result = executor.generate(
+        prompt.text,
+        max_tokens=args.max_tokens,
+        placement=fixed(args.engine, args.depth, "recompute"),
+    )
+    result.update(status="ok", segment=args.segment, engine=args.engine, depth=args.depth)
+    _dump_trial(args.output, result)
 
 
 def token():
@@ -185,6 +226,20 @@ def main():
     equivalence.add_argument("--output")
     sweep = sub.add_parser("sweep", help="print the static depth order; generation is a later run")
     sweep.add_argument("--cycles", type=int, default=1)
+    bench = sub.add_parser(
+        "bench",
+        help="run the depth sweep, prefix comparison, CPU draft, and ANE gate",
+    )
+    bench.add_argument("--output", required=True)
+    bench.add_argument("--cycles", type=int, default=3)
+    bench.add_argument("--max-tokens", type=int, default=32)
+    once = sub.add_parser("bench-trial", help="one fresh-process trial used by bench")
+    once.add_argument("--output", required=True)
+    once.add_argument("--segment", choices=["short", "long", "code"], default="short")
+    once.add_argument("--engine", choices=["none", "gpu", "cpu"], default="gpu")
+    once.add_argument("--depth", type=int, default=2)
+    once.add_argument("--max-tokens", type=int, default=32)
+    once.add_argument("--mode", choices=["generate", "prefix", "cpu"], default="generate")
     args = p.parse_args()
     try:
         if args.command == "doctor":
@@ -289,6 +344,15 @@ def main():
             )
         elif args.command == "sweep":
             print(json.dumps({"order": sweep_order(cycles=args.cycles), "cycles": args.cycles}))
+        elif args.command == "bench":
+            report_body = execute_study(args.output, args.cycles, args.max_tokens, sys.executable)
+            print(
+                json.dumps(
+                    {key: report_body[key] for key in report_body if key != "trials"}, indent=2
+                )
+            )
+        elif args.command == "bench-trial":
+            _bench_trial(args)
         elif args.command == "equivalence":
             report_body = MlxLmExecutor().equivalence(builtin_trace(), args.max_tokens, args.depth)
             text = json.dumps(report_body, indent=2)

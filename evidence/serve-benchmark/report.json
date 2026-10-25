@@ -1,0 +1,1792 @@
+{
+  "segments": [
+    {
+      "segment": "short",
+      "depths": {
+        "0": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.032307375004165806,
+          "decode_tokens_per_second": 97.14133805837375,
+          "ttft_floor": 0.00014749998808838427,
+          "decode_floor": 0.6930100640809371
+        },
+        "1": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.04073983400303405,
+          "decode_tokens_per_second": 95.74004204061355,
+          "ttft_floor": 4.500099748838693e-05,
+          "decode_floor": 0.33809350527847926
+        },
+        "2": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.0541114999941783,
+          "decode_tokens_per_second": 96.48709105368546,
+          "ttft_floor": 0.0001571669999975711,
+          "decode_floor": 3.5521039908756364
+        },
+        "4": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.06063924999034498,
+          "decode_tokens_per_second": 72.3151653651126,
+          "ttft_floor": 0.0012728750152746285,
+          "decode_floor": 0.03195517526398817
+        },
+        "8": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.09252837499661838,
+          "decode_tokens_per_second": 41.889621175589006,
+          "ttft_floor": 0.0005364999960875277,
+          "decode_floor": 0.07813545630740037
+        }
+      },
+      "hindsight_decode_depth": 0,
+      "hindsight_ttft_depth": 0,
+      "adaptive": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "disk",
+        "seconds_per_token": 0.010294278625224251,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "comparison": {
+        "beats": false,
+        "reason": "within noise or wrong direction",
+        "ttft_gain": 0.0,
+        "decode_gain": 0.0,
+        "ttft_floor": 7.374999404419214e-05,
+        "decode_floor": 3.0641202914720935
+      },
+      "same_depth_as_hindsight": true,
+      "prefix_choice": {
+        "source": "disk",
+        "seconds": 0.0009026670013554394,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "note": "One depth chosen before the evaluation pass cannot beat the best depth on that pass. A tie means the cost model selected the hindsight depth. Per-step depth changes are not measured here."
+    },
+    {
+      "segment": "long",
+      "depths": {
+        "0": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 1.3306495419965358,
+          "decode_tokens_per_second": 96.09370327626782,
+          "ttft_floor": 0.0009499169973423705,
+          "decode_floor": 0.19979941649835098
+        },
+        "1": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 1.8147811250091763,
+          "decode_tokens_per_second": 115.91499265007936,
+          "ttft_floor": 0.05588929199439008,
+          "decode_floor": 1.7890249654822696
+        },
+        "2": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 1.886579417012399,
+          "decode_tokens_per_second": 131.65338133309695,
+          "ttft_floor": 0.017610499999136664,
+          "decode_floor": 0.6527875507115084
+        },
+        "4": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 1.7785664580005687,
+          "decode_tokens_per_second": 136.87999905108492,
+          "ttft_floor": 0.0083833329990739,
+          "decode_floor": 1.1179275459080316
+        },
+        "8": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 1.851871459002723,
+          "decode_tokens_per_second": 133.26156642731263,
+          "ttft_floor": 0.0036462510033743456,
+          "decode_floor": 0.3148018718807464
+        }
+      },
+      "hindsight_decode_depth": 4,
+      "hindsight_ttft_depth": 0,
+      "adaptive": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "disk",
+        "seconds_per_token": 0.007458398390207408,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "comparison": {
+        "beats": false,
+        "reason": "within noise or wrong direction",
+        "ttft_gain": 0.0,
+        "decode_gain": 0.0,
+        "ttft_floor": 0.07248102100129472,
+        "decode_floor": 9.009621059214396
+      },
+      "same_depth_as_hindsight": true,
+      "prefix_choice": {
+        "source": "disk",
+        "seconds": 0.0009026670013554394,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "note": "One depth chosen before the evaluation pass cannot beat the best depth on that pass. A tie means the cost model selected the hindsight depth. Per-step depth changes are not measured here."
+    },
+    {
+      "segment": "code",
+      "depths": {
+        "0": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.11539604200515897,
+          "decode_tokens_per_second": 102.98354596760298,
+          "ttft_floor": 0.003530876012519016,
+          "decode_floor": 0.10817207902121595
+        },
+        "1": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.14511804199719336,
+          "decode_tokens_per_second": 130.26036433857044,
+          "ttft_floor": 0.003521624006680213,
+          "decode_floor": 0.28456573204559277
+        },
+        "2": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.1506913750054082,
+          "decode_tokens_per_second": 146.88087559173724,
+          "ttft_floor": 0.00046462498721666634,
+          "decode_floor": 0.1231983740471776
+        },
+        "4": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.1595942499989178,
+          "decode_tokens_per_second": 131.25133658522384,
+          "ttft_floor": 0.0004554169863695279,
+          "decode_floor": 0.17544159232630818
+        },
+        "8": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.1907714999979362,
+          "decode_tokens_per_second": 120.8402928893187,
+          "ttft_floor": 0.00040612499287817627,
+          "decode_floor": 0.2958654319333647
+        }
+      },
+      "hindsight_decode_depth": 2,
+      "hindsight_ttft_depth": 0,
+      "adaptive": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "disk",
+        "seconds_per_token": 0.007437142260457636,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "comparison": {
+        "beats": false,
+        "reason": "within noise or wrong direction",
+        "ttft_gain": -0.012104208508390002,
+        "decode_gain": -14.704966292700078,
+        "ttft_floor": 0.0030855209988658316,
+        "decode_floor": 1.280248167948912
+      },
+      "same_depth_as_hindsight": false,
+      "prefix_choice": {
+        "source": "disk",
+        "seconds": 0.0009026670013554394,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "note": "One depth chosen before the evaluation pass cannot beat the best depth on that pass. A tie means the cost model selected the hindsight depth. Per-step depth changes are not measured here."
+    }
+  ],
+  "peer": {
+    "status": "not_run",
+    "reason": "no second Mac was available; link rate was not measured"
+  },
+  "ane_gate": {
+    "placement_verified": false,
+    "available": false,
+    "reason": "coremltools is not installed; the draft model was not converted and no ANE power was read"
+  },
+  "cpu_draft": {
+    "status": "ran",
+    "placement_note": "draft parameters were created on mx.cpu; one mlx-lm stream ran both models",
+    "tokens": [
+      13,
+      3070,
+      19202,
+      334,
+      13,
+      151643,
+      33975,
+      25,
+      3555,
+      374,
+      279,
+      4226,
+      311,
+      419,
+      3405,
+      25,
+      1128,
+      374,
+      279,
+      4226,
+      311,
+      419,
+      3405,
+      30,
+      3070,
+      3838,
+      374,
+      279,
+      4226,
+      311,
+      419,
+      3405
+    ],
+    "from_draft_tokens": 16,
+    "ttft_seconds": 0.08163112500915302,
+    "decode_tokens_per_second": 87.77222095114924,
+    "generated_tokens": 32,
+    "versions": {
+      "mlx-lm": "0.32.2",
+      "mlx": "0.32.4"
+    },
+    "exact_match": true
+  },
+  "prefix": {
+    "status": "ok",
+    "exact": true,
+    "prefix_tokens": 1313,
+    "suffix_tokens": 8,
+    "prefill_seconds": 1.3183585419901647,
+    "load_seconds": 0.0009026670013554394,
+    "kv_bytes": 44048175,
+    "prefill_tokens_per_second": 995.9354440999977,
+    "disk_bytes_per_second": 48797812409.06948,
+    "link_bytes_per_second": null,
+    "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+    "versions": {
+      "mlx-lm": "0.32.2",
+      "mlx": "0.32.4"
+    }
+  },
+  "trials": [
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.0305427499988582,
+      "decode_tokens_per_second": 97.14133805837375,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.166329868,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.0459662500070408,
+      "decode_tokens_per_second": 92.27893260525747,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 11,
+      "peak_memory_gb": 1.16944618,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.0541114999941783,
+      "decode_tokens_per_second": 96.48709105368546,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 1.170168562,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.059020458997110836,
+      "decode_tokens_per_second": 72.28321018984862,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 18,
+      "peak_memory_gb": 1.17423695,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.09199187500053085,
+      "decode_tokens_per_second": 30.926588372990178,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 19,
+      "peak_memory_gb": 1.182293572,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.331636791001074,
+      "decode_tokens_per_second": 96.29350269276617,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.871654944,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.8706704170035664,
+      "decode_tokens_per_second": 115.91499265007936,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.7399194159952458,
+      "decode_tokens_per_second": 132.30616888380845,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 21,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.7701831250014948,
+      "decode_tokens_per_second": 137.99792659699295,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 25,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.8482252079993486,
+      "decode_tokens_per_second": 133.57636829919338,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 28,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.11539604200515897,
+      "decode_tokens_per_second": 102.98354596760298,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.30851582,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.14511804199719336,
+      "decode_tokens_per_second": 130.26036433857044,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 15,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.1506913750054082,
+      "decode_tokens_per_second": 146.88087559173724,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.311596524,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.15913883301254828,
+      "decode_tokens_per_second": 131.42677817755015,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 24,
+      "peak_memory_gb": 1.311612908,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.1907714999979362,
+      "decode_tokens_per_second": 121.54770106089653,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 27,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.09252837499661838,
+      "decode_tokens_per_second": 41.889621175589006,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 19,
+      "peak_memory_gb": 1.182293572,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.06191212500561961,
+      "decode_tokens_per_second": 73.22977729028268,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 18,
+      "peak_memory_gb": 1.17423695,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.04657799999404233,
+      "decode_tokens_per_second": 92.47023755791433,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 1.170134772,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.04073983400303405,
+      "decode_tokens_per_second": 96.07813554589202,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 11,
+      "peak_memory_gb": 1.16944618,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.03245487499225419,
+      "decode_tokens_per_second": 96.44832799429281,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.166329868,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.851871459002723,
+      "decode_tokens_per_second": 133.26156642731263,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 28,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.7785664580005687,
+      "decode_tokens_per_second": 136.87999905108492,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 25,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.886579417012399,
+      "decode_tokens_per_second": 131.65338133309695,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 21,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.8147811250091763,
+      "decode_tokens_per_second": 117.70401761556163,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.3296996249991935,
+      "decode_tokens_per_second": 96.09370327626782,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.871654944,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.190365375005058,
+      "decode_tokens_per_second": 120.8402928893187,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 27,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.16075512500538025,
+      "decode_tokens_per_second": 130.78638242504698,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 24,
+      "peak_memory_gb": 1.311596524,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.1449849579948932,
+      "decode_tokens_per_second": 147.00407396578441,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.1409282910026377,
+      "decode_tokens_per_second": 130.54493007061603,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 15,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.12169816700043157,
+      "decode_tokens_per_second": 103.0917180466242,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.30851582,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.032307375004165806,
+      "decode_tokens_per_second": 102.576568577237,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.166329868,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.04069483300554566,
+      "decode_tokens_per_second": 95.74004204061355,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 11,
+      "peak_memory_gb": 1.16944618,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.054268666994175874,
+      "decode_tokens_per_second": 100.0391950445611,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 1.170185462,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.06063924999034498,
+      "decode_tokens_per_second": 72.3151653651126,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 18,
+      "peak_memory_gb": 1.17423695,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ". **Ready**.<|endoftext|>Human: What is the answer to this question: what is the answer to this question? **What is the answer to this question",
+      "ttft_seconds": 0.10198229199158959,
+      "decode_tokens_per_second": 41.96775663189641,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 19,
+      "peak_memory_gb": 1.182293572,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.3306495419965358,
+      "decode_tokens_per_second": 94.9664327367966,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.871654944,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.7447654999996303,
+      "decode_tokens_per_second": 100.50322277680236,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.9041899170115357,
+      "decode_tokens_per_second": 128.11327314510194,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 21,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.9235285000031581,
+      "decode_tokens_per_second": 118.86075693265613,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 25,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "MacReduce places each request by measured draft cost, acceptance, and prefix-transfer cost. The placement is a hypothesis until the benchmark compares it with the best fixed configuration",
+      "ttft_seconds": 1.8721836250042543,
+      "decode_tokens_per_second": 131.40658428546314,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 28,
+      "peak_memory_gb": 1.820935396,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.11186516599263996,
+      "decode_tokens_per_second": 99.99723976213603,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.30851582,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.14863966600387357,
+      "decode_tokens_per_second": 122.94306503195685,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 15,
+      "peak_memory_gb": 1.311612908,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.15115599999262486,
+      "decode_tokens_per_second": 144.4435776298866,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.311612908,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.1595942499989178,
+      "decode_tokens_per_second": 131.25133658522384,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 24,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "def place(depth, acceptance, draft_s, verify_s): \n    if depth == 0:\n        return verify_s\n    tokens = (1 - acceptance",
+      "ttft_seconds": 0.2019436249975115,
+      "decode_tokens_per_second": 120.54442745738534,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 27,
+      "peak_memory_gb": 1.31166206,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    }
+  ],
+  "protocol": {
+    "cycles": 3,
+    "max_tokens": 32,
+    "process": "one fresh interpreter per trial",
+    "models": {
+      "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+      "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit"
+    }
+  }
+}

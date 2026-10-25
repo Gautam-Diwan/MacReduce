@@ -1,0 +1,29 @@
+{
+  "status": "ok",
+  "exact": true,
+  "prefix_tokens": 1313,
+  "suffix_tokens": 8,
+  "prefill_seconds": 1.3183585419901647,
+  "load_seconds": 0.0009026670013554394,
+  "kv_bytes": 44048175,
+  "prefill_tokens_per_second": 995.9354440999977,
+  "disk_bytes_per_second": 48797812409.06948,
+  "link_bytes_per_second": null,
+  "recomputed_tokens": [
+    7401,
+    50325,
+    7482,
+    1817
+  ],
+  "reused_tokens": [
+    7401,
+    50325,
+    7482,
+    1817
+  ],
+  "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "versions": {
+    "mlx-lm": "0.32.2",
+    "mlx": "0.32.4"
+  }
+}

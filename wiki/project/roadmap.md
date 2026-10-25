@@ -8,7 +8,7 @@ sources: ["S27", "S32", "S33"]
 
 # Implementation order and completion gates
 
-This plan follows [decision 0003](../decisions/0003-build-target.md). Dates are the course calendar: proposal 2026-11-06, final 2026-12-04, a group of 2–3. Effort figures are estimates, not measurements. As of 2026-10-25 the placement rule and harness exist and are unit-tested. One greedy equivalence run passed at depth 2 and 16 tokens ([evidence](../../evidence/serve-equivalence/README.md)). A depth sweep and a check that stops before the token cap are still required before item 1 is closed; item 2 has not been timed. See [state](state.md).
+This plan follows [decision 0003](../decisions/0003-build-target.md). Dates are the course calendar: proposal 2026-11-06, final 2026-12-04, a group of 2–3. Effort figures are estimates, not measurements. As of the 2026-10-25 study, items 1, 2, 4, and the local half of item 6 have measured results on one M4 ([evidence](../../evidence/serve-benchmark/README.md)). Item 5's CPU draft ran once; its ANE gate did not, because `coremltools` is absent. Item 7 was not run. The joint time-to-first-token and decode hypothesis was not met. An early end-of-sequence stop was not observed: all 45 sweep trials hit the 32-token cap.
 
 | Order | Work package | Window | Exit evidence |
 |---|---|---|---|

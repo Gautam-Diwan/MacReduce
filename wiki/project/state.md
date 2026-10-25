@@ -8,7 +8,7 @@ sources: []
 
 # Current implementation and evidence
 
-**Scope as of 2026-10-25:** [decision 0003](../decisions/0003-build-target.md) makes the deliverable a per-request phase-placement scheduler for LLM serving plus its benchmark. **None of that scheduler exists yet.** Everything measured below is the earlier local-SGD trainer, which is retained as a prototype and reusable infrastructure, not as the research claim.
+**Scope as of 2026-10-25:** [decision 0003](../decisions/0003-build-target.md) makes the deliverable a per-request phase-placement scheduler for LLM serving plus its benchmark. The scheduler and a one-M4 study now exist. The local-SGD trainer remains a measured prototype, not the research claim. The joint hypothesis, better time-to-first-token and better decode rate than the hindsight depth, was not met.
 
 **Measured locally:** MacReduce is the renamed version of the original MacTrain prototype. The canonical package is `macreduce`, the console command is `macreduce`, and environment settings use `MACREDUCE_`. Historical files keep their original labels. [Migration record](../../docs/archive/migration.json).
 
@@ -17,12 +17,13 @@ sources: []
 | Capability | State | Evidence or next step |
 |---|---|---|
 | Placement rule for engine, depth, and prefix | Implemented and unit-tested | `src/macreduce/placement.py`. ANE is ineligible unless `placement_verified`. Missing rates stay unknown |
-| Pinned `mlx-lm` 0.32.2 executor | Equivalence measured for one setting | Depth 2, 16 tokens, three prompts, exact greedy match. Not a sweep or a timing result. [Record](../../evidence/serve-equivalence/README.md). CPU and ANE drafters raise `NotImplementedError` |
-| Trace, A-B-B-A harness, noise floor | Implemented and unit-tested | Built-in short, long, and code prompts. No timed model sweep yet |
-| D2 adaptive speculation depth | Not started | Roadmap item 4 |
-| D1 drafter engine choice, CPU stream and gated ANE | Not started; ANE execution on this M4 under macOS 26.5 is **unknown** | Roadmap item 5; gate outcome is a result either way |
-| D3 prefix source, local disk | Not started | Roadmap item 6 |
-| D3 remote arm | Blocked on a second Mac | Roadmap item 7 |
+| Pinned `mlx-lm` 0.32.2 executor | Measured | Depths 0, 1, 2, 4, and 8 matched greedy tokens on short, long, and code, 32 tokens, three fresh-process replicates. Every trial hit the length cap, so an early stop was not observed. [Study](../../evidence/serve-benchmark/README.md) |
+| Trace and depth sweep | Measured on this M4 | Same record. Short prompts prefer no draft. Long prompts decode fastest at depth 4 and reach first token fastest at depth 0. Code decodes fastest at depth 2 |
+| D2 cost-model depth | Measured; hypothesis not met | The model picked the hindsight decode depth for short and long, and depth 4 instead of 2 for code, which was slower on the evaluation pass. Per-step depth changes were not run |
+| D1 CPU draft | Measured once on the short prompt | Tokens matched. Decode was about 88 tok/s against about 97 tok/s with no draft. One stream, not a concurrency claim |
+| D1 ANE gate | Not run | `coremltools` is not installed. Placement stays unverified. No ANE power was read |
+| D3 prefix, warm cache | Measured | Reloading the long prefix matched recomputed tokens. The 0.9 ms load is a warm page cache of a file just written, not cold disk and not a network |
+| D3 remote arm | Not run | No second Mac |
 
 ## Local-SGD trainer prototype (retained)
 

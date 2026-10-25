@@ -215,10 +215,12 @@ class MlxLmExecutor:
             kwargs["draft_model"] = draft
             kwargs["num_draft_tokens"] = placement.depth
         tokens: list[int] = []
+        drafted: list[bool] = []
         text = ""
         last = None
         for response in stream_generate(self._target, self._tokenizer, prompt, **kwargs):
             tokens.append(int(response.token))
+            drafted.append(bool(response.from_draft))
             text += response.text
             last = response
         if last is None:
@@ -233,6 +235,7 @@ class MlxLmExecutor:
             "decode_tokens_per_second": float(last.generation_tps),
             "prompt_tokens": prompt_tokens,
             "generated_tokens": int(last.generation_tokens),
+            "from_draft_tokens": sum(drafted),
             "peak_memory_gb": float(last.peak_memory),
             "finish_reason": last.finish_reason,
             "placement": asdict(placement),
@@ -265,3 +268,137 @@ class MlxLmExecutor:
             "target": self.target_id,
             "draft": self.draft_id,
         }
+
+    def _encode(self, prompt: str):
+        tokenizer = self._tokenizer
+        assert tokenizer is not None
+        add_special = tokenizer.bos_token is None or not prompt.startswith(
+            tokenizer.bos_token or ""
+        )
+        return list(tokenizer.encode(prompt, add_special_tokens=add_special))
+
+    def prefix_trial(self, prompt: str, directory, continuation_tokens: int = 4) -> dict:
+        """Time full prefill against loading a saved prefix cache, and compare tokens.
+
+        The suffix is the last 8 prompt tokens. The cache holds everything before
+        that suffix. This does not measure a peer transfer.
+        """
+
+        from pathlib import Path
+
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        self.load()
+        import time
+
+        import mlx.core as mx
+        from mlx_lm.generate import generate_step, stream_generate
+        from mlx_lm.models.cache import load_prompt_cache, make_prompt_cache, save_prompt_cache
+
+        ids = self._encode(prompt)
+        if len(ids) <= 8:
+            raise ValueError("prompt is too short to split a prefix from an 8-token suffix")
+        prefix, suffix = ids[:-8], ids[-8:]
+        cache = make_prompt_cache(self._target)
+        started = time.perf_counter()
+        for _ in generate_step(mx.array(prefix), self._target, max_tokens=0, prompt_cache=cache):
+            pass
+        mx.synchronize()
+        prefill_seconds = time.perf_counter() - started
+        path = directory / "prefix.safetensors"
+        save_prompt_cache(str(path), cache, {"model": self.target_id})
+        started = time.perf_counter()
+        loaded = load_prompt_cache(str(path))
+        mx.synchronize()
+        load_seconds = time.perf_counter() - started
+        kv_bytes = path.stat().st_size
+
+        def continuations(prompt_cache):
+            produced = []
+            for response in stream_generate(
+                self._target,
+                self._tokenizer,
+                suffix,
+                max_tokens=continuation_tokens,
+                prompt_cache=prompt_cache,
+            ):
+                produced.append(int(response.token))
+            return tuple(produced)
+
+        reused = continuations(loaded)
+        recomputed_cache = make_prompt_cache(self._target)
+        for _ in generate_step(
+            mx.array(prefix), self._target, max_tokens=0, prompt_cache=recomputed_cache
+        ):
+            pass
+        mx.synchronize()
+        recomputed = continuations(recomputed_cache)
+        return {
+            "exact": reused == recomputed,
+            "prefix_tokens": len(prefix),
+            "suffix_tokens": len(suffix),
+            "prefill_seconds": prefill_seconds,
+            "load_seconds": load_seconds,
+            "kv_bytes": kv_bytes,
+            "prefill_tokens_per_second": None
+            if prefill_seconds <= 0
+            else len(prefix) / prefill_seconds,
+            "disk_bytes_per_second": None if load_seconds <= 0 else kv_bytes / load_seconds,
+            "link_bytes_per_second": None,
+            "recomputed_tokens": recomputed,
+            "reused_tokens": reused,
+            "target": self.target_id,
+            "versions": dict(self.versions),
+        }
+
+    def cpu_draft_trial(self, prompt: str, max_tokens: int, depth: int) -> dict:
+        """Draft weights loaded on the CPU. The stock loop still uses one stream.
+
+        Token identity is the caller's job. Running this does not show that the
+        CPU and GPU executed at the same time.
+        """
+
+        import mlx.core as mx
+        from mlx_lm import load, stream_generate
+
+        self.require_pin()
+        previous = mx.default_device()
+        try:
+            mx.set_default_device(mx.cpu)
+            draft, draft_tokenizer = load(self.draft_id)
+            mx.set_default_device(mx.gpu)
+            if self._target is None:
+                self._target, self._tokenizer = load(self.target_id)
+            if getattr(self._tokenizer, "vocab_size", None) != getattr(
+                draft_tokenizer, "vocab_size", None
+            ):
+                raise RuntimeError("target and draft tokenizers report different vocab sizes")
+            tokens: list[int] = []
+            drafted = 0
+            last = None
+            for response in stream_generate(
+                self._target,
+                self._tokenizer,
+                prompt,
+                max_tokens=max_tokens,
+                draft_model=draft,
+                num_draft_tokens=depth,
+            ):
+                tokens.append(int(response.token))
+                drafted += int(bool(response.from_draft))
+                last = response
+            if last is None:
+                raise RuntimeError("cpu draft produced no tokens")
+            prompt_rate = float(last.prompt_tps)
+            return {
+                "status": "ran",
+                "placement_note": "draft parameters were created on mx.cpu; one mlx-lm stream ran both models",
+                "tokens": tokens,
+                "from_draft_tokens": drafted,
+                "ttft_seconds": None if prompt_rate <= 0 else int(last.prompt_tokens) / prompt_rate,
+                "decode_tokens_per_second": float(last.generation_tps),
+                "generated_tokens": int(last.generation_tokens),
+                "versions": dict(self.versions),
+            }
+        finally:
+            mx.set_default_device(previous)
