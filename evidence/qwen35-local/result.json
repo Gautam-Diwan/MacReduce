@@ -1,0 +1,28 @@
+{
+  "mlx": "0.32.4",
+  "mlx_lm": "0.32.2",
+  "prompt": "Reply with one word: ready",
+  "max_tokens": 32,
+  "target": {
+    "repo": "mlx-community/Qwen3.5-2B-4bit",
+    "revision": "674aaa7240b91e8012fcad5d791b7dfe5ba90207",
+    "cache": {"ArraysCache": 18, "KVCache": 6},
+    "plain_generation_tokens_per_second": 80.86,
+    "plain_wall_seconds": 1.393
+  },
+  "draft": {
+    "repo": "mlx-community/Qwen3.5-0.8B-4bit",
+    "revision": "da28692b5f139cb0ec58a356b437486b7dac7462",
+    "tokenizer_vocab_size": 248044
+  },
+  "speculative": "ValueError: Speculative decoding requires a trimmable prompt cache (got {'ArraysCache'}).",
+  "four_b_check": {
+    "repo": "mlx-community/Qwen3.5-4B-4bit",
+    "revision": "0e7ffd5c629ef7719d4cbc04069232580bfa9d9c",
+    "downloaded": false,
+    "model_type": "qwen3_5",
+    "num_hidden_layers": 32,
+    "full_attention_interval": 4,
+    "layer_types": {"linear_attention": 24, "full_attention": 8}
+  }
+}
