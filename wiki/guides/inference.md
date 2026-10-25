@@ -2,11 +2,13 @@
 title: "Run one larger model across Macs as a separate path"
 type: implementation
 status: proposed
-updated: 2026-10-23
+updated: 2026-10-25
 sources: ["S02", "S18", "S19"]
 ---
 
 # Run one larger model across Macs as a separate path
+
+**Scope note 2026-10-25:** [decision 0003](../decisions/0003-build-target.md) rules out building sharded inference; MLX tensor parallelism ([S34](../sources/S34.md)) and EXO ([S18](../sources/S18.md)) cover it. The project's inference work is a per-request scheduler around pinned `mlx-lm` on one machine, with an optional second Mac for prefix-KV transfer. This page stays as the integration guide if a large model is ever needed.
 
 The trainer currently replicates a small model on every worker. Running one model too large for an individual Mac requires sharding and a separate execution graph; it is not obtained by adding workers to local SGD.
 

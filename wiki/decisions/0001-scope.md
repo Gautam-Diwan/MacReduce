@@ -1,12 +1,14 @@
 ---
 title: "Decision 0001 Trainer first over Wi-Fi"
 type: decision
-status: active
-updated: 2026-10-23
+status: historical
+updated: 2026-10-25
 sources: []
 ---
 
 # Decision 0001 Trainer first over Wi-Fi
+
+**Superseded 2026-10-25 by [decision 0003](0003-build-target.md).** The trainer built under this decision is retained as a measured prototype; the Wi-Fi scheduling study is no longer the research claim because Apple's MLX distributed stack and community systems already cover connecting Macs, and ANE training prototypes already exist. The text below is unchanged history.
 
 **Decision:** use MacReduce as the project and package name. Build an observable local-SGD trainer over ordinary IP with heterogeneous Macs as the first complete vertical slice. The available M4 is the initial reference. Physical Wi-Fi is the target network; loopback is only a development test.
 

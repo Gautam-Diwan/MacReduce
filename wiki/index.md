@@ -2,15 +2,15 @@
 title: "MacReduce knowledge index"
 type: index
 status: active
-updated: 2026-10-24
+updated: 2026-10-25
 sources: []
 ---
 
 # MacReduce knowledge index
 
-MacReduce is an observable distributed trainer for heterogeneous Macs, with physical Wi-Fi as the target network. The measured results are a small CPU model trained by two processes on one Mac, and a short MLX GPU loopback run of that same default model on the M4. ANE training, physical multi-Mac performance, and large-model inference remain unvalidated or unimplemented as detailed below.
+MacReduce is a course project on Apple Silicon. As of [decision 0003](decisions/0003-build-target.md) the build target is a per-request phase-placement scheduler for LLM serving (drafter engine, speculation depth, prefix-KV source) plus the benchmark that tests it against the strongest static configuration. The earlier Wi-Fi local-SGD trainer is retained as a measured prototype, not the research claim. Known hardware is one M4 (macOS 26.5, MLX 0.32.4); other Macs and links are unknown. No scheduler code exists yet.
 
-**Start with [current state](project/state.md), then [what to build next](project/roadmap.md), and [research candidates](research/novelty.md).** For the proposal, read [the active project proposal](../docs/proposal.md). For runnable commands, use [the project README](../README.md).
+**Start with [decision 0003](decisions/0003-build-target.md), then [current state](project/state.md), [the dated roadmap](project/roadmap.md), and [research candidates](research/novelty.md).** For the proposal, read [the active project proposal](../docs/proposal.md). For runnable commands, use [the project README](../README.md).
 
 This wiki contains maintained synthesis, not a claim that every linked source has been fully read. Source cards state reading scope. Follow [the maintenance workflow](how-to-use.md) when adding or changing knowledge.
 
@@ -45,8 +45,9 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 
 ## Decisions
 
-- [Decision 0001 Trainer first over Wi-Fi](decisions/0001-scope.md)
+- [Decision 0003 Build a phase-placement scheduler and benchmark, not a fabric](decisions/0003-build-target.md)
 - [Decision 0002 Preserve measurement and objective semantics](decisions/0002-measurements.md)
+- [Decision 0001 Trainer first over Wi-Fi (superseded)](decisions/0001-scope.md)
 
 ## Templates
 
@@ -55,7 +56,6 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 - [Decision record template](templates/decision.md)
 
 ## Sources
-
 - [S01 — Karpathy LLM Wiki](sources/S01.md)
 - [S02 — MLX distributed communication](sources/S02.md)
 - [S03 — AirTrain](sources/S03.md)
@@ -78,3 +78,17 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 - [S20 — FedAvg](sources/S20.md)
 - [S21 — Apple M1 announcement](sources/S21.md)
 - [S22 — Hello SME](sources/S22.md)
+- [S23 — maderix ANE repository README](sources/S23.md)
+- [S24 — Hypura storage-tier scheduler](sources/S24.md)
+- [S25 — AtomGradient hybrid ANE MLX bench](sources/S25.md)
+- [S26 — eejd rs-ane-infer](sources/S26.md)
+- [S27 — ANE Fieldfare](sources/S27.md)
+- [S28 — RavenX distributed LoRA on MLX JACCL](sources/S28.md)
+- [S29 — laya-apple GPU plus ANE routing](sources/S29.md)
+- [S30 — DGX Spark Mac Studio prefill decode disaggregation](sources/S30.md)
+- [S31 — Mac Spark playbook RDMA prefill handoff](sources/S31.md)
+- [S32 — MLX LM generate speculative decoding source](sources/S32.md)
+- [S33 — MLX LM speculative decoding issue search](sources/S33.md)
+- [S34 — MLX tensor parallelism example](sources/S34.md)
+- [S35 — MLX data parallelism example](sources/S35.md)
+- [S36 — coremltools compute units](sources/S36.md)

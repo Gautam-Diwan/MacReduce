@@ -2,11 +2,13 @@
 title: "Evaluation plan and acceptance gates"
 type: experiment-plan
 status: proposed
-updated: 2026-10-23
+updated: 2026-10-25
 sources: ["S06", "S07", "S09"]
 ---
 
 # Evaluation plan and acceptance gates
+
+**Scope note 2026-10-25:** this page describes the training evaluation plan from decisions 0001 and 0002. The serving benchmark for [decision 0003](../decisions/0003-build-target.md) (A-B-B-A runs, noise floor, greedy equivalence, TTFT and decode tok/s) is specified in the decision and the [roadmap](../project/roadmap.md); its measurement and failure-reporting rules below still apply.
 
 The experimental unit is a complete training run, with a fixed seed, data split, model, algorithm, and hardware/network configuration. Per-step measurements from one run are not independent training replicates. Existing loopback results are a correctness smoke test, not a scaling result.
 

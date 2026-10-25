@@ -2,11 +2,13 @@
 title: "Training architecture and extension points"
 type: design
 status: active
-updated: 2026-10-24
+updated: 2026-10-25
 sources: ["S04", "S20"]
 ---
 
 # Training architecture and extension points
+
+**Scope note 2026-10-25:** this is the retained local-SGD trainer, a measured prototype. The coordinator, chunked artifact transfer, and manifests are the pieces [decision 0003](../decisions/0003-build-target.md) expects to reuse for telemetry and prefix-KV file movement; the training loop itself is not the deliverable.
 
 The coordinator distributes one versioned checkpoint to a fixed set of workers. Each worker loads it, samples its local data, executes K SGD steps, and uploads parameters. The coordinator waits for all members, averages their models by processed-token count, evaluates the new model, and atomically writes a checkpoint and manifest.
 

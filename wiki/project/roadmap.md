@@ -2,33 +2,29 @@
 title: "Implementation order and completion gates"
 type: plan
 status: active
-updated: 2026-10-24
-sources: ["S02", "S10", "S18"]
+updated: 2026-10-25
+sources: ["S27", "S32", "S33"]
 ---
 
 # Implementation order and completion gates
 
-Complete a small coherent experiment before expanding every axis. These are engineering estimates, not commitments or measured durations; actual work depends on access to another Mac and a normal terminal with Metal access.
+This plan follows [decision 0003](../decisions/0003-build-target.md). Dates are the course calendar: proposal 2026-11-06, final 2026-12-04, a group of 2–3. Effort figures are estimates, not measurements. Nothing in this table has been built as of 2026-10-25; see [state](state.md).
 
-| Order | Work package | Approximate effort | Exit evidence |
+| Order | Work package | Window | Exit evidence |
 |---|---|---|---|
-| 1 | [MLX validation](../guides/mlx-validation.md) | 0.5–1 day | Forward/update parity, GPU trace, stable multi-step loss |
-| 2 | [Two-Mac Wi-Fi](../guides/wifi.md) | 1–2 days | Three repeated physical runs, topology, effective payload rate, restart case |
-| 3 | [Real model and corpus](../guides/model-scaling.md) | 2–4 days | 1M–10M model, disjoint validation, reproducible preprocessing and memory budget |
-| 4 | [Profiling validity](../guides/profiling.md) | 1–2 days | Warmup/steady-state split, instrumentation overhead, attribution limits |
-| 5 | [Heterogeneity policy](../guides/heterogeneity.md) | 3–5 days | Fixed objective, baseline comparisons, time-to-loss and domain loss |
-| 6 | [ANE feasibility spike](../guides/ane.md) | 2–3 days before a stop decision | Small gradients and completed-step benchmark, including host work |
-| 7 | [Transport and compression](../guides/transport.md) | 2–4 days if transfer dominates | Bounded-memory transfer and fault injection; quality checks for lossy modes |
-| 8 | [Large-model inference](../guides/inference.md) | Separate stretch project | Model fits aggregate capacity, measured TTFT/decode, validated partition |
+| 1 | **Pin and verify the engine.** Pin `mlx`, `mlx-lm`, one target model and one or two draft models; verify greedy equivalence of speculative versus plain decoding on the M4 before any timing ([S33](../sources/S33.md) failures) | by 2026-10-31 | Pinned versions in a manifest; equivalence report with token-level diff; any failing model pair excluded with the reason |
+| 2 | **Harness and trace.** Request trace with short chat, long-context, and code segments; A-B-B-A runner in fresh processes with a noise floor ([S27](../sources/S27.md) method); TTFT, decode tok/s, requests per minute, bytes, exact-match | by 2026-11-05 | One static sweep on the M4: k in {0,1,2,4,8} with the GPU drafter; raw JSON plus a summary; noise floor stated |
+| 3 | **Proposal** | 2026-11-06 | Proposal cites the sweep; states hypothesis, baselines, falsification, and what needs a second Mac |
+| 4 | **D2 adaptive depth.** Per-step k from running acceptance and measured draft and verify costs; compare with best fixed k | by 2026-11-13 | A-B-B-A result per trace segment; ablation with D1 and D3 fixed |
+| 5 | **D1 drafter engine.** CPU-stream drafter concurrent with GPU verify; ANE gate: Core ML conversion of the draft model, placement check by power or compute plan, parity gate; include the ANE engine only if the gate passes | by 2026-11-20 | Engine cost table; gate outcome recorded either way; if the gate fails, that is the finding for direction 2 |
+| 6 | **D3 prefix source, local.** `mlx_lm.cache_prompt` files on disk; decide reuse versus recompute from prefix length, bytes, and measured disk rate | by 2026-11-25 | Crossover curve on the M4 with both static arms shown |
+| 7 | **D3 remote arm (only with a second Mac).** Pull KV from peer versus send prompt for remote prefill versus local; reuse the existing chunked artifact transfer; measure the link rather than assuming it | 2026-11-20 to 2026-11-30 | Same crossover with link rate as a parameter; if no second Mac, report the arm as not run |
+| 8 | **Combined policy and report.** All three decisions against the hindsight-best static triple; negative results kept | by 2026-12-03 | Final tables, limitations, and an updated [state](state.md) and [log](../log.md) |
 
-## First three concrete tasks
+## What is reused from the existing code
 
-1. **Partial, measured 2026-10-24.** The opt-in MLX test passed on this M4 for the default model and a 2-layer config, and a short `mlx-gpu` loopback demo finished. Tolerances were not changed. A GPU trace and the longer gradient audit are still open because `xctrace` was unavailable and that audit is not written yet. See [MLX validation](../guides/mlx-validation.md).
-2. **Not started.** Connect a second physical Mac using explicit IP addresses. Keep the model, optimizer, K, and data policy fixed. Capture host identity, transport, and collector availability.
-3. **Minimal slice done.** `ModelConfig` is serialized with checkpoints, and model transfer uses a bounded chunked artifact protocol instead of the old 2 MB response ceiling. A real corpus and a 1M-parameter model are still future work. See [model scaling](../guides/model-scaling.md) and [transport](../guides/transport.md).
+The coordinator and worker processes, chunked artifact transfer with hashes, and the run-manifest conventions in `macreduce` are reusable for telemetry collection and KV-file movement. The trainer itself is not on the critical path and stays as the measured prototype described in [state](state.md).
 
-Choose **one** primary research direction from [the novelty assessment](../research/novelty.md). ANE and M5 work can remain a bounded optional experiment if the Wi-Fi scheduling study is the main contribution. Do not require unavailable M5 hardware for the core deliverable.
+## Definition of finished
 
-## Definition of finished for the course-scale project
-
-A physical two-Mac run is reproducible; comparisons use fixed data and quality targets; failure recovery is demonstrated; implementation and literature limitations are explicit; the report includes unsuccessful cases as well as improvements. Large-model pretraining from scratch is outside this deliverable. Check course expectations before describing this trainer as satisfying a general-purpose MapReduce assignment.
+Pinned versions; greedy equivalence verified; A-B-B-A results with a noise floor for each decision alone and combined; the hindsight-best static baseline reported honestly; the ANE gate outcome recorded; the second-Mac arm either measured or marked not run; limitations and the unverified items from [gaps](../research/gaps.md) in the report. Do not describe this as satisfying a general-purpose MapReduce assignment; map and reduce describe the scheduler's structure only.

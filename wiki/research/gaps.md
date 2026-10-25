@@ -2,41 +2,39 @@
 title: "Unknowns contradictions and next literature searches"
 type: research-ledger
 status: active
-updated: 2026-10-24
-sources: ["S03", "S06", "S07", "S08", "S09", "S10", "S12"]
+updated: 2026-10-25
+sources: ["S02", "S03", "S06", "S07", "S08", "S09", "S10", "S12", "S25", "S27", "S28", "S29", "S30", "S31", "S33", "S36"]
 ---
 
 # Unknowns contradictions and next literature searches
 
-This ledger distinguishes missing implementation, missing evidence, and incomplete literature coverage. It is not a backlog of already solved research problems.
+This ledger distinguishes missing implementation, missing evidence, and incomplete literature coverage. It is not a backlog of already solved research problems. Entries are reprioritized for [decision 0003](../decisions/0003-build-target.md).
 
 | Priority | Gap or contradiction | Why it matters | Resolution |
 |---|---|---|---|
-| P0 | No physical multi-Mac/Wi-Fi result | Loopback cannot predict airtime contention or heterogeneous hardware | Run [Wi-Fi protocol](../guides/wifi.md), preserve raw measurements |
-| P0 | MLX GPU path only partly validated | Parity and a short loopback demo are not a trace, gradient audit, or 100-step study | Finish the remaining [MLX gates](../guides/mlx-validation.md); do not treat the 2026-10-24 demo as that audit |
-| P0 | Current token weighting changes source influence with work | A faster run may optimize a different objective | Define p_i and test [objective-preserving aggregation](../guides/heterogeneity.md) |
-| P1 | Default model is still the 29,888-parameter toy | Config and a 64 MiB chunked transfer exist; a real corpus and 1M-parameter run do not | Continue [model scaling](../guides/model-scaling.md) after memory measurements |
-| P1 | ANE repository documentation covers multiple execution modes | “ANE training” may include host optimizer/state traffic | Pin code; inspect selected mode; validate gradients and full costs |
-| P1 | Closest adaptive/heterogeneous methods not fully reviewed | Broad novelty claims would be unsupported | Read full AdaComm, FedNova, HEW-LocalSGD, DiLoCo and Streaming DiLoCo methods |
-| P1 | FusionML reports limited training benefit from CPU/GPU co-execution | Adding devices may reduce speed | Reproduce matched workload before a co-execution scheduler |
-| P1 | AirTrain README bandwidth/time figures appear inconsistent in one example | Marketing numbers are not a reliable baseline | Verify units, exact revision, actual payload and end-to-end trace; contact maintainer only if the team chooses |
-| P2 | M5 unavailable locally | GPU neural-accelerator dispatch and speed cannot be measured here | Capability-aware fallback now; validate on borrowed M5 later |
-| P2 | ANE/mactop counters unavailable in sandbox | Cannot infer zero use or reliable attribution | Normal terminal, Instruments plus isolated workloads; document permissions and counter meaning |
-| P2 | Large-model inference separate from trainer | Training results do not validate sharding or KV-cache memory | Evaluate EXO separately with [inference guide](../guides/inference.md) |
-| P2 | Federated LoRA and model-merging review incomplete | Factor averaging has known issues and prior solutions | Search/read relevant methods before implementing a claimed new reducer |
+| P0 | **No scheduler or benchmark code exists** | The deliverable is unbuilt | [Roadmap](../project/roadmap.md) items 1–2 by 2026-11-05 |
+| P0 | **Does any ANE path execute on this M4 under macOS 26.5?** [S25](../sources/S25.md) reports Core ML `ALL` ran on GPU on macOS 26.3; [S29](../sources/S29.md) reports a parity-gated ANE path on an M4 Max on 26.6.2; [S36](../sources/S36.md) says the flag is a constraint | D1's ANE option is unknown, not available | Convert the draft model with coremltools; check placement by power or compute plan; parity gate; record pass or fail |
+| P0 | **Stock speculative decoding equivalence** is unverified for any model pair on this machine; [S33](../sources/S33.md) lists greedy divergence and skipped tokens on other setups | A speed number without equivalence is invalid | Token-level diff per model pair before timing; exclude failing pairs |
+| P0 | **Literature on adaptive speculation depth and KV reuse policies not searched** | The primary candidate could duplicate a published rule | Searches listed in [related work](related-work.md); read nearest two papers in full; log results |
+| P1 | **Second Mac, RAM, and link are unknown** | D3's remote arm and machine choice cannot be planned | Record exact hardware when known; measure the link; do not assume Thunderbolt 5 RDMA ([S28](../sources/S28.md) lists JACCL provider bugs) |
+| P1 | **Disaggregation crossovers disagree:** [S30](../sources/S30.md) favors the split up to 8K ctx; [S31](../sources/S31.md) favors it only from about 32K on code | A single crossover number is workload- and hardware-specific | Treat crossover as the output of the D3 rule, parameterized by prefix length, bytes, link rate, local prefill rate |
+| P1 | **Hidden runtime state changes costs:** KV dtype mismatch slow path ([S30](../sources/S30.md)); rotating-cache path divergence ([S33](../sources/S33.md)); Core ML compile cache 0.7–1.4 GB per bucket and minutes of cold compile ([S29](../sources/S29.md)) | A cost model that ignores state will be wrong | Log dtype, cache type, compile state, and warm or cold in every run manifest |
+| P1 | **Energy telemetry:** `powermetrics` is package-level and needs privileges; no per-process attribution | Joules can only be a labeled estimate | Report as estimate with method, or omit; never zero |
+| P2 | **Trainer gaps retained:** token weighting changes source influence; MLX gradient audit and 100-step check unrun; model is the 29,888-parameter toy | Only matters if training work resumes | [Heterogeneity](../guides/heterogeneity.md), [MLX validation](../guides/mlx-validation.md) stay as guides |
+| P2 | AirTrain README bandwidth figures inconsistent in one example ([S03](../sources/S03.md)) | Unchanged | Not on the critical path |
+| P2 | ANE/mactop counters unavailable in sandbox | Cannot infer zero use | Normal terminal plus isolated workloads when the gate runs |
+| P2 | M5 unavailable; not planned | None for decision 0003 | Drop unless hardware appears |
 
-## Research search coverage: 2026-10-22 local date
+## Research search coverage: 2026-10-25 local date
 
-The initial review fetched official MLX/Apple documentation, public ANE training project documentation, distributed training papers, a Mac Wi-Fi training repository, and a distributed inference repository. Source snapshots were retrieved late on October 22 Eastern time (October 23 UTC); the manifest stores UTC times. The [source notes](../index.md#sources) distinguish abstracts, README files, and documentation from audited implementations.
+Fetched and read in full, as primary README or doc text: maderix/ANE top README, t8/hypura, AtomGradient/hybrid-ane-mlx-bench, eejd/rs-ane-infer, zw5/ane-fieldfare, RavenXAILabs/mlx-distributed-lora, tc3oliver/laya-apple, BTankut P/D DGX Spark plus Mac Studio, Aileuxe/mac-spark-playbook, MLX data- and tensor-parallel example pages, coremltools compute-units section; read in part: `mlx_lm/generate.py` speculative path and four mlx-lm issue bodies with 28 titles. The EXO README fetched on 2026-10-25 was byte-identical to [S18](../sources/S18.md) (SHA-256 match); API metadata shows the repository is not archived and names no successor. GitHub repository search was used only to resolve URLs the user described; search results were not treated as evidence.
 
-Topics examined included Apple Neural Engine training APIs; Mac Wi-Fi distributed training; local-SGD communication reduction; heterogeneous local steps and objective inconsistency; Apple CPU/GPU co-execution; M5 GPU neural accelerators; SME capability and profiling; Core ML/Metal placement; and distributed inference. This record describes coverage, not an exhaustive or reproducible systematic literature review.
-
-**Searches still required:** Hivemind/OpenDiLoCo/Decoupled DiLoCo implementation and scaling; wireless federated scheduling and client-selection methods; FedProx/SCAFFOLD/Oort; online autotuning with probe interference; federated LoRA factor alignment/aggregation; ANE training papers and repository revisions after this snapshot. Record query, date, database, candidates, exclusions, and inspected scope when doing this review.
+Not covered: the AtomGradient paper PDF and its "hybird-batch-prefill-on-ane" successor; ANE-LM; Turbo Fieldfare; `PERFORMANCE.md` and `SpeculationPolicy` source in ANE Fieldfare; laya-apple's support-matrix and benchmark files; the DGX-Mac benchmark reports under `docs/`; any academic literature on adaptive speculation or KV reuse. These are leads, not read sources.
 
 ## Retrieval issues and provenance
 
-The gist's normal page and API retrieval initially failed; its raw `llm-wiki.md` URL succeeded. AirTrain's `main` README URL failed and `master` succeeded. MLX-LM's top-level `LORA.md` URL failed and `mlx_lm/LORA.md` succeeded. These are access/path failures, not evidence that content does not exist. Snapshot checksums identify saved bytes, not commits. Mutable documentation and unversioned arXiv URLs should be refreshed before relying on current behavior.
+2026-10-25: the uploaded `distributed-0.html` is a text rendering of the same MLX 0.32.4 "Distributed Communication" page as [S02](../sources/S02.md) (identical headings and sentences, different serialization and byte length); it was not intaken and S02 bytes were untouched. `https://ml-explore.github.io/mlx/build/html/examples/distributed_data_parallel.html` and `.../distributed_tensor_parallel.html` returned 404; the correct paths `examples/data_parallelism.html` and `examples/tensor_parallelism.html` were found from S02's link targets and saved as [S35](../sources/S35.md) and [S34](../sources/S34.md). `mlx_lm/examples/pipeline_generate.py` returned 404 on `main`; pipeline parallelism is therefore cited only from the EXO README. Apple Developer pages for `MLComputeUnits` and `MLComputePlan` returned a JavaScript-required shell with no content and were not saved; the coremltools guide was used instead ([S36](../sources/S36.md)). Earlier issues from 2026-10-22 remain as recorded in the log.
 
 ## Claim-resolution rules
 
-When sources disagree, retain both claims with scopes and versions; inspect primary implementation or run an experiment. Never resolve a conflict by silently choosing the more exciting number. Distinguish public supported APIs, private experimental interfaces, inferred hardware presence, and measured execution. Report “not inspected” where appropriate. A green wiki lint result checks structure, not the truth of this ledger.
+When sources disagree, retain both claims with scopes and versions; inspect primary implementation or run an experiment. Never resolve a conflict by silently choosing the more exciting number. Distinguish public supported APIs, private experimental interfaces, inferred hardware presence, and measured execution. Report "not inspected" where appropriate. A green wiki lint result checks structure, not the truth of this ledger.

@@ -2,60 +2,72 @@
 title: "Research contribution candidates and falsification plans"
 type: research
 status: proposed
-updated: 2026-10-23
-sources: ["S03", "S05", "S06", "S07", "S08", "S09", "S10", "S12"]
+updated: 2026-10-25
+sources: ["S02", "S03", "S05", "S06", "S07", "S08", "S09", "S10", "S12", "S23", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36"]
 ---
 
 # Research contribution candidates and falsification plans
 
-**Recommendation:** build a credible physical Wi-Fi baseline first, then test candidate A. It fits the existing trainer and can produce an informative result without depending on private ANE APIs. Candidate B is more hardware-specific and higher risk. None is a verified novelty claim.
+**Recommendation (2026-10-25, [decision 0003](../decisions/0003-build-target.md)):** build a per-request phase-placement scheduler for LLM serving on Apple Silicon and the benchmark that tests it against the strongest static configuration. The earlier recommendation, a Wi-Fi local-SGD scheduling study, is demoted below. No candidate on this page is a verified novelty claim; each lists the sources that block the obvious version of the claim and the search still owed.
 
-## A. Objective-preserving scheduling under changing Wi-Fi and thermal conditions
+## Why the earlier recommendation was demoted
 
-**Question:** can a small Mac cluster reach a fixed validation target sooner by adapting work to measured compute and communication conditions, while retaining fixed data-source weights?
+The 2026-10-23 recommendation was "build a credible physical Wi-Fi baseline first, then test objective-preserving scheduling under changing Wi-Fi and thermal conditions." Sources read on 2026-10-25 remove its footing:
 
-**Hypothesis:** a policy that accounts for uncertainty, calibration cost, and slow changes in compute/network conditions improves time-to-quality over a static calibrated policy. The useful result could also be that policy overhead or optimization drift eliminates the gain.
+- Connecting Macs for training is first-party: `mlx.launch`, ring/MPI/JACCL backends, and `nn.average_gradients` ([S02](../sources/S02.md), [S35](../sources/S35.md)); community guides already run data-parallel LoRA across Macs with stock tooling ([S28](../sources/S28.md)); AirTrain already does local SGD over Wi-Fi ([S03](../sources/S03.md)).
+- The synchronization schedule itself is covered by DiLoCo and its variants ([S04](../sources/S04.md), [S05](../sources/S05.md)) and by heterogeneity-aware local SGD ([S06](../sources/S06.md), [S07](../sources/S07.md), [S08](../sources/S08.md)).
+- ANE training prototypes exist and report their own limits ([S10](../sources/S10.md), [S12](../sources/S12.md), [S23](../sources/S23.md)).
 
-**Potential distinction to investigate:** not generic adaptive synchronization ([AdaComm](../sources/S07.md)), heterogeneous local work ([FedNova](../sources/S06.md), [HEW-LocalSGD](../sources/S08.md)), or Wi-Fi training ([AirTrain](../sources/S03.md)). The narrower candidate is measured control on small, shared-memory Macs where thermal drift, shared wireless airtime, and intrusive probes interact, with an explicitly preserved data objective. Full-paper comparison may show that this is an application or evaluation contribution rather than a new algorithm.
+What remains of that work is a measured prototype: a CPU and MLX-GPU local-SGD trainer with chunked transfer and tests ([state](../project/state.md)). It is infrastructure, not the claim.
 
-**Build in stages:**
+## Primary candidate: per-request placement decisions a static runtime gets wrong
 
-1. Fix dataset mixture weights p_i independently of device speed. Start with equal K and equal effective batch, allowing device-specific micro-batches and accumulation. Record p_i in the run manifest.
-2. Estimate worker step time, peak memory, transfer tails, and calibration overhead. Keep confidence intervals and sample age. Only measure safe candidate configurations; avoid probes near memory exhaustion.
-3. Compare static calibrated allocation with a simple bounded feedback rule. Change only micro-batch/accumulation first. Introduce K adaptation later as a separate algorithm experiment. Specify update frequency, hysteresis, bounds, and fallback before trials.
-4. For unequal local steps, implement and verify a solver-appropriate normalization baseline. Do not assume token weighting preserves p_i. Compare on a quadratic oracle before a language model. See [heterogeneity](../guides/heterogeneity.md).
-5. Evaluate benign physical Wi-Fi changes and thermal drift; separately use repeatable injected delay/bandwidth scenarios. Do not combine those into a claim about measured radio behavior.
+**Question:** on a Mac, does choosing drafter engine, speculation depth, and prefix-KV source per request from online measurements beat the best fixed configuration, and in which regimes?
 
-**Baselines:** single fastest Mac; equal work; static calibration; the same policy without uncertainty or recalibration cost; fixed K sweep; an appropriate adaptive-communication baseline after full-paper review. Use an offline oracle only as an explicitly retrospective bound, not a deployable baseline.
+**Hypothesis:** on one M4, the adaptive policy yields lower p50 TTFT and higher decode tok/s on a mixed trace than the hindsight-best static configuration, without changing greedy output. **Falsified if** the static configuration is within the A-B-B-A noise floor on both metrics, or policy overhead exceeds the gain, or greedy outputs differ.
 
-**Primary outcome:** wall time to a predeclared held-out loss target, reporting failures to reach it. Secondary outcomes: validation loss at fixed tokens, per-domain loss, total bytes, tail round time, idle time, energy when measured credibly, and probe overhead. At least three seeds for the small study, with variation shown; this is not a universal statistical power guarantee.
+**The three decisions** are specified in [decision 0003](../decisions/0003-build-target.md): D1 drafter engine (none, GPU, CPU stream, gated ANE), D2 speculation depth k per step, D3 prefix source (recompute, local-disk KV, peer KV or remote prefill when a second Mac exists).
 
-**Ablations:** stationary versus changing conditions; one versus multiple concurrent transfers; uniform versus skewed data; without uncertainty; without calibration cost; fixed versus adapted K; equal versus unequal hardware. If the gain disappears against static calibration or comes from changing the data mixture, the central hypothesis fails.
+**What blocks the naive versions of this claim (source-reported unless marked):**
 
-**Resources:** two or preferably three physical Macs; one can be the available M4. An M5 is not required. First validate a configurable 1–10M parameter model; scale only after the transfer protocol and memory accounting support it. Publish scripts, configuration, and anonymized measurements.
+| Sub-claim | Blocked by | What is left |
+|---|---|---|
+| Speculative decoding on MLX | stock `mlx-lm` `--draft-model` ([S32](../sources/S32.md)) | choosing engine and depth, and verifying equivalence given [S33](../sources/S33.md) |
+| Adaptive draft length from acceptance | ANE Fieldfare's `SpeculationPolicy` ([S27](../sources/S27.md)), inside one Swift runtime on an M5 | a measured comparison against best-fixed-k on MLX; academic prior work on dynamic speculation is **not yet searched** |
+| ANE drafter with GPU verifier | ANE prefill/decode handoffs ([S23](../sources/S23.md), [S25](../sources/S25.md), [S26](../sources/S26.md), [S27](../sources/S27.md)); [S26](../sources/S26.md) names the idea | a placement-verified measurement on this M4; may fail the gate, which is a result |
+| Concurrent GPU plus ANE routing | laya-apple ([S29](../sources/S29.md)) for a classifier | autoregressive decode, online updating, second machine |
+| KV transfer versus recompute | [S30](../sources/S30.md), [S31](../sources/S31.md) on DGX plus Mac Studio | a decision rule parameterized by prefix length, bytes, link rate, local prefill rate; literature on KV-cache reuse policies is **not yet searched** |
+| Memory-tier placement | Hypura ([S24](../sources/S24.md)) | nothing; do not rebuild |
+| Within-model compute-unit choice | Core ML `compute_units` ([S36](../sources/S36.md)) is Apple's decision, not ours | treat as a resource to verify, not a knob to claim |
 
-## B. ANE-resident local training blocks versus synchronization boundaries
+**Baselines (strongest static, not strawmen):** no speculation; best fixed k with GPU drafter from an offline sweep per workload; best fixed k with CPU drafter; always-recompute and always-reuse for D3; a hindsight-best static triple for the whole trace. Report the oracle only as a retrospective bound.
 
-**Question:** at what model size, local-step count, and synchronization frequency does keeping computation/state on the ANE pay off after host materialization, exchange, and recompilation costs?
+**Primary outcomes:** p50 and p95 TTFT; decode tok/s after first token; requests per minute on the trace; greedy exact-match rate against non-speculative generation (must be 100% or the configuration is excluded); bytes moved; probe overhead. Energy only as a labeled `powermetrics` package estimate.
 
-**Potential distinction:** distributed synchronization-boundary cost accounting for an ANE training backend, not inventing ANE training. [ANEForge](../sources/S10.md), [maderix/ANE](../sources/S11.md), and [Orion](../sources/S12.md) already occupy the latter space. The available APIs are private and their compatibility needs independent assessment.
+**Ablations:** each decision alone with the other two fixed; short-only, long-only, and code-only traces; cold versus warm model and Core ML compile state; one versus two concurrent requests. If gains appear only on one trace type, say so.
 
-First pass [ANE correctness gates](../guides/ane.md). Hold architecture, precision, effective batch, and algorithm fixed across GPU and ANE. Compare local-only, loopback synchronization, and physical Wi-Fi synchronization. Separate compile, warmup, compute, host fallback, materialization, serialize, transfer, reduce, and reload costs. Sweep K and payload size; report quality at fixed tokens as K changes. Do not call a host-optimizer configuration “all ANE.”
+**Resources:** one M4 now (all of D1–D2, local D3, harness). A second Mac on any IP link unlocks the remote arm of D3. No Thunderbolt 5, M5, or private ANE API is required.
 
-**Falsification:** numerical error, insufficient operator coverage, or materialization overhead consumes the local gain at every feasible setting. That is still a useful measured result if the implementation is validated and bottlenecks are attributed. This is a stretch scope after the baseline, not a dependency of the main project.
+**Stages to 2026-12-04** are in the [roadmap](../project/roadmap.md).
 
-## C. Calibration that does not damage the workload it is measuring
+## Demoted candidates (kept for history)
 
-**Question:** can a lightweight admission/calibration method choose configurations more reliably than aggressive probing under shared-memory pressure?
+### A. Objective-preserving scheduling under changing Wi-Fi and thermal conditions
 
-[FusionML](../sources/S09.md) already discusses calibration effects and CPU/GPU execution, so the broad idea is not new. Investigate a cluster policy with bounded probe memory/time, confidence-based remeasurement, and thermal-aware sample expiry. Compare prediction error, time-to-quality, memory pressure, failed admissions, and total probe cost with static and exhaustive calibration. Never cause system-wide memory exhaustion merely to collect a benchmark. Novelty requires a closer search of online autotuning and systems calibration literature.
+Demoted 2026-10-25. The data-objective rules it introduced (fixed mixture weights p_i, solver-appropriate normalization, [decision 0002](../decisions/0002-measurements.md)) stay in force for any training work. The Wi-Fi control study is not pursued because connecting Macs is covered ([S02](../sources/S02.md), [S28](../sources/S28.md), [S03](../sources/S03.md)) and the schedule-adaptation literature is dense ([S06](../sources/S06.md), [S07](../sources/S07.md), [S08](../sources/S08.md)).
 
-## D. A reproducible Mac-cluster training and profiling benchmark
+### B. ANE-resident local training blocks versus synchronization boundaries
 
-A carefully documented benchmark can be a strong course contribution even without a novel optimizer. Combine per-phase traces, model/dataset/config hashes, honest missing counters, physical Wi-Fi trials, recovery scenarios, and paired profiling-on/off measurements. Focus on questions existing papers do not measure consistently: communication fraction, probe perturbation, energy attribution uncertainty, and cross-machine heterogeneity.
+Demoted. Three ANE training prototypes exist ([S10](../sources/S10.md), [S12](../sources/S12.md), [S23](../sources/S23.md)); all use private APIs; maderix reports 5–9% utilization and CPU-side weight gradients. The boundary-cost accounting idea is sound but requires a working ANE training backend that this project will not build.
 
-This is an evaluation/tooling contribution. It becomes research evidence only with real multi-Mac measurements, public reproduction instructions, and explicit limitations; the current loopback demo is insufficient.
+### C. Calibration that does not damage the workload it is measuring
+
+Folded into the primary candidate as the probe-overhead and bounded-probe rules. [FusionML](../sources/S09.md) remains the nearest prior work for calibration effects.
+
+### D. A reproducible Mac-cluster training and profiling benchmark
+
+Replaced by the serving benchmark in the primary candidate. The discipline carries over: per-phase traces, hashes, honest missing counters, profiling-on versus off.
 
 ## What not to claim
 
-Do not claim first Mac cluster, first Wi-Fi local SGD, first ANE training, first adaptive synchronization, or automatic utilization of every accelerator. Do not call a scheduling gain novel until the closest papers are read in full and the claimed distinction survives comparison. Record the final claim and evidence in a [decision](../templates/decision.md) after [experiments](experiments.md).
+Do not claim first Mac cluster, first ANE anything, first speculative decoding on MLX, first prefill/decode disaggregation to a Mac, or first GPU-plus-ANE routing. Do not call a scheduling gain novel until the dynamic-speculation and KV-reuse literature searches listed in [gaps](../research/gaps.md) are done and the nearest papers are read in full. A measured negative result with attributed costs is an acceptable outcome of this plan.

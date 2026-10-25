@@ -2,11 +2,13 @@
 title: "Run and characterize a physical WiFi cluster"
 type: implementation
 status: proposed
-updated: 2026-10-23
+updated: 2026-10-25
 sources: ["S03", "S04", "S05"]
 ---
 
 # Run and characterize a physical WiFi cluster
+
+**Scope note 2026-10-25:** under [decision 0003](../decisions/0003-build-target.md) Wi-Fi is no longer the research question. Keep this page as the operational procedure for any multi-Mac measurement (for example the remote arm of the prefix-source decision); the link rate is a measured parameter, not a claim.
 
 Use [the README commands](../../README.md) with unique worker IDs, the same source revision, a shared secret, and explicit IP addresses. Choose a trusted private network or TLS/SSH transport. University client isolation may prevent peer connections; distinguish this from a software failure. Keep a coordinator worker optional and record whether it shares compute with reduction and validation.
 
