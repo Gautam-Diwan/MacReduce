@@ -14,7 +14,7 @@ from .benchmark import accelerate_matmul
 from .cluster import Coordinator, make_server
 from .observe import capabilities, collect_mactop, report
 from .placement import CostTable, EngineCost, choose
-from .serving import MlxLmExecutor, builtin_trace, sweep_order
+from .serving import DRAFT_MODEL, TARGET_MODEL, MlxLmExecutor, builtin_trace, sweep_order
 from .study import execute as execute_study
 from .worker import run_worker
 
@@ -225,6 +225,16 @@ def main():
     equivalence.add_argument("--max-tokens", type=int, default=32)
     equivalence.add_argument("--depth", type=int, default=2)
     equivalence.add_argument("--output")
+    check = sub.add_parser(
+        "model-check",
+        help="load the serving pair, describe its cache, and try one plain and one draft run",
+    )
+    check.add_argument("--output", required=True)
+    check.add_argument("--max-tokens", type=int, default=32)
+    check.add_argument("--depth", type=int, default=2)
+    check.add_argument("--segment", choices=["short", "long", "code"], default="short")
+    check.add_argument("--target")
+    check.add_argument("--draft")
     sweep = sub.add_parser("sweep", help="print the static depth order; generation is a later run")
     sweep.add_argument("--cycles", type=int, default=1)
     bench = sub.add_parser(
@@ -364,6 +374,18 @@ def main():
 
             with tempfile.TemporaryDirectory(prefix="macreduce-ane-") as directory:
                 report_body = placement_probe(Path(directory))
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+        elif args.command == "model-check":
+            prompts = {prompt.segment: prompt.text for prompt in builtin_trace()}
+            executor = MlxLmExecutor(
+                target=args.target or TARGET_MODEL,
+                draft=args.draft or DRAFT_MODEL,
+            )
+            report_body = executor.check(prompts[args.segment], args.max_tokens, args.depth)
             text = json.dumps(report_body, indent=2)
             destination = Path(args.output)
             destination.parent.mkdir(parents=True, exist_ok=True)

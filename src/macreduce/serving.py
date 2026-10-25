@@ -144,6 +144,22 @@ def beats(
     }
 
 
+def _public_generation(result: dict) -> dict:
+    kept = (
+        "text",
+        "ttft_seconds",
+        "decode_tokens_per_second",
+        "prompt_tokens",
+        "generated_tokens",
+        "from_draft_tokens",
+        "peak_memory_gb",
+        "finish_reason",
+    )
+    body = {key: result[key] for key in kept}
+    body["text"] = body["text"][:240]
+    return body
+
+
 def run_abba(run, prompts: list[Prompt], cycles: int) -> list[Trial]:
     """``run(arm, prompt) -> Trial``. Arms alternate A, B, B, A for each prompt."""
 
@@ -155,6 +171,23 @@ def run_abba(run, prompts: list[Prompt], cycles: int) -> list[Trial]:
                 raise ValueError("runner returned a trial for a different arm or segment")
             trials.append(trial)
     return trials
+
+
+def cache_summary(caches) -> dict:
+    """Count cache kinds. An untrimmable kind blocks stock speculative decoding."""
+
+    counts: dict[str, int] = {}
+    untrimmable: set[str] = set()
+    for cache in caches:
+        name = type(cache).__name__
+        counts[name] = counts.get(name, 0) + 1
+        if not cache.is_trimmable():
+            untrimmable.add(name)
+    return {
+        "counts": counts,
+        "untrimmable": sorted(untrimmable),
+        "speculative_ok": not untrimmable,
+    }
 
 
 def static_arms() -> list[Placement]:
@@ -281,6 +314,71 @@ class MlxLmExecutor:
                 "draft": MODEL_REVISIONS.get(self.draft_id),
             },
         }
+
+    def check(self, prompt: str, max_tokens: int = 32, depth: int = 2) -> dict:
+        """Load the pinned pair, describe caches, and try one plain and one draft run.
+
+        A draft that fails to load is recorded. It does not skip the plain run.
+        """
+
+        self.require_pin()
+        from mlx_lm import load
+
+        report: dict = {
+            "versions": dict(self.versions),
+            "target": self.target_id,
+            "draft": self.draft_id,
+            "revisions": {
+                "target": MODEL_REVISIONS.get(self.target_id),
+                "draft": MODEL_REVISIONS.get(self.draft_id),
+            },
+            "prompt": prompt,
+            "max_tokens": max_tokens,
+            "depth": depth,
+        }
+        try:
+            self._target, self._tokenizer = load(
+                self.target_id, revision=MODEL_REVISIONS.get(self.target_id)
+            )
+            report["target_load"] = "ok"
+            if hasattr(self._target, "make_cache"):
+                report["target_cache"] = cache_summary(self._target.make_cache())
+        except Exception as exc:
+            report["target_load"] = f"{type(exc).__name__}: {exc}"
+            return report
+        try:
+            self._draft, draft_tokenizer = load(
+                self.draft_id, revision=MODEL_REVISIONS.get(self.draft_id)
+            )
+            report["draft_load"] = "ok"
+            report["vocab_size"] = {
+                "target": getattr(self._tokenizer, "vocab_size", None),
+                "draft": getattr(draft_tokenizer, "vocab_size", None),
+            }
+        except Exception as exc:
+            self._draft = None
+            report["draft_load"] = f"{type(exc).__name__}: {exc}"
+        try:
+            plain = self.generate(
+                prompt, max_tokens=max_tokens, placement=fixed("none", 0, "recompute")
+            )
+            report["plain"] = _public_generation(plain)
+        except Exception as exc:
+            report["plain"] = {"error": f"{type(exc).__name__}: {exc}"}
+            return report
+        if self._draft is None:
+            report["speculative"] = {"error": report.get("draft_load")}
+            return report
+        try:
+            spec = self.generate(
+                prompt, max_tokens=max_tokens, placement=fixed("gpu", depth, "recompute")
+            )
+        except Exception as exc:
+            report["speculative"] = {"error": f"{type(exc).__name__}: {exc}"}
+            return report
+        diff = token_diff(plain["tokens"], spec["tokens"])
+        report["speculative"] = {**_public_generation(spec), **diff}
+        return report
 
     def _encode(self, prompt: str):
         tokenizer = self._tokenizer

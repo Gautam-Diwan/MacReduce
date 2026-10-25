@@ -1,0 +1,1792 @@
+{
+  "segments": [
+    {
+      "segment": "short",
+      "depths": {
+        "0": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.038835290994029485,
+          "decode_tokens_per_second": 77.98799113210576,
+          "ttft_floor": 0.0018107079959008773,
+          "decode_floor": 8.93253928387557
+        },
+        "1": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.04673916699539405,
+          "decode_tokens_per_second": 87.40939384490268,
+          "ttft_floor": 0.0004563339898595656,
+          "decode_floor": 1.9051375023050952
+        },
+        "2": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.05411504099902231,
+          "decode_tokens_per_second": 95.2173846060224,
+          "ttft_floor": 0.0010087510017910972,
+          "decode_floor": 1.729531664878266
+        },
+        "4": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.06791316698945593,
+          "decode_tokens_per_second": 71.00964621603492,
+          "ttft_floor": 0.0035637079854495823,
+          "decode_floor": 2.7936958353683536
+        },
+        "8": {
+          "n": 3,
+          "exact_n": 0,
+          "ttft_seconds": null,
+          "decode_tokens_per_second": null,
+          "ttft_floor": null,
+          "decode_floor": null
+        }
+      },
+      "hindsight_decode_depth": 2,
+      "hindsight_ttft_depth": 0,
+      "adaptive": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "disk",
+        "seconds_per_token": 0.012287797969322256,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "comparison": {
+        "beats": false,
+        "reason": "within noise or wrong direction",
+        "ttft_gain": 0.003221229497285094,
+        "decode_gain": -10.545539689054237,
+        "ttft_floor": 0.00330539599963231,
+        "decode_floor": 3.514511841660223
+      },
+      "same_depth_as_hindsight": false,
+      "prefix_choice": {
+        "source": "disk",
+        "seconds": 0.001730541989672929,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "note": "One depth chosen before the evaluation pass cannot beat the best depth on that pass. A tie means the cost model selected the hindsight depth. Per-step depth changes are not measured here."
+    },
+    {
+      "segment": "long",
+      "depths": {
+        "0": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 1.4942939169995952,
+          "decode_tokens_per_second": 77.3484859723731,
+          "ttft_floor": 0.03621337401273195,
+          "decode_floor": 0.8554905481974657
+        },
+        "1": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 2.132479042003979,
+          "decode_tokens_per_second": 87.39261420963841,
+          "ttft_floor": 0.13202358401031233,
+          "decode_floor": 3.9405590262519326
+        },
+        "2": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 2.2147757920029107,
+          "decode_tokens_per_second": 99.41826057352503,
+          "ttft_floor": 0.02619954099645838,
+          "decode_floor": 4.778861703323642
+        },
+        "4": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 2.250328083988279,
+          "decode_tokens_per_second": 98.35753157867718,
+          "ttft_floor": 0.0976936250081053,
+          "decode_floor": 1.826909541841303
+        },
+        "8": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 2.2986317920003785,
+          "decode_tokens_per_second": 77.74071715657539,
+          "ttft_floor": 0.017405250007868744,
+          "decode_floor": 1.9254588015784435
+        }
+      },
+      "hindsight_decode_depth": 2,
+      "hindsight_ttft_depth": 0,
+      "adaptive": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "disk",
+        "seconds_per_token": 0.011036937748566936,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "comparison": {
+        "beats": false,
+        "reason": "within noise or wrong direction",
+        "ttft_gain": 0.0,
+        "decode_gain": 0.0,
+        "ttft_floor": 0.10065602100075921,
+        "decode_floor": 7.28611514582736
+      },
+      "same_depth_as_hindsight": true,
+      "prefix_choice": {
+        "source": "disk",
+        "seconds": 0.001730541989672929,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "note": "One depth chosen before the evaluation pass cannot beat the best depth on that pass. A tie means the cost model selected the hindsight depth. Per-step depth changes are not measured here."
+    },
+    {
+      "segment": "code",
+      "depths": {
+        "0": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.1235872079996625,
+          "decode_tokens_per_second": 86.61777867215118,
+          "ttft_floor": 0.00947787398763468,
+          "decode_floor": 6.299200918498073
+        },
+        "1": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.16764945800241549,
+          "decode_tokens_per_second": 83.90684250081962,
+          "ttft_floor": 0.010987040994223207,
+          "decode_floor": 5.950792817598895
+        },
+        "2": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.19799295900156721,
+          "decode_tokens_per_second": 94.82861764736977,
+          "ttft_floor": 0.012406708003254607,
+          "decode_floor": 2.1111772138369815
+        },
+        "4": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.2255701669928385,
+          "decode_tokens_per_second": 60.69847817719693,
+          "ttft_floor": 0.006052291006199112,
+          "decode_floor": 7.466584871431316
+        },
+        "8": {
+          "n": 3,
+          "exact_n": 3,
+          "ttft_seconds": 0.23211562499636784,
+          "decode_tokens_per_second": 35.76131056060512,
+          "ttft_floor": 0.01766845799284056,
+          "decode_floor": 1.4217834341279172
+        }
+      },
+      "hindsight_decode_depth": 2,
+      "hindsight_ttft_depth": 0,
+      "adaptive": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "disk",
+        "seconds_per_token": 0.011544973968739214,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "comparison": {
+        "beats": false,
+        "reason": "within noise or wrong direction",
+        "ttft_gain": 0.05123791649384657,
+        "decode_gain": -13.56973430535858,
+        "ttft_floor": 0.01650410450383788,
+        "decode_floor": 1.0555886069184908
+      },
+      "same_depth_as_hindsight": false,
+      "prefix_choice": {
+        "source": "disk",
+        "seconds": 0.001730541989672929,
+        "reasons": [
+          "link rate unavailable"
+        ]
+      },
+      "note": "One depth chosen before the evaluation pass cannot beat the best depth on that pass. A tie means the cost model selected the hindsight depth. Per-step depth changes are not measured here."
+    }
+  ],
+  "peer": {
+    "status": "not_run",
+    "reason": "no second Mac was available; link rate was not measured"
+  },
+  "ane_gate": {
+    "placement_verified": false,
+    "available": false,
+    "reason": "this report does not convert the draft model. coremltools is installed; macreduce ane reads a convolution compute plan. No ANE power was read"
+  },
+  "cpu_draft": {
+    "status": "ran",
+    "placement_note": "draft parameters were created on mx.cpu; one mlx-lm stream ran both models",
+    "tokens": [
+      11,
+      537,
+      5527,
+      11,
+      476,
+      537,
+      5527,
+      30,
+      320,
+      785,
+      3405,
+      374,
+      264,
+      2699,
+      315,
+      264,
+      14068,
+      11,
+      714,
+      279,
+      4226,
+      374,
+      537,
+      304,
+      279,
+      3405,
+      5086,
+      9272,
+      785,
+      3405,
+      374,
+      25
+    ],
+    "from_draft_tokens": 17,
+    "ttft_seconds": 0.10122066699841525,
+    "decode_tokens_per_second": 91.48457305540038,
+    "generated_tokens": 32,
+    "versions": {
+      "mlx-lm": "0.32.2",
+      "mlx": "0.32.4"
+    },
+    "exact_match": true
+  },
+  "prefix": {
+    "status": "ok",
+    "exact": true,
+    "prefix_tokens": 1313,
+    "suffix_tokens": 8,
+    "prefill_seconds": 1.4352758750028443,
+    "load_seconds": 0.001730541989672929,
+    "kv_bytes": 176168887,
+    "prefill_tokens_per_second": 914.8067091961663,
+    "disk_bytes_per_second": 101799833838.9326,
+    "link_bytes_per_second": null,
+    "target": "mlx-community/Qwen3-1.7B-4bit",
+    "versions": {
+      "mlx-lm": "0.32.2",
+      "mlx": "0.32.4"
+    }
+  },
+  "trials": [
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.04479329199239146,
+      "decode_tokens_per_second": 69.05545184823019,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.341356304,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.046282833005534485,
+      "decode_tokens_per_second": 91.1165947148288,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 13,
+      "peak_memory_gb": 1.369796886,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.05411504099902231,
+      "decode_tokens_per_second": 95.2173846060224,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.369800982,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.09446354099782184,
+      "decode_tokens_per_second": 68.21595038066657,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.375201572,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question.)\n\nThe question is: \"",
+      "ttft_seconds": 0.11407966699334793,
+      "decode_tokens_per_second": 38.927074551770716,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.383565636,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": false,
+      "first_mismatch": 26,
+      "pass": "calibrate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 1.5305072910123272,
+      "decode_tokens_per_second": 77.3484859723731,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 2.07838338,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.2698971670033643,
+      "decode_tokens_per_second": 87.39261420963841,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.240975332999369,
+      "decode_tokens_per_second": 99.41826057352503,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 21,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.3480217089963844,
+      "decode_tokens_per_second": 79.3891254880633,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 25,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.3160370420082472,
+      "decode_tokens_per_second": 77.74071715657539,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 27,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.1235872079996625,
+      "decode_tokens_per_second": 86.61777867215118,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.494829544,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.16764945800241549,
+      "decode_tokens_per_second": 83.90684250081962,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 11,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.21039966700482182,
+      "decode_tokens_per_second": 86.84225597289574,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.2316224579990376,
+      "decode_tokens_per_second": 60.69847817719693,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 18,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.27030000000377186,
+      "decode_tokens_per_second": 35.76131056060512,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 19,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "calibrate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question.)\n\nThe question is: \"",
+      "ttft_seconds": 0.10523891700722743,
+      "decode_tokens_per_second": 38.26458164587193,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.383565636,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": false,
+      "first_mismatch": 26,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.06791316698945593,
+      "decode_tokens_per_second": 71.00964621603492,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.375201572,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.05512379200081341,
+      "decode_tokens_per_second": 93.48785294114414,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.370618152,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.05045516601239797,
+      "decode_tokens_per_second": 85.50425634259759,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 13,
+      "peak_memory_gb": 1.369252118,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.038835290994029485,
+      "decode_tokens_per_second": 88.31590876485792,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.341354256,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.2986317920003785,
+      "decode_tokens_per_second": 75.81525835499694,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 27,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.250328083988279,
+      "decode_tokens_per_second": 98.35753157867718,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 25,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.2147757920029107,
+      "decode_tokens_per_second": 89.62489198519395,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 21,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.132479042003979,
+      "decode_tokens_per_second": 83.45205518338648,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 1.4942939169995952,
+      "decode_tokens_per_second": 76.49299542417563,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 2.07838338,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.23211562499636784,
+      "decode_tokens_per_second": 30.732166240288958,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 19,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.2255701669928385,
+      "decode_tokens_per_second": 53.23189330576562,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 18,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.19799295900156721,
+      "decode_tokens_per_second": 94.82861764736977,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.22060683299787343,
+      "decode_tokens_per_second": 75.7727713916593,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 11,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.1463925419957377,
+      "decode_tokens_per_second": 71.71196430721011,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.494829544,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.03702458299812861,
+      "decode_tokens_per_second": 77.98799113210576,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.341356304,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.04673916699539405,
+      "decode_tokens_per_second": 87.40939384490268,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 13,
+      "peak_memory_gb": 1.369813272,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.04851300000154879,
+      "decode_tokens_per_second": 100.51687662446459,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.369229562,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.06434945900400635,
+      "decode_tokens_per_second": 76.49634006752336,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.375201572,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question.)\n\nThe question is: \"",
+      "ttft_seconds": 0.10103254100249615,
+      "decode_tokens_per_second": 42.11012981416086,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 20,
+      "peak_memory_gb": 1.38358202,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "short",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": false,
+      "first_mismatch": 26,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 1.4451131249952596,
+      "decode_tokens_per_second": 81.15070873142692,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 2.07838338,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.0004554579936666,
+      "decode_tokens_per_second": 96.81181538326786,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 16,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.0134637500013923,
+      "decode_tokens_per_second": 104.19712227684867,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 21,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.0166362500021933,
+      "decode_tokens_per_second": 100.18444112051849,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 25,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 1",
+      "ttft_seconds": 2.0776448329997947,
+      "decode_tokens_per_second": 87.18971869691099,
+      "prompt_tokens": 1321,
+      "generated_tokens": 32,
+      "from_draft_tokens": 27,
+      "peak_memory_gb": 2.178970144,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "long",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.11410933401202782,
+      "decode_tokens_per_second": 92.91697959064925,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.494829544,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "none",
+        "depth": 0,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "none",
+      "depth": 0,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.15666241700819228,
+      "decode_tokens_per_second": 89.85763531841852,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 11,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 1,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 1,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.16498474999389146,
+      "decode_tokens_per_second": 96.93979486120675,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 2,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 2,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.20033454199437986,
+      "decode_tokens_per_second": 68.20742028367788,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 18,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 4,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 4,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    },
+    {
+      "text": "The function is supposed to be used in a recursive way, but it's not working as intended. What is the problem?\nThe function is supposed to be used",
+      "ttft_seconds": 0.21444716700352728,
+      "decode_tokens_per_second": 37.183093994733035,
+      "prompt_tokens": 66,
+      "generated_tokens": 32,
+      "from_draft_tokens": 19,
+      "peak_memory_gb": 1.524189936,
+      "finish_reason": "length",
+      "placement": {
+        "engine": "gpu",
+        "depth": 8,
+        "prefix": "recompute",
+        "seconds_per_token": null,
+        "prefix_seconds": null,
+        "reasons": [
+          "static configuration"
+        ]
+      },
+      "versions": {
+        "mlx-lm": "0.32.2",
+        "mlx": "0.32.4"
+      },
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit",
+      "status": "ok",
+      "segment": "code",
+      "engine": "gpu",
+      "depth": 8,
+      "exact_match": true,
+      "first_mismatch": null,
+      "pass": "evaluate"
+    }
+  ],
+  "protocol": {
+    "cycles": 3,
+    "max_tokens": 32,
+    "process": "one fresh interpreter per trial",
+    "models": {
+      "target": "mlx-community/Qwen3-1.7B-4bit",
+      "draft": "mlx-community/Qwen3-0.6B-4bit"
+    }
+  }
+}

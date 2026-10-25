@@ -1,0 +1,29 @@
+{
+  "status": "ok",
+  "exact": true,
+  "prefix_tokens": 1313,
+  "suffix_tokens": 8,
+  "prefill_seconds": 1.4352758750028443,
+  "load_seconds": 0.001730541989672929,
+  "kv_bytes": 176168887,
+  "prefill_tokens_per_second": 914.8067091961663,
+  "disk_bytes_per_second": 101799833838.9326,
+  "link_bytes_per_second": null,
+  "recomputed_tokens": [
+    16,
+    13,
+    220,
+    17
+  ],
+  "reused_tokens": [
+    16,
+    13,
+    220,
+    17
+  ],
+  "target": "mlx-community/Qwen3-1.7B-4bit",
+  "versions": {
+    "mlx-lm": "0.32.2",
+    "mlx": "0.32.4"
+  }
+}

@@ -43,10 +43,12 @@ def _convert(destination: Path):
 
     class Net(nn.Module):
         def forward(self, x):
-            weight = torch.ones(64, 3, 3, 3, dtype=x.dtype)
-            return torch.relu(torch.nn.functional.conv2d(x, weight, padding=1))
+            weight = torch.ones(128, 3, 3, 3, dtype=x.dtype)
+            hidden = torch.relu(torch.nn.functional.conv2d(x, weight, padding=1))
+            projected = torch.ones(128, 128, 3, 3, dtype=x.dtype)
+            return torch.relu(torch.nn.functional.conv2d(hidden, projected, padding=1))
 
-    example = torch.zeros(1, 3, 256, 256)
+    example = torch.zeros(1, 3, 512, 512)
     traced = torch.jit.trace(Net().eval(), example)
     model = ct.convert(
         traced,
@@ -80,8 +82,8 @@ def _mactop_while(during, seconds: float = 2.0, interval_ms: int = 200) -> dict:
     except OSError as exc:
         return {"status": "unavailable", "reason": str(exc), "samples": []}
     try:
-        during()
-        stdout, stderr = process.communicate(timeout=seconds + 15)
+        during_result = during()
+        stdout, stderr = process.communicate(timeout=seconds + 20)
     except Exception:
         process.kill()
         process.communicate()
@@ -98,6 +100,7 @@ def _mactop_while(during, seconds: float = 2.0, interval_ms: int = 200) -> dict:
         normalized = normalize_mactop(raw)
         rows.append(
             {
+                "timestamp": raw.get("timestamp"),
                 "ane_power_w": normalized["ane_power_w"],
                 "ane_active": soc.get("ane_active"),
                 "ane_bw_combined_gbs": soc.get("ane_bw_combined_gbs"),
@@ -111,6 +114,7 @@ def _mactop_while(during, seconds: float = 2.0, interval_ms: int = 200) -> dict:
         "scope": "system",
         "estimated": True,
         "attribution": "not attributable to this process",
+        "during": during_result,
         "samples": rows,
     }
 
@@ -149,7 +153,7 @@ def placement_probe(work: Path) -> dict:
         for row in plans["CPU_ONLY"]
         if row["device"] == "MLNeuralEngineComputeDevice"
     ]
-    sample = np.zeros((1, 3, 256, 256), dtype=np.float16)
+    sample = np.zeros((1, 3, 512, 512), dtype=np.float16)
     timings = {}
     loaded_models = {}
     for units in (ct.ComputeUnit.CPU_AND_NE, ct.ComputeUnit.CPU_ONLY):
@@ -161,15 +165,19 @@ def placement_probe(work: Path) -> dict:
         timings[units.name] = time.perf_counter() - started
         loaded_models[units.name] = loaded
 
-    def sustain(model) -> None:
-        deadline = time.perf_counter() + 2.0
+    def sustain(model) -> dict:
+        started = time.perf_counter()
+        deadline = started + 8.0
+        predicts = 0
         while time.perf_counter() < deadline:
             model.predict({"x": sample})
+            predicts += 1
+        return {"predicts": predicts, "seconds": time.perf_counter() - started}
 
     mactop = {
-        "idle": _mactop_while(lambda: time.sleep(2.0)),
-        "CPU_ONLY": _mactop_while(lambda: sustain(loaded_models["CPU_ONLY"])),
-        "CPU_AND_NE": _mactop_while(lambda: sustain(loaded_models["CPU_AND_NE"])),
+        "idle": _mactop_while(lambda: time.sleep(8.0), seconds=8.0),
+        "CPU_ONLY": _mactop_while(lambda: sustain(loaded_models["CPU_ONLY"]), seconds=8.0),
+        "CPU_AND_NE": _mactop_while(lambda: sustain(loaded_models["CPU_AND_NE"]), seconds=8.0),
     }
     ane_power = _peak(mactop["CPU_AND_NE"], "ane_power_w")
     power = subprocess.run(
@@ -191,7 +199,7 @@ def placement_probe(work: Path) -> dict:
         ),
         "os": platform.platform(),
         "machine": platform.machine(),
-        "network": "conv2d 3x64 kernel 3, relu, float16, input 1x3x256x256",
+        "network": "two conv2d 3x128 and 128x128, kernel 3, relu, float16, input 1x3x512x512",
         "draft_model_converted": False,
         "placement_verified": False,
         "plan_places_conv_on_neural_engine": bool(neural) and not cpu_only_neural,
@@ -205,6 +213,7 @@ def placement_probe(work: Path) -> dict:
                 "ane_bw_combined_gbs_max": _peak(reading, "ane_bw_combined_gbs"),
                 "gpu_power_w_max": _peak(reading, "gpu_power_w"),
                 "cpu_power_w_max": _peak(reading, "cpu_power_w"),
+                "during": reading.get("during"),
                 "samples": reading.get("samples", []),
                 "reason": reading.get("reason"),
             }

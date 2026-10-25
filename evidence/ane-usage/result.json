@@ -1,0 +1,1159 @@
+{
+  "coremltools": "9.0",
+  "torch": "2.14.1",
+  "hw_model": "Mac16,12",
+  "memory_bytes": 25769803776,
+  "torch_note": "coremltools 9 reports Torch 2.7.0 as the newest version it has tested. Conversion still produced an mlprogram on the installed Torch.",
+  "os": "macOS-26.5-arm64-arm-64bit",
+  "machine": "arm64",
+  "network": "two conv2d 3x128 and 128x128, kernel 3, relu, float16, input 1x3x512x512",
+  "draft_model_converted": false,
+  "placement_verified": false,
+  "plan_places_conv_on_neural_engine": true,
+  "plans": {
+    "CPU_AND_NE": [
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.conv",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.conv",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLNeuralEngineComputeDevice"
+      }
+    ],
+    "CPU_ONLY": [
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.conv",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.conv",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLCPUComputeDevice"
+      }
+    ]
+  },
+  "predict_seconds_20": {
+    "CPU_AND_NE": 0.3684085419954499,
+    "CPU_ONLY": 0.8051086659979774
+  },
+  "mactop": {
+    "idle": {
+      "status": "available",
+      "ane_power_w_max": 0.009523299347058789,
+      "ane_active_max": 0,
+      "ane_bw_combined_gbs_max": 0.04196224726056342,
+      "gpu_power_w_max": 0.19020846127495578,
+      "cpu_power_w_max": 11.08512043997643,
+      "during": null,
+      "samples": [
+        {
+          "timestamp": "2026-10-25T01:49:19-04:00",
+          "ane_power_w": 0.009523299347058789,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04196224726056342,
+          "gpu_power_w": 0.06861963823366607,
+          "cpu_power_w": 11.08512043997643
+        },
+        {
+          "timestamp": "2026-10-25T01:49:19-04:00",
+          "ane_power_w": 0.009446448017700906,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.041507541446609494,
+          "gpu_power_w": 0.10532486781077544,
+          "cpu_power_w": 0.6376352411948111
+        },
+        {
+          "timestamp": "2026-10-25T01:49:20-04:00",
+          "ane_power_w": 0.009372870996288526,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04125562897726358,
+          "gpu_power_w": 0.11468996902364552,
+          "cpu_power_w": 1.035702245089882
+        },
+        {
+          "timestamp": "2026-10-25T01:49:20-04:00",
+          "ane_power_w": 0.009125907318809297,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04036717339772829,
+          "gpu_power_w": 0.06541107232007316,
+          "cpu_power_w": 0.5429914854691532
+        },
+        {
+          "timestamp": "2026-10-25T01:49:20-04:00",
+          "ane_power_w": 0.009380511050242017,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04105271847210236,
+          "gpu_power_w": 0.07361023976586244,
+          "cpu_power_w": 0.9802634047502907
+        },
+        {
+          "timestamp": "2026-10-25T01:49:21-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.00500067420017299,
+          "gpu_power_w": 0.08194457867361575,
+          "cpu_power_w": 0.3593618532483054
+        },
+        {
+          "timestamp": "2026-10-25T01:49:21-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06450198261126627,
+          "cpu_power_w": 0.2700955581604365
+        },
+        {
+          "timestamp": "2026-10-25T01:49:21-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0673754354272002,
+          "cpu_power_w": 0.5467659144315737
+        },
+        {
+          "timestamp": "2026-10-25T01:49:22-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.08764001259054582,
+          "cpu_power_w": 0.7808061259753263
+        },
+        {
+          "timestamp": "2026-10-25T01:49:25-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06787203202514014,
+          "cpu_power_w": 0.30485845154188995
+        },
+        {
+          "timestamp": "2026-10-25T01:49:25-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05854251521048402,
+          "cpu_power_w": 0.2497450523041744
+        },
+        {
+          "timestamp": "2026-10-25T01:49:25-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.062070470661675384,
+          "cpu_power_w": 0.5155489782754269
+        },
+        {
+          "timestamp": "2026-10-25T01:49:26-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07996895723655062,
+          "cpu_power_w": 0.8395401791127894
+        },
+        {
+          "timestamp": "2026-10-25T01:49:26-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05782898263668616,
+          "cpu_power_w": 0.5613330142569246
+        },
+        {
+          "timestamp": "2026-10-25T01:49:26-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06569728509853487,
+          "cpu_power_w": 0.9663458280670433
+        },
+        {
+          "timestamp": "2026-10-25T01:49:27-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07836038491650892,
+          "cpu_power_w": 0.8332243474308817
+        },
+        {
+          "timestamp": "2026-10-25T01:49:27-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0653336063278455,
+          "cpu_power_w": 0.3695691724559183
+        },
+        {
+          "timestamp": "2026-10-25T01:49:27-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06560049903300866,
+          "cpu_power_w": 0.43194385648895123
+        },
+        {
+          "timestamp": "2026-10-25T01:49:28-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06891042145386317,
+          "cpu_power_w": 0.9527595933023179
+        },
+        {
+          "timestamp": "2026-10-25T01:49:28-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.11196884092004501,
+          "cpu_power_w": 0.9704045607046209
+        },
+        {
+          "timestamp": "2026-10-25T01:49:29-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.19020846127495578,
+          "cpu_power_w": 1.0814758449619724
+        },
+        {
+          "timestamp": "2026-10-25T01:49:29-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06149043475178157,
+          "cpu_power_w": 0.3522248200708681
+        },
+        {
+          "timestamp": "2026-10-25T01:49:29-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06664785776914911,
+          "cpu_power_w": 0.5952474804385411
+        },
+        {
+          "timestamp": "2026-10-25T01:49:30-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07801198244557424,
+          "cpu_power_w": 0.4255341053574401
+        },
+        {
+          "timestamp": "2026-10-25T01:49:30-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05694019490266859,
+          "cpu_power_w": 0.2433581631066267
+        },
+        {
+          "timestamp": "2026-10-25T01:49:30-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.075465514082077,
+          "cpu_power_w": 0.807763665054835
+        },
+        {
+          "timestamp": "2026-10-25T01:49:31-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07726347246796599,
+          "cpu_power_w": 0.35583359967250167
+        },
+        {
+          "timestamp": "2026-10-25T01:49:31-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.055846063346939735,
+          "cpu_power_w": 0.35884101221000597
+        },
+        {
+          "timestamp": "2026-10-25T01:49:32-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05678970627439586,
+          "cpu_power_w": 7.0489840213573665
+        },
+        {
+          "timestamp": "2026-10-25T01:49:32-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05910078826570849,
+          "cpu_power_w": 0.4828239743857691
+        },
+        {
+          "timestamp": "2026-10-25T01:49:32-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06403617047472358,
+          "cpu_power_w": 0.3274102316887147
+        },
+        {
+          "timestamp": "2026-10-25T01:49:33-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.09385658823733499,
+          "cpu_power_w": 0.791039511498407
+        },
+        {
+          "timestamp": "2026-10-25T01:49:33-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06352895282664586,
+          "cpu_power_w": 0.4067365745154115
+        },
+        {
+          "timestamp": "2026-10-25T01:49:33-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06087134712804955,
+          "cpu_power_w": 0.6282258838218283
+        },
+        {
+          "timestamp": "2026-10-25T01:49:34-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.1398869135874067,
+          "cpu_power_w": 0.7082621529869582
+        },
+        {
+          "timestamp": "2026-10-25T01:49:34-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.1448724097493213,
+          "cpu_power_w": 4.319711473469614
+        },
+        {
+          "timestamp": "2026-10-25T01:49:34-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06043934145065705,
+          "cpu_power_w": 0.49802356763101086
+        },
+        {
+          "timestamp": "2026-10-25T01:49:35-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.14317201836508928,
+          "cpu_power_w": 1.1222988043568378
+        },
+        {
+          "timestamp": "2026-10-25T01:49:35-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.09271672575464339,
+          "cpu_power_w": 0.613983473611502
+        },
+        {
+          "timestamp": "2026-10-25T01:49:35-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.03036674033754131,
+          "cpu_power_w": 0.3411720296566092
+        }
+      ],
+      "reason": null
+    },
+    "CPU_ONLY": {
+      "status": "available",
+      "ane_power_w_max": 0,
+      "ane_active_max": 0,
+      "ane_bw_combined_gbs_max": 0,
+      "gpu_power_w_max": 0.1357682688844665,
+      "cpu_power_w_max": 7.796913261579805,
+      "during": {
+        "predicts": 198,
+        "seconds": 8.039188624999952
+      },
+      "samples": [
+        {
+          "timestamp": "2026-10-25T01:49:38-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.009720572140420715,
+          "cpu_power_w": 7.195486038062325
+        },
+        {
+          "timestamp": "2026-10-25T01:49:38-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.02376061194738094,
+          "cpu_power_w": 7.3282080201286774
+        },
+        {
+          "timestamp": "2026-10-25T01:49:39-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.050231735973709155,
+          "cpu_power_w": 7.685504381564839
+        },
+        {
+          "timestamp": "2026-10-25T01:49:39-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.012831543895027026,
+          "cpu_power_w": 7.021143147587279
+        },
+        {
+          "timestamp": "2026-10-25T01:49:39-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.018007670640324755,
+          "cpu_power_w": 7.237840244597263
+        },
+        {
+          "timestamp": "2026-10-25T01:49:40-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.03577835680385603,
+          "cpu_power_w": 7.178167748083772
+        },
+        {
+          "timestamp": "2026-10-25T01:49:40-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.011597177520212734,
+          "cpu_power_w": 7.365458859926783
+        },
+        {
+          "timestamp": "2026-10-25T01:49:40-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.010980604868490739,
+          "cpu_power_w": 7.142141576405347
+        },
+        {
+          "timestamp": "2026-10-25T01:49:41-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.03518129918654722,
+          "cpu_power_w": 7.481041592660664
+        },
+        {
+          "timestamp": "2026-10-25T01:49:44-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.08048364175960268,
+          "cpu_power_w": 0.417106278328224
+        },
+        {
+          "timestamp": "2026-10-25T01:49:44-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07124086560167944,
+          "cpu_power_w": 0.3819000100651358
+        },
+        {
+          "timestamp": "2026-10-25T01:49:45-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.08122711771346795,
+          "cpu_power_w": 7.796913261579805
+        },
+        {
+          "timestamp": "2026-10-25T01:49:45-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07676076351623316,
+          "cpu_power_w": 2.6950032746649684
+        },
+        {
+          "timestamp": "2026-10-25T01:49:45-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07722891499452238,
+          "cpu_power_w": 1.6140840633386409
+        },
+        {
+          "timestamp": "2026-10-25T01:49:46-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0901806353810012,
+          "cpu_power_w": 1.3228889862891775
+        },
+        {
+          "timestamp": "2026-10-25T01:49:46-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0781859508352529,
+          "cpu_power_w": 0.49717490875262854
+        },
+        {
+          "timestamp": "2026-10-25T01:49:46-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.08579447660132651,
+          "cpu_power_w": 2.585810157523474
+        },
+        {
+          "timestamp": "2026-10-25T01:49:47-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.08812565272725363,
+          "cpu_power_w": 4.1828316588499135
+        },
+        {
+          "timestamp": "2026-10-25T01:49:47-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07736886818904708,
+          "cpu_power_w": 2.2590679530681337
+        },
+        {
+          "timestamp": "2026-10-25T01:49:47-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07677871845182692,
+          "cpu_power_w": 1.7073998843786742
+        },
+        {
+          "timestamp": "2026-10-25T01:49:48-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.08902890455825185,
+          "cpu_power_w": 1.0564546901705647
+        },
+        {
+          "timestamp": "2026-10-25T01:49:48-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06701695582805736,
+          "cpu_power_w": 2.490486741577803
+        },
+        {
+          "timestamp": "2026-10-25T01:49:48-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07310633276607231,
+          "cpu_power_w": 1.2256934228032113
+        },
+        {
+          "timestamp": "2026-10-25T01:49:49-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.12122849654676968,
+          "cpu_power_w": 1.958968777585648
+        },
+        {
+          "timestamp": "2026-10-25T01:49:49-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.1266434683345846,
+          "cpu_power_w": 1.7714917713259901
+        },
+        {
+          "timestamp": "2026-10-25T01:49:49-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07838386513679119,
+          "cpu_power_w": 1.1519506738498344
+        },
+        {
+          "timestamp": "2026-10-25T01:49:50-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0880864641655207,
+          "cpu_power_w": 1.2489265820313284
+        },
+        {
+          "timestamp": "2026-10-25T01:49:50-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06657573953924695,
+          "cpu_power_w": 0.8868177372725315
+        },
+        {
+          "timestamp": "2026-10-25T01:49:50-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0696498695124426,
+          "cpu_power_w": 0.6483633596935486
+        },
+        {
+          "timestamp": "2026-10-25T01:49:51-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0866089574497833,
+          "cpu_power_w": 0.7783007876217551
+        },
+        {
+          "timestamp": "2026-10-25T01:49:51-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06420380113219132,
+          "cpu_power_w": 0.8575657451517396
+        },
+        {
+          "timestamp": "2026-10-25T01:49:51-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.09527775862847689,
+          "cpu_power_w": 0.9651247649588395
+        },
+        {
+          "timestamp": "2026-10-25T01:49:52-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.13264820595938795,
+          "cpu_power_w": 1.8240043494794025
+        },
+        {
+          "timestamp": "2026-10-25T01:49:52-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.09151103125786242,
+          "cpu_power_w": 0.509380031361106
+        },
+        {
+          "timestamp": "2026-10-25T01:49:52-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0789390734525628,
+          "cpu_power_w": 0.7371024909104207
+        },
+        {
+          "timestamp": "2026-10-25T01:49:53-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.1357682688844665,
+          "cpu_power_w": 1.6708434500087759
+        },
+        {
+          "timestamp": "2026-10-25T01:49:53-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.10126322241095952,
+          "cpu_power_w": 1.3919693322806446
+        },
+        {
+          "timestamp": "2026-10-25T01:49:53-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06303876753005634,
+          "cpu_power_w": 0.5776955942641835
+        },
+        {
+          "timestamp": "2026-10-25T01:49:54-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06686597651575986,
+          "cpu_power_w": 0.6828734271386805
+        },
+        {
+          "timestamp": "2026-10-25T01:49:54-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.12453683101607281,
+          "cpu_power_w": 1.132158068186791
+        }
+      ],
+      "reason": null
+    },
+    "CPU_AND_NE": {
+      "status": "available",
+      "ane_power_w_max": 0.8020255088176029,
+      "ane_active_max": 0,
+      "ane_bw_combined_gbs_max": 11.893873430601618,
+      "gpu_power_w_max": 0.12736983082259237,
+      "cpu_power_w_max": 4.817823546424944,
+      "during": {
+        "predicts": 424,
+        "seconds": 8.004843916991376
+      },
+      "samples": [
+        {
+          "timestamp": "2026-10-25T01:49:56-04:00",
+          "ane_power_w": 0.6531922106828876,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.742812444494932,
+          "gpu_power_w": 0.06209393779645844,
+          "cpu_power_w": 4.241016092549763
+        },
+        {
+          "timestamp": "2026-10-25T01:49:57-04:00",
+          "ane_power_w": 0.5810342348419217,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.389123161045697,
+          "gpu_power_w": 0.07114614660762494,
+          "cpu_power_w": 4.286318125883029
+        },
+        {
+          "timestamp": "2026-10-25T01:49:57-04:00",
+          "ane_power_w": 0.8020255088176029,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 11.828377580758271,
+          "gpu_power_w": 0.06359364050951208,
+          "cpu_power_w": 4.363962327389898
+        },
+        {
+          "timestamp": "2026-10-25T01:49:58-04:00",
+          "ane_power_w": 0.6581912063732342,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.74626505966932,
+          "gpu_power_w": 0.08764502988716051,
+          "cpu_power_w": 4.413195714675211
+        },
+        {
+          "timestamp": "2026-10-25T01:49:58-04:00",
+          "ane_power_w": 0.631800966278298,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.780602644349266,
+          "gpu_power_w": 0.06952986260233888,
+          "cpu_power_w": 3.9760707426686874
+        },
+        {
+          "timestamp": "2026-10-25T01:49:58-04:00",
+          "ane_power_w": 0.7929012140571813,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 11.893873430601618,
+          "gpu_power_w": 0.06257217413335092,
+          "cpu_power_w": 4.430635874913461
+        },
+        {
+          "timestamp": "2026-10-25T01:49:59-04:00",
+          "ane_power_w": 0.6716925506048819,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.967164942697666,
+          "gpu_power_w": 0.09288161207139951,
+          "cpu_power_w": 4.817823546424944
+        },
+        {
+          "timestamp": "2026-10-25T01:49:59-04:00",
+          "ane_power_w": 0.6528718595958758,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.234345695204947,
+          "gpu_power_w": 0.12736983082259237,
+          "cpu_power_w": 4.7025697712920325
+        },
+        {
+          "timestamp": "2026-10-25T01:49:59-04:00",
+          "ane_power_w": 0.6685282667992738,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.68496096465804,
+          "gpu_power_w": 0.06401854930543091,
+          "cpu_power_w": 4.806812397197595
+        },
+        {
+          "timestamp": "2026-10-25T01:50:02-04:00",
+          "ane_power_w": 0.009489386052901783,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04089758375606136,
+          "gpu_power_w": 0.06493415118113131,
+          "cpu_power_w": 1.1956626426656245
+        },
+        {
+          "timestamp": "2026-10-25T01:50:03-04:00",
+          "ane_power_w": 0.009258453816640424,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040221093543663065,
+          "gpu_power_w": 0.07343982866749772,
+          "cpu_power_w": 0.8702946587641999
+        },
+        {
+          "timestamp": "2026-10-25T01:50:03-04:00",
+          "ane_power_w": 0.009393629475330569,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04037366918689918,
+          "gpu_power_w": 0.07398653188373974,
+          "cpu_power_w": 0.8595170969927469
+        },
+        {
+          "timestamp": "2026-10-25T01:50:03-04:00",
+          "ane_power_w": 0.004742169253540544,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04055958393876213,
+          "gpu_power_w": 0.06844561147754433,
+          "cpu_power_w": 1.0005977124970549
+        },
+        {
+          "timestamp": "2026-10-25T01:50:04-04:00",
+          "ane_power_w": 0.009290392137511405,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.03989963292081298,
+          "gpu_power_w": 0.07739652888466994,
+          "cpu_power_w": 0.6317466653507755
+        },
+        {
+          "timestamp": "2026-10-25T01:50:04-04:00",
+          "ane_power_w": 0.009329777910467952,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040139839376211045,
+          "gpu_power_w": 0.07142438069225787,
+          "cpu_power_w": 3.424028493141739
+        },
+        {
+          "timestamp": "2026-10-25T01:50:04-04:00",
+          "ane_power_w": 0.009364706154039592,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04065630988539365,
+          "gpu_power_w": 0.05358284924865066,
+          "cpu_power_w": 1.1144000323307113
+        },
+        {
+          "timestamp": "2026-10-25T01:50:05-04:00",
+          "ane_power_w": 0.009254310773637245,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.03974408128986583,
+          "gpu_power_w": 0.07433396494004364,
+          "cpu_power_w": 0.9300582327505432
+        },
+        {
+          "timestamp": "2026-10-25T01:50:05-04:00",
+          "ane_power_w": 0.008972734104240737,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040422382485223035,
+          "gpu_power_w": 0.07230846016666853,
+          "cpu_power_w": 0.7223050953913795
+        },
+        {
+          "timestamp": "2026-10-25T01:50:06-04:00",
+          "ane_power_w": 0.009515494793834909,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.0404437455842157,
+          "gpu_power_w": 0.0845509804527948,
+          "cpu_power_w": 0.6232649089961866
+        },
+        {
+          "timestamp": "2026-10-25T01:50:06-04:00",
+          "ane_power_w": 0.00944649263560172,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04040075970394144,
+          "gpu_power_w": 0.059481579034711185,
+          "cpu_power_w": 1.048560682551791
+        },
+        {
+          "timestamp": "2026-10-25T01:50:06-04:00",
+          "ane_power_w": 0.009476201044636505,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040848036413401755,
+          "gpu_power_w": 0.07342808741535815,
+          "cpu_power_w": 0.5733101632005084
+        },
+        {
+          "timestamp": "2026-10-25T01:50:07-04:00",
+          "ane_power_w": 0.009283359462122153,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04002331051560939,
+          "gpu_power_w": 0.08095295077382603,
+          "cpu_power_w": 0.4734513325682298
+        },
+        {
+          "timestamp": "2026-10-25T01:50:07-04:00",
+          "ane_power_w": 0.009398034376675229,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04136398221557326,
+          "gpu_power_w": 0.06634873179023937,
+          "cpu_power_w": 1.8796068753350457
+        },
+        {
+          "timestamp": "2026-10-25T01:50:07-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.0030768404475044055,
+          "gpu_power_w": 0.06377322337683575,
+          "cpu_power_w": 1.2937930754619136
+        },
+        {
+          "timestamp": "2026-10-25T01:50:08-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07887410450623537,
+          "cpu_power_w": 0.8813582243196579
+        },
+        {
+          "timestamp": "2026-10-25T01:50:08-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06588611393849973,
+          "cpu_power_w": 0.7840871764186969
+        },
+        {
+          "timestamp": "2026-10-25T01:50:08-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06065657324227174,
+          "cpu_power_w": 1.0225282760843166
+        },
+        {
+          "timestamp": "2026-10-25T01:50:09-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06737706716745251,
+          "cpu_power_w": 0.941855532914552
+        },
+        {
+          "timestamp": "2026-10-25T01:50:09-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06302324883062642,
+          "cpu_power_w": 3.4775693625619692
+        },
+        {
+          "timestamp": "2026-10-25T01:50:09-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0663968891298296,
+          "cpu_power_w": 1.6128701410968338
+        },
+        {
+          "timestamp": "2026-10-25T01:50:10-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07782372004119816,
+          "cpu_power_w": 0.853188024256937
+        },
+        {
+          "timestamp": "2026-10-25T01:50:10-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0637510922246516,
+          "cpu_power_w": 0.7981481423141895
+        },
+        {
+          "timestamp": "2026-10-25T01:50:10-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06081108248241089,
+          "cpu_power_w": 1.3133429294604995
+        },
+        {
+          "timestamp": "2026-10-25T01:50:11-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06859281743414056,
+          "cpu_power_w": 0.8425873927361365
+        },
+        {
+          "timestamp": "2026-10-25T01:50:11-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0686285022206031,
+          "cpu_power_w": 0.34181951008322203
+        },
+        {
+          "timestamp": "2026-10-25T01:50:11-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05471723216830595,
+          "cpu_power_w": 1.0468955066207306
+        },
+        {
+          "timestamp": "2026-10-25T01:50:12-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06804027612417377,
+          "cpu_power_w": 0.8727119170923678
+        },
+        {
+          "timestamp": "2026-10-25T01:50:12-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06389015127835737,
+          "cpu_power_w": 0.5631008093400613
+        },
+        {
+          "timestamp": "2026-10-25T01:50:13-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06653091013285972,
+          "cpu_power_w": 1.1847286628303877
+        },
+        {
+          "timestamp": "2026-10-25T01:50:13-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06424818681897126,
+          "cpu_power_w": 0.8138757210644859
+        }
+      ],
+      "reason": null
+    }
+  },
+  "ane_power_watts": 0.8020255088176029,
+  "ane_power_source": "mactop",
+  "ane_power_reason": "powermetrics: powermetrics must be invoked as the superuser. mactop readings are system-wide estimates and are not attributed to this process.",
+  "claim": "Under CPU_AND_NE the compute plan assigns the convolution and ReLU to MLNeuralEngineComputeDevice. Under CPU_ONLY the same operators are not assigned there. mactop samples power while those predictions run. A mactop watt reading is a system estimate, not proof that this process occupied the Neural Engine. The serving draft model was not converted."
+}

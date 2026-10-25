@@ -43,6 +43,7 @@ If `python3.12 -m venv` fails because a uv-managed interpreter looks for its sta
 macreduce place --acceptance 0.9 --prefix-tokens 4096 --prefill-tokens-per-second 2000 --kv-bytes 50000000 --disk-bytes-per-second 200000000
 macreduce trace
 macreduce equivalence --max-tokens 32 --output runs/equivalence.json
+macreduce model-check --output runs/model-check.json
 ```
 
 The `cpu` extra installs the explicit PyTorch CPU reference backend. The `mlx` extra installs MLX on Apple silicon. GPU access must be available to the terminal process. There is no silent backend fallback. `requirements-tested.txt` records the exact versions used for the delivered CPU tests; the project extras allow a broader development range.
