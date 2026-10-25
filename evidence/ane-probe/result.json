@@ -81,10 +81,256 @@
     ]
   },
   "predict_seconds_20": {
-    "CPU_AND_NE": 0.037686583993490785,
-    "CPU_ONLY": 0.03749787500419188
+    "CPU_AND_NE": 0.038365790998796,
+    "CPU_ONLY": 0.036082833001273684
   },
-  "ane_power_watts": null,
-  "ane_power_reason": "powermetrics must be invoked as the superuser",
-  "claim": "Under CPU_AND_NE the compute plan assigns the convolution and ReLU to MLNeuralEngineComputeDevice. Under CPU_ONLY the same operators are not assigned there. Wall-clock predict time is not residency. No ANE power sample was read, and the Gemma or Qwen draft model was not converted."
+  "mactop": {
+    "idle": {
+      "status": "available",
+      "ane_power_w_max": 0.009385734949013142,
+      "ane_active_max": 0,
+      "ane_bw_combined_gbs_max": 0.04141436774782153,
+      "gpu_power_w_max": 0.06801811365036525,
+      "cpu_power_w_max": 1.0793595191365115,
+      "samples": [
+        {
+          "ane_power_w": 0.009072279988705011,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040659491249218936,
+          "gpu_power_w": 0.053016902791653955,
+          "cpu_power_w": 0.6668125791698184
+        },
+        {
+          "ane_power_w": 0.009102141961557104,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04040418971594491,
+          "gpu_power_w": 0.05283640492698945,
+          "cpu_power_w": 0.5142710208279764
+        },
+        {
+          "ane_power_w": 0.009100657839686842,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04055311377574631,
+          "gpu_power_w": 0.053356911196322285,
+          "cpu_power_w": 0.3367243400684132
+        },
+        {
+          "ane_power_w": 0.009304617503434252,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04108204494892302,
+          "gpu_power_w": 0.06114252580011092,
+          "cpu_power_w": 0.5071016539371668
+        },
+        {
+          "ane_power_w": 0.009133273322552081,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04075514981557113,
+          "gpu_power_w": 0.059261148054009304,
+          "cpu_power_w": 0.3972973895310156
+        },
+        {
+          "ane_power_w": 0.009196505202950409,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04079952282645244,
+          "gpu_power_w": 0.05732908216910022,
+          "cpu_power_w": 0.4230392393357188
+        },
+        {
+          "ane_power_w": 0.009385734949013142,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04141436774782153,
+          "gpu_power_w": 0.054590649077680485,
+          "cpu_power_w": 1.0793595191365115
+        },
+        {
+          "ane_power_w": 0.009292966008593178,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04094912017008953,
+          "gpu_power_w": 0.061037538931545225,
+          "cpu_power_w": 0.9618219818893939
+        },
+        {
+          "ane_power_w": 0.004693871563939332,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.024135962683721066,
+          "gpu_power_w": 0.06801811365036525,
+          "cpu_power_w": 0.4318361838824185
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05985301646141194,
+          "cpu_power_w": 0.5363265905290966
+        }
+      ],
+      "reason": null
+    },
+    "CPU_ONLY": {
+      "status": "available",
+      "ane_power_w_max": 0,
+      "ane_active_max": 0,
+      "ane_bw_combined_gbs_max": 0,
+      "gpu_power_w_max": 0.12086250991212459,
+      "cpu_power_w_max": 7.181534388551343,
+      "samples": [
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0931016619402983,
+          "cpu_power_w": 7.181534388551343
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05578811040291139,
+          "cpu_power_w": 0.6907901884919387
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05850084311275878,
+          "cpu_power_w": 1.8486612164360605
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.12086250991212459,
+          "cpu_power_w": 0.9824723579910006
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.059548989942210605,
+          "cpu_power_w": 0.6594118661604923
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.057565755716150455,
+          "cpu_power_w": 0.6938915123263254
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.061692894869466476,
+          "cpu_power_w": 0.7152128431583625
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.058311629911185735,
+          "cpu_power_w": 0.6293332465067825
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05632359407673574,
+          "cpu_power_w": 0.7822359253284904
+        },
+        {
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.05892098094189166,
+          "cpu_power_w": 1.8554012265695823
+        }
+      ],
+      "reason": null
+    },
+    "CPU_AND_NE": {
+      "status": "available",
+      "ane_power_w_max": 0.6072948368791004,
+      "ane_active_max": 0,
+      "ane_bw_combined_gbs_max": 4.807802237835339,
+      "gpu_power_w_max": 0.06699784509379784,
+      "cpu_power_w_max": 5.578638617842898,
+      "samples": [
+        {
+          "ane_power_w": 0.6072948368791004,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 4.807802237835339,
+          "gpu_power_w": 0.05111696208563238,
+          "cpu_power_w": 5.578638617842898
+        },
+        {
+          "ane_power_w": 0.009397057404504649,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04078473266473489,
+          "gpu_power_w": 0.056090608081376336,
+          "cpu_power_w": 0.986691027472988
+        },
+        {
+          "ane_power_w": 0.004608632083107462,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.03992299436652336,
+          "gpu_power_w": 0.06593102606008619,
+          "cpu_power_w": 0.6820775482999044
+        },
+        {
+          "ane_power_w": 0.00936661212566481,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.0399835943788619,
+          "gpu_power_w": 0.06699784509379784,
+          "cpu_power_w": 1.0443772520116263
+        },
+        {
+          "ane_power_w": 0.00955152792138699,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040775396284177694,
+          "gpu_power_w": 0.0590522927193913,
+          "cpu_power_w": 1.1843894622519868
+        },
+        {
+          "ane_power_w": 0.009203648556378962,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040660393996690136,
+          "gpu_power_w": 0.0547008635898486,
+          "cpu_power_w": 1.9695807910650978
+        },
+        {
+          "ane_power_w": 0.009198798114474516,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04009380787136371,
+          "gpu_power_w": 0.06532280413144516,
+          "cpu_power_w": 0.7359038491579613
+        },
+        {
+          "ane_power_w": 0.009136032119657756,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.039793924735978724,
+          "gpu_power_w": 0.06425917724476055,
+          "cpu_power_w": 0.7582906659315937
+        },
+        {
+          "ane_power_w": 0.004720026707043915,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04106196673846268,
+          "gpu_power_w": 0.06028410086191086,
+          "cpu_power_w": 0.8401647538538168
+        },
+        {
+          "ane_power_w": 0.004767363597539527,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.041036245402539286,
+          "gpu_power_w": 0.06033961525497426,
+          "cpu_power_w": 2.1167094373075503
+        }
+      ],
+      "reason": null
+    }
+  },
+  "ane_power_watts": 0.6072948368791004,
+  "ane_power_source": "mactop",
+  "ane_power_reason": "powermetrics: powermetrics must be invoked as the superuser. mactop readings are system-wide estimates and are not attributed to this process.",
+  "claim": "Under CPU_AND_NE the compute plan assigns the convolution and ReLU to MLNeuralEngineComputeDevice. Under CPU_ONLY the same operators are not assigned there. mactop samples power while those predictions run. A mactop watt reading is a system estimate, not proof that this process occupied the Neural Engine. The serving draft model was not converted."
 }

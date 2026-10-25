@@ -14,6 +14,8 @@ import subprocess
 import time
 from pathlib import Path
 
+from .observe import normalize_mactop, parse_mactop
+
 
 def _assignments(plan) -> list[dict]:
     rows: list[dict] = []
@@ -59,6 +61,67 @@ def _convert(destination: Path):
     return package
 
 
+def _mactop_while(during, seconds: float = 2.0, interval_ms: int = 200) -> dict:
+    """Sample system power while ``during`` runs. A zero reading stays zero."""
+
+    count = max(1, int(seconds * 1000 / interval_ms))
+    command = [
+        "mactop",
+        "--headless",
+        "--format",
+        "json",
+        "--count",
+        str(count),
+        "--interval",
+        str(interval_ms),
+    ]
+    try:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    except OSError as exc:
+        return {"status": "unavailable", "reason": str(exc), "samples": []}
+    try:
+        during()
+        stdout, stderr = process.communicate(timeout=seconds + 15)
+    except Exception:
+        process.kill()
+        process.communicate()
+        raise
+    if process.returncode != 0:
+        return {
+            "status": "unavailable",
+            "reason": (stderr or "").strip()[:500],
+            "samples": [],
+        }
+    rows = []
+    for raw in parse_mactop(stdout):
+        soc = raw.get("soc_metrics", {})
+        normalized = normalize_mactop(raw)
+        rows.append(
+            {
+                "ane_power_w": normalized["ane_power_w"],
+                "ane_active": soc.get("ane_active"),
+                "ane_bw_combined_gbs": soc.get("ane_bw_combined_gbs"),
+                "gpu_power_w": normalized["gpu_power_w"],
+                "cpu_power_w": normalized["cpu_power_w"],
+            }
+        )
+    return {
+        "status": "available",
+        "source": "mactop/IOReport",
+        "scope": "system",
+        "estimated": True,
+        "attribution": "not attributable to this process",
+        "samples": rows,
+    }
+
+
+def _peak(reading: dict, key: str):
+    values = [row[key] for row in reading.get("samples", []) if row.get(key) is not None]
+    if not values:
+        return None
+    return max(values)
+
+
 def placement_probe(work: Path) -> dict:
     """Convert one fixed-shape network and read plans for two compute-unit constraints."""
 
@@ -88,6 +151,7 @@ def placement_probe(work: Path) -> dict:
     ]
     sample = np.zeros((1, 3, 256, 256), dtype=np.float16)
     timings = {}
+    loaded_models = {}
     for units in (ct.ComputeUnit.CPU_AND_NE, ct.ComputeUnit.CPU_ONLY):
         loaded = CompiledMLModel(str(compiled), compute_units=units)
         loaded.predict({"x": sample})
@@ -95,7 +159,19 @@ def placement_probe(work: Path) -> dict:
         for _ in range(20):
             loaded.predict({"x": sample})
         timings[units.name] = time.perf_counter() - started
+        loaded_models[units.name] = loaded
 
+    def sustain(model) -> None:
+        deadline = time.perf_counter() + 2.0
+        while time.perf_counter() < deadline:
+            model.predict({"x": sample})
+
+    mactop = {
+        "idle": _mactop_while(lambda: time.sleep(2.0)),
+        "CPU_ONLY": _mactop_while(lambda: sustain(loaded_models["CPU_ONLY"])),
+        "CPU_AND_NE": _mactop_while(lambda: sustain(loaded_models["CPU_AND_NE"])),
+    }
+    ane_power = _peak(mactop["CPU_AND_NE"], "ane_power_w")
     power = subprocess.run(
         ["powermetrics", "-s", "ane_power", "-n", "1", "-i", "200"],
         capture_output=True,
@@ -121,12 +197,30 @@ def placement_probe(work: Path) -> dict:
         "plan_places_conv_on_neural_engine": bool(neural) and not cpu_only_neural,
         "plans": plans,
         "predict_seconds_20": timings,
-        "ane_power_watts": None,
-        "ane_power_reason": power_text or f"powermetrics exited {power.returncode}",
+        "mactop": {
+            name: {
+                "status": reading["status"],
+                "ane_power_w_max": _peak(reading, "ane_power_w"),
+                "ane_active_max": _peak(reading, "ane_active"),
+                "ane_bw_combined_gbs_max": _peak(reading, "ane_bw_combined_gbs"),
+                "gpu_power_w_max": _peak(reading, "gpu_power_w"),
+                "cpu_power_w_max": _peak(reading, "cpu_power_w"),
+                "samples": reading.get("samples", []),
+                "reason": reading.get("reason"),
+            }
+            for name, reading in mactop.items()
+        },
+        "ane_power_watts": ane_power,
+        "ane_power_source": "mactop" if ane_power is not None else None,
+        "ane_power_reason": (
+            f"powermetrics: {power_text or power.returncode}. "
+            "mactop readings are system-wide estimates and are not attributed to this process."
+        ),
         "claim": (
             "Under CPU_AND_NE the compute plan assigns the convolution and ReLU to "
             "MLNeuralEngineComputeDevice. Under CPU_ONLY the same operators are not "
-            "assigned there. Wall-clock predict time is not residency. No ANE power "
-            "sample was read, and the Gemma or Qwen draft model was not converted."
+            "assigned there. mactop samples power while those predictions run. "
+            "A mactop watt reading is a system estimate, not proof that this process "
+            "occupied the Neural Engine. The serving draft model was not converted."
         ),
     }
