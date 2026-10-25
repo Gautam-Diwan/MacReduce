@@ -243,7 +243,9 @@ class Coordinator:
                 raise Conflict("run is not accepting updates")
             if node not in self.registered or version != self.version:
                 raise Conflict("unregistered worker or stale/future update")
-            expected = self.registered[node]["batch_size"] * self.config["steps"] * self.model.context
+            expected = (
+                self.registered[node]["batch_size"] * self.config["steps"] * self.model.context
+            )
             if tokens != expected:
                 raise ValueError("processed token count differs from assigned work")
             if node in self.pending:
@@ -326,7 +328,9 @@ class Coordinator:
             raise ValueError("update manifest does not match the request")
         if manifest.get("node") != node:
             raise Conflict("manifest node does not match")
-        if manifest["dtype"] != self.model.dtype or manifest["plan_sha256"] != plan_sha256(self.model):
+        if manifest["dtype"] != self.model.dtype or manifest["plan_sha256"] != plan_sha256(
+            self.model
+        ):
             raise ValueError("update manifest does not match the run")
         if manifest["parameter_schema"] != list(self.weights):
             raise ValueError("parameter schema does not match the run")
@@ -346,11 +350,21 @@ class Coordinator:
             if key in self.receipts:
                 if self.receipts[key] != receipt:
                     raise Conflict("conflicting retry for an already committed update")
-                return {"accepted": True, "duplicate": True, "version": self.version, "upload_id": None}
+                return {
+                    "accepted": True,
+                    "duplicate": True,
+                    "version": self.version,
+                    "upload_id": None,
+                }
             if version == self.version and node in self.pending:
                 if self.pending[node][2] != receipt:
                     raise Conflict("conflicting retry for pending update")
-                return {"accepted": True, "duplicate": True, "version": self.version, "upload_id": None}
+                return {
+                    "accepted": True,
+                    "duplicate": True,
+                    "version": self.version,
+                    "upload_id": None,
+                }
             if self.status()["state"] != "running" or version != self.version:
                 raise Conflict("run is not accepting updates")
             existing = self.uploads.get(key)
@@ -368,7 +382,12 @@ class Coordinator:
             artifact.tokens = tokens
             self.uploads[key] = artifact
             self.uploads_by_id[upload_id] = artifact
-            return {"accepted": True, "duplicate": False, "version": self.version, "upload_id": upload_id}
+            return {
+                "accepted": True,
+                "duplicate": False,
+                "version": self.version,
+                "upload_id": upload_id,
+            }
 
     def receive_chunk(self, upload_id, index, data):
         with self.lock:

@@ -116,7 +116,16 @@ class Client:
         return assemble_chunks(manifest, read_chunk)
 
     def push_artifact(
-        self, raw, *, node, version, tokens, run_id, parameter_names, plan, chunk_size=MAX_CHUNK_SIZE
+        self,
+        raw,
+        *,
+        node,
+        version,
+        tokens,
+        run_id,
+        parameter_names,
+        plan,
+        chunk_size=MAX_CHUNK_SIZE,
     ):
         manifest = build_manifest(
             raw,

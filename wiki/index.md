@@ -8,7 +8,7 @@ sources: []
 
 # MacReduce knowledge index
 
-MacReduce is a course project on Apple Silicon. As of [decision 0003](decisions/0003-build-target.md) the build target is a per-request phase-placement scheduler for LLM serving (drafter engine, speculation depth, prefix-KV source) plus the benchmark that tests it against the strongest static configuration. The earlier Wi-Fi local-SGD trainer is retained as a measured prototype, not the research claim. Known hardware is one M4 (macOS 26.5, MLX 0.32.4); other Macs and links are unknown. No scheduler code exists yet.
+MacReduce is a course project on Apple Silicon. As of [decision 0003](decisions/0003-build-target.md) the build target is a per-request phase-placement scheduler for LLM serving (drafter engine, speculation depth, prefix-KV source) plus the benchmark that tests it against the strongest static configuration. The earlier Wi-Fi local-SGD trainer is retained as a measured prototype, not the research claim. Known hardware is one M4 (macOS 26.5, MLX 0.32.4); other Macs and links are unknown. The placement rule, trace, and A-B-B-A comparison are implemented. One greedy equivalence run at depth 2 and 16 tokens matched on this M4; that does not close the depth sweep. See [state](project/state.md).
 
 **Start with [decision 0003](decisions/0003-build-target.md), then [current state](project/state.md), [the dated roadmap](project/roadmap.md), and [research candidates](research/novelty.md).** For the proposal, read [the active project proposal](../docs/proposal.md). For runnable commands, use [the project README](../README.md).
 

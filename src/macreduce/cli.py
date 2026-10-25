@@ -12,6 +12,8 @@ from pathlib import Path
 from .benchmark import accelerate_matmul
 from .cluster import Coordinator, make_server
 from .observe import capabilities, collect_mactop, report
+from .placement import CostTable, EngineCost, choose
+from .serving import MlxLmExecutor, builtin_trace, sweep_order
 from .worker import run_worker
 
 
@@ -162,6 +164,27 @@ def main():
     b.add_argument("--size", type=int, default=512)
     b.add_argument("--repeats", type=int, default=10)
     b.add_argument("--output")
+    place = sub.add_parser("place", help="choose drafter, depth, and prefix from a cost table")
+    place.add_argument("--acceptance", type=float, default=0.8)
+    place.add_argument("--draft-seconds", type=float, default=0.02)
+    place.add_argument("--verify-seconds", type=float, default=0.05)
+    place.add_argument("--target-seconds", type=float, default=0.08)
+    place.add_argument("--prefix-tokens", type=int, default=0)
+    place.add_argument("--prefill-tokens-per-second", type=float)
+    place.add_argument("--kv-bytes", type=int)
+    place.add_argument("--disk-bytes-per-second", type=float)
+    place.add_argument("--link-bytes-per-second", type=float)
+    place.add_argument("--ane-verified", action="store_true")
+    sub.add_parser("trace", help="print the built-in short, long, and code prompts")
+    equivalence = sub.add_parser(
+        "equivalence",
+        help="compare greedy MLX-LM tokens with and without a GPU draft model",
+    )
+    equivalence.add_argument("--max-tokens", type=int, default=32)
+    equivalence.add_argument("--depth", type=int, default=2)
+    equivalence.add_argument("--output")
+    sweep = sub.add_parser("sweep", help="print the static depth order; generation is a later run")
+    sweep.add_argument("--cycles", type=int, default=1)
     args = p.parse_args()
     try:
         if args.command == "doctor":
@@ -223,6 +246,58 @@ def main():
                 Path(args.output).parent.mkdir(parents=True, exist_ok=True)
                 Path(args.output).write_text(result)
             print(result)
+        elif args.command == "place":
+            engines = {"gpu": EngineCost(args.draft_seconds, True, True)}
+            if args.ane_verified:
+                engines["ane"] = EngineCost(args.draft_seconds / 2, True, True)
+            decision = choose(
+                CostTable(
+                    target_seconds_per_token=args.target_seconds,
+                    verify_seconds=args.verify_seconds,
+                    verify_seconds_per_extra_token=0.0,
+                    acceptance=args.acceptance,
+                    engines=engines,
+                    prefix_tokens=args.prefix_tokens,
+                    kv_bytes=args.kv_bytes,
+                    prefill_tokens_per_second=args.prefill_tokens_per_second,
+                    disk_bytes_per_second=args.disk_bytes_per_second,
+                    link_bytes_per_second=args.link_bytes_per_second,
+                )
+            )
+            print(
+                json.dumps(
+                    {
+                        "engine": decision.engine,
+                        "depth": decision.depth,
+                        "prefix": decision.prefix,
+                        "seconds_per_token": decision.seconds_per_token,
+                        "prefix_seconds": decision.prefix_seconds,
+                        "reasons": decision.reasons,
+                    },
+                    indent=2,
+                )
+            )
+        elif args.command == "trace":
+            print(
+                json.dumps(
+                    [
+                        {"segment": prompt.segment, "characters": len(prompt.text)}
+                        for prompt in builtin_trace()
+                    ],
+                    indent=2,
+                )
+            )
+        elif args.command == "sweep":
+            print(json.dumps({"order": sweep_order(cycles=args.cycles), "cycles": args.cycles}))
+        elif args.command == "equivalence":
+            report_body = MlxLmExecutor().equivalence(builtin_trace(), args.max_tokens, args.depth)
+            text = json.dumps(report_body, indent=2)
+            if args.output:
+                Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+                Path(args.output).write_text(text + "\n")
+            print(text)
+            if not report_body["exact"]:
+                raise SystemExit(2)
     except KeyboardInterrupt:
         pass
     except Exception as exc:

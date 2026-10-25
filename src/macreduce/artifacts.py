@@ -77,7 +77,16 @@ def validate_manifest(manifest):
 
 
 def build_manifest(
-    raw, *, run_id, version, role, parameter_names, plan, node=None, chunk_size=MAX_CHUNK_SIZE, dtype="float32"
+    raw,
+    *,
+    run_id,
+    version,
+    role,
+    parameter_names,
+    plan,
+    node=None,
+    chunk_size=MAX_CHUNK_SIZE,
+    dtype="float32",
 ):
     if type(raw) is not bytes:
         raise ValueError("artifact must be bytes")
@@ -163,7 +172,10 @@ class IncomingArtifact:
         if self.completed and self.final.is_file():
             return self.final.read_bytes()
         count = len(self.manifest["chunk_hashes"])
-        if self.received != set(range(count)) or self.partial.stat().st_size != self.manifest["length"]:
+        if (
+            self.received != set(range(count))
+            or self.partial.stat().st_size != self.manifest["length"]
+        ):
             raise ValueError("incomplete artifact")
         digest = hashlib.sha256()
         with self.partial.open("rb") as handle:

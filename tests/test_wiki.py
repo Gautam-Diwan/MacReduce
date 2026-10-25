@@ -14,7 +14,6 @@ SPEC.loader.exec_module(wiki)
 
 
 @pytest.fixture
-
 def vault(tmp_path):
     (tmp_path / "raw/sources").mkdir(parents=True)
     (tmp_path / "raw/manifest.json").write_text("[]\n")
@@ -70,8 +69,12 @@ def test_lint_detects_broken_links_and_missing_index_coverage(vault):
 def test_manifest_cannot_reference_outside_snapshot_directory(vault, tmp_path):
     external = tmp_path / "outside.txt"
     external.write_text("outside")
-    record = {"id": "S01", "path": str(external), "sha256": wiki.digest(external),
-              "bytes": external.stat().st_size}
+    record = {
+        "id": "S01",
+        "path": str(external),
+        "sha256": wiki.digest(external),
+        "bytes": external.stat().st_size,
+    }
     (vault / "raw/manifest.json").write_text(json.dumps([record]))
     assert any("outside raw/sources" in error for error in wiki.lint(vault)["errors"])
 

@@ -2,7 +2,7 @@
 
 A working research prototype for observable local-SGD training across heterogeneous Macs. Workers train locally for several steps, then exchange models through a coordinator. The transport works over ordinary TCP/IP, including Wi-Fi.
 
-**Version 0.1 is a small-model trainer.** It currently trains a 29,888-parameter causal byte Transformer. Every worker holds the entire model. It does not yet train on the ANE, shard large models for inference, or automatically assign work based on hardware. No pretrained weights or external dataset downloads are needed for the demo.
+**The research target is a per-request placement scheduler** for LLM serving: which engine drafts, how far to speculate, and whether to recompute or reload a prefix. Decision 0003 in the wiki states the hypothesis. The 29,888-parameter local-SGD trainer remains a measured prototype. Every training worker holds the entire model. The scheduler does not train on the ANE, and an ANE drafter is refused until a placement check passes.
 
 ## Research wiki
 
@@ -30,12 +30,20 @@ Use Python 3.12 or newer. From this folder:
 ```sh
 python3.12 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[cpu,mlx,dev]'
+python -m pip install -e '.[cpu,mlx,serve,dev]'
 macreduce doctor --smoke --output runs/hardware.json
 pytest -q
 ```
 
-If `python3.12 -m venv` fails because a uv-managed interpreter looks for its standard library under `/install`, use `uv venv .venv --python 3.12` and `uv pip install --python .venv/bin/python -e '.[cpu,mlx,dev]'` instead.
+If `python3.12 -m venv` fails because a uv-managed interpreter looks for its standard library under `/install`, use `uv venv .venv --python 3.12` and `uv pip install --python .venv/bin/python -e '.[cpu,mlx,serve,dev]'` instead.
+
+`serve` pins `mlx-lm==0.32.2`. Placement math does not need it. `macreduce equivalence` does, and it downloads the pinned Qwen2.5 1.5B and 0.5B 4-bit MLX models on first use.
+
+```sh
+macreduce place --acceptance 0.9 --prefix-tokens 4096 --prefill-tokens-per-second 2000 --kv-bytes 50000000 --disk-bytes-per-second 200000000
+macreduce trace
+macreduce equivalence --max-tokens 32 --output runs/equivalence.json
+```
 
 The `cpu` extra installs the explicit PyTorch CPU reference backend. The `mlx` extra installs MLX on Apple silicon. GPU access must be available to the terminal process. There is no silent backend fallback. `requirements-tested.txt` records the exact versions used for the delivered CPU tests; the project extras allow a broader development range.
 

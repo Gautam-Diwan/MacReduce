@@ -223,12 +223,14 @@ def weighted_average(updates):
             params[key].shape != reference[key].shape for key in params
         ):
             raise ValueError("incompatible parameter layouts")
-        if any(value.dtype != np.float32 or not np.isfinite(value).all() for value in params.values()):
+        if any(
+            value.dtype != np.float32 or not np.isfinite(value).all() for value in params.values()
+        ):
             raise ValueError("finite float32 parameters required")
     return {
-        key: sum(params[key].astype(np.float64) * (count / total) for params, count in updates).astype(
-            np.float32
-        )
+        key: sum(
+            params[key].astype(np.float64) * (count / total) for params, count in updates
+        ).astype(np.float32)
         for key in reference
     }
 
@@ -290,13 +292,13 @@ class TorchBackend:
 
             normalized = self._norm(hidden, name("norm1_g"), name("norm1_b"))
             query, key, value = [
-                (normalized @ name(part)).reshape(batch_size, steps, heads, head_dim).transpose(1, 2)
+                (normalized @ name(part))
+                .reshape(batch_size, steps, heads, head_dim)
+                .transpose(1, 2)
                 for part in ("q", "k", "v")
             ]
             mask = torch.triu(torch.full((steps, steps), float("-inf")), diagonal=1)
-            scores = torch.softmax(
-                (query @ key.transpose(-1, -2)) / head_dim**0.5 + mask, dim=-1
-            )
+            scores = torch.softmax((query @ key.transpose(-1, -2)) / head_dim**0.5 + mask, dim=-1)
             attended = (scores @ value).transpose(1, 2).reshape(batch_size, steps, width)
             hidden = hidden + attended @ name("out")
             feed = self._norm(hidden, name("norm2_g"), name("norm2_b"))
@@ -363,6 +365,7 @@ class MLXBackend:
         head_dim = width // heads
         hidden = params["embedding"][tokens] + params["position"][:steps]
         for layer in range(config.layers):
+
             def name(suffix, layer=layer):
                 return layer_param(config, layer, suffix)
 
@@ -374,9 +377,7 @@ class MLXBackend:
                 for part in ("q", "k", "v")
             ]
             mask = mx.triu(mx.full((steps, steps), -float("inf")), k=1)
-            scores = mx.softmax(
-                (query @ key.transpose(0, 1, 3, 2)) / head_dim**0.5 + mask, axis=-1
-            )
+            scores = mx.softmax((query @ key.transpose(0, 1, 3, 2)) / head_dim**0.5 + mask, axis=-1)
             attended = (scores @ value).transpose(0, 2, 1, 3).reshape(batch_size, steps, width)
             hidden = hidden + attended @ params[name("out")]
             feed = self._norm(params, hidden, name("norm2_g"), name("norm2_b"))

@@ -127,7 +127,9 @@ def test_two_layer_checkpoint_round_trip_and_train():
     first = trainer.forward(inputs).detach().numpy()
     inputs[:, config.context // 2 :] = 200
     second = trainer.forward(inputs).detach().numpy()
-    np.testing.assert_allclose(first[:, : config.context // 2], second[:, : config.context // 2], atol=1e-6)
+    np.testing.assert_allclose(
+        first[:, : config.context // 2], second[:, : config.context // 2], atol=1e-6
+    )
 
 
 def test_zip_duplicate_rejected():

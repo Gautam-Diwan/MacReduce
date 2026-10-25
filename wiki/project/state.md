@@ -16,8 +16,9 @@ sources: []
 
 | Capability | State | Evidence or next step |
 |---|---|---|
-| Pinned `mlx-lm` engine with verified greedy equivalence | Not started | [Roadmap](roadmap.md) item 1 |
-| Trace, A-B-B-A harness, noise floor | Not started | Roadmap item 2 |
+| Placement rule for engine, depth, and prefix | Implemented and unit-tested | `src/macreduce/placement.py`. ANE is ineligible unless `placement_verified`. Missing rates stay unknown |
+| Pinned `mlx-lm` 0.32.2 executor | Equivalence measured for one setting | Depth 2, 16 tokens, three prompts, exact greedy match. Not a sweep or a timing result. [Record](../../evidence/serve-equivalence/README.md). CPU and ANE drafters raise `NotImplementedError` |
+| Trace, A-B-B-A harness, noise floor | Implemented and unit-tested | Built-in short, long, and code prompts. No timed model sweep yet |
 | D2 adaptive speculation depth | Not started | Roadmap item 4 |
 | D1 drafter engine choice, CPU stream and gated ANE | Not started; ANE execution on this M4 under macOS 26.5 is **unknown** | Roadmap item 5; gate outcome is a result either way |
 | D3 prefix source, local disk | Not started | Roadmap item 6 |
