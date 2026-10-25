@@ -1,0 +1,38 @@
+{
+  "exact": false,
+  "depth": 8,
+  "max_tokens": 32,
+  "rows": [
+    {
+      "segment": "short",
+      "exact": false,
+      "first_mismatch": 26,
+      "reference_length": 32,
+      "other_length": 32
+    },
+    {
+      "segment": "long",
+      "exact": true,
+      "first_mismatch": null,
+      "reference_length": 32,
+      "other_length": 32
+    },
+    {
+      "segment": "code",
+      "exact": true,
+      "first_mismatch": null,
+      "reference_length": 32,
+      "other_length": 32
+    }
+  ],
+  "versions": {
+    "mlx-lm": "0.32.2",
+    "mlx": "0.32.4"
+  },
+  "target": "mlx-community/Qwen3-1.7B-4bit",
+  "draft": "mlx-community/Qwen3-0.6B-4bit",
+  "revisions": {
+    "target": "3b1b1768f8f8cf8351c712464f906e86c2b8269e",
+    "draft": "73e3e38d981303bc594367cd910ea6eb48349da8"
+  }
+}

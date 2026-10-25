@@ -3,7 +3,8 @@
 Unit tests use ``token_diff`` and the harness without loading a model. The
 MLX-LM path imports ``mlx_lm`` only when a command asks for generation, and it
 fails if that package or the pinned version is absent. CPU and ANE drafters
-are policy choices without an executor until a placement check exists.
+remain policy choices without an executor. The Core ML probe is a separate
+convolution, not a draft model.
 """
 
 from __future__ import annotations
@@ -14,8 +15,12 @@ from dataclasses import asdict, dataclass
 from .placement import DEPTHS, Placement, fixed
 
 MLX_LM_PIN = "0.32.2"
-TARGET_MODEL = "mlx-community/Qwen2.5-1.5B-Instruct-4bit"
-DRAFT_MODEL = "mlx-community/Qwen2.5-0.5B-Instruct-4bit"
+TARGET_MODEL = "mlx-community/Qwen3-1.7B-4bit"
+DRAFT_MODEL = "mlx-community/Qwen3-0.6B-4bit"
+MODEL_REVISIONS = {
+    TARGET_MODEL: "3b1b1768f8f8cf8351c712464f906e86c2b8269e",
+    DRAFT_MODEL: "73e3e38d981303bc594367cd910ea6eb48349da8",
+}
 
 
 @dataclass(frozen=True)
@@ -191,8 +196,12 @@ class MlxLmExecutor:
             return
         from mlx_lm import load
 
-        self._target, self._tokenizer = load(self.target_id)
-        self._draft, draft_tokenizer = load(self.draft_id)
+        self._target, self._tokenizer = load(
+            self.target_id, revision=MODEL_REVISIONS.get(self.target_id)
+        )
+        self._draft, draft_tokenizer = load(
+            self.draft_id, revision=MODEL_REVISIONS.get(self.draft_id)
+        )
         if getattr(self._tokenizer, "vocab_size", None) != getattr(
             draft_tokenizer, "vocab_size", None
         ):
@@ -267,6 +276,10 @@ class MlxLmExecutor:
             "versions": dict(self.versions),
             "target": self.target_id,
             "draft": self.draft_id,
+            "revisions": {
+                "target": MODEL_REVISIONS.get(self.target_id),
+                "draft": MODEL_REVISIONS.get(self.draft_id),
+            },
         }
 
     def _encode(self, prompt: str):

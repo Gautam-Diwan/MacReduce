@@ -1,0 +1,90 @@
+{
+  "coremltools": "9.0",
+  "torch": "2.14.1",
+  "hw_model": "Mac16,12",
+  "memory_bytes": 25769803776,
+  "torch_note": "coremltools 9 reports Torch 2.7.0 as the newest version it has tested. Conversion still produced an mlprogram on the installed Torch.",
+  "os": "macOS-26.5-arm64-arm-64bit",
+  "machine": "arm64",
+  "network": "conv2d 3x64 kernel 3, relu, float16, input 1x3x256x256",
+  "draft_model_converted": false,
+  "placement_verified": false,
+  "plan_places_conv_on_neural_engine": true,
+  "plans": {
+    "CPU_AND_NE": [
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.conv",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLNeuralEngineComputeDevice"
+      }
+    ],
+    "CPU_ONLY": [
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.conv",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLCPUComputeDevice"
+      }
+    ]
+  },
+  "predict_seconds_20": {
+    "CPU_AND_NE": 0.037686583993490785,
+    "CPU_ONLY": 0.03749787500419188
+  },
+  "ane_power_watts": null,
+  "ane_power_reason": "powermetrics must be invoked as the superuser",
+  "claim": "Under CPU_AND_NE the compute plan assigns the convolution and ReLU to MLNeuralEngineComputeDevice. Under CPU_ONLY the same operators are not assigned there. Wall-clock predict time is not residency. No ANE power sample was read, and the Gemma or Qwen draft model was not converted."
+}

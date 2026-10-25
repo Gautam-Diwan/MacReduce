@@ -37,7 +37,7 @@ pytest -q
 
 If `python3.12 -m venv` fails because a uv-managed interpreter looks for its standard library under `/install`, use `uv venv .venv --python 3.12` and `uv pip install --python .venv/bin/python -e '.[cpu,mlx,serve,dev]'` instead.
 
-`serve` pins `mlx-lm==0.32.2`. Placement math does not need it. `macreduce equivalence` does, and it downloads the pinned Qwen2.5 1.5B and 0.5B 4-bit MLX models on first use.
+`serve` pins `mlx-lm==0.32.2` and `coremltools==9.0`. Placement math does not need either. `macreduce equivalence` downloads the pinned Qwen3 1.7B and 0.6B 4-bit MLX models on first use. `macreduce ane` converts a small convolution and reads its compute plan. The Qwen2.5 study remains in `evidence/serve-benchmark`.
 
 ```sh
 macreduce place --acceptance 0.9 --prefix-tokens 4096 --prefill-tokens-per-second 2000 --kv-bytes 50000000 --disk-bytes-per-second 200000000

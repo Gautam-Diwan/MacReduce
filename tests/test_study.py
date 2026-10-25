@@ -75,4 +75,5 @@ def test_plan_covers_each_depth_twice_and_rejects_one_cycle():
 def test_execute_records_a_failed_child(tmp_path):
     report = execute(tmp_path, 2, 4, "false")
     assert report["trials"][0]["status"] == "error"
+    assert report["protocol"]["models"]["target"] == "mlx-community/Qwen3-1.7B-4bit"
     assert (tmp_path / "report.json").is_file()

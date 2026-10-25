@@ -9,6 +9,7 @@ import threading
 import time
 from pathlib import Path
 
+from .ane import placement_probe
 from .benchmark import accelerate_matmul
 from .cluster import Coordinator, make_server
 from .observe import capabilities, collect_mactop, report
@@ -233,6 +234,11 @@ def main():
     bench.add_argument("--output", required=True)
     bench.add_argument("--cycles", type=int, default=3)
     bench.add_argument("--max-tokens", type=int, default=32)
+    ane = sub.add_parser(
+        "ane",
+        help="convert a small convolution and read its Core ML compute plan",
+    )
+    ane.add_argument("--output", required=True)
     once = sub.add_parser("bench-trial", help="one fresh-process trial used by bench")
     once.add_argument("--output", required=True)
     once.add_argument("--segment", choices=["short", "long", "code"], default="short")
@@ -353,6 +359,16 @@ def main():
             )
         elif args.command == "bench-trial":
             _bench_trial(args)
+        elif args.command == "ane":
+            import tempfile
+
+            with tempfile.TemporaryDirectory(prefix="macreduce-ane-") as directory:
+                report_body = placement_probe(Path(directory))
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
         elif args.command == "equivalence":
             report_body = MlxLmExecutor().equivalence(builtin_trace(), args.max_tokens, args.depth)
             text = json.dumps(report_body, indent=2)

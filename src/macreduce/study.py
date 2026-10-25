@@ -11,7 +11,16 @@ import statistics
 from collections import defaultdict
 
 from .placement import DEPTHS, CostTable, EngineCost, choose, choose_prefix
-from .serving import Prompt, Trial, beats, builtin_trace, noise_floor, token_diff
+from .serving import (
+    DRAFT_MODEL,
+    TARGET_MODEL,
+    Prompt,
+    Trial,
+    beats,
+    builtin_trace,
+    noise_floor,
+    token_diff,
+)
 
 
 def acceptance_from_counts(from_draft: int, generated: int, depth: int) -> float | None:
@@ -322,22 +331,28 @@ def assign_passes(records: list[dict]) -> list[dict]:
 
 
 def ane_gate() -> dict:
-    """Record whether a Core ML drafter can be placed. Absence is not zero utilization."""
+    """The depth report does not convert a drafter. Absence is not zero utilization."""
 
     try:
         import importlib
 
         importlib.import_module("coremltools")
+        installed = True
     except ImportError:
-        return {
-            "placement_verified": False,
-            "available": False,
-            "reason": "coremltools is not installed; the draft model was not converted and no ANE power was read",
-        }
+        installed = False
+    installed_text = (
+        "coremltools is installed; macreduce ane reads a convolution compute plan. "
+        if installed
+        else "coremltools is not installed. "
+    )
     return {
         "placement_verified": False,
         "available": False,
-        "reason": "coremltools imports, but this run does not convert the draft model or read an ANE compute plan",
+        "reason": (
+            "this report does not convert the draft model. "
+            + installed_text
+            + "No ANE power was read"
+        ),
     }
 
 
@@ -504,10 +519,7 @@ def execute(output, cycles: int, max_tokens: int, executable: str) -> dict:
         "cycles": cycles,
         "max_tokens": max_tokens,
         "process": "one fresh interpreter per trial",
-        "models": {
-            "target": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
-            "draft": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
-        },
+        "models": {"target": TARGET_MODEL, "draft": DRAFT_MODEL},
     }
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     return report

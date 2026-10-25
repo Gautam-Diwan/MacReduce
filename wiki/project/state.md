@@ -8,7 +8,7 @@ sources: []
 
 # Current implementation and evidence
 
-**Scope as of 2026-10-25:** [decision 0003](../decisions/0003-build-target.md) makes the deliverable a per-request phase-placement scheduler for LLM serving plus its benchmark. The scheduler and a one-M4 study now exist. The local-SGD trainer remains a measured prototype, not the research claim. The joint hypothesis, better time-to-first-token and better decode rate than the hindsight depth, was not met.
+**Scope as of 2026-10-25:** [decision 0003](../decisions/0003-build-target.md) makes the deliverable a per-request phase-placement scheduler for LLM serving plus its benchmark. The scheduler and a one-M4 Qwen2.5 study now exist. The serving pin is Qwen3 1.7B/0.6B 4-bit; that pair has an equivalence check, not a new speed sweep. The local-SGD trainer remains a measured prototype, not the research claim. The joint hypothesis, better time-to-first-token and better decode rate than the hindsight depth, was not met on the Qwen2.5 study.
 
 **Measured locally:** MacReduce is the renamed version of the original MacTrain prototype. The canonical package is `macreduce`, the console command is `macreduce`, and environment settings use `MACREDUCE_`. Historical files keep their original labels. [Migration record](../../docs/archive/migration.json).
 
@@ -17,11 +17,11 @@ sources: []
 | Capability | State | Evidence or next step |
 |---|---|---|
 | Placement rule for engine, depth, and prefix | Implemented and unit-tested | `src/macreduce/placement.py`. ANE is ineligible unless `placement_verified`. Missing rates stay unknown |
-| Pinned `mlx-lm` 0.32.2 executor | Measured | Depths 0, 1, 2, 4, and 8 matched greedy tokens on short, long, and code, 32 tokens, three fresh-process replicates. Every trial hit the length cap, so an early stop was not observed. [Study](../../evidence/serve-benchmark/README.md) |
-| Trace and depth sweep | Measured on this M4 | Same record. Short prompts prefer no draft. Long prompts decode fastest at depth 4 and reach first token fastest at depth 0. Code decodes fastest at depth 2 |
+| Pinned `mlx-lm` 0.32.2 executor | Qwen2.5 sweep measured; Qwen3 pin checked for tokens | The speed study used Qwen2.5 and is unchanged. The current pin is Qwen3 1.7B/0.6B 4-bit. Depths 1, 2, and 4 matched greedy tokens for 32 tokens. Depth 8 mismatched the short prompt at token 26. [Qwen3 check](../../evidence/serve-equivalence-qwen3/README.md), [Qwen2.5 study](../../evidence/serve-benchmark/README.md) |
+| Trace and depth sweep | Measured on this M4 for Qwen2.5 | [Qwen2.5 study](../../evidence/serve-benchmark/README.md). Short prompts prefer no draft. Long prompts decode fastest at depth 4 and reach first token fastest at depth 0. Code decodes fastest at depth 2. Those rates are not Qwen3 rates |
 | D2 cost-model depth | Measured; hypothesis not met | The model picked the hindsight decode depth for short and long, and depth 4 instead of 2 for code, which was slower on the evaluation pass. Per-step depth changes were not run |
 | D1 CPU draft | Measured once on the short prompt | Tokens matched. Decode was about 88 tok/s against about 97 tok/s with no draft. One stream, not a concurrency claim |
-| D1 ANE gate | Not run | `coremltools` is not installed. Placement stays unverified. No ANE power was read |
+| D1 ANE gate | Convolution plan measured; drafter not converted | `coremltools==9.0`. `CPU_AND_NE` assigns the conv and ReLU to the Neural Engine device; `CPU_ONLY` assigns them to the CPU device. Twenty predictions took about 0.038 s under both. `powermetrics` needs superuser, so ANE watts are null. `placement_verified` stays false. [Probe](../../evidence/ane-probe/README.md) |
 | D3 prefix, warm cache | Measured | Reloading the long prefix matched recomputed tokens. The 0.9 ms load is a warm page cache of a file just written, not cold disk and not a network |
 | D3 remote arm | Not run | No second Mac |
 

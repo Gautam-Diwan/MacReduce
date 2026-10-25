@@ -8,7 +8,7 @@ sources: ["S10", "S11", "S12", "S16"]
 
 # Integrate ANE training through falsifiable gates
 
-**Scope note 2026-10-25:** ANE training is not planned ([decision 0003](../decisions/0003-build-target.md)). The only ANE work in scope is a gated inference option: a Core ML draft model whose placement is verified by power or compute plan and whose outputs pass a parity gate ([S25](../sources/S25.md), [S29](../sources/S29.md), [S36](../sources/S36.md)). The gates below remain the right shape for that check.
+**Scope note 2026-10-25:** ANE training is not planned ([decision 0003](../decisions/0003-build-target.md)). The only ANE work in scope is a gated inference option: a Core ML draft model whose placement is verified by power or compute plan and whose outputs pass a parity gate ([S25](../sources/S25.md), [S29](../sources/S29.md), [S36](../sources/S36.md)). A later probe converted a small convolution, not that draft, and read a compute plan ([probe](../../evidence/ane-probe/README.md)). The gates below remain the right shape for the draft check.
 
 ANE training is not implemented in MacReduce. Investigate it as a bounded backend project after the GPU and physical network baselines work. Public inference support is not a public general training API. The candidate runtimes below use experimental paths and must be pinned and validated on the actual macOS build.
 
