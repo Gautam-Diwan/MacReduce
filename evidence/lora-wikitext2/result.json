@@ -1,0 +1,152 @@
+{
+  "status": "ok",
+  "mlx_lm": "0.32.2",
+  "dataset": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "counts": {
+      "train": 23767,
+      "validation": 2461,
+      "test": 2891
+    }
+  },
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "model_revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+  "fine_tune_type": "lora",
+  "quantized_base": true,
+  "lora": {
+    "rank": 8,
+    "scale": 20.0,
+    "dropout": 0.0,
+    "num_layers": -1
+  },
+  "optimizer": "adamw",
+  "learning_rate": 0.0001,
+  "batch_size": 1,
+  "max_seq_length": 512,
+  "iters": 100,
+  "seed": 0,
+  "grad_checkpoint": true,
+  "test_batches": 20,
+  "trainable_parameters": 5046272,
+  "baseline_test": {
+    "loss": 4.004072666168213,
+    "perplexity": 54.82096348606043,
+    "batches": 20
+  },
+  "adapted_test": {
+    "loss": 4.294018268585205,
+    "perplexity": 73.26025723349376,
+    "batches": 20
+  },
+  "history": {
+    "train": [
+      {
+        "iteration": 10,
+        "train_loss": 4.210225296020508,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 1.669663294304355,
+        "tokens_per_second": 195.01667277474868,
+        "trained_tokens": 1168,
+        "peak_memory": 0.865228248
+      },
+      {
+        "iteration": 20,
+        "train_loss": 4.281764984130859,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 4.420176526021386,
+        "tokens_per_second": 425.6629994558595,
+        "trained_tokens": 2131,
+        "peak_memory": 0.865228248
+      },
+      {
+        "iteration": 30,
+        "train_loss": 4.94641342163086,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 3.1670364719848942,
+        "tokens_per_second": 451.9361045522444,
+        "trained_tokens": 3558,
+        "peak_memory": 0.976287818
+      },
+      {
+        "iteration": 40,
+        "train_loss": 5.310418701171875,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 4.594365042644192,
+        "tokens_per_second": 469.54410735823643,
+        "trained_tokens": 4580,
+        "peak_memory": 0.976287818
+      },
+      {
+        "iteration": 50,
+        "train_loss": 4.597738265991211,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 6.231104824965516,
+        "tokens_per_second": 411.87602893022057,
+        "trained_tokens": 5241,
+        "peak_memory": 0.976287818
+      },
+      {
+        "iteration": 60,
+        "train_loss": 4.234407043457031,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 2.913884159940581,
+        "tokens_per_second": 475.5458949023028,
+        "trained_tokens": 6873,
+        "peak_memory": 1.135961638
+      },
+      {
+        "iteration": 70,
+        "train_loss": 4.722950744628906,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 5.46231485162853,
+        "tokens_per_second": 418.9595491199082,
+        "trained_tokens": 7640,
+        "peak_memory": 1.135961638
+      },
+      {
+        "iteration": 80,
+        "train_loss": 4.772957229614258,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 4.237947549507334,
+        "tokens_per_second": 479.7356626042302,
+        "trained_tokens": 8772,
+        "peak_memory": 1.13596177
+      },
+      {
+        "iteration": 90,
+        "train_loss": 4.574178314208984,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 4.489242007889672,
+        "tokens_per_second": 448.47527658817825,
+        "trained_tokens": 9771,
+        "peak_memory": 1.13596177
+      },
+      {
+        "iteration": 100,
+        "train_loss": 4.455648040771484,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 4.283532365149008,
+        "tokens_per_second": 478.4705651871442,
+        "trained_tokens": 10888,
+        "peak_memory": 1.13596177
+      }
+    ],
+    "validation": [
+      {
+        "iteration": 0,
+        "val_loss": 4.3710432052612305,
+        "val_time": 0.39715258301293943,
+        "val_perplexity": 79.1261334576722
+      },
+      {
+        "iteration": 99,
+        "val_loss": 4.0868144035339355,
+        "val_time": 0.26667383399035316,
+        "val_perplexity": 59.54988731558452
+      }
+    ]
+  },
+  "adapter_path": "evidence/lora-wikitext2/adapters"
+}

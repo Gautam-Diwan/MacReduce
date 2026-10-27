@@ -2,7 +2,7 @@
 title: "MacReduce wiki change log"
 type: log
 status: active
-updated: 2026-10-25
+updated: 2026-10-27
 sources: ["S01"]
 ---
 
@@ -131,3 +131,43 @@ Loaded `mlx-community/Qwen3.5-2B-4bit` at `674aaa7240b91e8012fcad5d791b7dfe5ba90
 `macreduce bench --cycles 3 --max-tokens 32` then ran that pin. All 45 trials hit the length cap. Depths 0 through 4 matched greedy tokens. Depth 8 mismatched the short prompt at token 26 on every replicate, so those rates are absent. Exact depths decoded fastest at depth 2 on short (95 tok/s), long (99 tok/s), and code (95 tok/s). Time-to-first-token was fastest at depth 0 in every segment. The cost model did not beat hindsight on both metrics. A CPU draft on the short prompt matched and ran once. The warm prefix reload matched. Record: [evidence/serve-benchmark-qwen3](../evidence/serve-benchmark-qwen3/README.md).
 
 `macreduce ane` was run again on a larger two-convolution network. The compute plan still assigns the convolutions and ReLUs to `MLNeuralEngineComputeDevice` under `CPU_AND_NE` and to `MLCPUComputeDevice` under `CPU_ONLY`. `mactop` v2.1.5 recorded nine consecutive samples at 0.581–0.802 W and 10.23–11.89 GB/s during the `CPU_AND_NE` loop (424 predictions in 8.00 s). The `CPU_ONLY` loop, 198 predictions in 8.04 s, stayed at 0 W and 0 GB/s for all 40 samples. Later samples in the `CPU_AND_NE` capture returned to the idle floor. `ane_active` stayed 0. `powermetrics` still requires superuser. The serving draft was not converted. Record: [evidence/ane-usage](../evidence/ane-usage/README.md).
+
+## 2026-10-25 — Decoder block ranked across CPU, GPU, and the Neural Engine
+
+`macreduce ane-workload` converts one float16 decoder block (batch 1, 128 tokens, width 256, four heads) and times it on CPU-only Core ML, CPU+Neural Engine, and PyTorch MPS. The compute plan assigns the linear and matmul ops to `MLNeuralEngineComputeDevice` under `CPU_AND_NE` and to `MLCPUComputeDevice` under `CPU_ONLY`. The largest absolute difference from the float32 PyTorch forward was 0.00307. Measured seconds per forward were 0.000168 on CPU, 0.000186 on the Neural Engine path, and 0.000666 on GPU. `choose_device` selected CPU. Three mactop samples during the Neural Engine loop read 1.54–14.22 GB/s; the CPU-only loop stayed at 0. Later samples in the Neural Engine capture returned to the idle floor. A concurrent GPU and Core ML run produced 13 overlapping samples. The Qwen draft weights were not converted, and ANEForge and Orion were not pinned: this is the Core ML inference path. Record: [evidence/ane-decoder](../evidence/ane-decoder/README.md).
+
+## 2026-10-25 — Full-depth forward and the two-sample gate
+
+A rerun of `macreduce ane-workload` measured the decoder at 0.000170 s on CPU+Neural Engine and 0.000176 s on CPU. mactop recorded two samples at 14.15 and 14.30 GB/s, then the capture returned to the idle floor. The gate required three samples, so `placement_verified` stayed false and the ranking omitted the Neural Engine time. The gate now accepts two samples. Record: [evidence/ane-decoder](../evidence/ane-decoder/README.md).
+
+`macreduce infer` generated with the pinned Qwen3 pair on the short prompt. Plain decode was 83.0 tok/s. Speculative depth 2 was 92.7 tok/s and matched those tokens. A 28-layer network at the Qwen3-0.6B widths, 596,042,752 random parameters, compiled once with 1,213 Neural Engine ops and 0.0207 s per forward. The command could not save that package: the data volume is full, and the compiler copies the 1.1 GB weight file. The conversion now stops when less than 3 GB is free. Record: [evidence/infer-qwen3](../evidence/infer-qwen3/README.md).
+
+## 2026-10-26 — Private ANE APIs allowed, WikiText-2 QLoRA baseline
+
+Decision 0003 no longer bars private ANE APIs. An ANE training stack is in scope when it addresses a gap ANEForge, Orion, or maderix leave open. The training baseline is QLoRA of `mlx-community/Qwen3-0.6B-4bit` on Salesforce WikiText-2 raw v1, revision `b08601e04326c79dfdd32d625aee71d232d685c3`. The reusable module is `src/macreduce/finetune.py`, command `macreduce lora`. Perplexity is the exponential of the mean token loss, reported on the test split before and after the adapter.
+
+## 2026-10-27 — Course proposal rewritten to one page
+
+The open-ended proposal is [docs/proposal.md](../docs/proposal.md), with a one-page PDF beside it. Dataset: Salesforce WikiText-2 raw v1 at `b08601e04326c79dfdd32d625aee71d232d685c3`. Metric: full-split test perplexity. Baseline: one-epoch QLoRA of the pinned Qwen3-0.6B-4bit on the MLX GPU. The Neural Engine comparison is gated on residency and loss agreement. The October 23 Wi-Fi text is [archived](../docs/archive/proposal-2026-10-23.md). Course dates used here are feedback 2026-10-28, teams 2026-11-02, check-in 2026-11-18, and report 2026-12-01. The one-epoch perplexity and the training-step gate are not yet measured.
+
+## 2026-10-27 — Distributed training and explicit Neural Engine stacks
+
+The 10-805 proposal, lead Gautam Diwan (gdiwan), now asks three things on the same WikiText-2 QLoRA setup. Does an explicit ANEForge, Orion, or maderix training step beat the GPU baseline on perplexity or step time? Should the Neural Engine run inference while the GPU trains? Do a parameter server, local SGD, or a non-reducing inference seat beat ring all-reduce once a second Mac exists? `src/macreduce/train_plan.py` and `macreduce train-plan` write that list. The probe marks Orion and maderix unpinned. A missing import is not replaced with the GPU. No private stack was installed or run. Multi-Mac arms are unmeasured. The one-page proposal was rewritten to this question.
+
+## 2026-10-27 — Heterogeneous all-reduce and a three-epoch curve
+
+Search on this date, abstracts only, not ingested as source cards: BlueConnect decomposes all-reduce across a fast tier and a slow tier. Blink packs trees when link capacity is unequal. BytePS argues a flat all-reduce is no longer optimal once another device can sum gradients. MLX documents a TCP ring that is always available and a JACCL backend that needs Thunderbolt 5. This machine has neither a second Mac nor Thunderbolt 5.
+
+The course plan now reports a single-Mac table and a multi-Mac table. The single-Mac baseline is GPU QLoRA. The single-Mac heterogeneous arm is a GPU rank plus an explicit Neural Engine rank in one reduction. The multi-Mac baseline is MLX ring all-reduce over GPU ranks. The other multi-Mac reductions are a flat heterogeneous all-reduce, a within-Mac sum followed by a ring, and a tree on four ranks. A mixed ring is rejected because a ring assumes equal ranks.
+
+The fine-tuning curve is three epochs on the first 4,096 training lines, batch size 8, gradient accumulation 2. Validation and test stay the full WikiText-2 splits. The model stays the pinned Qwen3-0.6B-4bit. `macreduce lora` uses that schedule. The curve has not been run.
+
+## 2026-10-27 — Heterogeneous federated learning
+
+The course question is heterogeneous federated learning. The project name stays MacReduce. A client is a GPU, a GPU and Neural Engine combined, or those devices as two clients. Every Mac in a run uses the same mode and a shard of one WikiText-2 mixture. The payload is the LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the control. Star, ring, and tree must match on uncompressed deltas. Unequal step counts use the FedNova normalization from S06, whose card is an abstract plus one equation, not a full-paper review. Int8 quantization keeps an error residual.
+
+`src/macreduce/federated.py` and `macreduce federate` implement the cohort, the shard, the averages, FedNova, and the quantizer. Tests cover those identities. No training run was started. No private stack was installed. FetchSGD and hierarchical quantized averaging were found by search on this date and are not source cards. Serving placement and speculative decoding remain in the tree as future scope. The one-page proposal was rewritten to this rubric. Multi-Mac cells are still unmeasured.
+
+## 2026-10-27 — Federated round loop, still not trained
+
+`run_federated` now runs FedAvg and per-step all-reduce on named adapter tensors, with int8 error feedback, FedNova, and star, ring, and tree means. A second Mac raises `PeerRequired` unless a relay is passed. The loopback relay was tested with synthetic payloads. It is not a second Mac. `src/macreduce/lora_client.py` holds the MLX QLoRA local step and `require_ane`, which refuses a missing or uncompiled Neural Engine stack. `macreduce federate --execute` calls that path. It was not invoked. The CPU reference in the tests is SGD toward a fixed target, not WikiText. The proposal was rewritten in the shape of a one-page NeurIPS preprint, with WikiText-2, validation perplexity, and one-Mac GPU FedAvg named in the evaluation section. The official NeurIPS style file was not fetched. The PDF uses the same text width, Times text, abstract, and numbered sections.

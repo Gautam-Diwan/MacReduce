@@ -2,7 +2,7 @@
 title: "Research contribution candidates and falsification plans"
 type: research
 status: proposed
-updated: 2026-10-25
+updated: 2026-10-27
 sources: ["S02", "S03", "S05", "S06", "S07", "S08", "S09", "S10", "S12", "S23", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36"]
 ---
 
@@ -46,7 +46,7 @@ What remains of that work is a measured prototype: a CPU and MLX-GPU local-SGD t
 
 **Ablations:** each decision alone with the other two fixed; short-only, long-only, and code-only traces; cold versus warm model and Core ML compile state; one versus two concurrent requests. If gains appear only on one trace type, say so.
 
-**Resources:** one M4 now (all of D1–D2, local D3, harness). A second Mac on any IP link unlocks the remote arm of D3. No Thunderbolt 5, M5, or private ANE API is required.
+**Resources:** one M4 now (all of D1–D2, local D3, harness, and the one-Mac QLoRA and explicit-ANE arms). A second Mac on any IP link unlocks the remote arm of D3 and the multi-Mac training comparisons. No Thunderbolt 5 or M5 is required. Explicit ANE stacks are required for the course comparison and are not yet pinned.
 
 **Stages to 2026-12-04** are in the [roadmap](../project/roadmap.md).
 
@@ -58,7 +58,7 @@ Demoted 2026-10-25. The data-objective rules it introduced (fixed mixture weight
 
 ### B. ANE-resident local training blocks versus synchronization boundaries
 
-Demoted. Three ANE training prototypes exist ([S10](../sources/S10.md), [S12](../sources/S12.md), [S23](../sources/S23.md)); all use private APIs; maderix reports 5–9% utilization and CPU-side weight gradients. The boundary-cost accounting idea is sound but requires a working ANE training backend that this project will not build.
+Reopened 2026-10-27 as a measurement question, not a novelty claim. Three ANE training prototypes exist ([S10](../sources/S10.md), [S12](../sources/S12.md), [S23](../sources/S23.md)); all use private APIs; maderix reports 5–9% utilization and CPU-side weight gradients. The course project, still named MacReduce, compares those stacks as federated clients against GPU QLoRA on one WikiText-2 mixture. A failed pin or a loss that does not match the GPU reference is a result. This does not claim a new training system.
 
 ### C. Calibration that does not damage the workload it is measuring
 

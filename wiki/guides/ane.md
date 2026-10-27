@@ -2,13 +2,15 @@
 title: "Integrate ANE training through falsifiable gates"
 type: implementation
 status: proposed
-updated: 2026-10-25
+updated: 2026-10-27
 sources: ["S10", "S11", "S12", "S16"]
 ---
 
 # Integrate ANE training through falsifiable gates
 
-**Scope note 2026-10-25:** ANE training is not planned ([decision 0003](../decisions/0003-build-target.md)). The only ANE work in scope is a gated inference option: a Core ML draft model whose placement is verified by power or compute plan and whose outputs pass a parity gate ([S25](../sources/S25.md), [S29](../sources/S29.md), [S36](../sources/S36.md)). A later probe converted a small convolution, not that draft, and read a compute plan ([probe](../../evidence/ane-probe/README.md)). The gates below remain the right shape for the draft check.
+**Scope note 2026-10-27:** The 10-805 project treats the Neural Engine as a federated client, either combined with the GPU or separate from it. ANEForge, Orion, and maderix are the private stacks. `macreduce federate` records which import. None of the three stacks is pinned, and an import would not by itself show residency. The gates below still apply before a number is kept.
+
+**Scope note 2026-10-26:** [Decision 0003](../decisions/0003-build-target.md) allows a private-API ANE training stack when it addresses a gap ANEForge, Orion, or maderix leave open. The inference option remains: a Core ML draft model whose placement is verified by power or compute plan and whose outputs pass a parity gate ([S25](../sources/S25.md), [S29](../sources/S29.md), [S36](../sources/S36.md)). A later probe converted a small convolution, not that draft, and read a compute plan ([probe](../../evidence/ane-probe/README.md)). A decoder block and a 28-layer Qwen3-0.6B-shaped forward were then timed ([decoder](../../evidence/ane-decoder/README.md), [infer](../../evidence/infer-qwen3/README.md)). The saved decoder ranking omitted the Neural Engine on a two-sample bandwidth trace, and the full package did not fit on disk. The gates below remain the right shape for the Qwen draft check.
 
 ANE training is not implemented in MacReduce. Investigate it as a bounded backend project after the GPU and physical network baselines work. Public inference support is not a public general training API. The candidate runtimes below use experimental paths and must be pinned and validated on the actual macOS build.
 

@@ -1,0 +1,51 @@
+{
+  "qwen_shaped_coreml": {
+    "status": "error",
+    "error": "RuntimeError: [MIL FileWriter]: Unknown error occurred while writing data to the file."
+  },
+  "mlx_qwen3": {
+    "versions": {
+      "mlx-lm": "0.32.2",
+      "mlx": "0.32.4"
+    },
+    "target": "mlx-community/Qwen3-1.7B-4bit",
+    "draft": "mlx-community/Qwen3-0.6B-4bit",
+    "revisions": {
+      "target": "3b1b1768f8f8cf8351c712464f906e86c2b8269e",
+      "draft": "73e3e38d981303bc594367cd910ea6eb48349da8"
+    },
+    "prompt": "Reply with one word: ready",
+    "max_tokens": 32,
+    "depth": 2,
+    "target_load": "ok",
+    "draft_load": "ok",
+    "vocab_size": {
+      "target": 151643,
+      "draft": 151643
+    },
+    "plain": {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.08617029199376702,
+      "decode_tokens_per_second": 83.01626632456667,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 0,
+      "peak_memory_gb": 1.341258,
+      "finish_reason": "length"
+    },
+    "speculative": {
+      "text": ", not ready, or not ready? (The question is a bit of a trick, but the answer is not in the question itself.)\n\nThe question is:",
+      "ttft_seconds": 0.05789329200342763,
+      "decode_tokens_per_second": 92.74245592309082,
+      "prompt_tokens": 6,
+      "generated_tokens": 32,
+      "from_draft_tokens": 17,
+      "peak_memory_gb": 1.369237756,
+      "finish_reason": "length",
+      "exact": true,
+      "first_mismatch": null,
+      "reference_length": 32,
+      "other_length": 32
+    }
+  }
+}

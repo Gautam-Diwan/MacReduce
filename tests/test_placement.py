@@ -1,6 +1,6 @@
 import pytest
 
-from macreduce.placement import CostTable, EngineCost, choose, expected_tokens, fixed
+from macreduce.placement import CostTable, EngineCost, choose, choose_device, expected_tokens, fixed
 from macreduce.serving import (
     Prompt,
     Trial,
@@ -145,6 +145,15 @@ def test_token_diff_reports_the_first_disagreement():
     diff = token_diff((1, 2, 3), (1, 9))
     assert diff["first_mismatch"] == 1
     assert token_diff((1, 2), (1, 2, 3))["first_mismatch"] == 2
+
+
+def test_choose_device_uses_only_positive_measurements():
+    choice = choose_device({"cpu": 0.02, "gpu": 0.01, "ane": None})
+    assert choice["engine"] == "gpu"
+    assert choice["measured"] == {"cpu": 0.02, "gpu": 0.01}
+    assert choose_device({"cpu": None, "gpu": None})["engine"] is None
+    with pytest.raises(ValueError):
+        choose_device({"tpu": 1.0})
 
 
 def test_abba_runner_rejects_a_mislabeled_trial():

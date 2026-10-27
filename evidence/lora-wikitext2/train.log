@@ -1,0 +1,13 @@
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1712.66it/s]
+[WARNING] Some sequences are longer than 512 tokens. The longest sentence 533 will be truncated to 512. Consider pre-splitting your data to save memory.
+[WARNING] Some sequences are longer than 512 tokens. The longest sentence 563 will be truncated to 512. Consider pre-splitting your data to save memory.
+╭─ [1mmlx_lm.lora[0m ────────────────────────────────────────────────────────────────╮
+│    model           [1mmlx-community/Qwen3-0.6B-4bit[0m                             │
+│    type            [1mlora · -1 layers · rank 8[0m                                 │
+│    dataset         [1mdata/wikitext-2-raw-v1[0m                                    │
+│    optimizer       [1madamw · lr 1.0e-04[0m                                        │
+│    batch · iters   [1m4 · 5,941[0m                                                 │
+│    max seq         [1m512[0m                                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Trainable parameters: 0.847% (5.046M/596.050M)
+  [1miter   train_loss     tok/s     tokens[0m

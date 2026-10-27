@@ -1,0 +1,931 @@
+{
+  "status": "ok",
+  "coremltools": "9.0",
+  "host": "macOS-26.5-arm64-arm-64bit",
+  "workload": {
+    "kind": "decoder_block",
+    "batch": 1,
+    "tokens": 128,
+    "width": 256,
+    "heads": 4,
+    "mlp_width": 1024,
+    "precision": "float16",
+    "qwen_draft_weights": false
+  },
+  "plans": {
+    "CPU_AND_NE": [
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.layer_norm",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios17.matmul",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.mul",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios16.softmax",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios17.matmul",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios17.add",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.layer_norm",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "operator": "ios17.add",
+        "device": "MLNeuralEngineComputeDevice"
+      }
+    ],
+    "CPU_ONLY": [
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.layer_norm",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios17.matmul",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.mul",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios16.softmax",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios17.matmul",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.transpose",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios17.reshape",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios17.add",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.layer_norm",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios16.relu",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "const",
+        "device": null
+      },
+      {
+        "operator": "ios17.linear",
+        "device": "MLCPUComputeDevice"
+      },
+      {
+        "operator": "ios17.add",
+        "device": "MLCPUComputeDevice"
+      }
+    ]
+  },
+  "parity_max_abs": 0.0028235912322998047,
+  "cpu_only": {
+    "seconds_per_forward": 0.00017553056677570565
+  },
+  "cpu_and_ne": {
+    "seconds_per_forward": 0.00017021806658400844
+  },
+  "gpu": {
+    "available": true,
+    "device": "mps",
+    "seconds_per_forward": 0.0003698666662482234
+  },
+  "mactop": {
+    "idle": {
+      "status": "available",
+      "source": "mactop/IOReport",
+      "scope": "system",
+      "estimated": true,
+      "attribution": "not attributable to this process",
+      "during": null,
+      "samples": [
+        {
+          "timestamp": "2026-10-25T19:38:41-04:00",
+          "ane_power_w": 0.009431042867037031,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04076624865533959,
+          "gpu_power_w": 0.03816011670915548,
+          "cpu_power_w": 1.3769322585874064
+        },
+        {
+          "timestamp": "2026-10-25T19:38:42-04:00",
+          "ane_power_w": 0.004800692275188298,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04170657102100225,
+          "gpu_power_w": 0.11183018227013994,
+          "cpu_power_w": 1.3585959138782882
+        },
+        {
+          "timestamp": "2026-10-25T19:38:42-04:00",
+          "ane_power_w": 0.004720868812078716,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04124513556956735,
+          "gpu_power_w": 0.06288593338582184,
+          "cpu_power_w": 1.2132632847042302
+        },
+        {
+          "timestamp": "2026-10-25T19:38:42-04:00",
+          "ane_power_w": 0.00472454617792931,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04124400305676248,
+          "gpu_power_w": 0.07885246782960835,
+          "cpu_power_w": 4.1339779056881465
+        },
+        {
+          "timestamp": "2026-10-25T19:38:43-04:00",
+          "ane_power_w": 0.009656195224629077,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04236180570000955,
+          "gpu_power_w": 0.03514008213443784,
+          "cpu_power_w": 8.656779018879966
+        },
+        {
+          "timestamp": "2026-10-25T19:38:43-04:00",
+          "ane_power_w": 0.009625453580249061,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04223741435367659,
+          "gpu_power_w": 0.015195655439871291,
+          "cpu_power_w": 7.801430126791864
+        },
+        {
+          "timestamp": "2026-10-25T19:38:43-04:00",
+          "ane_power_w": 0.009605786541181667,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04211238296687906,
+          "gpu_power_w": 0.061624525913009244,
+          "cpu_power_w": 7.434878782874611
+        },
+        {
+          "timestamp": "2026-10-25T19:38:44-04:00",
+          "ane_power_w": 0.0047775512422230425,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.018870486557762384,
+          "gpu_power_w": 0.057683862267975235,
+          "cpu_power_w": 0.9316224922334932
+        },
+        {
+          "timestamp": "2026-10-25T19:38:44-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.025702280534900934,
+          "cpu_power_w": 0.666100378146592
+        },
+        {
+          "timestamp": "2026-10-25T19:38:44-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.013517538153664624,
+          "cpu_power_w": 0.4206157340696889
+        }
+      ]
+    },
+    "CPU_ONLY": {
+      "status": "available",
+      "source": "mactop/IOReport",
+      "scope": "system",
+      "estimated": true,
+      "attribution": "not attributable to this process",
+      "during": 16210,
+      "samples": [
+        {
+          "timestamp": "2026-10-25T19:38:47-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.013107191138016712,
+          "cpu_power_w": 10.163743196512057
+        },
+        {
+          "timestamp": "2026-10-25T19:38:47-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.06371798235667739,
+          "cpu_power_w": 9.660239208264462
+        },
+        {
+          "timestamp": "2026-10-25T19:38:48-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.011386082626992073,
+          "cpu_power_w": 2.362508669081392
+        },
+        {
+          "timestamp": "2026-10-25T19:38:48-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.010929262727682984,
+          "cpu_power_w": 1.1822191433656102
+        },
+        {
+          "timestamp": "2026-10-25T19:38:48-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.01803227168610804,
+          "cpu_power_w": 0.904277219534965
+        },
+        {
+          "timestamp": "2026-10-25T19:38:49-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.011150884216643963,
+          "cpu_power_w": 0.40270755378369993
+        },
+        {
+          "timestamp": "2026-10-25T19:38:49-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.013048492730720385,
+          "cpu_power_w": 0.6368954736772799
+        },
+        {
+          "timestamp": "2026-10-25T19:38:49-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.0258187192886486,
+          "cpu_power_w": 0.6663602669694431
+        },
+        {
+          "timestamp": "2026-10-25T19:38:50-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.015101415800776223,
+          "cpu_power_w": 0.42252661592569574
+        },
+        {
+          "timestamp": "2026-10-25T19:38:50-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.04610916160659663,
+          "cpu_power_w": 0.314344771012317
+        },
+        {
+          "timestamp": "2026-10-25T19:38:51-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.07252879380563672,
+          "cpu_power_w": 0.3923714933514407
+        },
+        {
+          "timestamp": "2026-10-25T19:38:51-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.032255320022991495,
+          "cpu_power_w": 0.7532074986041501
+        },
+        {
+          "timestamp": "2026-10-25T19:38:51-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.020539291362096222,
+          "cpu_power_w": 0.43775873159096845
+        },
+        {
+          "timestamp": "2026-10-25T19:38:52-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.010582150966193358,
+          "cpu_power_w": 0.3918123516797224
+        },
+        {
+          "timestamp": "2026-10-25T19:38:52-04:00",
+          "ane_power_w": 0,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0,
+          "gpu_power_w": 0.012568267189907523,
+          "cpu_power_w": 1.3201961333936474
+        }
+      ]
+    },
+    "CPU_AND_NE": {
+      "status": "available",
+      "source": "mactop/IOReport",
+      "scope": "system",
+      "estimated": true,
+      "attribution": "not attributable to this process",
+      "during": 19071,
+      "samples": [
+        {
+          "timestamp": "2026-10-25T19:38:55-04:00",
+          "ane_power_w": 1.5111175547563749,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.147223597899748,
+          "gpu_power_w": 0.008844589996171565,
+          "cpu_power_w": 3.56225831089904
+        },
+        {
+          "timestamp": "2026-10-25T19:38:55-04:00",
+          "ane_power_w": 1.5162914660035878,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.296433355297395,
+          "gpu_power_w": 0.011175766459506496,
+          "cpu_power_w": 3.506125061768549
+        },
+        {
+          "timestamp": "2026-10-25T19:38:55-04:00",
+          "ane_power_w": 0.023424003747840597,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.07116099903375984,
+          "gpu_power_w": 0.01608014288642286,
+          "cpu_power_w": 0.6558721049395367
+        },
+        {
+          "timestamp": "2026-10-25T19:38:56-04:00",
+          "ane_power_w": 0.009287963452309636,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040403384054623105,
+          "gpu_power_w": 0.011736456377607504,
+          "cpu_power_w": 0.4643981726154819
+        },
+        {
+          "timestamp": "2026-10-25T19:38:56-04:00",
+          "ane_power_w": 0.009538346054037267,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.0417336977909925,
+          "gpu_power_w": 0.006640606061166799,
+          "cpu_power_w": 4.36379331972205
+        },
+        {
+          "timestamp": "2026-10-25T19:38:57-04:00",
+          "ane_power_w": 0.009458176534500472,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040931356101528794,
+          "gpu_power_w": 0.010009763202727739,
+          "cpu_power_w": 3.9251432618176962
+        },
+        {
+          "timestamp": "2026-10-25T19:38:57-04:00",
+          "ane_power_w": 0.00959205972365535,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04086002580139369,
+          "gpu_power_w": 0.054443284023703686,
+          "cpu_power_w": 1.2277836446278847
+        },
+        {
+          "timestamp": "2026-10-25T19:38:57-04:00",
+          "ane_power_w": 0.009208115509989543,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.03985979575994642,
+          "gpu_power_w": 0.007532427253539402,
+          "cpu_power_w": 0.8425425691640432
+        },
+        {
+          "timestamp": "2026-10-25T19:38:58-04:00",
+          "ane_power_w": 0.009139265860503601,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.03995833262465943,
+          "gpu_power_w": 0.013164257950697481,
+          "cpu_power_w": 0.3610010014898922
+        },
+        {
+          "timestamp": "2026-10-25T19:38:58-04:00",
+          "ane_power_w": 0.009427006911730635,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040413352382423356,
+          "gpu_power_w": 0.014224033648833886,
+          "cpu_power_w": 0.5279123870569156
+        },
+        {
+          "timestamp": "2026-10-25T19:38:58-04:00",
+          "ane_power_w": 0.0092454713081244,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.040672381523619,
+          "gpu_power_w": 0.014861105862380004,
+          "cpu_power_w": 1.206534005710234
+        },
+        {
+          "timestamp": "2026-10-25T19:38:59-04:00",
+          "ane_power_w": 0.009401653349373557,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04128123080579019,
+          "gpu_power_w": 0.008169467960577985,
+          "cpu_power_w": 3.713653073002555
+        },
+        {
+          "timestamp": "2026-10-25T19:38:59-04:00",
+          "ane_power_w": 0.009294922067887788,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04036048496255889,
+          "gpu_power_w": 0.03405002294683886,
+          "cpu_power_w": 0.9573769729924421
+        },
+        {
+          "timestamp": "2026-10-25T19:38:59-04:00",
+          "ane_power_w": 0.004818447917406097,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.04158698319038187,
+          "gpu_power_w": 0.02422197147875873,
+          "cpu_power_w": 4.8618139486627525
+        },
+        {
+          "timestamp": "2026-10-25T19:39:00-04:00",
+          "ane_power_w": 0.004627371301050594,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 0.03979924316195759,
+          "gpu_power_w": 0.01258552909196871,
+          "cpu_power_w": 0.8282994628880564
+        }
+      ]
+    },
+    "hybrid": {
+      "available": true,
+      "ane_predicts": 45763,
+      "gpu_forwards": 106,
+      "samples": [
+        {
+          "timestamp": "2026-10-25T19:39:02-04:00",
+          "ane_power_w": 1.5052181116124264,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 13.972816539629106,
+          "gpu_power_w": 0.0723978572759594,
+          "cpu_power_w": 5.014228157295654
+        },
+        {
+          "timestamp": "2026-10-25T19:39:03-04:00",
+          "ane_power_w": 1.5024970792732486,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.072364511688022,
+          "gpu_power_w": 0.024374830573373772,
+          "cpu_power_w": 3.7089943623569184
+        },
+        {
+          "timestamp": "2026-10-25T19:39:03-04:00",
+          "ane_power_w": 1.5157530044389909,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.202693497900803,
+          "gpu_power_w": 0.026144776065538278,
+          "cpu_power_w": 3.7292335823498983
+        },
+        {
+          "timestamp": "2026-10-25T19:39:03-04:00",
+          "ane_power_w": 1.5603374845434386,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.836886234394427,
+          "gpu_power_w": 0.008532313085706955,
+          "cpu_power_w": 5.891456078003408
+        },
+        {
+          "timestamp": "2026-10-25T19:39:03-04:00",
+          "ane_power_w": 1.57188216417944,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 15.043690124498386,
+          "gpu_power_w": 0.012781342885865717,
+          "cpu_power_w": 6.273151685703924
+        },
+        {
+          "timestamp": "2026-10-25T19:39:04-04:00",
+          "ane_power_w": 1.534314555517766,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.500282860151199,
+          "gpu_power_w": 0.007168222599381757,
+          "cpu_power_w": 4.270429676193411
+        },
+        {
+          "timestamp": "2026-10-25T19:39:04-04:00",
+          "ane_power_w": 1.4573966174255975,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 13.032592829632614,
+          "gpu_power_w": 0.016210670516303125,
+          "cpu_power_w": 6.941810204053504
+        },
+        {
+          "timestamp": "2026-10-25T19:39:04-04:00",
+          "ane_power_w": 1.5098602417036338,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.137552953792365,
+          "gpu_power_w": 0.014638833407572861,
+          "cpu_power_w": 3.2516425894996757
+        },
+        {
+          "timestamp": "2026-10-25T19:39:05-04:00",
+          "ane_power_w": 1.5122987986949206,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.219999657722754,
+          "gpu_power_w": 0.007146779548222366,
+          "cpu_power_w": 3.2447423592251776
+        },
+        {
+          "timestamp": "2026-10-25T19:39:05-04:00",
+          "ane_power_w": 1.5397332777123474,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.64326385925675,
+          "gpu_power_w": 0.009309850965042941,
+          "cpu_power_w": 4.283432451704443
+        },
+        {
+          "timestamp": "2026-10-25T19:39:05-04:00",
+          "ane_power_w": 1.217039991695492,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 10.577239853525658,
+          "gpu_power_w": 0.059245139297386104,
+          "cpu_power_w": 6.089972664327245
+        },
+        {
+          "timestamp": "2026-10-25T19:39:06-04:00",
+          "ane_power_w": 1.5174586069568128,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.273578151401672,
+          "gpu_power_w": 0.007279981171566299,
+          "cpu_power_w": 3.381764895503754
+        },
+        {
+          "timestamp": "2026-10-25T19:39:06-04:00",
+          "ane_power_w": 1.544991562107999,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.667373101624708,
+          "gpu_power_w": 0.011486434697333866,
+          "cpu_power_w": 4.726422785015748
+        },
+        {
+          "timestamp": "2026-10-25T19:39:06-04:00",
+          "ane_power_w": 1.5229249018067663,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.373837445637003,
+          "gpu_power_w": 0.016655068179853842,
+          "cpu_power_w": 3.195250664233816
+        },
+        {
+          "timestamp": "2026-10-25T19:39:07-04:00",
+          "ane_power_w": 1.5061670730311822,
+          "ane_active": 0,
+          "ane_bw_combined_gbs": 14.16357058835222,
+          "gpu_power_w": 0.006457326775628996,
+          "cpu_power_w": 3.1226584858066873
+        }
+      ],
+      "overlap_samples": 2,
+      "both_active": false,
+      "scope": "system-wide estimated power during concurrent GPU and Core ML calls"
+    }
+  },
+  "ane_bandwidth_samples_at_least_1gbs": {
+    "CPU_AND_NE": 2,
+    "CPU_ONLY": 0
+  },
+  "placement_verified": false,
+  "claim": "The measured forward is one decoder block, not the Qwen draft. placement_verified requires Neural Engine matmul and linear ops in the CPU_AND_NE plan, none in the CPU_ONLY plan, and mactop bandwidth during the Neural Engine run only.",
+  "choice": {
+    "engine": "cpu",
+    "seconds_per_forward": 0.00017553056677570565,
+    "measured": {
+      "cpu": 0.00017553056677570565,
+      "gpu": 0.0003698666662482234
+    },
+    "reason": "minimum measured seconds per forward",
+    "ane_excluded": "ANE forward was measured and left out of the ranking"
+  }
+}

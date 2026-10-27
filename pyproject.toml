@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "macreduce-lab"
 version = "0.1.0"
-description = "Per-request placement experiments for Apple Silicon LLM serving"
+description = "Distributed QLoRA and Neural Engine placement on Apple Silicon"
 requires-python = ">=3.12"
 dependencies = ["numpy>=2.0,<3", "psutil>=7,<8"]
 

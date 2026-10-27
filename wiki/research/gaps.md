@@ -2,7 +2,7 @@
 title: "Unknowns contradictions and next literature searches"
 type: research-ledger
 status: active
-updated: 2026-10-25
+updated: 2026-10-27
 sources: ["S02", "S03", "S06", "S07", "S08", "S09", "S10", "S12", "S25", "S27", "S28", "S29", "S30", "S31", "S33", "S36"]
 ---
 
@@ -12,8 +12,11 @@ This ledger distinguishes missing implementation, missing evidence, and incomple
 
 | Priority | Gap or contradiction | Why it matters | Resolution |
 |---|---|---|---|
-| P0 | **No scheduler or benchmark code exists** | The deliverable is unbuilt | [Roadmap](../project/roadmap.md) items 1–2 by 2026-11-05 |
-| P0 | **Does the serving drafter execute on the ANE of this M4?** A convolution does: nine consecutive `mactop` samples under `CPU_AND_NE` read 0.58–0.80 W and 10.2–11.9 GB/s, and `CPU_ONLY` stayed at 0 ([record](../../evidence/ane-usage/README.md)). `ane_active` stayed 0. [S36](../sources/S36.md) says the compute-unit flag is a constraint | D1's ANE option is still unverified for an LLM draft. The mactop reading is system-wide | Convert the draft and compare outputs to MLX. The convolution record is not draft residency |
+| P0 | **Explicit ANE training is unpinned.** ANEForge, Orion, and maderix are named in `macreduce train-plan`. Orion and maderix have no import to probe. None has been executed | The course comparison is explicit call versus GPU | Pin one commit in a separate environment, run one step, and require a compute plan or power trace before keeping a perplexity |
+| P0 | **No second Mac** | Multi-Mac FedAvg and all-reduce cannot be measured. The one-Mac GPU, combined, and split clients do not need one | Report multi-Mac cells as not run until a peer exists |
+| P0 | **Overlap of Neural Engine inference and GPU training is unmeasured** | Future scope, not the course rubric | Leave it out of the scored table |
+| P0 | **Scheduler code exists; the course question moved.** Placement for serving is implemented. The 10-805 proposal is federated QLoRA, not the serving sweep | The old "nothing is built" line was stale | [federated](../../src/macreduce/federated.py), [proposal](../../docs/proposal.md) |
+| P0 | **Does the serving drafter execute on the ANE of this M4?** A decoder block's linear and matmul ops are planned on the Neural Engine. The saved run had two bandwidth samples at 14 GB/s, and the three-sample gate left that 0.000170 s time out of the ranking ([decoder](../../evidence/ane-decoder/README.md)). A 28-layer Qwen3-0.6B-shaped forward compiled once at 0.0207 s with 1,213 Neural Engine ops; the package was not saved because the disk is full ([infer](../../evidence/infer-qwen3/README.md)) | The pinned Qwen3 weights are still not the Core ML weights. mactop remains system-wide | Free enough disk to save the 28-layer package, then compare a converted draft's tokens with MLX |
 | P0 | **Stock speculative decoding** matches greedy tokens for Qwen2.5 at the depths in the old sweep, and for Qwen3 at depths 1, 2, and 4. Qwen3 depth 8 mismatches the short prompt at token 26 ([Qwen3 check](../../evidence/serve-equivalence-qwen3/README.md)). [S33](../sources/S33.md) lists other divergences | A speed number at a diverging depth is invalid | Keep the token diff on every depth. Do not score Qwen3 depth 8 until the short-prompt mismatch is gone |
 | P0 | **Literature on adaptive speculation depth and KV reuse policies not searched** | The primary candidate could duplicate a published rule | Searches listed in [related work](related-work.md); read nearest two papers in full; log results |
 | P1 | **Second Mac, RAM, and link are unknown** | D3's remote arm and machine choice cannot be planned | Record exact hardware when known; measure the link; do not assume Thunderbolt 5 RDMA ([S28](../sources/S28.md) lists JACCL provider bugs) |

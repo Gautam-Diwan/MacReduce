@@ -396,7 +396,9 @@ def render_report(records: list[dict], prefix: dict | None, cpu: dict | None) ->
     }
 
 
-def execute(output, cycles: int, max_tokens: int, executable: str) -> dict:
+def execute(
+    output, cycles: int, max_tokens: int, executable: str, measure_devices: bool = True
+) -> dict:
     """Run each trial in a new interpreter so compile state does not leak across arms."""
 
     import json
@@ -521,6 +523,10 @@ def execute(output, cycles: int, max_tokens: int, executable: str) -> dict:
         "process": "one fresh interpreter per trial",
         "models": {"target": TARGET_MODEL, "draft": DRAFT_MODEL},
     }
+    if measure_devices:
+        from .ane import rank_decoder
+
+        report["device_workload"] = rank_decoder()
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     return report
 

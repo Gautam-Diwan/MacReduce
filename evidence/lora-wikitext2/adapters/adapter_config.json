@@ -1,0 +1,34 @@
+{
+    "adapter_path": "evidence/lora-wikitext2/adapters",
+    "batch_size": 1,
+    "clear_cache_threshold": 0,
+    "data": "data/wikitext-2-raw-v1",
+    "fine_tune_type": "lora",
+    "grad_accumulation_steps": 1,
+    "grad_checkpoint": true,
+    "iters": 100,
+    "learning_rate": 0.0001,
+    "lora_parameters": {
+        "rank": 8,
+        "dropout": 0.0,
+        "scale": 20.0
+    },
+    "lr_schedule": null,
+    "mask_prompt": false,
+    "max_seq_length": 512,
+    "model": "mlx-community/Qwen3-0.6B-4bit",
+    "num_layers": -1,
+    "optimizer": "adamw",
+    "optimizer_config": {
+        "adamw": {}
+    },
+    "resume_adapter_file": null,
+    "save_every": 100,
+    "seed": 0,
+    "steps_per_eval": 100,
+    "steps_per_report": 10,
+    "test": true,
+    "test_batches": 20,
+    "train": true,
+    "val_batches": 4
+}

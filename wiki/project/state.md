@@ -2,7 +2,7 @@
 title: "Current implementation and evidence"
 type: status
 status: measured
-updated: 2026-10-25
+updated: 2026-10-27
 sources: []
 ---
 
@@ -21,7 +21,7 @@ sources: []
 | Trace and depth sweep | Measured on this M4 for Qwen2.5 and Qwen3 | [Qwen2.5 study](../../evidence/serve-benchmark/README.md). [Qwen3 study](../../evidence/serve-benchmark-qwen3/README.md): exact depths decode fastest at depth 2 on short, long, and code. Depth 8 mismatches the short prompt at token 26. The joint hypothesis is not met on Qwen3 either |
 | D2 cost-model depth | Measured; hypothesis not met | The model picked the hindsight decode depth for short and long, and depth 4 instead of 2 for code, which was slower on the evaluation pass. Per-step depth changes were not run |
 | D1 CPU draft | Measured once on the short prompt | Tokens matched. Decode was about 88 tok/s against about 97 tok/s with no draft. One stream, not a concurrency claim |
-| D1 ANE gate | Convolution activity measured; drafter not converted | A larger conv under `CPU_AND_NE` produced nine consecutive `mactop` samples at 0.58–0.80 W and 10.2–11.9 GB/s. The same loop under `CPU_ONLY` stayed at 0 W and 0 GB/s for 198 predictions. `ane_active` stayed 0. The serving draft is still not converted. [Record](../../evidence/ane-usage/README.md) |
+| D1 ANE gate | Decoder measured; full forward blocked by disk | The saved decoder run had two Neural Engine bandwidth samples. The gate then required three, so the 0.000170 s Neural Engine forward was left out and CPU was ranked against GPU. The gate now accepts two samples. A 28-layer Qwen3-0.6B-shaped forward ran once at 0.0207 s with 1,213 Neural Engine ops. Saving it failed because the data volume is full. Pinned Qwen3 generation is in [infer](../../evidence/infer-qwen3/README.md). [Decoder](../../evidence/ane-decoder/README.md) |
 | D3 prefix, warm cache | Measured | Reloading the long prefix matched recomputed tokens. The 0.9 ms load is a warm page cache of a file just written, not cold disk and not a network |
 | D3 remote arm | Not run | No second Mac |
 
@@ -37,7 +37,9 @@ sources: []
 | MLX GPU path | Measured on this M4, partially | Doctor smoke, forward and one SGD step versus CPU for the default and 2-layer configs, and a 3-round loopback demo. No Metal capture. [Record](../../evidence/mlx-validation/README.md) |
 | Wi-Fi and mixed physical Macs | Not tested; no longer a research goal | [Wi-Fi protocol](../guides/wifi.md) kept as an operational guide |
 | CPU operator traces and Accelerate SGEMM | Executed | [Evidence inventory](../../evidence/README.md) |
-| ANE training | Not implemented; not planned | [ANE integration gates](../guides/ane.md) |
+| ANE training | Explicit stacks named; none pinned or run | ANEForge, Orion, and maderix are the explicit calls. Core ML is the implicit request. `macreduce train-plan` records which import. [Decision 0003 amendment](../decisions/0003-build-target.md). [ANE gates](../guides/ane.md) |
+| QLoRA on WikiText-2 | Command exists; the curve is not measured | `src/macreduce/finetune.py`. Default is three epochs on the first 4,096 training lines, batch 8, accumulation 2. Validation and test stay full. A 100-step GPU probe was saved. The earlier full-split run was stopped before its first loss line |
+| Federated QLoRA | Round loop tested on the CPU reference; QLoRA not run | `src/macreduce/federated.py` averages adapter deltas across GPU, combined, and split clients. `src/macreduce/lora_client.py` is the MLX local step and the fail-closed Neural Engine gate. `macreduce federate --execute` would train and has not been started. A second Mac still raises |
 | M5 GPU neural accelerators | Inventory concept; no M5 test; not planned | [Hardware guide](../guides/accelerators.md) |
 | Real corpus and 1M-parameter model | Not implemented; not on the critical path | [Model scaling](../guides/model-scaling.md) |
 | Large model across several Macs | Not implemented; covered by MLX and EXO, not planned | [Inference guide](../guides/inference.md) |
@@ -50,4 +52,4 @@ The original tests reported 20 passed and one intentionally skipped Metal test. 
 
 **Known hardware:** one M4 (Mac16,12), macOS 26.5, MLX 0.32.4. Other machines, their RAM, and any interconnect are **unknown**. Thunderbolt 5 RDMA is not assumed.
 
-The proposal in [docs/proposal.md](../../docs/proposal.md) predates decision 0003 and must be revised before 2026-11-06. Current implementation details in this wiki take precedence over old plans when they disagree.
+The course proposal is [docs/proposal.md](../../docs/proposal.md). Lead Gautam Diwan (gdiwan), 10-805. Dataset WikiText-2, with a 4,096-line training prefix for the curve. Metric is validation perplexity by epoch, plus full-split test perplexity for finished arms. The single-Mac baseline is GPU QLoRA. The multi-Mac baseline is MLX ring all-reduce. The October 23 Wi-Fi proposal is archived. Course dates: feedback 2026-10-28, teams final 2026-11-02, check-in 2026-11-18, report 2026-12-01. Current implementation details in this wiki take precedence over old plans when they disagree.

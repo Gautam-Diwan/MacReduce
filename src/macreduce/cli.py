@@ -9,13 +9,18 @@ import threading
 import time
 from pathlib import Path
 
-from .ane import placement_probe
+from .ane import placement_probe, rank_decoder, rank_qwen_forward
 from .benchmark import accelerate_matmul
 from .cluster import Coordinator, make_server
+from .federated import study as federated_study
+from .finetune import run_lora
+from .lora_client import execute_federated
 from .observe import capabilities, collect_mactop, report
 from .placement import CostTable, EngineCost, choose
 from .serving import DRAFT_MODEL, TARGET_MODEL, MlxLmExecutor, builtin_trace, sweep_order
 from .study import execute as execute_study
+from .train_plan import probe_backends
+from .train_plan import report as train_plan_report
 from .worker import run_worker
 
 
@@ -249,6 +254,50 @@ def main():
         help="convert a small convolution and read its Core ML compute plan",
     )
     ane.add_argument("--output", required=True)
+    workload = sub.add_parser(
+        "ane-workload",
+        help="time one decoder block on CPU, GPU, and the Neural Engine",
+    )
+    workload.add_argument("--output", required=True)
+    infer = sub.add_parser(
+        "infer",
+        help="time a full-depth Qwen3-0.6B-shaped forward and one pinned Qwen3 generation",
+    )
+    infer.add_argument("--output", required=True)
+    infer.add_argument("--max-tokens", type=int, default=32)
+    lora = sub.add_parser(
+        "lora",
+        help="QLoRA the pinned Qwen3-0.6B on WikiText-2 and report perplexity",
+    )
+    lora.add_argument("--output", required=True)
+    lora.add_argument("--data", default="data/wikitext-2-raw-v1")
+    lora.add_argument("--epochs", type=int, default=3)
+    lora.add_argument("--iters", type=int, default=None)
+    lora.add_argument("--batch-size", type=int, default=8)
+    lora.add_argument("--grad-accumulation", type=int, default=2)
+    lora.add_argument("--train-examples", type=int, default=4096)
+    lora.add_argument("--test-batches", type=int, default=-1)
+    plan = sub.add_parser(
+        "train-plan",
+        help="write the distributed QLoRA comparisons and which Neural Engine stacks import",
+    )
+    plan.add_argument("--output", required=True)
+    federate = sub.add_parser(
+        "federate",
+        help="write the MacReduce federated cohort, or run one-Mac QLoRA with --execute",
+    )
+    federate.add_argument("--output", required=True)
+    federate.add_argument("--execute", action="store_true")
+    federate.add_argument("--data", default="data/wikitext-2-raw-v1")
+    federate.add_argument("--macs", type=int, default=1)
+    federate.add_argument("--mode", choices=["gpu", "gpu_ane", "split"], default="gpu")
+    federate.add_argument("--algorithm", choices=["fedavg", "allreduce"], default="fedavg")
+    federate.add_argument("--topology", choices=["star", "ring", "tree"], default="star")
+    federate.add_argument("--optimizer-steps", type=int, default=None)
+    federate.add_argument("--local-steps", type=int, default=8)
+    federate.add_argument("--quantize", action="store_true")
+    federate.add_argument("--fednova", action="store_true")
+    federate.add_argument("--ane-stack", default="aneforge")
     once = sub.add_parser("bench-trial", help="one fresh-process trial used by bench")
     once.add_argument("--output", required=True)
     once.add_argument("--segment", choices=["short", "long", "code"], default="short")
@@ -374,6 +423,71 @@ def main():
 
             with tempfile.TemporaryDirectory(prefix="macreduce-ane-") as directory:
                 report_body = placement_probe(Path(directory))
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+        elif args.command == "ane-workload":
+            report_body = rank_decoder()
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+        elif args.command == "infer":
+            prompt = next(item.text for item in builtin_trace() if item.segment == "short")
+            shaped = rank_qwen_forward()
+            mlx = MlxLmExecutor().check(prompt, args.max_tokens, depth=2)
+            report_body = {"qwen_shaped_coreml": shaped, "mlx_qwen3": mlx}
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+        elif args.command == "lora":
+            report_body = run_lora(
+                Path(args.output).parent,
+                Path(args.data),
+                iters=args.iters,
+                epochs=args.epochs,
+                test_batches=args.test_batches,
+                batch_size=args.batch_size,
+                train_examples=args.train_examples,
+                grad_accumulation_steps=args.grad_accumulation,
+            )
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+            if report_body.get("status") != "ok":
+                raise SystemExit(1)
+        elif args.command == "train-plan":
+            report_body = train_plan_report()
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+        elif args.command == "federate":
+            if args.execute:
+                report_body = execute_federated(
+                    Path(args.output).parent / "federated-work",
+                    Path(args.data),
+                    n_macs=args.macs,
+                    mode=args.mode,
+                    algorithm=args.algorithm,
+                    topology=args.topology,
+                    optimizer_steps=args.optimizer_steps,
+                    local_steps=args.local_steps,
+                    quantize=args.quantize,
+                    normalize=args.fednova,
+                    ane_stack=args.ane_stack,
+                )
+            else:
+                report_body = federated_study()
+                report_body["backends"] = probe_backends()
             text = json.dumps(report_body, indent=2)
             destination = Path(args.output)
             destination.parent.mkdir(parents=True, exist_ok=True)

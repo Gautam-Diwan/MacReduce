@@ -188,3 +188,35 @@ def fixed(engine: str, depth: int, prefix: str | None) -> Placement:
     """A static baseline. It does not consult measurements."""
 
     return Placement(engine, depth, prefix, None, None, ("static configuration",))
+
+
+def choose_device(seconds_per_forward: dict[str, float | None]) -> dict:
+    """Pick the fastest device that has a positive measured forward time.
+
+    Omitted and null times stay out of the ranking. This is the placement rule
+    for one matched workload, not the speculative depth rule.
+    """
+
+    measured: dict[str, float] = {}
+    for name, value in seconds_per_forward.items():
+        if name not in {"cpu", "gpu", "ane"}:
+            raise ValueError(f"unknown device {name}")
+        if value is None:
+            continue
+        if value <= 0:
+            raise ValueError(f"{name} seconds_per_forward must be positive when set")
+        measured[name] = float(value)
+    if not measured:
+        return {
+            "engine": None,
+            "seconds_per_forward": None,
+            "measured": {},
+            "reason": "no measured device times",
+        }
+    engine = min(measured, key=measured.get)
+    return {
+        "engine": engine,
+        "seconds_per_forward": measured[engine],
+        "measured": measured,
+        "reason": "minimum measured seconds per forward",
+    }

@@ -2,7 +2,7 @@
 
 A working research prototype for observable local-SGD training across heterogeneous Macs. Workers train locally for several steps, then exchange models through a coordinator. The transport works over ordinary TCP/IP, including Wi-Fi.
 
-**The research target is a per-request placement scheduler** for LLM serving: which engine drafts, how far to speculate, and whether to recompute or reload a prefix. Decision 0003 in the wiki states the hypothesis. The 29,888-parameter local-SGD trainer remains a measured prototype. Every training worker holds the entire model. The scheduler does not train on the ANE, and an ANE drafter is refused until a placement check passes.
+**The course project** is heterogeneous federated learning, and the name is MacReduce. A client is a GPU, a GPU and Neural Engine combined, or those two devices as separate clients. Every Mac in a run uses the same choice. The payload is the LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the control. `macreduce federate` writes that rubric. A missing stack is reported missing. Decision 0003 in the wiki states the hypothesis. The 29,888-parameter local-SGD trainer remains a measured prototype. Every training worker holds the entire model.
 
 ## Research wiki
 
@@ -37,7 +37,7 @@ pytest -q
 
 If `python3.12 -m venv` fails because a uv-managed interpreter looks for its standard library under `/install`, use `uv venv .venv --python 3.12` and `uv pip install --python .venv/bin/python -e '.[cpu,mlx,serve,dev]'` instead.
 
-`serve` pins `mlx-lm==0.32.2` and `coremltools==9.0`. Placement math does not need either. `macreduce equivalence` downloads the pinned Qwen3 1.7B and 0.6B 4-bit MLX models on first use. `macreduce ane` converts a small convolution and reads its compute plan. The Qwen2.5 study remains in `evidence/serve-benchmark`.
+`serve` pins `mlx-lm==0.32.2` and `coremltools==9.0`. Placement math does not need either. `macreduce equivalence` downloads the pinned Qwen3 1.7B and 0.6B 4-bit MLX models on first use. `macreduce ane` converts a small convolution and reads its compute plan. `macreduce ane-workload` times one decoder block on CPU, GPU, and the Neural Engine and ranks those measured times. `macreduce infer` times a 28-layer forward at the Qwen3-0.6B widths on those same devices, then generates with the pinned Qwen3 pair. `macreduce lora` fine-tunes that 0.6B checkpoint with QLoRA for three epochs on the first 4,096 WikiText-2 training lines, batch size 8 and gradient accumulation 2, and writes validation and test perplexity. `macreduce federate` lists the federated cohorts and checks without training them. `macreduce train-plan` keeps the earlier all-reduce list. The Qwen2.5 study remains in `evidence/serve-benchmark`.
 
 ```sh
 macreduce place --acceptance 0.9 --prefix-tokens 4096 --prefill-tokens-per-second 2000 --kv-bytes 50000000 --disk-bytes-per-second 200000000

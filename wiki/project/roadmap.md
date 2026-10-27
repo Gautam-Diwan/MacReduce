@@ -2,13 +2,15 @@
 title: "Implementation order and completion gates"
 type: plan
 status: active
-updated: 2026-10-25
+updated: 2026-10-27
 sources: ["S27", "S32", "S33"]
 ---
 
 # Implementation order and completion gates
 
-This plan follows [decision 0003](../decisions/0003-build-target.md). Dates are the course calendar: proposal 2026-11-06, final 2026-12-04, a group of 2–3. Effort figures are estimates, not measurements. As of the 2026-10-25 study, items 1, 2, 4, and the local half of item 6 have measured results on one M4 for the Qwen2.5 pair ([evidence](../../evidence/serve-benchmark/README.md)). The serving pin is now Qwen3, with a token check and no new speed sweep ([Qwen3 check](../../evidence/serve-equivalence-qwen3/README.md)). Item 5's CPU draft ran once. Its ANE gate has a convolution compute plan and a mactop record of Neural Engine power and bandwidth ([usage](../../evidence/ane-usage/README.md)); the draft model is still not converted. Item 7 was not run. The joint time-to-first-token and decode hypothesis was not met. An early end-of-sequence stop was not observed: all 45 Qwen2.5 sweep trials hit the 32-token cap.
+This plan follows [decision 0003](../decisions/0003-build-target.md). The 10-805 calendar supplied on 2026-10-27 is feedback 2026-10-28, teams 2026-11-02, check-in 2026-11-18, report 2026-12-01. Effort figures are estimates, not measurements.
+
+The course project is heterogeneous federated learning on WikiText-2, still named MacReduce. The curve is three epochs of the first 4,096 training lines. `macreduce federate` lists GPU, combined GPU and Neural Engine, and split clients, repeated on every Mac. FedAvg is the communication reduction and a per-step all-reduce is the control. The payload is the adapter delta. Multi-Mac cells wait for a second machine. The serving table below is future scope, not the submitted dataset, metric, and baseline. As of the 2026-10-25 study, items 1, 2, 4, and the local half of item 6 have measured results on one M4 for the Qwen2.5 pair ([evidence](../../evidence/serve-benchmark/README.md)). The serving pin is now Qwen3, with a token check and no new speed sweep ([Qwen3 check](../../evidence/serve-equivalence-qwen3/README.md)). The 2026-10-26 amendment allows a private-API ANE stack when it addresses an open gap, and adds a QLoRA baseline on WikiText-2. Item 5's CPU draft ran once. Its ANE gate times a decoder block and a 28-layer Qwen3-0.6B-shaped forward ([decoder](../../evidence/ane-decoder/README.md), [infer](../../evidence/infer-qwen3/README.md)). The saved decoder ranking omitted the Neural Engine because only two bandwidth samples cleared 1 GB/s. The full-depth package did not fit on the remaining disk. The pinned Qwen3 weights are still not converted. The earlier convolution record remains ([usage](../../evidence/ane-usage/README.md)). Item 7 was not run. The joint time-to-first-token and decode hypothesis was not met. An early end-of-sequence stop was not observed: all 45 Qwen2.5 sweep trials hit the 32-token cap.
 
 | Order | Work package | Window | Exit evidence |
 |---|---|---|---|
