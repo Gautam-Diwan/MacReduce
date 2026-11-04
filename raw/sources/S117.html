@@ -1,0 +1,519 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>29. Firmware - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-8-system-internals/29-firmware.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="29-firmware"><a class="header" href="#29-firmware">29. Firmware</a></h1>
+<blockquote>
+<p>The engine controller runs a C++ application over a real-time kernel, distributed as an unencrypted preload executable.
+Every subsystem is a long-lived message-pumped task, and all kernel objects sit in fixed build-time pools.
+The execution loop accepts four command classes on the shared channel, three procedure-call variants plus the cache-request trigger, and rejects anything else as unsupported.
+The scheduler is fixed-priority with eight levels, no hardware watchdog, and a software deadline of about 2 seconds that aborts a stuck queue.
+Recovery is serialized behind a single command gate and rate-limited, so crashes arriving faster than the recovery cycle keep the channel not-ready.</p>
+</blockquote>
+<p>The engine's controller runs a small real-time operating system, not bare metal.
+A real-time kernel hosts an application that loads compiled programs, schedules their task descriptors, drives the multiply array and the data-movement engines, and reports faults back to the host.
+That controller is CHINOOK, an embedded ARM core with eleven hardware thread contexts (<code>CHINOOK_CPU_IMPL_THID0</code> through <code>THID10</code>), its own level-two cache, and pipeline error-capture and power-down-save registers, so the firmware runs on a real multithreaded processor.</p>
+<h2 id="substrate"><a class="header" href="#substrate">Substrate</a></h2>
+<p>The firmware is a C++ application over a real-time kernel, distributed on the package as an unencrypted preload Mach-O wrapped in an Image4 container with payload tag <code>anef</code>.
+The kernel layer provides tasks, a priority scheduler, semaphores, mutexes, message queues, two heap arenas, a fault handler, and a generic finite-state-machine framework.
+The application layer above it provides the program loader, execution loop, task-descriptor driver, tensor-mover driver, address-translation manager, and power-control service.</p>
+<p>Every subsystem is a long-lived task with its own stack, supplied by a message queue.
+A task blocks on its queue, wakes on a posted message, runs that message to completion, and loops.
+Each task has two queues: a task-context input queue and a separate interrupt-context queue.
+An interrupt handler never runs subsystem logic in interrupt context.
+It pushes a record into an interrupt buffer, posts the target task's interrupt queue, and returns, deferring the work to task context.
+The named tasks include an idle task, task terminator, execution-loop pump, address-translation manager, tunable-register loader, load monitor, interrupt manager, call manager, server, and host remote-procedure-call daemon.</p>
+<p>Each task is in one of five scheduler states, recovered from the task-list dumper (<a href="#tbl-c29-task-states">Table 29.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>State</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>RUNNABLE</code></td><td>ready or running</td></tr>
+<tr><td><code>SUSPENDED</code></td><td>explicitly parked</td></tr>
+<tr><td><code>WAITING</code></td><td>blocked on a generic wait, such as a message queue</td></tr>
+<tr><td><code>SEMWAIT</code></td><td>blocked specifically on a semaphore</td></tr>
+<tr><td><code>BLOCKED</code></td><td>blocked</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-task-states"></a><strong>Table 29.1.</strong> The five scheduler task states.</p>
+<p>The distinct semaphore-wait state, separate from the generic wait, is the heritage of the real-time executive model the primitives follow.
+The message queue each task blocks on is a bounded-buffer control block holding a maximum message width, a ring depth, read and write pointers, a lock, and two counting semaphores.
+The send side blocks when full and the receive side blocks when empty.
+The kernel keeps all its objects in fixed pools sized at build time: tasks, semaphores, mailboxes, queues, signals, timers, and mutexes each occupy a slot in a pre-sized table.
+There is no unbounded dynamic task creation at run time, and the capacity of each pool is fixed and reportable as a total-and-available count.
+A hard boot invariant ties the heap to the system reservation: the initial heap must exceed twice the reserved framework allocation, and the kernel refuses to boot if the arena is too small.</p>
+<h2 id="bring-up"><a class="header" href="#bring-up">Bring-up</a></h2>
+<p>A three-level call chain separates device attach from firmware bring-up (<a href="#lst-c29-bringup">Listing 29.1</a>).</p>
+<pre><code class="language-cpp">ANEHWDevice::start()              attach + provider + RTBuddy client + 7 MMIO banks + clocks
+  ANEHWDevice::power_on_hardware()    clocks/power + MPM + resume
+    ANEHWDevice::ANE_Init()             RTBuddy endpoints + scratch handshakes + first commands
+</code></pre>
+<p><a id="lst-c29-bringup"></a><strong>Listing 29.1.</strong> The three-level kernel bring-up call chain.</p>
+<p>Bring-up splits into two phases on distinct entry points.
+<code>ANEHWDevice::start</code> attaches the device, wires the RTBuddy client, maps the register apertures, and enables clocks and power.
+<code>ANEHWDevice::ANE_Init</code>, reached from <code>ANEHWDevice::power_on_hardware</code> on first power-on and on every wake, drives the firmware handshake.
+This separation keeps device attach independent of the firmware boot that runs again after each sleep.</p>
+<p>The kernel maps seven named register apertures, not six.
+The six-bank count belongs to a different system-on-chip family and does not hold on the M1.
+The apertures are constructed in order, each with a device-tree <code>reg</code> aperture index, and <a href="#tbl-c29-apertures">Table 29.2</a> names the seven by role.</p>
+<div class="table-wrapper"><table><thead><tr><th>Order</th><th>Bank</th><th>Role</th></tr></thead><tbody>
+<tr><td>1</td><td><code>ANE</code></td><td>main control aperture, holding the scratch registers and the reset-vector register</td></tr>
+<tr><td>2</td><td><code>PS</code></td><td>power-state</td></tr>
+<tr><td>3</td><td><code>PWGATE</code></td><td>power-gate</td></tr>
+<tr><td>4</td><td><code>PTD</code></td><td>page-table and translation-domain control</td></tr>
+<tr><td>5</td><td><code>ANEHAL1</code></td><td>hardware-abstraction register aperture</td></tr>
+<tr><td>6</td><td><code>ANEHAL2</code></td><td>hardware-abstraction register aperture</td></tr>
+<tr><td>7</td><td><code>ANEHAL3</code></td><td>hardware-abstraction register aperture</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-apertures"></a><strong>Table 29.2.</strong> The seven memory-mapped register apertures the kernel maps during <code>ANEHWDevice::start</code> on the M1.</p>
+<p>The first four apertures take a contiguous index base and three successive offsets.
+The three <code>ANEHAL</code> aperture indices are read from per-family device fields, which is why the aperture count and indices differ across chips.</p>
+<p>The kernel allocates the RTBuddy client during attach and stores it on the device object, with a name object retrieved from the <code>ANE</code> property and a separate mailbox object.
+The endpoint itself comes up inside <code>ANE_Init</code> through <code>EnableRTBuddyEndpoints</code>, which uses the endpoint identifier literal <code>0xe400</code>.
+The path first tries <code>ANE1Endpoint1</code>, and on failure cleans up and retries <code>ANEEndpoint1</code>.
+The endpoint lookup resolves the named service, retrieves the endpoint object, and registers the inbound message handler, with the doorbell paths wired alongside.</p>
+<p><code>ANE_Init</code> then runs the firmware handshake in program order.
+It quiesces pending work, brings up the <code>0xe400</code> endpoint, initializes the scratch mailbox registers, and selects a warm or cold boot by writing <code>1</code> or <code>0</code> to scratch register 7.
+It reads the firmware boot address and writes it to the reset-vector register <code>rANE_H11_CHINOOK_IO_RVBAR</code>, then releases reset and polls.
+Three scratch handshakes follow, in the order the kernel observes them (<a href="#tbl-c29-handshakes">Table 29.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Handshake</th><th>Register</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>1</td><td>scratch 7, first wake</td><td>the engine controller is alive after the reset-vector handoff</td></tr>
+<tr><td>2</td><td>scratch 7, second wake</td><td>the channel-description table the firmware published is ready</td></tr>
+<tr><td>3</td><td>scratch 3, plus a magic-number-1 check</td><td>final acknowledgement before interrupts are enabled</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-handshakes"></a><strong>Table 29.3.</strong> The three scratch-register handshakes the kernel waits on during firmware bring-up, in order.</p>
+<p>Between the second and third handshakes the kernel walks the channel-description table the firmware published and resolves the named inter-process channels: <code>SHAREDMALLOC</code>, <code>TERMINAL</code>, <code>BUF_H2T</code>, <code>BUF_T2H</code>, <code>IO</code>, <code>IO_T2H</code>, <code>DEBUG</code>, and <code>DATA_CHAIN_H2T</code>.
+If the second wake never arrives, the kernel powers the hardware off and on in a bounded retry loop and increments a failure count.</p>
+<p>On the firmware side the reset-vector entry brings up the real-time kernel: it sets up the memory-management unit and the exception and interrupt stacks, then the kernel heap, subject to the boot invariant that the initial heap exceeds twice the framework reservation.
+The firmware then checks its boot arguments and chip revision against the values the kernel passed, exchanges an inter-process-communication protocol version, and validates each ring buffer in the channel table against a ring-buffer version constant.
+The firmware marks each control channel ready in turn and rejects commands addressed to a channel before it is ready.</p>
+<p>Bring-up is ready to accept the first command when all of the following hold.</p>
+<ul>
+<li>The kernel has enabled the <code>0xe400</code> endpoint, mapped the seven apertures, and enabled clocks and power.</li>
+<li>The firmware has booted from the reset vector, brought up its heap, passed the chip-revision and protocol-version checks, published the channel table, and marked every control channel ready.</li>
+<li>The three scratch handshakes have completed in order.</li>
+<li>The kernel has logged that the engine controller is ready, enabled interrupts, and round-tripped the start command.</li>
+</ul>
+<p>Only then does the kernel issue its first commands over the channel, in order: print-enable, start, the performance-monitoring-unit base set, a host-to-engine time synchronization, channel-property write, resource-information query, default-setting write, memory-cache power-on, and the shared-event-information initialization.
+The resource-information query returns the engine count, cache-request limits, and maximum procedure count, and the default-setting write sets the context-switch latency threshold.</p>
+<h2 id="execution-loop"><a class="header" href="#execution-loop">Execution loop</a></h2>
+<p>The execution loop accepts four command classes on the shared channel (<a href="#lst-c29-exeloop-cmds">Listing 29.2</a>).</p>
+<pre><code class="language-c">union uCExeLoopSupportedCmd          ; insize &lt;= sizeof(union uCExeLoopSupportedCmd)
+
+[PROC CALL]              ProgId=%d  ProcId=%d  Proc=%d  Pri=%d
+[PROC CALL WITH BARS]    + nbrOfCustomBars &lt;= 32        ; custom buffer-access-register overrides
+[PROC CALL WITH EVENTS]  + nbrOfSignalEvents in 1..16   ; wait/signal events
+                         + (nbrOfWaitEvents + nbrOfSignalEvents) &gt; 0
+[CR TRIGGER]             cacheHandler 0x%llx            ; data-chaining cache-request trigger
+</code></pre>
+<p><a id="lst-c29-exeloop-cmds"></a><strong>Listing 29.2.</strong> The four execution-loop command classes accepted on the channel.</p>
+<p>The execution loop is the hot path that turns a host procedure-call command into work for the task-descriptor driver.
+A host writes a command into the shared ring buffer.
+The loop receives that command holding a program identifier, procedure identifier, procedure index, and priority.
+It builds the request list and pushes the program's task-descriptor partitions onto a task queue; the task-descriptor driver runs them on the cores while the tensor-mover streams the operands.
+The command is a fixed-layout record on the shared channel, and the loop logs each class as it accepts it.
+A bounds check rejects any record larger than the supported-command union before the loop reads its fields.
+The bar field is a buffer-access register, the buffer base and size binding a task descriptor references by index, and it logs as <code>bar[%d]: type=%d cfg=%d barId=%d value=0x%llx bufSize=%lld</code>.
+The loop rejects an unknown opcode with <code>Cmd 0x%x is not supported through ExeLoop cmd channel</code> and drops the record.</p>
+<p>The main command classes on this channel are a plain procedure call, procedure call holding buffer-base overrides, procedure call holding wait-and-signal events, and data-chaining cache-request trigger.
+The dispatcher checks each command identifier on every event against a fixed accepted set and drops anything else as unsupported: the procedure-call family (<code>0x204</code>, <code>0x20c</code>, <code>0x211</code>, and <code>0x212</code>), the cache-request trigger (<code>0x209</code> with its path variant <code>0x20a</code>), the channel data-file load <code>0x2d</code>, and the back-channel and process-id controls (<code>0x404</code>, <code>0xff00</code>).
+The complete decoded command set is in chapter <a href="30-csne-protocol.html">30</a>.
+The firmware drops and counts a procedure call addressed to a process that is not running.</p>
+<p>The procedure-call command structures list the buffer-access registers and optional event and execute-order arrays under fixed field limits, recovered from the firmware assertion strings (<a href="#tbl-c29-field-limits">Table 29.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>Limit</th></tr></thead><tbody>
+<tr><td>custom buffer-access registers</td><td>at most 32</td></tr>
+<tr><td>signal events</td><td>greater than 0 and at most 16</td></tr>
+<tr><td>wait events plus signal events</td><td>greater than 0</td></tr>
+<tr><td>task-descriptor partitions</td><td>at least 1 and below the per-procedure maximum</td></tr>
+<tr><td>custom execute-order entries</td><td>at most 128</td></tr>
+<tr><td>output buffer sets</td><td>exactly 1</td></tr>
+<tr><td>event masks</td><td>exactly 1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-field-limits"></a><strong>Table 29.4.</strong> The field limits on a procedure-call command, recovered from the firmware assertion strings.</p>
+<p>Each buffer-access register binds a buffer base and size that a task descriptor references by index, with at most 32 hardware register slots addressing the distinct buffer regions for one operation, and at most 16 input buffers per trigger.</p>
+<p>Resident state across dispatches comes from the data-chaining trigger.
+A cache request chains one execution's output set onto the next execution's input set, so a value produced by one dispatch is available to the next without a copy back to the host.
+The resident key-and-value cache and the resident optimizer state described in chapter <a href="../part-1-machine/02-execution-model.html">2</a> use this native chaining path.
+The firmware can chain procedures, running several in sequence on the engine without returning to the host between them.</p>
+<h2 id="doorbell-emit"><a class="header" href="#doorbell-emit">Doorbell emit</a></h2>
+<p>The host-notify store is bracketed by the window-gate bit clear and set (<a href="#lst-c29-doorbell-emit">Listing 29.3</a>).</p>
+<pre><code class="language-armasm">ring_doorbell(DoorBellReg, DoorBellBit):     ; host-notify site @0x4c890
+  w0 = disable_irq()                         ; DAIFSet #0x2, make the quad atomic
+  x8 = mrs S3_3_C15_C8_0
+  x8 = x8 &amp; ~(1 &lt;&lt; 39)                        ; CLEAR bit 39: arm the doorbell window
+       msr S3_3_C15_C8_0, x8
+  str DoorBellBit -&gt; [DoorBellReg]            ; *** the doorbell store (the interrupt) ***
+  dsb sy ; isb                                ; force the store + status update to commit
+  x8 = mrs S3_3_C15_C8_0
+  if x8 &amp; (1 &lt;&lt; 1): fatal "Uncorrectable L2C error overflow"
+  if x8 &amp; (1 &lt;&lt; 7): rc = 1, clear sticky {1,7} ; transaction rejected, retry
+  x8 = mrs S3_3_C15_C8_0
+  x8 = x8 | (1 &lt;&lt; 39)                         ; SET bit 39: close the window
+       msr S3_3_C15_C8_0, x8
+  restore_irq(w0)
+  return rc
+</code></pre>
+<p><a id="lst-c29-doorbell-emit"></a><strong>Listing 29.3.</strong> The guarded doorbell-emit sequence, bracketing the host-notify store with the window-gate bit clear and set.</p>
+<p>After staging a task-descriptor list the driver notifies the host by ringing a doorbell.
+The engine-to-host interrupt is a single 32-bit memory-mapped store to a host-supplied register, bracketed by the windowed-store gate of chapter <a href="27-kernel-driver.html">27</a>.
+Bit 39 of the implementation-defined system register <code>S3_3_C15_C8_0</code> is cleared to arm the doorbell window, and the store is forwarded as a fabric-coherent transaction.
+Bit 39 is set again to close the window.
+The firmware masks interrupts across the four steps so the arm, store, sample, and disarm cannot be interrupted, and the two status bits sampled after the store record the fabric response.
+The same guarded sequence drives the engine-to-graphics-processor synchronization doorbell, which writes the value <code>1</code> to the fixed memory-mapped target <code>0x2_0646_8000</code> between the identical bit-39 clear and set.</p>
+<p>The system register is not a single-bit gate.
+At least six bit positions have distinct meaning, recovered from the read, write, and sample patterns at the 28 access sites and decoded in <a href="#tbl-c29-fabric-reg">Table 29.5</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Bit</th><th>Role</th></tr></thead><tbody>
+<tr><td>0</td><td>fabric-path enable, cleared with bits 2 and 4 on the power-gate path</td></tr>
+<tr><td>1</td><td>uncorrectable last-level-cache error, read-only and sticky</td></tr>
+<tr><td>2</td><td>fabric-link status, must be 1 for the power-gate condition</td></tr>
+<tr><td>4</td><td>fabric-link secondary status, must be 0 for the power-gate condition</td></tr>
+<tr><td>7</td><td>transaction-reject status, clearable on a rejected doorbell</td></tr>
+<tr><td>39</td><td>doorbell-window arm and disarm: clear opens the store window, set closes it</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-fabric-reg"></a><strong>Table 29.5.</strong> The decoded bit map of the implementation-defined fabric system register <code>S3_3_C15_C8_0</code>.</p>
+<p>Clearing bit 39 opens a window in which a store to a fabric doorbell aperture is forwarded as a coherent doorbell transaction, and bits 1 and 7 are the fabric response status latched by the barrier after the store.
+The power-gate path reads the register to sample bits 2 and 4 as fabric-link status before it clock-gates the engine, requiring bit 2 set and bit 4 clear, then clears bits 0, 2, and 4.</p>
+<p>A completion event can fan out to up to three host doorbells.
+The host doorbell target is a register-and-bit pair the host supplies in an endpoint descriptor and the engine stores resident, in three slots, so the shared-event path can notify the inference client, a cross-agent waiter, and a telemetry sink from one completion.</p>
+<h2 id="scheduler"><a class="header" href="#scheduler">Scheduler</a></h2>
+<p><a href="#tbl-c29-scheduler">Table 29.6</a> collects the firmware scheduler properties, covering its priority model, bands, preemption rules, watchdog, and software deadline.</p>
+<div class="table-wrapper"><table><thead><tr><th>Scheduler property</th><th>Value</th></tr></thead><tbody>
+<tr><td>Priority model</td><td>fixed-priority, eight levels (0 through 7)</td></tr>
+<tr><td>System band</td><td>levels 0 through 1</td></tr>
+<tr><td>Application band</td><td>levels 2 through 7</td></tr>
+<tr><td>Preemption within a task</td><td>none, run to completion</td></tr>
+<tr><td>Preemption between tasks</td><td>by kernel thread priority</td></tr>
+<tr><td>Hardware watchdog</td><td>none</td></tr>
+<tr><td>Software deadline</td><td>about 2 seconds, queue-idle wait then abort</td></tr>
+<tr><td>Task-queue identifiers</td><td>1 through 255, identifier 0 reserved</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-scheduler"></a><strong>Table 29.6.</strong> The firmware scheduler properties.</p>
+<p>The scheduler is fixed-priority with eight levels, numbered zero through seven.
+The levels split into two bands: levels zero and one are reserved for the system, and levels two through seven are application priorities.
+Preemption within a task does not occur: each message pump runs to completion, and preemption happens only between pump threads by kernel priority.
+Priority exists on two axes: the kernel thread priority orders the worker tasks, and the application job priority orders queued inference jobs onto the per-priority task queues.
+They are distinct numbers on distinct objects.
+No hardware watchdog panics the engine.
+The firmware self-polices with a software deadline: a task queue that will not quiesce within about two seconds is force-aborted.</p>
+<p>The submit path pushes work onto numbered task queues keyed by a network identifier in the range 1 through 255, with identifier 0 reserved.
+The submit path guards the queue identifier below 8, polls the queue for vacancy, enables the queue, copies a 35-word task-descriptor register block into the queue's register file, and rings a submit doorbell.
+Each queue occupies a fixed stride of <code>0x148</code> bytes in the engine register aperture, with the per-queue registers the submit path writes given in <a href="#tbl-c29-queue-regs">Table 29.7</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset within queue</th><th>Register</th></tr></thead><tbody>
+<tr><td><code>+0x24000</code></td><td>submit doorbell</td></tr>
+<tr><td><code>+0x24004</code></td><td>size and count</td></tr>
+<tr><td><code>+0x24008</code></td><td>priority and network identifier</td></tr>
+<tr><td><code>+0x25000</code></td><td>queue enable</td></tr>
+<tr><td><code>+0x2500c</code></td><td>queue status and vacancy</td></tr>
+<tr><td><code>+0x250a0</code></td><td>buffer-access-register file</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-queue-regs"></a><strong>Table 29.7.</strong> The per-queue register map, at the queue base plus the queue identifier times <code>0x148</code>, that the submit path writes to start hardware work.</p>
+<p>The eight application priorities map to a fixed in-firmware table of queue weights, <code>{1, 2, 3, 4, 5, 6, 30, 31}</code>, and scheduling is strict fixed-priority with per-priority credit and no preemption.
+The scheduler bounds how many requests are in flight on the firmware at once and applies backpressure when it saturates, through <code>ANEScheduler::wakePendingRequestsQueueWithFWOverload</code> and <code>ANEScheduler::pendingRequestsWithFirmwareCount</code>, with a dedicated unwire thread that releases resources behind completed work.
+The firmware-overload throttle is the mechanism behind the large-batch trainable-convolution stall described in chapter <a href="../part-5-practice/19-pitfalls-and-limits.html">19</a>: a submission that overruns the firmware queue is throttled.</p>
+<h2 id="control-state-machine"><a class="header" href="#control-state-machine">Control state machine</a></h2>
+<p>A finite-state machine drives the execution loop (<a href="#tbl-c29-control-fsm">Table 29.8</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>State</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>INIT</code> (0)</td><td>the start node, after the loop is constructed but before it is armed; no hardware work dispatches</td></tr>
+<tr><td><code>RUN</code> (1)</td><td>non-secure and runnable, the engine is powered and owned but nothing is in flight</td></tr>
+<tr><td><code>EXEC</code> (2)</td><td>a task-descriptor partition is in flight, non-secure; the state in which a handler is permitted to touch hardware</td></tr>
+<tr><td><code>EXEC-SECURE</code> (3)</td><td>in flight while the secure phase is asserted, the engine owned by the secure tenant</td></tr>
+<tr><td><code>PAUSE</code></td><td>fully quiesced for a secure-mode boundary, rejects all events</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-control-fsm"></a><strong>Table 29.8.</strong> The execution-loop control state machine, with what each state does.</p>
+<p>The framework stores no name for each state, so the meaning of each is reconstructed from the handlers that read the current state and from the events that drive it.
+Four states have framework identifiers zero through three, and a fifth is a named transient crossed during a secure-mode switch.
+Posted events drive the machine.
+The event alphabet is four entries: a command-dispatch event when a procedure call or trigger is accepted, drain event toward idle, enter-secure event, and exit-secure event.
+A command accepted on the channel posts the dispatch event, which moves the machine from <code>RUN</code> to <code>EXEC</code> and pushes the task-descriptor list.
+A request finishing returns the machine from <code>EXEC</code> to <code>RUN</code>.</p>
+<p>Roughly seven independent handlers gate hardware work on the same test: the current state must be <code>EXEC</code> or <code>EXEC-SECURE</code> before the handler writes the memory-mapped registers or rings a doorbell.
+A switch into or out of the secure phase quiesces the engine first, with the task queues disabled, and the machine passes through <code>PAUSE</code> between the two phases.
+Any event delivered while in <code>PAUSE</code> is a firmware invariant violation and asserts.</p>
+<p>Alongside the execution loop sit three smaller state machines, each with explicit named states.
+A two-state process machine marks each process slot idle or running.
+A three-state cache-request machine moves a resident chain through available, in-use, and invalidating.
+A two-state output-set machine marks a chained output buffer available or in-execution.</p>
+<h2 id="per-run-statistics-buffer"><a class="header" href="#per-run-statistics-buffer">Per-run statistics buffer</a></h2>
+<p>The path runs from the host size query and map through to the firmware completion write (<a href="#lst-c29-stats-path">Listing 29.4</a>).</p>
+<pre><code class="language-text">host: stats-buffer size-get            -&gt; {hdr 0x28, evDesc 0x14, dbg 0x10, perEngine 0x20}
+host: PreMap stats buffer {addr,size}  -&gt; DART-map into the firmware aperture
+        if addr == 0 or size == 0:  cbz skips the map; later writes have no destination
+host: procedure call (inference)
+firmware completion (CAneProgramManagerH11):
+        per engine: copy the 16-byte counter quad from engine_block+0x30 into a descriptor
+        header: magic 0x0101, per-call timing, per-call counter, descriptor-area size
+host: reads validCount, logEvents, statEvents back out of the mapped buffer
+</code></pre>
+<p><a id="lst-c29-stats-path"></a><strong>Listing 29.4.</strong> The per-run statistics-buffer path, from the host size query and map through the firmware completion write.</p>
+<p>The firmware reports per-run timing and event counts into a statistics buffer the host supplies.
+<code>CAneProgramManagerH11</code> packs the records on inference completion, but it never allocates the destination.
+The host first queries the layout sizes, then maps a buffer through the address-translation manager, and the firmware writes into that mapping at completion.</p>
+<p>The record begins with a <code>0x28</code>-byte header (<a href="#tbl-c29-stats-header">Table 29.9</a>).
+The first two bytes are the magic value <code>0x0101</code>, a version stamp.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Width</th><th>Field</th></tr></thead><tbody>
+<tr><td><code>+0x00</code></td><td>2</td><td>magic <code>0x0101</code></td></tr>
+<tr><td><code>+0x04</code></td><td>8</td><td>per-call timing value, from the real-time-kernel timebase</td></tr>
+<tr><td><code>+0x0c</code></td><td>4</td><td>word from the call object</td></tr>
+<tr><td><code>+0x10</code></td><td>8</td><td>reserved, cleared</td></tr>
+<tr><td><code>+0x18</code></td><td>4</td><td>word from the call object</td></tr>
+<tr><td><code>+0x1c</code></td><td>8</td><td>per-call counter value</td></tr>
+<tr><td><code>+0x24</code></td><td>4</td><td>descriptor-area byte length, the total size minus <code>0x28</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c29-stats-header"></a><strong>Table 29.9.</strong> The <code>0x28</code>-byte statistics-buffer header <code>CAneProgramManagerH11</code> writes on inference completion.</p>
+<p>After the header the firmware copies one descriptor per active engine, looping over up to 32 engines at a stride of <code>0x48</code> bytes in the engine table.
+Each descriptor contains the engine identifier and type, call index, and engine index, followed by a 16-byte counter quad read from <code>engine_block+0x30</code>.
+The size query returns four constants the host uses to size the buffer: a <code>0x28</code>-byte header, a <code>0x14</code>-byte per-event descriptor, a <code>0x10</code>-byte per-debug-event record, and a <code>0x20</code>-byte per-engine descriptor.
+The per-engine values are software-tracked latency and event accumulators maintained by the firmware profiler, not raw register reads.
+The buffer also stores running totals the host reads back: a valid-record count, log-event total, and stat-event total.</p>
+<p>The read is gated by a host-side null check.
+The map handler loads the host buffer address and size from the command, and a <code>cbz</code> on each skips the address-translation map when either is null, as <a href="#lst-c29-stats-nullcheck">Listing 29.5</a> shows.</p>
+<pre><code class="language-armasm">PreMap stats buffer:
+  x22 = host stats-buffer address     ; from the command
+  cbz x22, skip                       ; address == 0 -&gt; no map
+  x23 = host stats-buffer size
+  cbz x23, skip                       ; size == 0    -&gt; no map
+  ... DART-map {x22, x23} into the firmware aperture ...
+</code></pre>
+<p><a id="lst-c29-stats-nullcheck"></a><strong>Listing 29.5.</strong> The null check that skips the statistics-buffer map when the host supplies no address or size.</p>
+<p>When the host never maps a buffer, the mapped pointer stays null, the completion writer has no destination, and every counter value the host observes is null.
+A separate mechanism reads the performance-monitoring-unit aperture at the fixed base <code>0x2_8e08_c000</code>.
+Those reads are 32-bit power-status registers at a stride of eight bytes, up to five entries, whose low byte is a per-engine power state.
+They drive power and frequency-scaling decisions and are never packed into the statistics buffer.
+The kernel hardware performance-counter block is a third mechanism again, armed and drained by the kernel, and the firmware does not touch it.</p>
+<h2 id="faults-and-recovery"><a class="header" href="#faults-and-recovery">Faults and recovery</a></h2>
+<p>A failed invariant routes into the kernel fault handler, which produces a post-mortem dump in a fixed order.
+The dump records the exception class, fault-address and exception-syndrome registers, full general-purpose register file, cache-controller error registers, a restart count that persists across restarts, and a replay of the recent-command ring newest first.
+The firmware keeps that command ring so a crash dump shows what the engine was running when it died.
+The platform exception handler stringifies four exception classes for the dump: non-maskable interrupt, interrupt, fast interrupt, and synchronous abort.
+The dump names the faulting task by name, marks whether the fault occurred in interrupt context or in a task, gives the processor identifier, and prints a call stack.</p>
+<p>The fault model below a true exception is abort-and-recover per task queue.
+The firmware aborts a stuck queue through the engine driver's hardware-abort path, and an abort that does not clear within the two-second deadline escalates to a panic.
+A dedicated timeout interrupt fires on a global stuck flag, logs an event record, and drives the abort.
+When a per-queue abort cannot clear the fault, the firmware escalates to a host-coordinated reset: it takes a reset mutex and sends a reset notification holding the task-queue range the reset spans, telling the host to tear down and re-initialize.</p>
+<p>The engine cannot write a filesystem, so it depends on the host to drain the dump.
+After staging the dump the firmware blocks while the host pulls it section by section, then the host resets the channel and re-initializes the firmware to the ready handshake.</p>
+<p>Firmware status is not a flat numeric enum.
+A namespace of notification commands sent to the host records it, alongside inline return values at the point of failure.
+A generic per-channel error notification has an opaque error index, a reset notification gives the task-queue range the reset spans, and a tile-sync error notification reports a data-movement error.</p>
+<p>Faults divide into four dispositions.
+A version-minor mismatch warns and continues.
+A command addressed to a torn-down process or a wrong-state cache handle is dropped and counted.
+A command failing integrity, section, or argument validation is rejected without running.
+A failed invariant, a processor exception, or an uncorrectable cache error faults into the dump-and-reset path.</p>
+<p>The recovery sequence is serialized behind a single command gate.
+A fault stages a firmware dump, cancels outstanding commands, and re-boots the firmware to the ready handshake before the gate frees.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-8-system-internals/28-dart-iommu.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-8-system-internals/30-csne-protocol.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-8-system-internals/28-dart-iommu.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-8-system-internals/30-csne-protocol.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

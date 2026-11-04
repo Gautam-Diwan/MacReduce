@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Appendix E. Provenance - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/appendices/f-provenance.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="appendix-e-provenance"><a class="header" href="#appendix-e-provenance">Appendix E. Provenance</a></h1>
+<p>This appendix records the evidentiary basis of every substantive claim in the guide, Part by Part and chapter by chapter.
+The method is the one given in the Methodology chapter: the engine was reached directly below Core ML, the stack was read by static decompilation of the runtime, compiler, kernel driver, and firmware, and values were taken by live read-only instrumentation and by compile-and-run probing.
+Two silicon points were measured directly, M1/H13 (Apple M1) as the primary host and M5/H17s (Apple M5) as the second, with an A14-class part (Apple M2, H14) as a middle point where a claim required one.
+Each claim below is marked one of three ways: measured on a named generation, decompile-derived from a named binary, or predicted from the per-chip tables and not yet confirmed on silicon.</p>
+<h2 id="part-i-the-machine"><a class="header" href="#part-i-the-machine">Part I. The Machine</a></h2>
+<p>Unless a chapter below notes otherwise, every figure in Part I was taken on M1/H13 (Apple M1).</p>
+<h3 id="chapter-1-what-the-ane-is"><a class="header" href="#chapter-1-what-the-ane-is">Chapter 1. What the ANE is</a></h3>
+<p>Apple documents the engine only as the <code>MLComputeUnits</code> compute-unit selector at developer.apple.com/documentation/coreml/mlcomputeunits, a placement hint with no direct device API and no way to confirm which unit ran a segment; this chapter extends that account by reaching the engine directly below the selector.
+The roofline figures and the convolution advantage over the GPU (3.8x faster, 9x more energy efficient) are M1/H13 measured.
+The fp16-product and wide-accumulator result is decompile-derived from the firmware and the compiler and confirmed by the M1/H13 cancellation probe.
+The Core ML placement planner and the direct Espresso route are decompile-derived.</p>
+<h3 id="chapter-2-execution-model"><a class="header" href="#chapter-2-execution-model">Chapter 2. Execution model</a></h3>
+<p>Apple documents only the load-and-predict surface (<code>MLModel</code>, <code>prediction(from:)</code>); the autonomous-coprocessor model in this chapter, with its command mailbox, walked segment graph, and resident state across dispatches, has no public counterpart and is reported as reverse-engineered.
+The compile-once, dispatch-many split and the disk-cached program are decompile-derived and confirmed by M1/H13 dispatch tracing.
+The mailbox-and-doorbell command channel, the autonomous controller, operand mapping through the address-translation unit, and the walked segment graph with its static-control-flow consequence are decompile-derived from the firmware, kernel-driver, and program-format work.
+The resident-state mechanism through output-to-input buffer aliasing is M1/H13 measured, observed to persist and update an accumulator and a key-value cache across successive dispatches with no host resubmission.</p>
+<h3 id="chapter-3-numerics"><a class="header" href="#chapter-3-numerics">Chapter 3. Numerics</a></h3>
+<p>The fp16 datapath and the type limits are decompile-derived from the firmware and the compiler, with the activation-table coefficients read out of the compiler binary constant section.
+The wide accumulator and its radix-4 first stage, activation-table behavior and the twenty-three-op accuracy sweep, NaN coercion and the gelu and swish origin biases, round-half-to-even output grid, MAC saturation at exactly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span></span></span></span>, denormal handling, softmax max-subtraction, and bit-deterministic output for a fixed graph and input are all M1/H13 measured.
+The slice saturation threshold at 4094 is M1/H13 measured and reproduced on A14/H14 (Apple M2), where 4094 stays finite and 4096 overflows; the clean route arrives at A15 and later.
+The cross-generation accumulator behavior holds family-wide, the M5/H17s difference being a one-unit-in-the-last-place scheduling and tiling reorder rather than an accumulator-width change.
+Denormal preservation inside the M5/H17s accumulator, where the M1 flushes to zero inside the multiply-accumulate, is M5/H17s measured and generational.
+The int8 relation here agrees with the affine form <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span> that Apple's conversion tooling documents for low-precision compression at apple.github.io/coremltools; nothing public covers the wide-accumulator and per-product cancellation results, which are reported as reverse-engineered.</p>
+<h3 id="chapter-4-capability-surface"><a class="header" href="#chapter-4-capability-surface">Chapter 4. Capability surface</a></h3>
+<p>The native classes, type limits, compile-legal envelope, and M1 limits are M1/H13 measured by operation-conformance runs, each native operation compiled and run and each unsupported one rejected on device.
+The attested-is-not-reachable rule is M1/H13 measured: three-dimensional convolution fails backend lowering on every device mask despite its capability byte, and the top-k, sort, and dynamic-slice validators are callable but code-generation-rejected on the M1.
+The cumsum result is M1/H13 measured through the curated runtime path, correcting the earlier no-path status.
+The unsupported-on-every-family set and the per-family unlock points for the texture-engine operations, sin and cos, and the rank and sort bridge are decompile-derived from the operation floors and validators and confirmed on the M1 only at its boundary; the chip that first runs each is predicted from the floor table.
+The public account is the convertible operation set at apple.github.io/coremltools and developer.apple.com, which this chapter extends and partly corrects by reporting what compiles and runs on the direct path, since some operations the converter accepts, such as three-dimensional convolution, do not lower to the engine.</p>
+<h2 id="part-ii-reaching-the-ane"><a class="header" href="#part-ii-reaching-the-ane">Part II. Reaching the ANE</a></h2>
+<p>The same M1/H13 (Apple M1) default applies through Part II, except in chapter <a href="../part-2-reaching/07-weights-and-compression.html">7</a>, which also reports figures from M2/H14 (Apple M2 Pro) and M5/H17s (Apple M5).</p>
+<h3 id="chapter-5-software-stack"><a class="header" href="#chapter-5-software-stack">Chapter 5. Software stack</a></h3>
+<p>Apple documents the compute-unit selector, model loading, and the placement read-out (<code>MLComputePlan.load</code>, <code>deviceUsage(for:)</code>, <code>estimatedCost(of:)</code>) at developer.apple.com/documentation/coreml, and that read-out agrees with the segmenter decision reported here; the layered runtime beneath it and its internal cost graph are not documented and are reported as reverse-engineered.
+The layering and the runtime's ownership of compile, library, stream, and descriptors; the shortest-path placement segmenter with its per-operation-by-backend cost graph, learned decision trees, and launch and transfer penalties; the broker model with its single privileged device gate, content-hashed program cache, and time-shared request queue; the 292-export runtime surface and its options dictionary; and the per-inference submit through <code>IOConnectCallAsyncMethod</code> selector 2 with the daemon's lifecycle selectors 3 through 6 are decompile-derived from the framework, runtime, and daemon binaries.
+The reachability of the runtime below the framework, with no placement planner and no entitlement for accepted operations, is decompile-derived and confirmed by M1/H13 dispatch tracing.</p>
+<h3 id="chapter-6-dispatching-without-core-ml"><a class="header" href="#chapter-6-dispatching-without-core-ml">Chapter 6. Dispatching without Core ML</a></h3>
+<p>Apple documents only the indirect <code>MLModel</code> and <code>prediction(from:)</code> route; the direct compile, load, bind, and dispatch route here is reported as reverse-engineered and extends that account with a planner-free path that targets the engine on purpose.
+The five-step workflow and the absence of a placement planner are decompile-derived from the runtime and the format pipeline.
+The absence of an entitlement requirement for accepted operations is decompile-derived and confirmed M1/H13 measured from ordinary user space, and the single-submission multi-step drive with its performance-neutral result and the resident-state buffer aliasing it rests on are M1/H13 measured.</p>
+<h3 id="chapter-7-weights-and-compression"><a class="header" href="#chapter-7-weights-and-compression">Chapter 7. Weights and compression</a></h3>
+<p>This chapter measures across three endpoints: M1/H13 (Apple M1), A14 on M2/H14 (Apple M2 Pro), and M5/H17s (Apple M5).
+The int4 and sparse streaming speedups and byte ratios, the int8 matmul latency and weight-byte halving, and the M1 folding of the int8 and blockwise forms are M1/H13 measured.
+The A14 int8 and sparse stream and the A14 blockwise fold are M2/H14 measured, and the streaming of all four forms is M5/H17s measured.
+The weight-reconstruction codecs and the per-format hardware-abstraction-layer streaming gates are decompile-derived from the ANE compiler; the A15 floor at which the blockwise form first streams is predicted from the gate pattern and not yet silicon-confirmed.
+Palettization, quantization, and pruning appear in Apple's conversion tools at apple.github.io/coremltools as a model-size feature; the finding here is that the same forms stream on the unentitled engine for a bandwidth gain.</p>
+<h3 id="chapter-8-entitlement-boundary"><a class="header" href="#chapter-8-entitlement-boundary">Chapter 8. Entitlement boundary</a></h3>
+<p>The four gated features and the layer each gate is at are M1/H13 measured: three-dimensional convolution fails backend lowering on every device mask, a native-state program fails the compile with the counter-and-event engine stubbed in the M1 descriptor, a bf16 input or output fails with an unsupported-dtype rejection and is absent from the eleven-code program-I/O enumeration, and a symbolic dimension parses but fails to lower.
+The framework cast of bf16 to fp16 and the bucketed fixed-shape handling of flexible shapes are decompile-derived from the framework and system bundles, and the load-time signature boundary is decompile-derived from the kernel driver's corecrypto signature and trustcache vnode-trust checks, with the load rejection code <code>0xe00002e2</code> observed on the M1.
+The arrival of native resident state on a later generation is predicted from the per-family hardware descriptor and not measured on that silicon.
+Apple documents these capabilities (flexible shapes, the <code>MLState</code> type) at the conversion and runtime layer; the finding shows they are not reachable on the unentitled direct path, correcting the impression that a documented capability runs on the engine directly.</p>
+<h2 id="part-iii-performance-and-fit"><a class="header" href="#part-iii-performance-and-fit">Part III. Performance and Fit</a></h2>
+<p>Part III uses two passes, the first on M1/H13 (Apple M1; M1 Max) and the second on M5/H17s (Apple M5), with an A14-class middle point on M2/H14 where a cross-device or cross-generation claim required one.
+Apple publishes no roofline, no per-workload power or efficiency figures, and no cross-processor comparison for the engine, so the figures across this Part stand on their own measurements.</p>
+<h3 id="chapter-9-roofline"><a class="header" href="#chapter-9-roofline">Chapter 9. Roofline</a></h3>
+<p>The M1 compute and bandwidth ceilings, the 141 FLOP-per-byte ridge point, 2 MB working-set threshold, 0.23 ms dispatch floor, and conv-throughput scaling are M1/H13 measured from the memory-controller and energy counters and end-to-end timing.
+The saturating-method figures (the large-matmul compute ceiling, effective peak, wall-clock weight-stream bandwidth matching the compiler's internal 50 GB/s constant, int8 rate, and full-call floor) are M1/H13 measured live in a read-only dtrace session, and are presented alongside the counter-based and slope-based figures with the methodology difference noted.
+The cross-device ridge points, the standalone and weight-stream bandwidths, and fused-block rate are M5/H17s measured.
+The fusion-and-floor model is decompile-derived from the analytic cost model and fit to the measured M1 convs within plus or minus 17 percent; cross-chip scaling of the ceilings is predicted from that model, not asserted as a measured M1 fact.</p>
+<h3 id="chapter-10-power-and-efficiency"><a class="header" href="#chapter-10-power-and-efficiency">Chapter 10. Power and efficiency</a></h3>
+<p>The convolution-stack efficiency figures, the absolute-power comparison on the 4096 matrix multiply, the 2-to-14-times efficiency range, and sustained-load behavior are M1/H13 measured, with package power from hardware instrumentation.
+The power-utilization model (the zero idle rail, dispatch floor, fp16 and int8 compute-bound draw, regime-dependent points, and operations-per-watt optimum near 0.37 pJ per FLOP) is M1 Max measured with the root power sampler, which exposes only a power reading and a binary on-or-off state, with no frequency or voltage telemetry.
+The A14-class middle generation is measured on that silicon, and the M5 efficiency figures are M5/H17s measured.</p>
+<h3 id="chapter-11-ane-gpu-and-cpu"><a class="header" href="#chapter-11-ane-gpu-and-cpu">Chapter 11. ANE, GPU, and CPU</a></h3>
+<p>The per-class speed and energy verdicts are M1/H13 and M5/H17s measured by a single sixteen-class harness recording minimum latency, idle-subtracted total-package power, and fp16 relative error per class.
+The saturation peaks, the large-N matrix-multiply falloff, and serving crossovers are M5/H17s (Apple M5 Pro) measured; the per-eval overhead floor and the M1 power gap are M1/H13 measured.</p>
+<h3 id="chapter-12-across-the-chip-family"><a class="header" href="#chapter-12-across-the-chip-family">Chapter 12. Across the chip family</a></h3>
+<p>The naming rule <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mclose">)</span></span></span></span> is decompile-derived from the per-family device tables and confirmed on the measured parts: M1/H13 by the live h13g architecture string, M2/H14g on the live A14 host, and M5/H17s by the resolved target.
+The family-wide operation limits and the core-and-clock scaling are decompile-derived from the operation floors and the per-target scalar tables.
+The M5 throughput and working-set threshold, the ten-of-ten cross-silicon prediction pass, the M1-versus-M5 training and inference parity (0.9080 against 0.9070, deterministic across runs), and the one-unit-in-the-last-place fp16 divergence bound are M5/H17s and M1/H13 measured; the M2 campaign measured training accuracy, the four fp16 axes, peak throughput, compression, and the per-op max-dim caps on A14 silicon.
+The A15 and A16 generations and their M3 and M4 counterparts are decompile-derived from the device tables and not individually measured, the A15/M3 rail being the one generation that remains unmeasured.
+Apple's product specifications publish a marketing core count per chip, for example a 16-core engine, a different quantity from the four physical compute sets measured on the M1; the H-architecture naming, the mapping, and per-family gates are reported as reverse-engineered.
+The M5 single-program matmul peak of about 9.5 fp16 TFLOP/s and the weight-stream bandwidth of about 145 GB/s over two DRAM read channels are M5/H17s measured.</p>
+<h2 id="part-iv-workloads"><a class="header" href="#part-iv-workloads">Part IV. Workloads</a></h2>
+<p>Part IV pairs M1/H13 (Apple M1 Max) with M5/H17s (Apple M5 Pro) and adds an A14-class point on M2/H14 where noted, each figure marked for the generation it was taken on.</p>
+<h3 id="chapter-13-vision-convolution-and-encoders"><a class="header" href="#chapter-13-vision-convolution-and-encoders">Chapter 13. Vision, convolution, and encoders</a></h3>
+<p>The convolution speed and efficiency, the convolution-stack and roofline figures, the power gap, and per-eval floor are M1/H13 measured; the M5 convolution-stack, ResNet-18, twelve-layer-encoder, and single-sentence-encoder ratios and the serving crossovers are M5/H17s measured.
+The convolution lowering, Winograd gate, 2 MB working-set constant, per-output-channel fold, and texture-engine operation set with its single A14 family gate are decompile-derived from the ANE compiler and the per-chip parameter table.
+The Q.4 crop-scale saturation threshold, where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4094</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65504</span></span></span></span> reaches the fp16 ceiling, is decompile-derived and confirmed by the fp16 range probe on M1/H13 and on A14 (M2); the clean route arrives on A15 and later.
+For vision and image models on the engine the public surface is the compute-unit selector alone (developer.apple.com/documentation/coreml, developer.apple.com/documentation/vision), with no direct datapath API and no cross-processor figures; the measured economics against the GPU are new here, and so is the texture-engine preprocessing path, which that surface does not expose.</p>
+<h3 id="chapter-14-llm-case-study"><a class="header" href="#chapter-14-llm-case-study">Chapter 14. LLM case study</a></h3>
+<p>The per-eval dispatch floor, int8-hybrid result, and resident-cache step are M1/H13 measured, the last by a two-proof resident-buffer probe; the batched-decode comparison, the per-projection placement table and position rule, and the speculative-decoding and batched-prefill serving controls are M5/H17s measured.
+The dispatch and resident-state machinery of the direct path is decompile-derived from the runtime, including the output-to-input buffer aliasing that keeps the cache resident, the in-flight cap of 127, and per-process loaded-program cap near 128 (the next load returns <code>GetANEFModel: must re-compile</code>).
+Apple does not publish engine-versus-GPU decode measurements, so the per-batch decode verdict is reported as measured.</p>
+<h3 id="chapter-15-training-on-the-engine"><a class="header" href="#chapter-15-training-on-the-engine">Chapter 15. Training on the engine</a></h3>
+<p>On-device model update, documented at developer.apple.com/documentation/coreml, is a limited fine-tuning surface whose backward pass runs off the engine; the full forward, backward, and optimizer loop reported here runs as engine graph operations, optimizer state resident across steps.
+The gradient audit, differentiable-vocabulary correctness to a cosine of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0000</span></span></span></span>, conv weight-gradient saturation threshold, M1 training accuracy and loss-scale curves, and two-generation parity (0.9080 on M1 against 0.9070 on M5 for the identical seeded network) are M1/H13 and M5/H17s measured.
+The width-axis slice saturation, exact at loss scale 384 and first overflowing at 512 above <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">65504/16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4094</span></span></span></span>, was reproduced on A14 (M2), locating the clean route on A15 and later.
+The absence of an engine-native backward operation is decompile-derived from the shared compiler, which has gradient operations only in the graphics-processor dialect.</p>
+<h3 id="chapter-16-numerical-and-scientific-computing"><a class="header" href="#chapter-16-numerical-and-scientific-computing">Chapter 16. Numerical and scientific computing</a></h3>
+<p>The iterative-solver envelope, the size bounds on the unrolled factorizations, the full-spectral-decomposition relative errors, and wide-accumulator behavior are M1/H13 measured, with the fused five-point stencil margin measured on M5/H17s and the DFT-as-matmul throughput on the M2 generation at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1024</span></span></span></span>.
+The static-dataflow constraint and the absence of data-dependent control flow are decompile-derived from the operation set and the compiler.
+The fp16-clean DFT bound near <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span> is predicted from the wide-accumulator reduction and the fp16 rounding of the matrix entries, an edge of the representable range consistent with the accumulator measurements.
+Apple documents dense linear algebra and signal processing through the accelerate framework at developer.apple.com/documentation/accelerate, all of it CPU-targeted; this chapter maps which of those kernels fit the engine and which are architecture-limited, a mapping the public documentation does not provide.</p>
+<h2 id="part-v-practice"><a class="header" href="#part-v-practice">Part V. Practice</a></h2>
+<p>For Part V the host was M1/H13 (Apple M1), with M5/H17s (Apple M5) standing in as the cross-chip reference where a second generation is needed.</p>
+<h3 id="chapter-17-model-design-rules"><a class="header" href="#chapter-17-model-design-rules">Chapter 17. Model-design rules</a></h3>
+<p>The tensor-dimension boundaries, the convolution kernel and stride limits, the arg-min and arg-max 2048 cap, and pooling-window behavior are M1/H13 measured, swept until compile flipped from accept to reject.
+The per-operation validators, the kernel-format and maximum-dimension fields, the divisibility checks, and working-set and kernel-memory budgets are decompile-derived and joined to those sweeps; the per-family unlock points for the texture-engine padding modes, the square-after-reduction mode, and sin and cos are decompile-derived from the per-chip support flags, confirmed on the M1 only at its boundary and predicted for the chip that first enables each.
+The conversion-time constraints and supported converter configurations are documented at apple.github.io/coremltools; what this chapter adds is the argument, shape, and mode limits the on-device validators enforce, which the public converter does not enumerate.</p>
+<h3 id="chapter-18-optimization-and-the-cost-model"><a class="header" href="#chapter-18-optimization-and-the-cost-model">Chapter 18. Optimization and the cost model</a></h3>
+<p>The convolution latency fit and the dispatch floor are M1/H13 measured (Apple M1; M1 Max), and the cross-chip bandwidth, floor, and peak re-fit are M5/H17s measured, with the core-scaled bandwidth confirmed by direct streaming at 57.5 GB/s against the M1's 10.4 GB/s.
+The compiler's analytic cost functions (the cycles, roofline, and wall-time chain) are decompile-derived with the per-chip parameters walked live from the hardware-abstraction table; the cross-chip scaling of unmeasured targets is predicted from core-count and clock ratios.
+The cost-model fidelity is M1/H13 measured: a median error near 31 percent with 11 of 68 shapes within plus or minus 17 percent, sound as an ordinal placement tool rather than an absolute-latency oracle, with attention unmodeled and the 9.0 GB/s bandwidth anchor held below the roughly 40 GB/s effective rate because it is jointly calibrated for the convolution fit.
+Apple does not publish the engine compiler's cost model or its per-chip parameters, so the model is reported here as decompile-derived and validated against M1/H13 and M5/H17s measured latency.</p>
+<h3 id="chapter-19-pitfalls-and-limits"><a class="header" href="#chapter-19-pitfalls-and-limits">Chapter 19. Pitfalls and limits</a></h3>
+<p>The slice-saturation threshold, dynamic-weight convolution batch boundary, compile-failure back-off, and four-character-code lowering limit are M1/H13 measured, and the A14 generation (M2) was measured to saturate on the same slice, locating the clean route on A15 and above and confirmed clean on the M5.
+The per-target slice-lowering template and its DMA source-path and patch-width routines are decompile-derived, giving the times-16 fixed-point DMA format and the target-keyed slice route; the clean A15 route is decompile-derived from the per-family lowering and confirmed clean on the M5, not measured on A15 silicon directly.
+These are failure modes of the private compiler and have no public counterpart: they are reported as measured on the M1 and reverse-engineered from the compiler binary.</p>
+<h2 id="part-vi-the-silicon"><a class="header" href="#part-vi-the-silicon">Part VI. The Silicon</a></h2>
+<p>Part VI was measured on M1/H13 (Apple M1; M1 Max, live architecture string <code>h13g</code>); the datapath geometry and memory hierarchy are decompile-derived from the per-chip hardware-abstraction table and the engine compiler, calibrated against the M1 anchors.</p>
+<h3 id="chapter-20-datapath-and-mac-geometry"><a class="header" href="#chapter-20-datapath-and-mac-geometry">Chapter 20. Datapath and MAC geometry</a></h3>
+<p>The core count of four, per-core throughput scaling of 1 to 4, power-rail step per core, radix-4 fan-in, wide accumulator, and output-channel-group pass-doubling threshold at 192 to 256 are M1/H13 measured.
+The accumulator budget of eight and the lane widths of four and eight are decompile-derived and uniform across chips per the hardware-abstraction table, which was carved from the H13 firmware blob and calibrated at the core-count, cycle-divisor, and working-set offsets; the convolution-lowering and performance-model functions are decompile-derived from the ANE compiler (<code>GetNumOutputChannelsPerCycle</code>, <code>GetNumOutputChannelsPerAccumulator</code>, <code>ComputeMaxOcgSize</code>, <code>ZinMirNECoreAssignment</code>, <code>GetNumNeededNEsNextPow2</code>).
+Apple publishes a marketing core count per chip, for example a 16-core M1, a different quantity from the decoded <code>num_nes</code> of four; the multiply-accumulate geometry has no public counterpart and is reported as reverse-engineered and measured.
+The int8 compile flag is weight-only quantization that leaves the multiply-accumulate in fp16, neutral on compute-bound work and about 1.5 times faster only on weight-bandwidth-bound matmuls near a 4096-by-4096 weight, M5/H17s measured.</p>
+<h3 id="chapter-21-memory-hierarchy"><a class="header" href="#chapter-21-memory-hierarchy">Chapter 21. Memory hierarchy</a></h3>
+<p>The 2.28 to 2.34 MB threshold and the 64-byte throughput period are M1/H13 measured on the dispatch path, and the absence of a runtime replacement policy is an M1/H13 measured negative, with sequential and random re-reference order identical at every footprint.
+The field values are decompile-derived: <code>0x1b8</code> (2 MB operand working set), <code>0x1c8</code> (64 banks), <code>0x1c0</code> (16-byte granule), <code>0x1f8</code> (2 MB stride ceiling), <code>0x1f0</code> (residency threshold, 0 on M1), and <code>0x288</code> (64 KB kernel store); the operand-size comparator, the bank function and conflict model, and inverted residency-buffer gate are decompile-derived from the named compiler routines, with the 2 MB boundary itself the operand-size comparator.
+The A15-class, A16-class, and M5 values of field <code>0x1f0</code> are read from the same table by offset but predicted for those parts, the gate behavior confirmed on the M1 only.
+The memory hierarchy, the bank function, and residency threshold have no public counterpart and are reported as reverse-engineered and measured.
+The compiler name for field <code>0x1b8</code>, <code>MemCacheSize</code> (also <code>L2Size</code>) with its <code>fl2-size</code> override, is decompile-derived; on the M5 the working-set crossing is smooth in throughput and shows instead in DRAM energy per operation, bottoming near a 2 MB operand, M5/H17s measured.</p>
+<h2 id="part-vii-the-toolchain-and-encoding"><a class="header" href="#part-vii-the-toolchain-and-encoding">Part VII. The Toolchain and Encoding</a></h2>
+<p>Part VII shares that M1/H13 host (Apple M1; M1 Max, live string <code>h13g</code>), and chapter <a href="../part-7-toolchain/25-compression-internals.html">25</a> extends to M2/H14 (Apple M2 Pro) and M5/H17s (Apple M5).
+This Part is mostly decompile-derived from the engine compiler decompile and its constraint-string corpus, the per-chip hardware-abstraction table read by byte offset across 28 target entries, and the runtime serializers and task-descriptor setters; unless a chapter says otherwise, scalar offsets, capability-byte offsets, struct fields, and symbol names are decompile-derived.</p>
+<h3 id="chapter-22-compiler"><a class="header" href="#chapter-22-compiler">Chapter 22. Compiler</a></h3>
+<p>The four-phase pipeline, task-descriptor partition budget, allocation-type set, <code>anec.matmul</code> and <code>anec.convolution</code> lowerings, and fusion rules (the GOC fused unit, seven-slot epilogue, fusable epilogues and the two-live-input, concat, and attention-cut barriers) are decompile-derived from the engine compiler framework (the 9.509 build, a 4.1-million-line decompile) and the constraint-string corpus.
+The validator export set, the per-layer reject strings, and the code-generation rejections for top-k, sort, dynamic-slice, and three-dimensional convolution are M1/H13 measured.
+The compiler internals, the backend <code>anec.*</code> dialect, and the <code>_ANECValidate*</code> surface have no public counterpart and are reported as reverse-engineered; the public tools document only the frontend operation set and conversion passes.</p>
+<h3 id="chapter-23-program-and-container-format"><a class="header" href="#chapter-23-program-and-container-format">Chapter 23. Program and container format</a></h3>
+<p>The two-layer split, four-field root table, cast-inference-cast operation shape, seven register groups, 15-bit and 17-bit dimension widths, relocation-slot model, 44-byte sparse record, and the HWX on-disk layout (the <code>0xbeefface</code> Mach-O variant, the segment set, the <code>ZinAneTd</code> linked list, the per-lane weight tiles, and shape descriptors) are decompile-derived from the serializer and task-descriptor symbols and cross-confirmed against the vendor's task-descriptor symbol table.
+The dispatch-descriptor schema was validated by a round-trip through the schema compiler (version 25.12.19), which regenerated an object-API header and a binary reflection schema without error.
+The decoded identity-linear program with its segment map, port descriptors, register records, and weight bank are M1/H13 measured, parsed byte for byte from real on-disk files in the runtime caches, with the resolved tensor frame read from the post-compile status sidecar.
+The format has no public counterpart and is reported as reverse-engineered; the full FlatBuffer schema is Appendix <a href="c-decoded-tables.html">C</a>.
+The custom-bar bit-field relocation, which patches a resolved value into a named descriptor field by bit offset and width, and the range-checked live-in shape and stride parameters that let one program serve a range of input shapes, are decompile-derived from the program loader.</p>
+<h3 id="chapter-24-hal-and-capability-gates"><a class="header" href="#chapter-24-hal-and-capability-gates">Chapter 24. HAL and capability gates</a></h3>
+<p>The scalar offsets, the capability-byte offsets, and family floors are decompile-derived, with every per-target constructor invoked on this host (live string <code>h13g</code>) to read byte-exact values for all 28 targets, joined to the minimum-family operation trait and tier assignment read from the same binary.
+The per-family unlock generations for the texture engine, sin and cos, and the dimension and format-count steps are decompile-derived from the per-target tables and confirmed on the M1 only at its boundary; the generation that first enables each is predicted from the floor table.
+The attested-is-not-reachable rule is M1/H13 measured: three-dimensional convolution has its HAL kernel-depth attestation at offset <code>0x70</code> and fails backend lowering on every device mask, and the top-k, sort, and dynamic-slice validators are callable but code-generation-rejected.
+The packed-bitfield struct measures <code>0x938</code> bytes; its non-flag residual is the cost-model coefficient block at <code>0x580</code> through <code>0x7f0</code> plus about two soft fp64 coefficients, and the offsets past <code>0x938</code>, read in an earlier round as an A12 operation-emulation catalog at <code>0xa30</code> through <code>0xe84</code>, are a read into zeroed memory beyond the struct and have no table; the capability-flag offsets are decompile-derived from the <code>ZinIrHalParameters</code> reader symbols.
+The HAL table, the capability-byte region, and minimum-family trait have no public counterpart; Apple documents only the model framework and the convertible operation set.</p>
+<h3 id="chapter-25-compression-internals"><a class="header" href="#chapter-25-compression-internals">Chapter 25. Compression internals</a></h3>
+<p>The bit-layout and address detail are M1/H13 (table-descriptor codegen version five, family two, A13) unless another version or family is named.
+The public account of palettization, quantization, and pruning at apple.github.io/coremltools treats them as a model-size feature; the on-device codec arithmetic and the per-family streaming datapath go beyond it.
+The sparse and int4 speedups and byte ratios, the byte-identical compiled program, and the M1 fold of the int8 and blockwise forms are M1/H13 measured; the A14 int8 stream and blockwise fold are M2/H14 (Apple M2 Pro) measured; the all-forms-stream endpoint is M5/H17s (Apple M5) measured.
+The kernel-format helper tables, affine and palette dequantization codecs, dequantize-to-dense fold path, streaming and palette gates, on-chip-memory budget caps, and Winograd eligibility gate are decompile-derived, with the on-device sparse-format field read from the register map; the A15 floor at which the blockwise form first streams is predicted from the gate pattern, and the resident Winograd transform matrices are predicted, their textbook forms matching the engine's behavior but not byte-confirmable from the binary.</p>
+<h3 id="chapter-26-hidden-layers-and-direct-netplist-authoring"><a class="header" href="#chapter-26-hidden-layers-and-direct-netplist-authoring">Chapter 26. Hidden layers and direct netplist authoring</a></h3>
+<p>The fused-attention, ranking, and spatial-rearrange layers were authored, compiled, and dispatched on the M5/H17s byte-exact against a host reference, and the M1 gates and the top-k forbidden band were confirmed on the M1 (measured).
+The native layer-descriptor catalog, its per-layer <code>ZinParse&lt;Name&gt;Unit</code> parsers and <code>_ANECValidate&lt;Name&gt;Layer</code> checkers, and the constant-string constraint corpus are decompile-derived, joined to the netplist schema read out of the runtime framework.
+The model converter and its intermediate-language operation set, documented at apple.github.io/coremltools, emit none of these native layer kinds; this chapter authors them directly, the attention, ranking, spatial-rearrange, geometry, and normalization descriptors being present in the compiler and reachable through the network description even though the converter never produces them.
+The 33-knot activation-LUT format and the gated <code>NeuronCustom</code> netplist path (a parser that requires and then rejects the same field sets) are decompile-derived; the rectifier-basis reproduction of an arbitrary pointwise function is M5/H17s measured.</p>
+<h2 id="part-viii-system-internals"><a class="header" href="#part-viii-system-internals">Part VIII. System Internals</a></h2>
+<p>Part VIII rests on M1/H13 (Apple M1; M1 Max, and the T6000-generation engine where a multi-die part is needed), with an M2-class kernel cache as the cross-generation reference where cited.
+Much of it is decompile-derived static analysis with no firmware executed: the unencrypted real-time-kernel preload executable is carved from the on-package firmware image and read for its strings, asserts, and disassembled handlers, and the kernel cache is read for its symbols, dispatch arrays, and call sites.</p>
+<h3 id="chapter-27-kernel-driver-and-iokit-abi"><a class="header" href="#chapter-27-kernel-driver-and-iokit-abi">Chapter 27. Kernel driver and IOKit ABI</a></h3>
+<p>The two <code>IOExternalMethodDispatch2022</code> arrays are M1/H13 measured, read byte for byte from the kernel cache's read-only data section and corroborated on an M2-class cache where all 26 size tuples are byte-identical, and the control-client open and submit struct sizes are cross-validated against captured user-space call blobs.
+The selector handlers, four-layer call path, doorbell register write, entitlement-check call sites for <code>com.apple.ane.iokit-user-access</code> and <code>com.apple.ane.allow-dataChaining-access</code>, driver class hierarchy and device properties, and broker model are decompile-derived from the unstripped kernel-cache symbols, kext property lists, live device registry, and a system-wide entitlement sweep.
+The driver's user-client ABI has no public counterpart and is reported as reverse-engineered; the IOKit user-client framework and the <code>IOExternalMethodDispatch2022</code> structure are public, but this driver's selector numbers, struct sizes, and handler set are not.
+On the M5 the client-creation gate <code>ANEClientInfo::create</code>, its <code>copyClientEntitlement</code> stamp of <code>isPrivileged</code> and <code>allowDataChaining</code>, and six further driver-enforced <code>com.apple.ane</code> and <code>com.apple.private.ane</code> entitlements are decompile-derived from the M5 kernel driver.</p>
+<h3 id="chapter-28-address-translation-and-the-dart"><a class="header" href="#chapter-28-address-translation-and-the-dart">Chapter 28. Address translation and the DART</a></h3>
+<p>The leaf word <code>phys | 0x8000000000000000</code>, 16 KB granule, active stream set <code>{0, 1, 2}</code>, translation-table base <code>0x90022320</code>, and host-to-firmware rebase to the <code>0x1bc4</code> aperture are M1/H13 measured read-only on the live dispatch path (Apple M1 Pro, T6000-generation DART): the granule and stream set from the live device tree, the base register from function-boundary probes, and the leaf-word template, segment structure, and protection classes from probes across 26178 leaf-map events.
+The leaf-word bit layout, the fault-register offset map, the panic-terminated fault path (panic confirmed M1/H13 from the disassembly of every fault-path function), the <code>IODARTErrorInfo</code> descriptor layout, the <code>[engine+0xe028]</code> status predicate, and firmware rebase arithmetic with its three aperture-config offsets are decompile-derived, the rebase arithmetic unicorn-verified.
+The fault-capture register decode is predicted from the published controller field layout and not measured, because a fault panics the machine.
+The address-translation unit, its leaf entry format, the rebase boundary, and the fault-capture block have no public counterpart and are reported as reverse-engineered.
+The per-client isolation contexts, the eight <code>mapper-ane0</code> translation mappers in the live IORegistry and the <code>ANEIsoID1</code> through <code>ID7</code> exclave capabilities that bind them, are M5/H17s measured with System Integrity Protection enabled.</p>
+<h3 id="chapter-29-firmware"><a class="header" href="#chapter-29-firmware">Chapter 29. Firmware</a></h3>
+<p>The preload executable is the M1-generation real-time-kernel image, build identity <code>RTKit-3255.120.11.release</code>, chip tag <code>ASC_CHINOOK</code>.
+The task roster, priority bands, heap and pool model, execution-loop command set, scheduler deadline, and fault post-mortem layout; the command-record classes and their <code>sCSneCmdProcedureCall*</code> invariants; the doorbell-emit sequence around bit 39 of <code>S3_3_C15_C8_0</code>, host-notify site <code>@0x4c890</code>, and engine-to-graphics-processor doorbell at <code>0x2_0646_8000</code>; the bring-up order, seven MMIO banks, RTBuddy endpoint, and three scratch handshakes; and the per-run statistics buffer with its header, per-engine descriptors, and host-side null gate are decompile-derived from the embedded strings, assertion expressions, and disassembled handlers.
+The firmware has no public counterpart and is reported as reverse-engineered from the unencrypted image; Apple documents only the model framework and conversion tools above this layer.
+The CHINOOK control-CPU register map, its eleven thread contexts, level-two cache, and pipeline error-capture and power-down-save registers, is decompile-derived from the kernel driver.</p>
+<h3 id="chapter-30-host-to-firmware-command-protocol"><a class="header" href="#chapter-30-host-to-firmware-command-protocol">Chapter 30. Host-to-firmware command protocol</a></h3>
+<p>This chapter is static analysis of the unencrypted M1 firmware image, an ARM64e real-time-kernel Mach-O, with no firmware executed.
+The command vocabulary, numeric identifiers, header layout, and body bounds are read from the ordered command-name string table, struct-size asserts, and log format strings; header byte offsets are inferred from field order and alignment, while field presence, widths, and bounds are read directly from in-binary asserts.
+The 94-entry <code>CSNE_CMD</code> enumeration (93 dispatched command identifiers plus the invalid sentinel), the roughly ten fast-path ids, and the seventy-six-slot dispatch vtable (arm64e auth-rebase chained pointers in <code>__DATA.__const</code>, low thirty-two bits giving the target, the procedure-call slot at <code>+0x200</code> reaching <code>0x7374c</code> and the inference slot at <code>+0x190</code> reaching <code>0x74510</code>) are decompile-derived.
+The protocol, the command header, and <code>CSNE_CMD_*</code> vocabulary have no public counterpart and are reported as reverse-engineered; the public model framework reaches only application-level model loading. The full numeric command table and the decoded request structs are Appendix <a href="c-decoded-tables.html">C</a>.</p>
+<h3 id="chapter-31-power-and-thermal"><a class="header" href="#chapter-31-power-and-thermal">Chapter 31. Power and thermal</a></h3>
+<p>The clean 0 mW idle, the 176-second saturating loop holding flat power and throughput under nominal thermal pressure, the first-op power-up tax near 0.5 ms past a 100 ms idle gap, and the single held power state across 56,527 dispatches are M1/H13 measured by read-only tracing.
+The power-block base <code>0x2_6b8f_0000</code>, the opaque voltage base <code>0x2_3b70_c008</code>, the five-store power-block arm, the <code>0x11</code> peak-power control word, the engine and power-manager device-tree nodes (<code>ane0@84000000</code>, <code>compatible "ane,t8020"</code>, the <code>0x2_8400_0000</code> aperture, the <code>0x2_8E08_0000</code> power-manager slice), the absence of local DVFS, and firmware seven-step credit sequence are decompile-derived from the H13 firmware Mach-O and live device-tree enumeration.
+Apple does not document the power model, the fixed operating point, or the thermal behavior; with nothing public to check against, this account is reported as reverse-engineered and measured.</p>
+<h3 id="chapter-32-security-and-isolation"><a class="header" href="#chapter-32-security-and-isolation">Chapter 32. Security and isolation</a></h3>
+<p>The cross-process timing side-channel (a 2.3 times latency jump under contention and a 20 to 50 bit/s occupancy channel) and the intact data isolation across 9000 concurrent results are M1/H13 measured.
+The kernel-side trust boundary and its three program checks (code signature, vnode trustcache, client code-signing identity), the firmware's structural-only check, and the secure and exclave method bodies (the secure-mode transition state machine, the <code>SwitchExclaveMode not supported</code> stub, the inert <code>mov w0, #0; ret</code> exclave selectors) are decompile-derived from the loaded kernel driver and the firmware image.
+This chapter is reported as reverse-engineered and measured throughout, because Apple does not document the secure and exclave transition internals or the cross-process isolation behavior.
+On the M5 the exclave is live rather than stubbed: the secure component <code>com.apple.aneexclave</code>, its capability-scoped segment access, and the Tightbeam submit path are decompile-derived from the M5 exclave bundle and boot kernelcache, with System Integrity Protection enabled.</p>
+<h3 id="chapter-33-telemetry-and-hardware-counters"><a class="header" href="#chapter-33-telemetry-and-hardware-counters">Chapter 33. Telemetry and hardware counters</a></h3>
+<p>On the Apple M1 and M1 Max, the readable whole-engine channels (DRAM bytes, energy, clock residency), the signpost lifecycle, the all-zero per-run output buffer, and forced-mask load rejection are M1/H13 measured.
+The <code>ANEProgramCreateArgs</code> layout, the <code>+0x6c</code> stats-mask offset, the twenty-four per-descriptor counter namespace, the stats-buffer ABI <code>0x0201</code>, the <code>initStatsBufferSection</code> bail branch, and the free-running engine timebase counter at MMIO <code>0x2_6b17_8000</code> (read by the firmware helper <code>@0x30988</code>) are decompile-derived from the runtime dylibs and the kernel driver.
+None of the hardware performance-counter block, per-task-descriptor namespace, stats-mask enable, or firmware timestamp is documented anywhere public, so the block geometry, master enable, readable-versus-walled split, and kernel gate are reported as reverse-engineered and measured.
+On the M5 the gate actor (the <code>aned</code> daemon forcing <code>statsMask=0</code> for a <code>ThirdPartyAppUsingANE</code> client), the per-channel <code>DCS BW / ANE L0</code> and <code>L1</code> State-residency bandwidth histograms readable on the unentitled path, and the fuller <code>ANE_THROTTLE_*</code> and <code>VDD_DRAM_VOLTAGE_CHANGE</code> trigger family are M5/H17s measured with System Integrity Protection enabled.</p>
+<h2 id="part-ix-cross-silicon-reference"><a class="header" href="#part-ix-cross-silicon-reference">Part IX. Cross-Silicon Reference</a></h2>
+<p>Part IX is decompilation and static analysis of the one engine compiler binary across its full target set, with boundaries reproduced on silicon where a part was in hand: M1/H13 (Apple M1; M1 Max) measured, and M5/H17s (Apple M5) as the cross-chip reference.</p>
+<h3 id="chapter-34-cross-silicon-targets"><a class="header" href="#chapter-34-cross-silicon-targets">Chapter 34. Cross-silicon targets</a></h3>
+<p>The 28-target set is measured, extracted by invoking each per-architecture builder on the M1 (host chip irrelevant) and resolving the M5 to <code>H17s</code> and the M1 Max to <code>H13G</code> by fixed-build-directory compile.
+The target names, the suffix-to-core decode at HAL offset <code>0x238</code>, the interchange-format tables at HAL offset <code>0x658</code>, and four-byte format decode are decompile-derived; the A14, A15, A16, and A18 targets and their M-series counterparts are decompile-derived from the per-target tables and not individually measured, and the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mclose">)</span></span></span></span> mapping is confirmed only at the M1 and M5 ends with the middle generations predicted.
+Apple's product specifications publish a marketing core count per chip, for example a 16-core engine; the decoded <code>num_nes</code> is a different quantity, counting per-die compute sets, four on the base M1 against the published sixteen.
+The 28-target compiler set, the H-architecture naming, the suffix-to-core decode, and interchange tables are not publicly documented and are reported as reverse-engineered.</p>
+<h3 id="chapter-35-per-family-code-generation"><a class="header" href="#chapter-35-per-family-code-generation">Chapter 35. Per-family code generation</a></h3>
+<p>The slice-saturation threshold, the top-k, sort, and dynamic-slice code-generation rejections, and the operation decompositions are M1/H13 measured; the clean slice route and the native crop-resize, resample, and trig operations are M5/H17s measured.
+The family enum, <code>MinimumFamily&lt;N&gt;</code> trait and its four operation tiers, per-chip hardware-abstraction offsets, task-descriptor patch-width path, and <code>ConvertSlice&lt;Family&gt;</code> lowering are decompile-derived from the engine compiler framework (the 9.509 build, 87,874 functions); the A14 and A15 unlock points, M-series families above the M1, and dedicated A15 code-generation branch with its cost table, 45-operation floor, full H15 targets, and YUV420 input are decompile-derived and not measured on A15 silicon.
+The family enum, minimum-family trait, per-chip parameters, and per-family route selection have no public counterpart; the public conversion tools document the frontend operation set, optimization passes, and compute-unit selector, and stop above the backend per-family lowering reported here.</p>
+<h3 id="chapter-36-predicted-upper-tier"><a class="header" href="#chapter-36-predicted-upper-tier">Chapter 36. Predicted upper tier</a></h3>
+<p>The fp8 format converters, E4M3 overflow enumeration, format-register encoders, double-multiply gate, collective dialect operation set, device-mesh and sharding lowering, reduction-to-atomic map, and collective direct-memory-access emitter are decompile-derived, with the family gates read from the 28-target capability bytes; the 64-core ceiling, fp8 <code>e4m3</code> and <code>e5m2</code> datapath, and Ultra device-mesh collective are decompile-derived and not measured on the upper-tier parts.
+The E4M3 native multiply, accumulation, and saturation (inferred from the encoders and the H18-only capability byte at offset <code>0x52d</code>), the fp16 accumulation of an fp8 multiply (from the absence of any fp8 accumulator field), and the running collective (the enable byte at offset <code>0x48b</code> zero on all 28 targets and the register encoding stubbed on every family) are predicted, with no current family materializing the collective.
+That the load-balancer supports up to four engine dies while the M1 and M1 Max each register a single engine, so cross-die steering engages only on a multi-die part such as the Ultra, is M1 Max measured by the device registry.
+The fp8 datapath and the multi-die collective layer have no public counterpart in Apple's documentation and are reported as reverse-engineered and explicitly unmeasured.</p>
+<h2 id="back-matter"><a class="header" href="#back-matter">Back matter</a></h2>
+<p>The back-matter chapters rest on M1/H13 as the primary host and M5/H17s for cross-generation scaling.</p>
+<h3 id="methodology"><a class="header" href="#methodology">Methodology</a></h3>
+<p>The only public account is the compute-unit selector at developer.apple.com/documentation/coreml/mlcomputeunits, with no direct device API; this chapter goes below the selector, reaching the engine directly and characterizing it by static analysis and live instrumentation.
+The direct dispatch route, the four static-analysis artifacts, and the program-binary capture are decompile-derived and confirmed by the kernel trace; the roofline figures and the compile-service rate condition are M1/H13 measured, and the cross-generation scaling and bounded numeric drift are M5/H17s measured.</p>
+<h3 id="open-questions"><a class="header" href="#open-questions">Open questions</a></h3>
+<p>The decoded baseline and the boundary limits are M1/H13, decompile-derived from the compiler, hardware-abstraction tables, kernel driver, and firmware and joined to live instrumentation; M5/H17s confirmed the cross-family predictions.
+The M3/H15 and upper-tier runtime behavior is predicted, decompile-derived from the gates and not confirmed on silicon.</p>
+<h2 id="appendices"><a class="header" href="#appendices">Appendices</a></h2>
+<p>The reference tables are decompile-derived from static, read-only analysis of the M1/H13 binaries: the ANE compiler (<code>ANECompiler 9.509</code>), its per-family operation-floor tables, its per-layer validators and parsers, the host runtime, and the unencrypted firmware image (<code>h13_ane_fw_styx_j5x.im4p</code>), with no firmware executed and no engine jobs run.
+Where a value or status is measured rather than decompile-derived, it was confirmed on physical silicon, primarily M5/H17s and M1/H13, by compiling and dispatching against a host reference.</p>
+<h3 id="appendix-a-the-operation-by-device-matrix"><a class="header" href="#appendix-a-the-operation-by-device-matrix">Appendix A. The operation-by-device matrix</a></h3>
+<p>The M1, M2, and M5 columns are measured by operation-conformance runs, each native operation compiled and run and each no-path one rejected on device; the M3 column and the M4 part of the merged M4-and-M5 column are decompile-derived predictions from the per-chip tables.
+The per-family unlock points for the texture-engine operations, sin and cos, rank and sort bridge, argument reductions, and weight-stream gates are decompile-derived from the operation floors, validators, and symbol-resolution map and confirmed on the M1 only at its boundary; the family that first runs each is predicted from the floor table.
+Apple documents the convertible operation set at apple.github.io/coremltools and developer.apple.com; this table extends and partly corrects that account, reporting what compiles and runs on the direct engine path, since some accepted operations, such as three-dimensional convolution, do not lower to the engine.</p>
+<h3 id="appendix-b-the-hidden-layer-catalog"><a class="header" href="#appendix-b-the-hidden-layer-catalog">Appendix B. The hidden-layer catalog</a></h3>
+<p>Each layer's <code>Type</code> tag, descriptor symbol, and <code>Params</code> key set are decompile-derived from the compiler export table, parser disassembly, constant-string key atlas, per-layer <code>ZinParse&lt;Name&gt;Unit</code> parsers and <code>_ANECValidate&lt;Name&gt;Layer</code> checkers, and descriptor-initializer routines <code>_ANEC&lt;Name&gt;LayerDescInitialize</code>, joined to the netplist schema read out of the runtime framework.
+The fused-attention operand contract, the spatial-rearrange channel ordering, the float16-bit-pattern convention for <code>Alpha</code>, <code>Epsilon</code>, and <code>Scale</code>, and point-cloud output contracts are M5/H17s measured by authoring and dispatching the layers, and the M1 arch gates, the <code>Sort</code> and <code>DynamicSlice</code> rejections, and the top-k <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mclose">}</span></span></span></span> forbidden band are M1/H13 measured.
+Apple documents the model converter and its intermediate-language operation set at apple.github.io/coremltools, which does not emit these native layer kinds; this catalog authors the native descriptors directly through the network description.</p>
+<h3 id="appendix-c-decoded-reference-tables"><a class="header" href="#appendix-c-decoded-reference-tables">Appendix C. Decoded reference tables</a></h3>
+<p>Every value is read out of an M1/H13 binary by static analysis, with no firmware executed: the attribute and opcode integers and IOKit struct layouts from the compiler decompile (<code>ANECompiler 9.509</code>) and the host runtime; the error constants, command table, and tunable table from the unencrypted firmware image (<code>h13_ane_fw_styx_j5x.im4p</code>) and the standard IOKit return macros; the register map from the compiler's task-descriptor setters and getters; and the <code>.e5</code> schema from the runtime serializer symbols, validated byte-for-byte against a captured sample.
+The runtime, firmware, compiler, and ABI surface consolidated here is private and undocumented and is reported as reverse-engineered; the public model framework, conversion tools, and intermediate-language reference describe none of these numeric tables.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../appendices/d-glossary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../references.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../appendices/d-glossary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../references.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -2,8 +2,8 @@
 title: "Related work and limits on novelty"
 type: research
 status: active
-updated: 2026-10-25
-sources: ["S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S18", "S19", "S20", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36"]
+updated: 2026-10-28
+sources: ["S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S18", "S19", "S20", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37"]
 ---
 
 # Related work and limits on novelty
@@ -38,6 +38,7 @@ This is a literature and systems map, not an exhaustive review. README files and
 | [ANE Fieldfare](../sources/S27.md) | ANE expert prefill for an MoE on 16 GB M5; DFlash drafter; per-step draft-length policy from acceptance; fail-closed or failover | Adaptive speculation depth exists inside one runtime; the benchmark method is worth copying | README only |
 | [laya-apple](../sources/S29.md) | Concurrent GPU plus ANE serving with per-request routing and a parity gate for a classifier; 4.57x and 79.5 ms P99 project-reported on one M4 Max | Routing a short-request stream to the ANE is done; LLM decode and online updating are not in that source | README only |
 | [coremltools compute units](../sources/S36.md) | `compute_units` is a load-time constraint | Within-model placement is Apple's; a scheduler must verify placement | One section |
+| [ANE architecture reference](../sources/S37.md) | Direct user-space route, fp16 datapath, training built from forward ops, M1 and M5 measurements | Engine training is a published capability. The read chapters are not a Qwen3 QLoRA result and do not measure this M4 | Abstract, chapter 1, chapter 6 opening, 14.4–14.10, chapter 15 |
 | [FusionML](../sources/S09.md) | CPU/GPU co-execution on unified memory, calibration costs | Adding engines can lose; calibration costs count | Abstract |
 | [Hypura](../sources/S24.md) | GPU/RAM/NVMe tensor placement with a profile-then-solve step on one Mac | Memory-tier placement is done | README only |
 

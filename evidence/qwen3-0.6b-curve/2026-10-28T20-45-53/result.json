@@ -1,0 +1,44 @@
+{
+  "status": "error",
+  "error": "AttributeError: 'Dropout' object has no attribute 'p'",
+  "dataset": "Salesforce/wikitext",
+  "config": "wikitext-2-raw-v1",
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "mlx_peak_bytes": 970921170,
+  "seconds_wall": 347.7840510829992,
+  "energy": {
+    "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+    "scope": "system",
+    "gpu_joules": 1599.8459137940472,
+    "gpu_sram_joules": 35.54238986349983,
+    "ane_joules": 0.01364063968883476,
+    "cpu_joules": 576.0436116701497,
+    "dram_joules": 418.83866927089844,
+    "prometheus_gpu_joules": 1609.0120318543916,
+    "prometheus_ane_joules": 0.009943333971870461,
+    "sample_span_s": 342.0,
+    "gpu_watts_avg": 4.677912028637565,
+    "gpu_sram_watts_avg": 0.10392511655994102,
+    "ane_watts_avg": 3.988491137086187e-05,
+    "cpu_watts_avg": 1.6843380458191513,
+    "dram_watts_avg": 1.2246744715523346
+  },
+  "mactop_status": "available",
+  "headless_samples": 267,
+  "prometheus_samples": 340,
+  "prometheus_port": 9096,
+  "memory_limit_bytes": 19069665280,
+  "placement": "gpu_ane",
+  "log": "evidence/qwen3-0.6b-curve/2026-10-28T20-45-53/run.log",
+  "figures": [
+    "evidence/qwen3-0.6b-curve/2026-10-28T20-45-53/figures/energy.png",
+    "evidence/qwen3-0.6b-curve/2026-10-28T20-45-53/figures/memory.png"
+  ],
+  "latency": {
+    "median_iteration_ms": null,
+    "median_tokens_per_second": null,
+    "median_validation_s": null,
+    "reports": 0
+  },
+  "run_dir": "evidence/qwen3-0.6b-curve/2026-10-28T20-45-53"
+}

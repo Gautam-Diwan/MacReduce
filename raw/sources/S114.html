@@ -1,0 +1,354 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>26. Hidden layers and direct netplist authoring - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-7-toolchain/26-hidden-layers.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="26-hidden-layers-and-direct-netplist-authoring"><a class="header" href="#26-hidden-layers-and-direct-netplist-authoring">26. Hidden layers and direct netplist authoring</a></h1>
+<blockquote>
+<p>The compiler validates and lowers a native catalog of 45 hardware layer descriptors.
+The model converter surfaces only the subset its public operation set covers.
+Authoring the network description directly reaches the rest, including fused attention, ranking, spatial rearrangement, and geometry layers, each cutting its own dispatch segment.
+Authoring does not bypass a family gate.
+The texture-engine samplers are accepted from the A14 and the whole-tensor arg-min and arg-max from the A15, both rejected on the M1.
+A layer is confirmed only by a compile-and-run on the target.</p>
+</blockquote>
+<p>The engine implements more layer kinds than the high-level conversion path emits.
+Authoring the network description directly reaches the rest, including several layers a later chip accepts and the M1 rejects.</p>
+<p>The back half decodes this machinery in full: the <code>.espresso.net</code> program format in chapter <a href="23-program-format.html">23</a>, the compiler's layer parsers and validators in chapter <a href="22-compiler.html">22</a>, and the per-family capability gates in chapter <a href="24-hal-gates.html">24</a>.
+Here it is enough that the format is hand-authorable and that each layer has a validator and a family gate; Appendix <a href="../appendices/b-hidden-layer-catalog.html">B</a> is the full per-layer schema.</p>
+<h2 id="framework-and-native-catalogs"><a class="header" href="#framework-and-native-catalogs">Framework and native catalogs</a></h2>
+<p>The compiler has two parallel layer catalogs.
+The framework-level set is the engine-agnostic kernel abstraction, about 190 layer types, of which some run only on the host or the GPU.
+Below it is the native hardware set: 45 descriptor structs, each with a constructor named <code>_ANEC&lt;Name&gt;LayerDescInitialize</code> and a checker named <code>_ANECValidate&lt;Name&gt;Layer</code>, and this set is the list of operations the engine silicon runs.</p>
+<p>The conversion path from a trained model walks the documented intermediate-language operation set <a href="../references.html#ref-applecoremltools">[AppleCoreMLTools]</a> and emits only the native layers that set maps onto.
+Several native descriptors have no operation in that set, so the converter never produces them, and a model passed through it decomposes the work into the operations it does know.
+The converter always splits scaled dot-product attention into a matrix multiply, scale, softmax, and second matrix multiply, because its operation set has no atom that lowers to the single fused descriptor.
+The descriptor and its validator are present in the compiler the whole time.
+Reaching them means handing the compiler a network description that names the layer directly.</p>
+<h2 id="method"><a class="header" href="#method">Method</a></h2>
+<p>A network expressed for the compiler is a property list, the <code>.espresso.net</code> representation the compiler accepts alongside the intermediate language.
+Its layers are dictionary entries the compiler calls Units, each holding a <code>Type</code> tag, a <code>Bottom</code> wiring list, an output type, and a <code>Params</code> sub-dictionary of typed attributes, all under a <code>ProcedureList</code> of callable entry points that name the <code>InputList</code>, <code>OperationList</code>, and <code>OutputList</code>.
+The representation is hand-authorable, which is what makes the hidden layers reachable.</p>
+<p>The reusable method has four steps.
+Author one Unit whose <code>Type</code> is the native layer name and whose <code>Params</code> contain the descriptor attributes that layer's parser expects.
+Supply the wiring and any constant weight blobs the layer needs.
+Compile the description through the runtime, which lowers the Unit to its <code>ANEC&lt;Name&gt;LayerDesc</code>, runs the matching validator, and assigns it to an engine.
+Then load, bind buffers to the named ports, and dispatch, exactly as chapter <a href="../part-2-reaching/06-dispatch-without-coreml.html">6</a> gives for any compiled program.
+A raw native descriptor enters the network without re-expressing it as a framework kernel through the tunneled-unit path: the path passes the descriptor through the framework layer untouched, with its float16 and integer operands intact, so a <code>Type</code> of <code>SDPA</code> or <code>CostVolume</code> reaches the silicon directly.</p>
+<p>The descriptor attributes are read out of the compiler's per-layer parsers, the <code>ZinParse&lt;Name&gt;Unit</code> routines, and cross-referenced constant-string tables.
+A required key the parser does not find raises a parse error such as <code>InvalidParamSyntax</code>, so an authored layer either has the exact attribute set the parser expects or fails at compile time rather than at dispatch.</p>
+<h2 id="classes-reached-this-way"><a class="header" href="#classes-reached-this-way">Classes reached this way</a></h2>
+<p>The reachable native layer kinds fall into several groups.
+Fused attention is a single descriptor, scaled dot-product attention over four or five operands of query, key, value, and constant scale, where the optional fifth operand is an additive mask that records the causal and decode cases as data.
+Ranking and selection cover the top-k, sort, and argument-minimum-and-maximum descriptors, including the whole-tensor argument form; their integer index outputs come back float16-encoded and exact for the index ranges these layers produce.
+The spatial rearrangers come as pairs, pixel-shuffle with pixel-unshuffle, the channel-and-space pair, and the space-and-batch pair, each parameterized by per-axis integer factors, and the two members of a pair differ by channel-ordering convention, so neither is an alias of the other.
+Three further normalizations appear: the range normalization that maps a tensor to its minimum-to-maximum span, local response normalization, and per-channel affine gain-offset control in static and runtime-tensor forms.
+Geometry and point-cloud work draws on the template cross-correlation, the three-vector cross product, furthest-point sampling, radius neighborhood search, and the stereo cost volume.
+What is left is data movement: the re-strided input view, runtime-offset dynamic slice, and tile and concatenate descriptors.
+The full catalog of these layers, with each layer's <code>Type</code> tag, its descriptor, and its <code>Params</code> schema, is Appendix <a href="../appendices/b-hidden-layer-catalog.html">B</a>.</p>
+<h2 id="a-native-layer-descriptor"><a class="header" href="#a-native-layer-descriptor">A native layer descriptor</a></h2>
+<p>Take the fused-attention descriptor: the high-level path never emits it, and its validator pins the shape exactly, down to the four-or-five operand contract and the one attribute its parser reads (<a href="#lst-c26-sdpa-unit">Listing 26.1</a>).</p>
+<pre><code class="language-python">Unit "attn" {
+  Type    = "SDPA"
+  Bottom  = [ "q", "k", "v", "scale" ]   # optional 5th: additive mask
+  Params  = { SubtractMax = true }        # ANECSDPALayerDesc byte 0x00
+  OutputType = "Float16"
+}
+</code></pre>
+<p><a id="lst-c26-sdpa-unit"></a><strong>Listing 26.1.</strong> A hand-authored fused-attention Unit naming the native scaled dot-product attention descriptor in the network description.</p>
+<p>The validator enforces the operand count with <code>4 or 5 bottoms must be present for SDPA</code>, requires the key and value to share a shape, and checks that the query times the transposed key contracts against the value.
+The <code>SubtractMax</code> attribute is the single key the attention parser reads, and it defaults to false in the descriptor constructor, which is numerically wrong for softmax, so an authored attention Unit must set it true.
+The optional fifth operand is an additive float16 mask broadcast over heads, zero on and under the diagonal and a large negative bias above it for the causal case.</p>
+<p>At the backend-dialect level the same fused operation is one atom with a parametric contraction, the same form the matrix multiply uses (<a href="#lst-c26-sdpa-atom">listing 26.2</a>).</p>
+<pre><code class="language-mlir">anec.sdpa(%q, %k, %v, %scale)   // 4 or 5 bottoms; covers matmul + softmax + transpose
+anec.matmul(%lhs, %rhs) { transpose_lhs, transpose_rhs }   // depth D must be 1 on both operands
+</code></pre>
+<p><a id="lst-c26-sdpa-atom"></a><strong>Listing 26.2.</strong> The fused attention atom at the backend-dialect level, a single parametric contraction that covers the matrix-multiply, softmax, and transpose path.</p>
+<p>The attention atom covers the matrix-multiply, softmax, and transpose path and is not gated behind the texture engine, which is why it runs on every family from the M1 onward.</p>
+<h2 id="authoring-a-hidden-layer"><a class="header" href="#authoring-a-hidden-layer">Authoring a hidden layer</a></h2>
+<p>A native layer reaches the silicon by naming its descriptor in the graph directly, then compiling and dispatching it as any other program, with the target chosen as the first family that runs the layer.
+The compile step runs the layer's validator and assigns the layer to an engine, failing at compile time where the family gate rejects it, as <a href="#lst-c26-author">listing 26.3</a> walks step by step.</p>
+<pre><code class="language-python"># Author a hidden layer via the bridge route: name the native layer kind and its parameters,
+# cut it into the graph as a bridge node, then compile and confirm it lowers.
+
+graph G:
+    input q : [1, 8, 197, 64] fp16
+    input k : [1, 8, 197, 64] fp16
+    input v : [1, 8, 197, 64] fp16
+    const scale
+
+    # Describe the native layer directly as a bridge node, passed through untouched to the silicon.
+    bridge_node attn:
+        kind    = "SDPA"                      # the native descriptor name, not a decomposition
+        inputs  = [ q, k, v, scale ]          # 4 operands; optional 5th mask is the causal case
+        params  = { subtract_max = true }     # required: the default is false, wrong for softmax
+
+    output attn
+
+program P = compile(G, target = H13)   # runs the validator and assigns it to an engine
+# Fused attention runs from the M1 onward (not texture-gated). A family-gated layer would fail here,
+# at compile time, below its minimum family.
+output = dispatch(P, q_data, k_data, v_data)  # confirm it lowers and runs on the target
+</code></pre>
+<p><a id="lst-c26-author"></a><strong>Listing 26.3.</strong> Authoring a hidden layer through the bridge route, then compiling and dispatching to confirm it lowers and runs.</p>
+<p>An authored layer is confirmed only by this compile-and-run on the target, not by the presence of its descriptor, since a gated layer fails the code generator below its minimum family.</p>
+<h2 id="arch-gated-negatives"><a class="header" href="#arch-gated-negatives">Arch-gated negatives</a></h2>
+<p>The same family gates as chapter <a href="../part-3-performance/12-cross-chip.html">12</a> accept some authored layers on a later chip and reject them on the M1.
+A native descriptor exists in the compiler binary on every target, but its validator has a minimum-family trait, and below that family the code generator rejects it.</p>
+<p>The texture-engine samplers are the largest group: resize as a hardware sampler, crop-and-resize, grid resample, and the affine spatial transform are accepted from the A14 generation and rejected on the M1, where the compiler reports that the affine transform is not supported on this architecture.
+The whole-tensor argument-minimum-and-maximum layer is gated to the A15 generation and rejected on the M1.
+Range normalization is arch-gated and rejected on the M1.
+The native circular state layers behind an on-device key-value cache are hard-gated on the M1 and reached there only through a shared resident buffer.
+Authoring the Unit does not bypass the gate: the layer compiles where its family allows and fails at compile time where it does not, so the same network description targets the generation that first runs the layer and every generation above it.</p>
+<p>A second class of rejection is not about family but about a layer that passes an earlier check and fails the code generator, the attested-is-not-reachable rule from chapter <a href="../part-1-machine/04-capability-surface.html">4</a>.
+On the M1 the top-k, sort, and dynamic-slice validators are all callable, yet the code generator rejects sort and dynamic-slice and accepts top-k only outside a small forbidden parameter band.</p>
+<h2 id="two-compile-routes-and-their-gates"><a class="header" href="#two-compile-routes-and-their-gates">Two compile routes and their gates</a></h2>
+<p>The same operation can have different availability on the same chip depending on which route reaches it.
+The conversion route from a high-level model is gated by a minimum-family trait on each operation, the floor the public conversion path checks.
+The direct-authoring route is gated instead by the per-chip hardware-abstraction feature bytes the layer validators read.
+The whole-tensor argument-minimum-and-maximum layer splits along exactly that line: the conversion route floors it above the M1, yet the direct-authoring route gates it on a feature byte that is set from the A13 onward, so it is rejected through conversion on the M1 and runs through direct authoring on the same chip.
+Trigonometric sine and cosine have no direct-authoring bridge, so they stay conversion-only and reject on the M1; sort and top-k have a bridge but the code generator rejects it on the M1.</p>
+<h2 id="reference-the-native-layer-classes-reached-by-direct-authoring"><a class="header" href="#reference-the-native-layer-classes-reached-by-direct-authoring">Reference: the native layer classes reached by direct authoring</a></h2>
+<p>The native catalog is the set of layer kinds the engine silicon runs, each with a constructor and a validator in the compiler.
+Each class has a binding validator gate and a first family that runs it (<a href="#tbl-c26-classes">table 26.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Class</th><th>Native layers</th><th>Binding gate</th><th>First family</th></tr></thead><tbody>
+<tr><td>Fused attention</td><td>scaled dot-product attention</td><td>four or five operands; key and value share a shape; the subtract-maximum attribute must be set</td><td>M1, not texture-gated</td></tr>
+<tr><td>Ranking and selection</td><td>top-k, sort, argument-minimum-and-maximum, whole-tensor argument form</td><td>index outputs returned float16-encoded; sort and top-k pass the validator and fail the M1 code generator</td><td>whole-tensor form A15; top-k and sort code-generated above the M1</td></tr>
+<tr><td>Spatial rearrangement</td><td>pixel-shuffle, pixel-unshuffle, space-and-channel, space-and-batch</td><td>per-axis integer factors that factor into {2, 3, 4, 8}; depth factor one</td><td>M1</td></tr>
+<tr><td>Normalization</td><td>range normalization, local response normalization, per-channel gain-offset control</td><td>range normalization arch-gated; gain-offset in static and runtime forms</td><td>range normalization above the M1; gain-offset M1</td></tr>
+<tr><td>Geometry and point cloud</td><td>template cross-correlation, three-vector cross product, furthest-point sampling, radius neighborhood, stereo cost volume</td><td>cross product requires interleave one and float16 operands; cross-correlation template depth one</td><td>M1 for the cross and correlation forms</td></tr>
+<tr><td>Texture samplers</td><td>resize as a hardware sampler, crop-and-resize, grid resample, affine transform</td><td>the texture-engine feature byte</td><td>A14; rejected on the M1</td></tr>
+<tr><td>Data movement</td><td>re-strided input view, runtime-offset dynamic slice, tile, concatenate</td><td>input view must follow a reshape; dynamic slice passes the validator and fails the M1 code generator</td><td>M1 for the static movers</td></tr>
+<tr><td>Streaming state</td><td>live state, ring-buffer reader and writer, tensor-to-buffer movers</td><td>the ring-buffer writer must connect to a live-state buffer; circular mode arch-gated</td><td>above the M1; reached on the M1 only through a shared resident buffer</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c26-classes"></a><strong>Table 26.1.</strong> The native layer classes direct authoring reaches; the full per-layer descriptor and parameter schema is in Appendix <a href="../appendices/b-hidden-layer-catalog.html">B</a>.</p>
+<h2 id="reference-the-descriptor-lowering-of-a-fused-operation"><a class="header" href="#reference-the-descriptor-lowering-of-a-fused-operation">Reference: the descriptor lowering of a fused operation</a></h2>
+<p>Each atom's operand contract and the binding constraint its validator enforces are in <a href="#tbl-c26-lowering">Table 26.2</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Atom</th><th>Operands</th><th>Binding constraint</th></tr></thead><tbody>
+<tr><td><code>sdpa</code></td><td>four or five: query, key, value, scale, optional mask</td><td>key and value share a shape; query times the transposed key contracts against the value; softmax uses the family path</td></tr>
+<tr><td><code>matmul</code></td><td>two</td><td>depth one on both operands; output channel equals the left channel; contraction parametric through the transpose flags</td></tr>
+<tr><td><code>gain_offset_control</code></td><td>one, plus scale and bias</td><td>per-channel affine, height one; the fold target for a bias or activation</td></tr>
+<tr><td><code>layer_norm</code></td><td>one, with gamma and beta folded</td><td>channel divisible by the group count; output type float; the grouped form is the same atom with a group count above one</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c26-lowering"></a><strong>Table 26.2.</strong> The descriptor lowering of four representative atoms, with the operand contract and the binding constraint each validator enforces.</p>
+<h2 id="programmable-activation-lut"><a class="header" href="#programmable-activation-lut">Programmable activation LUT</a></h2>
+<p>The named activations are not distinct hardware.
+The compiler synthesizes each one, sigmoid, tanh, gelu, swish, and the rest, into a 33-knot piecewise-linear table over a fixed domain, and the engine evaluates that table.
+The format is recovered byte for byte, 33 knot values at a fixed step and 32 inter-knot deltas behind a short header, and the operation set includes a custom-table opcode, <code>kZinIrNonLinearCustomLUT</code>, that runs an arbitrary pointwise function the same way.</p>
+<p>The raw custom-table path is not reachable from a netplist.
+The unit parser requires a saturation set and a version-specific set together, and a consistency check in the same routine then rejects their coexistence, so no authored table satisfies both and every attempt fails to compile.
+The capability is real but sits below the user artifact: the firmware synthesizes the table from the program at load.</p>
+<p>An arbitrary pointwise function still runs on the engine by composition.
+A piecewise-linear curve over chosen knots is a <code>linear</code>, <code>relu</code>, <code>linear</code> chain, the same form the hardware table evaluates, so a small rectifier basis reproduces any knot table to fp16 exactly, demonstrated on a Gaussian bump that no named activation provides.
+The engine's exposed model is thus a linear map, a pointwise nonlinearity, and a linear map: custom weights and any scalar function, but not a new arithmetic primitive, a custom reduction, or data-dependent control flow.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-7-toolchain/25-compression-internals.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-8-system-internals/27-kernel-driver.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-7-toolchain/25-compression-internals.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-8-system-internals/27-kernel-driver.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

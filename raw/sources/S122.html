@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>34. Cross-silicon targets - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-9-cross-silicon/34-the-28-targets.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="34-cross-silicon-targets"><a class="header" href="#34-cross-silicon-targets">34. Cross-silicon targets</a></h1>
+<blockquote>
+<p>The compiler builds 28 architecture targets, one per silicon profile, under the fixed relation <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mclose">)</span></span></span></span>.
+A suffix letter selects the NE-core count, and the operation surface stops expanding at A15, so the surface measured on the M5 is the surface for everything above it.
+A device's runtime architecture string is a separate identifier from the compiler target name.
+A resolver-derived board-type sequence maps every shipping chip onto its generation.</p>
+</blockquote>
+<p>The compiler that builds for the Apple Neural Engine has 28 architecture targets, one per silicon profile it knows how to construct.
+Each target is a named hardware-abstraction-layer table the compiler builds by calling one per-architecture constructor, <code>ZinIrHal&lt;T&gt;::GetParams()</code>, and calling every constructor on a single host recovers the full set regardless of which chip runs it.</p>
+<h2 id="full-set"><a class="header" href="#full-set">Full set</a></h2>
+<p><a href="#tbl-c34-targets">Table 34.1</a> gives all 28 targets.</p>
+<div class="table-wrapper"><table><thead><tr><th>Target</th><th>Silicon and class</th><th>NE cores</th></tr></thead><tbody>
+<tr><td><code>H11</code>, <code>H12</code>, <code>M9</code>, <code>T0</code></td><td>pre-A13 legacy</td><td>1 to 4</td></tr>
+<tr><td><code>H13</code></td><td>A13, M1 base</td><td>4</td></tr>
+<tr><td><code>H13g</code></td><td>M1 Pro, Max, Ultra</td><td>8</td></tr>
+<tr><td><code>T1</code></td><td>A13 reference</td><td>4</td></tr>
+<tr><td><code>H14</code></td><td>A14, M2 base</td><td>4</td></tr>
+<tr><td><code>H14g</code></td><td>M2 Pro, Max</td><td>8</td></tr>
+<tr><td><code>H14c</code></td><td>A14 Max-class</td><td>32</td></tr>
+<tr><td><code>H15</code></td><td>A15, M3 base</td><td>4</td></tr>
+<tr><td><code>H15g</code></td><td>M3 Pro, Max</td><td>8</td></tr>
+<tr><td><code>H15c</code></td><td>A15 Max-class</td><td>32</td></tr>
+<tr><td><code>H16</code></td><td>A16, M4 base</td><td>4</td></tr>
+<tr><td><code>H16g</code></td><td>M4 Pro, Max</td><td>8</td></tr>
+<tr><td><code>H16s</code></td><td>A16 Pro-class</td><td>16</td></tr>
+<tr><td><code>H16c</code></td><td>A16 Max-class</td><td>32</td></tr>
+<tr><td><code>H17</code></td><td>A17, M5 base</td><td>4</td></tr>
+<tr><td><code>H17a</code></td><td>A17 variant</td><td>4</td></tr>
+<tr><td><code>H17g</code></td><td>M5 Pro, Max</td><td>8</td></tr>
+<tr><td><code>H17s</code></td><td>A17 Pro-class, the M5</td><td>16</td></tr>
+<tr><td><code>H17c</code></td><td>A17 Max-class</td><td>32</td></tr>
+<tr><td><code>H17d</code></td><td>A17 Ultra-class</td><td>64</td></tr>
+<tr><td><code>H18</code></td><td>A18 base</td><td>4</td></tr>
+<tr><td><code>M11</code></td><td>small embedded ANE</td><td>1</td></tr>
+<tr><td><code>U1</code>, <code>U2</code>, <code>U3</code></td><td>reference, not silicon</td><td>4</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c34-targets"></a><strong>Table 34.1.</strong> The 28 compiler targets, each with its silicon class and decoded NE-core count.</p>
+<p>The names fall into four groups: the H-architecture targets that stand for shipping A-series and M-series silicon, the pre-A13 legacy targets, a single small embedded profile, and three reference targets that are not silicon at all.
+A suffix letter selects the NE-core count within a generation, which the compiler decodes from the core-count field at hardware-abstraction-layer offset <code>0x238</code>.
+The base name is 4 cores, the suffix <code>g</code> is 8, <code>s</code> is 16, <code>c</code> is 32, and <code>d</code> is 64, while <code>M9</code> and <code>M11</code> are single-core.
+<code>H17s</code> is thus the 16-core Pro-class part that is the M5, and <code>H17d</code> is the 64-core Ultra-class die, the largest in the table.
+These decoded <code>num_nes</code> values are the compiler's per-die core field, not Apple's marketing Neural Engine count; on the base M1 the decoded four stands against the published sixteen <a href="../references.html#ref-appleane">[AppleANE]</a>.</p>
+<p>The reference targets list placeholder limits that no part has: a maximum tensor depth of 1, a kernel-width limit of 1023, and no interchange-format support.
+They are unconstrained validation profiles the compiler builds for its own checking, not addressable silicon.
+The small embedded profile <code>M11</code> is addressable silicon.
+It is an efficiency-class engine that has the A16-class feature flags but the A13-class 16384-dimension limit, a single NE core, and the odd kernel-width ceiling of 15 that is between the A13 value of 13 and the A14 value of 16.</p>
+<h2 id="capability-tiers"><a class="header" href="#capability-tiers">Capability tiers</a></h2>
+<p>Four gated capabilities separate the generations, and with the dimension limit they sort the targets into capability tiers (<a href="#tbl-c34-tiers">table 34.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Tier</th><th>Targets</th><th>Max dimension</th><th>3D conv</th><th>Texture engine</th><th><code>sin</code>, <code>cos</code></th><th>Dropout</th></tr></thead><tbody>
+<tr><td>pre-A13</td><td><code>H11</code>, <code>H12</code>, <code>M9</code>, <code>T0</code></td><td>16384, depth 1</td><td>no</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>A13</td><td><code>H13</code>, <code>H13g</code>, <code>T1</code></td><td>16384</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>A14</td><td><code>H14</code>, <code>H14g</code>, <code>H14c</code></td><td>16384</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
+<tr><td>A15</td><td><code>H15</code>, <code>H15g</code>, <code>H15c</code></td><td>16384</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>A16</td><td><code>H16</code>, <code>H16g</code>, <code>H16s</code>, <code>H16c</code></td><td>65536</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>A17</td><td><code>H17</code>, <code>H17a</code>, <code>H17g</code>, <code>H17s</code>, <code>H17c</code>, <code>H17d</code></td><td>65536</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>A18</td><td><code>H18</code></td><td>65536</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>small</td><td><code>M11</code></td><td>16384</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>reference</td><td><code>U1</code>, <code>U2</code>, <code>U3</code></td><td>65535 placeholder</td><td>no</td><td>no</td><td>no</td><td>no</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c34-tiers"></a><strong>Table 34.2.</strong> The capability tier of each target, with the dimension limit and the four gated capabilities that separate the generations.</p>
+<p>A17 and A18 add no operation over A16: identical dimension limits, identical kernel-width and kernel-depth ceilings, the same texture engine, same dropout and global-argmax flags, and same legal operation set.
+They differ from A16 only in NE-core count, which scales throughput.
+The operation behavior measured on the M5, an H17 part, is thus the operation behavior of every target at or above A16, since the decoded capability tables are identical; the cross-silicon performance measurements of chapter <a href="../part-3-performance/12-cross-chip.html">12</a> are predicted to carry to the unshipped generations on the same basis, with the per-chip rates confirmed only on the two measured silicon points.</p>
+<h2 id="silicon-to-target"><a class="header" href="#silicon-to-target">Silicon to target</a></h2>
+<p>The map from a shipping chip to its architecture is a resolver Apple distributes that decompiles cleanly.
+The method <code>aneArchitectureType</code> on the private device-info class builds the architecture string from a board-type value read from the platform configuration store, switching on a strictly increasing board-type sequence.
+The live anchor on an M1 Max reads board type 96, which resolves to <code>h13g</code> with a 16-core count, matching the registry exactly.
+That resolver yields the map from system-on-chip to runtime architecture and compiler target for the M1 through M5 generations (<a href="#tbl-c34-silicon">table 34.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Chip</th><th>Product</th><th>Runtime arch</th><th>Compiler target</th></tr></thead><tbody>
+<tr><td>T8103</td><td>M1 base</td><td><code>h13</code></td><td><code>H13</code></td></tr>
+<tr><td>T600x</td><td>M1 Pro, Max, Ultra</td><td><code>h13g</code></td><td><code>H13G</code></td></tr>
+<tr><td>T8112</td><td>M2 base</td><td><code>h14</code></td><td><code>H14</code></td></tr>
+<tr><td>T602x</td><td>M2 Pro, Max</td><td><code>h14g</code></td><td><code>H14G</code></td></tr>
+<tr><td>T8122</td><td>M3 base</td><td><code>h15</code></td><td><code>H15</code></td></tr>
+<tr><td>T603x</td><td>M3 Pro, Max</td><td><code>h15g</code></td><td><code>H15G</code></td></tr>
+<tr><td>T8132</td><td>M4 base</td><td><code>h16</code></td><td><code>H16</code></td></tr>
+<tr><td>T604x</td><td>M4 Pro, Max</td><td><code>h16g</code></td><td><code>H16G</code></td></tr>
+<tr><td>T8142</td><td>M5 base</td><td><code>h17</code></td><td><code>H17</code></td></tr>
+<tr><td>T605x</td><td>M5 Pro, Max</td><td><code>h17s</code></td><td><code>H17s</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c34-silicon"></a><strong>Table 34.3.</strong> The resolver-derived map from system-on-chip to runtime architecture and compiler target, M1 through M5.</p>
+<p>The map follows the fixed <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mclose">)</span></span></span></span> relation of chapter <a href="../part-3-performance/12-cross-chip.html">12</a>.
+The sequence is anchored at both ends, the live M1 Max at <code>h13g</code> and the measured M5 Pro at <code>h17s</code>, and the intervening steps are corroborated independently.
+A single shipping vision filter has exactly the five tables <code>H13</code>, <code>H14</code>, <code>H15</code>, <code>H16</code>, <code>H17</code>, the five Mac engine generations.
+The board-type kext for an absent chip cannot be read on a different host, since only the running chip's table is resident, so each middle step rests on the anchored monotone sequence.</p>
+<h2 id="runtime-string-and-compiler-target"><a class="header" href="#runtime-string-and-compiler-target">Runtime string and compiler target</a></h2>
+<p>The architecture name a device reports at runtime is not the compiler target name.
+The runtime string is the coarse form, <code>h1N</code> for a base part and <code>h1Ng</code> for a Pro, Max, or Ultra part, the only two variants the runtime emits on the desktop platform.
+The compiler target is the finer set, the full <code>H17</code>, <code>H17s</code>, <code>H17c</code>, <code>H17d</code>, <code>H17g</code> family, of which the runtime collapses several onto one string.</p>
+<p>The direct compile entry point accepts any of the 28 target names and rejects an unknown name.
+The dispatch library, in contrast, falls back silently when handed an unknown architecture, so a developer gates a cross-target compile against the known-name set before dispatching it.</p>
+<h2 id="interchange-formats-across-the-set"><a class="header" href="#interchange-formats-across-the-set">Interchange formats across the set</a></h2>
+<p>Each target has a per-chip table of accepted image-input formats, the interchange-format map at hardware-abstraction-layer offset <code>0x658</code>, keyed by a four-byte ASCII format tag.
+Both the count and the set differ by generation tier (<a href="#tbl-c34-formats">table 34.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Tier</th><th>Chips</th><th>Format count</th><th>Set</th></tr></thead><tbody>
+<tr><td>older, reference</td><td><code>H11</code>, <code>H12</code>, <code>M9</code>, <code>T0</code>, <code>U1</code>, <code>U2</code>, <code>U3</code></td><td>0</td><td>none</td></tr>
+<tr><td>A13, M1</td><td><code>H13</code>, <code>H13g</code>, <code>T1</code></td><td>3</td><td><code>&amp;BGA</code>, <code>&amp;L0h</code>, <code>&amp;L16</code></td></tr>
+<tr><td>A14</td><td><code>H14</code>, <code>H14g</code>, <code>H14c</code></td><td>13</td><td>A13 set, RGBA-half, three compression variants</td></tr>
+<tr><td>A15 and small</td><td><code>H15</code>, <code>H15g</code>, <code>H15c</code>, <code>M11</code></td><td>16</td><td>A14 set, YUV 4:2:0, luma-half</td></tr>
+<tr><td>A16, A17, A18</td><td><code>H16</code>, <code>H17</code>, <code>H18</code> families</td><td>14</td><td>A15 set minus YUV 4:2:0</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c34-formats"></a><strong>Table 34.4.</strong> The accepted image-input format count by generation tier, with the format set each tier adds.</p>
+<p>The tag is a one-byte compression-variant prefix on a three-byte base pixel format.
+The compiler does not parse the prefix character by character: it validates the whole four-byte tag against a 34-entry allow-list, and the prefix's meaning is the third byte of the format's packed-integer value, a packing-mode index on a uniform stride (<a href="#tbl-c34-prefix">table 34.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Prefix</th><th>Mode index</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>&amp;</code></td><td>0</td><td>uncompressed, default raster surface</td></tr>
+<tr><td><code>-</code></td><td>1</td><td>lossless compression, 32 by 32 macroblock</td></tr>
+<tr><td><code>/</code></td><td>2</td><td>lossless compression, 16 by 16 macroblock</td></tr>
+<tr><td><code>|</code></td><td>3</td><td>lossless compression, mode 3</td></tr>
+<tr><td><code>*</code></td><td>0</td><td>compound prefix that sets the dynamic-channel flag</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c34-prefix"></a><strong>Table 34.5.</strong> The compression-variant prefix on an interchange tag and the packing-mode index it selects.</p>
+<p>The packed integer that names each format is three bytes: a pixel class, a base-format code, and the packing-mode index.
+The base-format codes are BGRA8 (<code>BGA</code>, code <code>0x11</code>), RGBA-half (<code>RhA</code>, code <code>0x13</code>), 8-bit luma (<code>L0h</code>, code <code>0x07</code>), 16-bit luma (<code>L16</code>, code <code>0x08</code>), and YUV 4:2:0 (<code>8f0</code> and <code>8v0</code>, code <code>0x09</code>).
+A base format routes to a vector of 20-byte plane descriptors, each a tuple of width divisor, height divisor, element type, channel count, and depth.
+BGRA8 is thus one four-channel uint8 plane, and YUV 4:2:0 is a luma plane with a half-resolution two-channel chroma plane.
+The binary string that reads "Architecture only supports lossless compression" confirms that <code>&amp;</code> is the uncompressed variant and that <code>-</code>, <code>/</code>, and <code>|</code> are the lossless-compressed packing families.</p>
+<p>The A15 generation and the small embedded profile are the only targets in the set that accept YUV 4:2:0 input, in both full-range (<code>8f0</code>) and video-range (<code>8v0</code>) form.
+The M5 and every A16-and-later part keep luma-half but drop the two YUV 4:2:0 formats.
+The full per-target format records, the wider 10-bit and packed YUV family, and the plane-layout structures are appendix material.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-8-system-internals/33-telemetry.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-9-cross-silicon/35-per-family-codegen.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-8-system-internals/33-telemetry.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-9-cross-silicon/35-per-family-codegen.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

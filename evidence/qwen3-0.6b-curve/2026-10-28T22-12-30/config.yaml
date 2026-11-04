@@ -1,0 +1,59 @@
+data:
+  dataset: Salesforce/wikitext
+  config: wikitext-2-raw-v1
+  revision: b08601e04326c79dfdd32d625aee71d232d685c3
+  path: data/wikitext-2-raw-v1
+  train_examples: 4096
+model:
+  name: mlx-community/Qwen3-0.6B-4bit
+  revision: 73e3e38d981303bc594367cd910ea6eb48349da8
+  max_seq_length: 512
+  lora_rank: 8
+  lora_scale: 20.0
+  lora_dropout: 0.0
+  num_layers: -1
+training:
+  batch_size: 2
+  grad_accumulation_steps: 1
+  grad_checkpoint: false
+  epochs: 3
+  learning_rate: 0.0001
+  optimizer: adamw
+  iters: null
+  steps_per_report: 10
+  val_batches: -1
+  test_batches: -1
+placement:
+  mode: gpu_ane
+infrastructure:
+  seed: 0
+  memory_limit_bytes: 19069665280
+  prometheus_port: 9096
+checkpoint:
+  save_every: epoch
+  resume: null
+logging:
+  dir: evidence/qwen3-0.6b-curve
+batch_fit:
+  memory_limit_bytes: 19069665280
+  objective: tokens_per_second
+  batch_size: 2
+  grad_checkpoint: false
+  peak_bytes: 1760700728
+  tokens_per_second: 346.68137788104985
+  trials:
+  - batch_size: 1
+    grad_checkpoint: false
+    status: ok
+    peak_bytes: 1552084588
+    tokens_per_second: 319.13570033411065
+  - batch_size: 2
+    grad_checkpoint: false
+    status: ok
+    peak_bytes: 1760700728
+    tokens_per_second: 346.68137788104985
+  - batch_size: 4
+    grad_checkpoint: false
+    status: ok
+    peak_bytes: 5067517346
+    tokens_per_second: 302.396127106598

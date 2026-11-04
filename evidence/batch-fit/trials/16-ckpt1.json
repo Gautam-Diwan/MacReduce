@@ -1,0 +1,1 @@
+{"batch_size": 16, "grad_checkpoint": true, "status": "ok", "peak_bytes": 5353388254, "tokens_per_second": 92.41151258446564}

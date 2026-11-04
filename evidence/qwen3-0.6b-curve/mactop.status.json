@@ -1,0 +1,7 @@
+{
+  "status": "unavailable",
+  "returncode": -15,
+  "prometheus_port": 9096,
+  "prometheus_samples": 1,
+  "headless_samples": 0
+}

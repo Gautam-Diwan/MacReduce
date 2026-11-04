@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>13. Vision, convolution, and encoders - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-4-workloads/13-vision-conv-encoders.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="13-vision-convolution-and-encoders"><a class="header" href="#13-vision-convolution-and-encoders">13. Vision, convolution, and encoders</a></h1>
+<blockquote>
+<p>A 256-channel 3x3 convolution runs about 3.8 times faster than the GPU, at about 9 times the energy efficiency.
+The engine also draws less absolute power on every workload class measured.
+Serve encoders and embeddings on the engine below a batch of about 23, and a self-attention block below a batch of about 6.
+Serve vision convolution on it at every batch.
+On-engine image preprocessing arrives on the A14 generation and later; the M1 has no texture engine.
+On the M1 and the A14, keep slice and crop source magnitudes below 4094 on the width axis or they saturate to infinity.</p>
+</blockquote>
+<p>Convolution and vision are the work the engine is built for.
+This chapter gives the measured economics of that work against the GPU, and the batch threshold below which encoder serving stays on the engine.
+It also covers the on-engine image preprocessing path and the family that gates it, and the model-construction rules that keep a vision or encoder model on the engine end to end.</p>
+<h2 id="convolution-datapath"><a class="header" href="#convolution-datapath">Convolution datapath</a></h2>
+<p>A 3x3 convolution at 256 channels runs about 3.8 times faster on the engine than the same kernel on the GPU, at about 9 times the energy efficiency per result <a href="../references.html#ref-applecoreml">[AppleCoreML]</a>.
+The advantage widens with depth.
+Stack sixteen 3x3 convolutions at 256 channels and the engine is about 2 times faster than the GPU at about 14.5 times its energy efficiency on the M1, the largest power difference in the M1 workload set.
+On the M5 it runs about 4.2 times faster at about 13 times the efficiency.
+A ResNet-18 forward pass runs about 6.1 times faster than the GPU reference and at about 11 times the energy efficiency per inference.</p>
+<p>Two properties of the datapath produce this.
+Winograd lowering is one.
+Any dense 3x3 stride-1 convolution with enough channels lowers to the F(2x2, 3x3) transform, which replaces 36 direct multiplies per 2x2 output tile with 16, a factor of about 2.25 reduction in multiplies.
+The compiler selects this path automatically for dense non-unicast 3x3 stride-1 layers and falls back to direct convolution otherwise, so a model written with 3x3 stride-1 layers gets the reduction without any annotation.
+A layer takes Winograd only with enough channels to amortize the transform, and a float kernel requires more than a non-float one; the full eligibility test, two tile sizes, and work-threshold derivation are in chapter <a href="../part-6-silicon/20-datapath-mac.html">20</a>.
+There is no accumulator widening tied to the transform; its precision safety rests entirely on that higher float work threshold.
+The engine's lower power draw is the other.
+On a large compute-bound matrix multiply the engine draws 4.4 W against the GPU's 32.5 W, a 4.0 times efficiency advantage that holds even on the matrix-multiply class where the GPU runs faster.
+Across the M1 workload set the engine runs at 2 to 14.5 times the GPU's energy efficiency, drawing less absolute power on every class measured.</p>
+<p>The end-to-end convolution ceiling on the M1 is about 1.8 fp16 TFLOP/s at about 1.78 W, or about 643 GFLOP/s per watt under load.
+A 3x3 convolution at 256 channels and a 28 by 28 feature map reaches that peak: it runs in about 0.51 ms at about 1823 GFLOP/s.
+Throughput rises with spatial size as the fixed per-eval overhead amortizes, and the same 3x3 64-channel kernel runs at about 63 GFLOP/s at 16 by 16 and about 1102 GFLOP/s at 128 by 128.</p>
+<h2 id="mac-array-and-its-tiling"><a class="header" href="#mac-array-and-its-tiling">MAC array and its tiling</a></h2>
+<p>The engine is a fixed-geometry multiply array supplied by DMA engines that re-base per tile.
+On the M1 the array is four NE cores, read from the per-chip parameter table as a core count of 4, with each core a two-dimensional multiply tile backed by an accumulator file of 8 work-units.
+The compiler assigns output channels across the cores by a strided round-robin: channel <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> is on core <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span>, so the four cores are independent parallel slices and the scheduling granule is one output channel.</p>
+<p>The parallelism is measured directly.
+Driving a single heavy convolution at each output-channel count in a back-to-back dispatch loop, where the per-dispatch overhead pins the dispatch rate constant, the sustained multiply rate rises in exact integer multiples with the number of cores active, as <a href="#tbl-c13-core-scaling">table 13.1</a> records at one through four active cores.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Output channels</th><th style="text-align: center">Cores active (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span>)</th><th style="text-align: right">Engine power, net</th><th style="text-align: right">GMAC/s</th><th style="text-align: right">Ratio to one core</th></tr></thead><tbody>
+<tr><td style="text-align: right">1</td><td style="text-align: center">1</td><td style="text-align: right">811 mW</td><td style="text-align: right">3.8</td><td style="text-align: right">1.00x</td></tr>
+<tr><td style="text-align: right">2</td><td style="text-align: center">2</td><td style="text-align: right">822 mW</td><td style="text-align: right">7.6</td><td style="text-align: right">2.00x</td></tr>
+<tr><td style="text-align: right">3</td><td style="text-align: center">3</td><td style="text-align: right">831 mW</td><td style="text-align: right">11.4</td><td style="text-align: right">3.00x</td></tr>
+<tr><td style="text-align: right">4</td><td style="text-align: center">4</td><td style="text-align: right">843 mW</td><td style="text-align: right">15.4</td><td style="text-align: right">4.05x</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c13-core-scaling"></a><strong>Table 13.1.</strong> Per-core throughput and power scaling on the M1, measured at a fixed dispatch rate.</p>
+<p>The power rail steps about 10 to 11 mW per added core over an always-on floor near 800 mW, the floor being the base plus dispatch domain and each step one of the four independently power-gated compute domains turning on.
+Above four output channels the array fills more lanes inside the same four cores, and the rate keeps rising linearly while the dispatch rate stays floor-bound.</p>
+<p>The compiler tiles output channels into output-channel groups sized to the accumulator file.
+The group size is about the 8-accumulator budget divided by the kernel-element count <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, rounded down to a power of two and capped by a per-element byte budget of 32, 16, or 8 bytes depending on the weight format.
+A 3x3 convolution thus has about 9 times the per-channel accumulator pressure of a 1x1, so its group is about 9 times smaller and it needs more passes.
+The measured signature is a super-linear cost step: a 1x1 fp16 convolution doubles its per-layer cost once the output channel count crosses the accumulator file between about 192 and 256 channels.
+A 3x3 convolution reaches that pass-doubling threshold at fewer channels for the same reason.
+This is the mechanism that makes Winograd worth selecting for 3x3: cutting the effective kernel-element count enlarges the group and relieves the accumulator pressure the threshold makes visible.</p>
+<h2 id="convolution-variants-and-their-lowering"><a class="header" href="#convolution-variants-and-their-lowering">Convolution variants and their lowering</a></h2>
+<p>The convolution variants all map onto the same multiply array, and what differs is how the compiler tiles the weights and sets up the channel grouping, which <a href="#tbl-c13-conv-variants">table 13.2</a> gives variant by variant.</p>
+<div class="table-wrapper"><table><thead><tr><th>Variant</th><th>Lowering onto the datapath</th></tr></thead><tbody>
+<tr><td>Standard 2D convolution</td><td>native; weights tiled into output-channel groups, channels assigned across the cores by a strided round-robin</td></tr>
+<tr><td>Transpose or deconvolution</td><td>native; runs as a fractionally-strided forward convolution on the same array, and serves the convolution data gradient</td></tr>
+<tr><td>Dilated</td><td>lowered by a space-to-batch decomposition with a factor list of 2, 3, 4, or 8, folding the dilation into a strided input gather so the kernel itself stays dense</td></tr>
+<tr><td>Depthwise</td><td>native; each channel is its own group with no cross-channel reduction, one input channel per output channel</td></tr>
+<tr><td>Grouped</td><td>native; the group count partitions the channel-to-core assignment, and runs best when the group count divides the channel count and the core count</td></tr>
+<tr><td>3D convolution</td><td>capability present in the hardware parameter table but not reachable on the direct path; the compiler reports the operation as not implemented on every backend</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c13-conv-variants"></a><strong>Table 13.2.</strong> How each convolution variant lowers onto the multiply array on the M1.</p>
+<p>The speed and efficiency advantage holds across the workload classes the engine is built for (<a href="#tbl-c13-engine-vs-gpu">table 13.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Workload</th><th>Engine vs GPU speed</th><th>Engine vs GPU efficiency</th></tr></thead><tbody>
+<tr><td>3x3 convolution (256 channels)</td><td>3.8x faster</td><td>9x more efficient</td></tr>
+<tr><td>Convolution stack, 16 deep at 256 channels (M1)</td><td>2x faster</td><td>14.5x more efficient</td></tr>
+<tr><td>Convolution stack, 16 deep at 256 channels (M5)</td><td>4.2x faster</td><td>13x more efficient</td></tr>
+<tr><td>ResNet-18 forward</td><td>6.1x faster</td><td>11x more efficient</td></tr>
+<tr><td>Batched matrix multiply</td><td>faster below N of 2048</td><td>more efficient at every batch size</td></tr>
+<tr><td>Single-sentence encoder</td><td>4.4x faster</td><td>faster at low to moderate batch</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c13-engine-vs-gpu"></a><strong>Table 13.3.</strong> Engine versus GPU speed and efficiency across convolution, ResNet, matrix multiply, and encoder workloads.</p>
+<h2 id="encoders-and-embeddings"><a class="header" href="#encoders-and-embeddings">Encoders and embeddings</a></h2>
+<p>An encoder forward pass favors the engine at low to moderate batch on both latency and energy.
+A single-sentence encoder runs about 4.4 times faster than the GPU.
+A twelve-layer encoder forward runs about 1.5 times faster and at about 18 times the energy efficiency per inference.
+Short-sequence attention, a transformer block at sequence length 197, is at once the fastest, most efficient, and most accurate in fp16 on the engine, because its partial sums stay in range and the wide accumulator retains their precision.</p>
+<p>Batch size moves the choice, because serving batches requests.
+The engine saturates near a batch of 1 while the GPU scales with batch, which produces a throughput crossover.
+On a true-batched encoder block the GPU overtakes the engine on throughput near a batch of 23, and on a self-attention block near a batch of 6.
+The energy crossover is at a larger batch than the throughput crossover.
+On vision convolution serving the energy crossover never appears: the engine leads throughput by 3.6 to 5.7 times and energy by 6 to 10 times at every batch from 1 to 256.
+Above the encoder and self-attention crossovers the GPU is the throughput device.</p>
+<h2 id="on-engine-image-preprocessing"><a class="header" href="#on-engine-image-preprocessing">On-engine image preprocessing</a></h2>
+<p>Resize, crop-and-resize, grid sample, affine warp, and reflective or symmetric padding run on a single hardware sampling datapath, the texture engine, on the A14 generation and later <a href="../references.html#ref-applevision">[AppleVision]</a>.
+The datapath is a DMA-side sampler fused onto a layer: it reads a coordinate or box tensor through a fixed interleave and applies bilinear or nearest-neighbor interpolation in line with the convolution that consumes its output.
+The payoff is the elimination of a host preprocessing stage.
+Image dequantization and resize execute on the engine in the same program as the model, so the resampled tensor never makes a round trip to the host between the camera frame and the first convolution.</p>
+<p>One datapath backs a fixed set of front-end operations, each gated by the same parameter-table bool (<a href="#tbl-c13-texture-ops">table 13.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: right">Bottoms</th><th>Lowering on the A14 and later</th></tr></thead><tbody>
+<tr><td>Resize, upsample</td><td style="text-align: right">1</td><td>native texture-engine resize unit</td></tr>
+<tr><td>Crop-and-resize, ROI-align</td><td style="text-align: right">2</td><td>native; a denormalization scale-and-bias pair precedes the index input, box tensor in fp16</td></tr>
+<tr><td>Resample, grid-sample, warp</td><td style="text-align: right">2</td><td>native; coordinate tensor of 1 or 2 channels read through the index interleave</td></tr>
+<tr><td>Affine transform</td><td style="text-align: right">2</td><td>decomposes to resample with a computed coordinate grid; matrix fp16, six coefficients</td></tr>
+<tr><td>Resize-as</td><td style="text-align: right">2</td><td>decomposes to resize</td></tr>
+<tr><td>Reflective or symmetric padding</td><td style="text-align: right">1</td><td>uses the texture-engine pad mode</td></tr>
+<tr><td>Hardware gather</td><td style="text-align: right">2</td><td>uses the texture-engine index interleave path</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c13-texture-ops"></a><strong>Table 13.4.</strong> The texture-engine operation set and how each lowers on the A14 generation and later.</p>
+<p>The sampler reads its coordinate or box tensor through an interleave of 1, 2, 3, 4, or 8, set by the box-coordinate layout.
+A two-corner box such as <code>Y0X0Y1X1</code> selects interleave 4, an origin-and-size box selects 4, a two-coordinate point selects 2, and a full four-coordinate batched box selects the default 8.
+The sampling method is linear, that is bilinear, or nearest-neighbor, and the interpolation weights and the crop scale program two register arrays at the DMA-side sampler.
+On the M1 the whole set decomposes or rejects.
+Resize becomes a channelwise deconvolution for integer upsample or a transpose followed by a convolution otherwise, affine warp rejects outright with a not-supported-on-this-architecture diagnostic, and symmetric padding rejects.
+Gather routes through a limited software envelope that requires a gather-axis size of 3 and a batch and depth of 1.</p>
+<p>A single bool in the per-chip parameter table gates the capability, and that bool is zero on the M1.
+The gate is one bit with no finer per-operation granularity: crop-and-resize, resample, affine, native resize, the hardware gather index path, and reflective or symmetric padding all turn on together at the A14.</p>
+<p>The same gate has a precision caveat on the M1 and the A14.
+The crop and slice path applies a width-axis gain of 16, so a source value above 4094 on the width axis saturates to plus or minus infinity, while height, channel, and batch offsets stay free of the saturation.
+Chapter <a href="../part-1-machine/03-numerics.html">3</a> derives the bound and chapter <a href="../part-5-practice/19-pitfalls-and-limits.html">19</a> gives the build-time guard.
+So keep slice and crop source magnitudes below 4094 on the width axis on the M1 and the A14.
+The A15 generation and later sampler avoids this saturation.</p>
+<h2 id="keeping-the-model-on-the-engine"><a class="header" href="#keeping-the-model-on-the-engine">Keeping the model on the engine</a></h2>
+<p>The datapath runs best with a small set of model-construction choices.</p>
+<ul>
+<li>Prefer 3x3 stride-1 dense convolutions over 5x5 or strided forms where the
+model allows, so the Winograd path is taken and each layer gets the factor of
+about 2.25 multiply reduction.</li>
+<li>Keep the largest single per-layer operand at or below the 2 MB on-chip working
+set. A convolution whose live tiles exceed 2 MB is tiled and streamed from
+DRAM, which adds transfer traffic and moves the layer off the compute ceiling.</li>
+<li>Fuse the whole graph into one program so the about 0.23 ms per-eval dispatch
+floor on the M1 is paid once rather than per layer. A fixed-iteration stencil
+fused as one graph amortizes that floor across every step.</li>
+<li>Fold normalization and activation into the convolution. Per-output-channel
+scale and bias and a fused nonlinearity run on the convolution output at no additional cost,
+so a batch-normalization or a clamped activation after a convolution adds no
+separate dispatch.</li>
+<li>Serve encoders below the batch threshold of the previous section, and keep
+preprocessing on the engine only on the A14 and later, where the texture
+engine is present.</li>
+</ul>
+<p>The native convolution backend operation records its geometry in a fixed set of attributes (<a href="#lst-c13-conv-backend">listing 13.1</a>).</p>
+<pre><code class="language-mlir">anec.convolution(%input, %weights, %bias) {
+  strides         = [sh, sw],          // 1 keeps the Winograd path for a 3x3 kernel
+  explicit_padding = [pt, pb, pl, pr], // or padding_style
+  groups          = g,                 // 1 standard; g == Cin == Cout is depthwise
+  dilation_rates  = [dh, dw],          // folded to a strided input gather, up to 8
+  kernel_sizes    = [kh, kw],          // fp16 kernel width bounded at 13 on the M1
+  weights_layout                        // weights are output-channel-major, [Cout, D, Cin, H, W]
+}  // filter and input rank 4 or 5
+</code></pre>
+<p><a id="lst-c13-conv-backend"></a><strong>Listing 13.1.</strong> The native convolution backend operation and the geometry attributes the compiler reads to tile a layer onto the multiply array.</p>
+<p>The encoder paths and the convolution weight gradient both reduce to the matrix-multiply backend operation (<a href="#lst-c13-matmul-backend">listing 13.2</a>).</p>
+<pre><code class="language-mlir">anec.matmul(%lhs, %rhs) { transpose_lhs, transpose_rhs }  // depth D must be 1 on both operands
+</code></pre>
+<p><a id="lst-c13-matmul-backend"></a><strong>Listing 13.2.</strong> The matrix-multiply backend operation, which holds its contraction direction in two transpose attributes rather than a fixed operand order.</p>
+<p>A trainable convolution lowers its forward and its data gradient onto the native convolution and deconvolution operations, and its weight gradient through an image-to-column expansion into this matrix multiply, because the hardware cross-correlation operation is single-channel only and cannot serve the multi-channel weight gradient directly.</p>
+<h2 id="fitting-a-convolution-or-encoder-block-on-the-engine"><a class="header" href="#fitting-a-convolution-or-encoder-block-on-the-engine">Fitting a convolution or encoder block on the engine</a></h2>
+<p>A vision or encoder block stays on the engine when its layers take the Winograd path, its working set fits on chip, and the whole graph compiles as one program.
+<a href="#lst-c13-fit-block">Listing 13.3</a> applies those conditions in order to a two-stage 3x3 block.</p>
+<pre><code class="language-python"># Fit a convolution or encoder block on the engine as one fused program.
+# Each stage is convolution, then normalization, then activation.
+
+build graph G:
+    input x : [1, 256, 28, 28] fp16
+
+    # Stage 1: keep the convolution 3x3 stride-1 so it takes the Winograd path.
+    h = conv(x, weights = w1, kernel = [3, 3], stride = 1)
+    h = normalize(h)                       # batch or layer norm, folded into the conv output
+    h = activation(h)                      # e.g. relu or gelu, on the same output pass
+
+    # Stage 2: another 3x3 stride-1 stage, same fused shape.
+    h = conv(h, weights = w2, kernel = [3, 3], stride = 1)
+    h = normalize(h)
+    h = activation(h)
+
+    output h
+
+# 1. Check the working set stays on chip before committing to the engine.
+working_set = max over stages of resident_bytes(stage)   # in MB
+if working_set &gt; 2.0:
+    # Too large: it would tile and stream from DRAM. Shrink the operand
+    # (fewer channels or smaller tile) and re-check before any other tuning.
+    reshape operands until working_set &lt;= 2.0
+
+# 2. Fuse the whole block into ONE program so the per-call floor is paid once.
+program = fuse_and_compile(G, target = H13)   # one dispatch, the 0.23 ms floor paid a single time
+
+# 3. Run the fused program on an input image.
+output = run(program, x = image)
+
+# Note: input preprocessing can join the same graph only on A14 and later,
+# where the texture engine is present.
+return output
+</code></pre>
+<p><a id="lst-c13-fit-block"></a><strong>Listing 13.3.</strong> Fitting a convolution or encoder block on the engine as one fused program.</p>
+<h2 id="reference-convolution-and-encoder-economics-on-the-m1"><a class="header" href="#reference-convolution-and-encoder-economics-on-the-m1">Reference: convolution and encoder economics on the M1</a></h2>
+<p>The constants below cover the GPU speed ratios, the datapath geometry, and the batch thresholds (<a href="#tbl-c13-reference">table 13.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Constant</th><th style="text-align: right">M1/H13 value</th></tr></thead><tbody>
+<tr><td>3x3 convolution (256 channels) speed versus GPU</td><td style="text-align: right">3.8x faster</td></tr>
+<tr><td>3x3 convolution (256 channels) efficiency versus GPU</td><td style="text-align: right">9x more efficient</td></tr>
+<tr><td>Convolution-stack speed, 16 deep at 256 channels</td><td style="text-align: right">2x faster</td></tr>
+<tr><td>Convolution-stack efficiency, 16 deep at 256 channels</td><td style="text-align: right">14.5x more efficient</td></tr>
+<tr><td>Matrix-multiply power, engine versus GPU</td><td style="text-align: right">4.4 W versus 32.5 W</td></tr>
+<tr><td>Energy-efficiency range across the workload set</td><td style="text-align: right">2x to 14.5x</td></tr>
+<tr><td>End-to-end convolution ceiling</td><td style="text-align: right">1.8 fp16 TFLOP/s at 1.78 W</td></tr>
+<tr><td>Convolution efficiency under load</td><td style="text-align: right">643 GFLOP/s per watt</td></tr>
+<tr><td>3x3 256-channel 28 by 28 peak</td><td style="text-align: right">0.51 ms at 1823 GFLOP/s</td></tr>
+<tr><td>Spatial throughput, 3x3 64-channel</td><td style="text-align: right">63 GFLOP/s at 16 by 16, 1102 GFLOP/s at 128 by 128</td></tr>
+<tr><td>Per-eval dispatch floor</td><td style="text-align: right">0.23 ms</td></tr>
+<tr><td>On-chip working-set threshold</td><td style="text-align: right">2 MB</td></tr>
+<tr><td>NE-core count</td><td style="text-align: right">4</td></tr>
+<tr><td>Accumulator file per core</td><td style="text-align: right">8 work-units</td></tr>
+<tr><td>Output-channels per cycle, fp16 default / int8 fast path</td><td style="text-align: right">4 / 8</td></tr>
+<tr><td>Channel-to-core assignment</td><td style="text-align: right">strided round-robin, channel <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> on core <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span></td></tr>
+<tr><td>Output-channel-group pass-doubling threshold, 1x1 fp16</td><td style="text-align: right">192 to 256 channels</td></tr>
+<tr><td>Per-core power step over the dispatch floor</td><td style="text-align: right">about 10 mW</td></tr>
+<tr><td>Winograd work threshold, non-float / float / packed</td><td style="text-align: right">8 / 16 / 32</td></tr>
+<tr><td>Texture-engine interleave factors</td><td style="text-align: right">1, 2, 3, 4, 8</td></tr>
+<tr><td>Encoder-serving batch threshold</td><td style="text-align: right">23</td></tr>
+<tr><td>Self-attention-serving batch threshold</td><td style="text-align: right">6</td></tr>
+<tr><td>Q.4 crop-scale saturation, width axis</td><td style="text-align: right">4094, where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4094</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65504</span></span></span></span></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c13-reference"></a><strong>Table 13.5.</strong> The M1 convolution and encoder constants for vision and encoder workloads.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-3-performance/12-cross-chip.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-4-workloads/14-llm-case-study.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-3-performance/12-cross-chip.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-4-workloads/14-llm-case-study.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

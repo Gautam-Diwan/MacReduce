@@ -1,0 +1,1 @@
+{"batch_size": 32, "grad_checkpoint": false, "status": "error", "error": "RuntimeError: [METAL] Command buffer execution failed: Insufficient Memory (00000008:kIOGPUCommandBufferCallbackErrorOutOfMemory)."}

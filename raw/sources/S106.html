@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>19. Pitfalls and limits - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-5-practice/19-pitfalls-and-limits.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="19-pitfalls-and-limits"><a class="header" href="#19-pitfalls-and-limits">19. Pitfalls and limits</a></h1>
+<blockquote>
+<p>Five direct-path failure modes are silent or target-specific.
+An M1 last-axis-offset slice saturates above 4094.
+Dynamic-weight convolution fails to compile above batch one.
+The saturating slice kernel is keyed to the M1 target.
+Repeated failed compiles in quick succession can stall the shared compile service.
+A true four-character-code image input is not reachable on the direct path.
+Each is a property of the private compiler or its data tables, so the defense is a build-time rule rather than a runtime check.
+Pace compiles after a failure, roughly 15 seconds apart, so a run of failed compiles does not stall the service.</p>
+</blockquote>
+<p>A few of the engine's failure modes are silent, target-specific, or affect the shared compile service.
+The ones below are what a developer building on the direct path runs into.</p>
+<h2 id="slice-saturation-hazard-on-the-m1"><a class="header" href="#slice-saturation-hazard-on-the-m1">Slice saturation hazard on the M1</a></h2>
+<p>A last-axis slice with a nonzero start offset is not a free descriptor edit on the M1.
+On that generation the offset copy routes through a crop-DMA that stores values in a fixed-point format with four fractional bits, an implied scale of 16.
+The stored value is the input times 16, and the storage port clamps at the fp16 maximum, so any element whose magnitude exceeds the fp16 maximum divided by 16 overflows to infinity.</p>
+<p>The threshold is exact and given by</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">m</span><span class="mtight">a</span><span class="mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">16</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">65504</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4094</span></span></span></span></span></p>
+<p>A slice element at 4094 survives, an element at 4100 becomes infinity, and a control value of 60000 that never enters the offset copy stays finite.
+The hazard is limited and easy to miss: it occurs only on the M1 family, only on a last-axis slice, only with a nonzero start offset, and only when a value on that axis can exceed 4094.
+On this one axis a cross-chip route change turns a finite number into an infinity.
+The A14 generation saturates on the same slice; the A15 generation and every part above it take a plain fp16 route and do not saturate.</p>
+<p>The consequence shows up in training.
+A convolution weight gradient scaled up by a large loss-scale factor can push values past 4094 on the M1 and silently produce infinities.
+Keep the values on a width-offset slice under the bound, which for the training case means capping the loss-scale on M1 targets, and prefer a zero start offset where the layout allows, since a zero last-axis begin avoids the offset-DMA path entirely.
+That 4094 bound on the M1 is worth asserting before the compile (<a href="#lst-c19-slice-guard">listing 19.1</a>).</p>
+<pre><code class="language-python">V_MAX = 65504 / 16   # = 4094.0; the fp16 maximum divided by the Q.4 gain of 16
+
+def slice_offset_is_safe(x, begin_w, on_m1):
+    # A nonzero width-offset slice on the M1 routes through the times-16 crop-DMA.
+    # A zero begin avoids the offset-DMA path entirely; on A15 and above the
+    # route is plain fp16 and never saturates.
+    if not on_m1 or begin_w == 0:
+        return True
+    return float(abs(x).max()) &lt;= V_MAX   # 4094 survives, 4100 -&gt; inf
+</code></pre>
+<p><a id="lst-c19-slice-guard"></a><strong>Listing 19.1.</strong> A build-time check that a nonzero width-offset slice on the M1 stays under the 4094 saturation bound of the times-16 crop datapath.</p>
+<h2 id="dynamic-weight-convolution-above-batch-one"><a class="header" href="#dynamic-weight-convolution-above-batch-one">Dynamic-weight convolution above batch one</a></h2>
+<p>A convolution whose weight is a supplied runtime tensor rather than an embedded constant is an engine capability.
+At a batch of one it compiles and runs and matches a reference convolution to a cosine of 1.0000.
+At a batch of two or more the same program crashes the compiler service: the helper process dies mid-compile and the error reads as a lost helper application rather than a plain rejection of an unsupported operation.</p>
+<p>The crash is specific to the dynamic-kernel path combined with a batch above one.
+A constant-weight convolution at the same batch compiles without issue, and batches of 64 are routine on that path.
+The reproduction is stable across fresh restarts of the compile daemon: batch one passes, batch two fails, every time.</p>
+<p>Single-image dynamic-weight convolution is usable for hypernetwork and per-sample-kernel inference where the batch is one.
+Batched trainable convolution must take a different route, since the dynamic-kernel path is closed above batch one.
+A build that needs the batched form should reject a dynamic-weight convolution at batch two or more before the program ever reaches the compiler service (<a href="#lst-c19-dynweight-guard">listing 19.2</a>).</p>
+<pre><code class="language-python">def guard_dynamic_weight_conv(weight_is_runtime_tensor, batch_n):
+    # A const-weight conv shares one kernel across the batch; a dynamic kernel
+    # must be re-split per batch element, and that path is broken on the M1.
+    # Reject at build time so the program never reaches the compiler service.
+    if weight_is_runtime_tensor and batch_n &gt;= 2:
+        raise ValueError("dynamic-weight convolution is closed above batch one")
+</code></pre>
+<p><a id="lst-c19-dynweight-guard"></a><strong>Listing 19.2.</strong> A build-time guard that rejects a dynamic-weight convolution at batch two or more before it reaches the compiler service that the path crashes.</p>
+<h2 id="saturating-slice-kernel-is-target-keyed"><a class="header" href="#saturating-slice-kernel-is-target-keyed">Saturating slice kernel is target-keyed</a></h2>
+<p>The saturating slice kernel is keyed to the target, not to the compiler build.
+The same compiler binary emits a saturating slice kernel on the M1 target and a non-saturating one on the M5 target, because the slice lowering is specialized per hardware family.</p>
+<p>Inside the single binary the slice conversion is a C++ template instantiated once per family, so the same intermediate-language slice lowers through a different compiled converter for the M1 than for the M5.
+Per-target hardware-abstraction fields then drive the DMA source path: a width granule used as both a divisor and a stride multiplier, and a set of patch-width clamps that resolve to a power-of-two granule.
+On the M1 the family converter and the format selection pick the times-16 fixed-point DMA format for a last-axis-offset copy; on the M5 the same copy stays in plain fp16.
+The trigger is exactly the M1 family plus a last-axis slice with a nonzero start offset, which is the saturation hazard again, so the defense belongs in the per-target build path.</p>
+<h2 id="pacing-compiles-after-a-failure"><a class="header" href="#pacing-compiles-after-a-failure">Pacing compiles after a failure</a></h2>
+<p>A failed compile is not free of side effects on the shared compile service.
+A compile that fails restarts the service, which takes a few seconds to come back, and failures that keep arriving faster than the service can restart between them keep it from making progress, so unrelated compiles slow down until the failures stop.
+The effect is a function of how fast failures arrive, not how many occur: failures spaced out past the restart interval cause no degradation at all.
+On detecting a failed compile, wait at least one restart interval, roughly 15 seconds, before the next compile, so a burst of failures cannot accumulate.
+No hard failure-count cap is needed.</p>
+<h2 id="a-single-slow-compile-is-a-separate-failure-mode"><a class="header" href="#a-single-slow-compile-is-a-separate-failure-mode">A single slow compile is a separate failure mode</a></h2>
+<p>A slow compile is its own failure mode, and the back-off rule that handles repeated failures does nothing for it.
+A trainable convolution compiled over a large batch has a compile cost that scales with the batch, because the image-to-column tensors grow with the batch and the tiling and partition cost grows with them.
+On the M1 the same backward convolution graph compiles in about 1.9 seconds at a batch of 4, about 35 seconds at a batch of 64, about 79 seconds at a batch of 128, and never finishes at a batch of 1000.
+Shrinking the spatial size does not help, since the cost tracks the batch.
+The large-batch trainable-convolution stall is the firmware-overload throttle of chapter <a href="../part-8-system-internals/29-firmware.html">29</a> in action: a submission that overruns the firmware command queue is throttled, so the fix is to cap the batch or split the program, not to wait it out.
+Real training is mini-batched at a modest batch per step, and the same graph compiles without issue on the M5.</p>
+<p>A second slow-compile path is a combinatorial subgraph search.
+The compiler clusters a graph by a memoized search over cut points that collapses linear chains safely but is exponential in the width of parallel branches that reconverge into one consumer.
+The search has no iteration cap, but an internal time budget abandons it and falls back to a cheaper partition, which on the M1 plateaus the worst measured fan-in at about 9.2 seconds.
+A single cluster with roughly twelve or more independent branches reconverging into one consumer is worth flagging at build time, since the 9-second per-cluster cost is itself worth avoiding and the budget bail is not guaranteed across compiler versions.</p>
+<h2 id="direct-four-character-code-image-input"><a class="header" href="#direct-four-character-code-image-input">Direct four-character-code image input</a></h2>
+<p>A direct image input that declares a true four-character-code interchange format, so the engine reads a camera or video surface with no host-side conversion, is a no-go on the unentitled direct path.
+The capability is real and the syntax is fully reachable: the pixel-buffer input type, format enum, grammar, and type rules all parse and type-check, and the program reaches the backend.
+The failure is at backend lowering: the program does not compile on the direct route.</p>
+<p>The lowering needs setup that only the entitled model-input route supplies, the four-character-code format descriptor backed by a surface, which the unentitled path lacks.
+The supported and terminal form on the unentitled path is the uint8 image input, which dequantizes in the graph and saves the host-side conversion at the input.
+It produces output byte-identical to a host conversion, saves roughly two milliseconds per frame at 1080p, and avoids the unsupported operation entirely.</p>
+<h2 id="a-build-time-pitfall-check"><a class="header" href="#a-build-time-pitfall-check">A build-time pitfall check</a></h2>
+<p>The pitfalls share one defense: gate the graph before it reaches the compiler, keyed on the target family and the offending shape.
+The estimate records the per-target hazard flags, so a saturating slice, batched dynamic-weight convolution, or four-character-code input is rejected at build time (<a href="#lst-c19-pitfall-scan">listing 19.3</a>).</p>
+<pre><code class="language-python"># Scan the graph for the known pitfalls and reject or rewrite before compiling, target = H13.
+# Each hazard is keyed on the target family plus an offending shape.
+
+target = H13
+on_m1  = (family(target) is M1 or family(target) is M2)   # the saturating-slice generations
+V_MAX  = 65504 / 16                                        # = 4094: fp16 max / 16 (Q.4 gain)
+
+for each op in graph G:
+
+    # Pitfall 1: last-axis slice saturation on the M1 (finite turns to infinity above 4094)
+    if op is slice and last_axis_begin_offset(op) != 0 and on_m1:
+        if max_abs_value_on_axis(op) &gt; V_MAX:
+            reject(op, "width-offset slice can saturate above 4094 on M1")
+        # rewrite where possible: use a zero start offset to avoid the offset-DMA path entirely
+
+    # Pitfall 2: dynamic-weight convolution above batch one (fails to compile)
+    if op is conv and weight_is_runtime_tensor(op) and batch(op) &gt;= 2:
+        reject(op, "dynamic-weight conv needs batch one; use batch one or another route")
+
+    # Pitfall 3: an unsupported op (validator may accept it, code generator rejects on this target)
+    if not runs_on_target(op, target):
+        reject(op, "op does not lower on this target; decompose or choose a later family")
+
+    # Pitfall 4: true four-char-code image input (does not lower on the direct path, unentitled)
+    if op is image_input and format(op) is fourcc:
+        reject(op, "true 4CC input faults at lowering; use the uint8 in-graph image input instead")
+
+if any op was rejected:
+    stop before compiling                                  # never let a flagged graph compile
+
+program P = compile(G, target)                             # reached only when the graph is clean
+
+# Pitfall 5 is a rate effect, not a graph shape: after any compile FAILURE, back off at least one
+# restart interval (~15 s) before the next compile, so a burst does not stall the service.
+on compile_failure:
+    wait(restart_interval)                                 # about 15 seconds
+</code></pre>
+<p><a id="lst-c19-pitfall-scan"></a><strong>Listing 19.3.</strong> Scanning a graph for the five direct-path pitfalls and stopping the build before a flagged graph reaches the compiler.</p>
+<h2 id="symbolic-shapes-are-not-reachable-on-the-direct-path"><a class="header" href="#symbolic-shapes-are-not-reachable-on-the-direct-path">Symbolic shapes are not reachable on the direct path</a></h2>
+<p>The engine compiler has a full symbolic-shape system: it accepts a dimension written as an unknown, type-checks two dynamic operands for matching symbolic expressions, and enforces affine constraints on symbolic dimensions.
+The silicon can thus run a program that accepts a variable sequence length on one compile in principle.
+The direct compile path does not reach it.
+A relu over a tensor with an unknown dimension parses, but the compile fails with an unsupported-operation error, because the symbolic-shape machinery is behind the entitled model-input route that lowers enumerated or range shapes onto symbolic engine programs.</p>
+<p>The direct path thus compiles one program per concrete shape, and there is no one-compile-many-shapes form.
+For a variable-length workload the options are to pad to a fixed maximum length and compile once, to bucket a small set of lengths and dispatch the nearest with the compile cache making repeats free, or to recompile per length under the per-compile cost.
+The same limit closes the native dynamic-slice and dynamic-offset key-value-cache primitive on the direct path, so the host manages cache state with fixed-shape windows.</p>
+<h2 id="reference-the-five-direct-path-pitfalls"><a class="header" href="#reference-the-five-direct-path-pitfalls">Reference: the five direct-path pitfalls</a></h2>
+<p>All five are set out together in <a href="#tbl-c19-pitfalls">table 19.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Pitfall</th><th>Symptom</th><th>Cause</th><th>Workaround</th></tr></thead><tbody>
+<tr><td>Slice saturation (M1)</td><td>Last-axis-offset slice silently produces infinities above <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4094</span></span></span></span></td><td>Offset copy routes through a Q.4 times-16 DMA that clamps at the fp16 maximum</td><td>Keep width-offset values under 4094; cap loss-scale on M1; prefer a zero start offset</td></tr>
+<tr><td>Dynamic-weight conv at batch <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span></td><td>Fails to compile</td><td>Dynamic-kernel path is closed above batch one</td><td>Use it only at batch one; reject batch <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> at build time; take a different batched route</td></tr>
+<tr><td>Target-keyed saturating slice kernel</td><td>Same source saturates on M1, non-saturating on M5</td><td>Slice lowering is template-specialized per family; M1 picks the times-16 DMA format</td><td>Treat the slice route as M1-specific in the per-target build path</td></tr>
+<tr><td>Failed compiles in quick succession</td><td>Unrelated compiles slow while failures keep arriving</td><td>Failures arriving faster than the shared service can restart between them</td><td>Pace compiles after a failure by at least one restart interval (~15 s)</td></tr>
+<tr><td>Direct four-character-code image input</td><td>Does not lower on the direct path</td><td>The entitled surface descriptor the lowering needs is unavailable unentitled</td><td>Use the supported uint8 in-graph image input, the terminal unentitled form</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c19-pitfalls"></a><strong>Table 19.1.</strong> The five direct-path pitfalls a developer encounters, each with its symptom, its cause, and the workaround.</p>
+<h2 id="reference-the-compile-time-and-capability-limits"><a class="header" href="#reference-the-compile-time-and-capability-limits">Reference: the compile-time and capability limits</a></h2>
+<p>Beyond the five silent or service-level pitfalls, three further limits reject or stall a build rather than corrupt a result (<a href="#tbl-c19-compile-limits">table 19.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Limit</th><th>Symptom</th><th>Cause</th><th>Workaround</th></tr></thead><tbody>
+<tr><td>Large-batch trainable convolution</td><td>Single compile runs for minutes and hangs on the M1</td><td>Image-to-column tiling and partition cost scales with the batch</td><td>Mini-batch at a modest batch per step; do not compile one full-batch graph</td></tr>
+<tr><td>Wide reconvergent fan-in</td><td>A single cluster compile climbs super-linearly and plateaus near 9 seconds</td><td>Memoized subgraph cut-search is exponential in parallel-branch width; an internal time budget bails</td><td>Flag a cluster with roughly twelve or more branches reconverging into one consumer</td></tr>
+<tr><td>Symbolic shape on the direct path</td><td>A tensor with an unknown dimension parses but fails to compile</td><td>The symbolic-shape system is reachable only through the entitled model-input route</td><td>Compile per concrete shape; pad, bucket, or recompile per length</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c19-compile-limits"></a><strong>Table 19.2.</strong> The compile-time and capability limits that reject or stall a build, distinct from the silent direct-path pitfalls above.</p>
+<h2 id="reference-the-firmware-fault-surface"><a class="header" href="#reference-the-firmware-fault-surface">Reference: the firmware fault surface</a></h2>
+<p>When a fault does reach the silicon rather than the compiler, the firmware classifies it into one of a few responses, and the response decides whether a workload is rejected, silently dropped, or recovered through a reset (<a href="#tbl-c19-fault-surface">table 19.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Fault class</th><th>Mechanism</th><th>Firmware response</th></tr></thead><tbody>
+<tr><td>Command integrity</td><td>Magic-word, checksum, padding, and 32-bit-address asserts on each command</td><td>Reject the command and return an error status to the host</td></tr>
+<tr><td>Program section</td><td>Section bounds and overlap audit at load</td><td>Refuse to load with a sanity-check failure</td></tr>
+<tr><td>Runtime mis-target</td><td>A call to a torn-down process or a wrong cache state</td><td>Drop and count, no error returned</td></tr>
+<tr><td>Assertion or exception</td><td>A runtime-assert or a processor exception</td><td>Register dump, coredump, and reset</td></tr>
+<tr><td>Uncorrectable cache error</td><td>The L2 controller error block and its overflow state</td><td>Coredump and reset, not a soft retry</td></tr>
+<tr><td>Task-queue watchdog</td><td>A queue that will not quiesce within two seconds</td><td>Abort the queue</td></tr>
+<tr><td>Host-side timeout</td><td>No completion within the deadline</td><td>Cancel outstanding commands and re-initialize the firmware</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c19-fault-surface"></a><strong>Table 19.3.</strong> The firmware fault surface, with each fault class, its detection mechanism, and whether the firmware rejects, drops, or recovers through a reset.</p>
+<p>The reject-versus-drop split is explicit.
+Integrity and section and argument validation reject a command and return an error, so the failure is visible to the host.
+The firmware instead silently drops runtime mis-targeting, a call to a process that has been torn down or a trigger on a cache handle in the wrong state, and counts it in a soft-failure telemetry counter.
+A misbehaving client thus shows up in the drop counters well before it faults, and a host-visible restart counter increments each time the firmware re-initializes after a fault.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-5-practice/18-optimization-cost-model.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-5-practice/handoff.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-5-practice/18-optimization-cost-model.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-5-practice/handoff.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

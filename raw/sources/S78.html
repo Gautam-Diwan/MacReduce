@@ -1,0 +1,541 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Appendix A. Operation-by-device matrix - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/appendices/a-op-device-matrix.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="appendix-a-operation-by-device-matrix"><a class="header" href="#appendix-a-operation-by-device-matrix">Appendix A. Operation-by-device matrix</a></h1>
+<blockquote>
+<p>This appendix is the full per-operation, per-family status reference behind chapter <a href="../part-1-machine/04-capability-surface.html">4</a>.
+Read down a family column to see what compiles and runs on that chip, and read the status marks and note for the gate and the route.</p>
+</blockquote>
+<p>Each row is one intermediate-language operation, grouped by operation class, with its status on each Mac engine family from the M1 through the M5.
+Chapter <a href="../part-1-machine/04-capability-surface.html">4</a> summarizes this table; the cells here are the reference.</p>
+<p>The status marks are fixed:</p>
+<ul>
+<li>Native: the operation compiles and runs on that family on the direct engine path.</li>
+<li>Family-gated: no path on the listed family, native from the family named in the note.</li>
+<li>Bridge: reachable only through a decompose, software fallback, or compiler-internal route, never as a standalone code-generated operation.</li>
+<li>No path: rejected on every family from the M1 through the M5, computed off-engine.</li>
+</ul>
+<p>The family columns are M1 (H13, A13), M2 (H14, A14), M3 (H15, A15), and M4 and M5 (H16 and H17s, A16 and A17).
+The A11 and A12 engines are below the floor that runs any of this vocabulary and are out of scope for the table.</p>
+<p>The M1, M2, and M5 columns are measured on physical silicon.
+The M3 column and the M4 part of the merged M4 and M5 column are decompile-derived predictions from the per-chip tables, so a per-cell status there is itself a prediction.</p>
+<p>The table covers the 187 intermediate-language operations the compiler exposes.
+Of these, about 108 are native on the M1: the full elementwise, compare, activation, convolution, pooling, structural, and quantization vocabulary, plus the reduction, normalization, softmax, square-root family, fused attention, tile, and space-channel set.
+Nine need the M2 or later: the texture-engine operations (crop-resize, resample, affine, hardware gather) and the rank and sort bridge (top-k, sort, dynamic slice).
+Four need the M3 or later: native <code>sin</code> and <code>cos</code>, the hardware random generator, and the whole-tensor argument reductions on the intermediate-language route.
+Thirty-seven are rejected on every family and decompose on the host.
+About twenty-four are compiler-internal: mapped but with no observed standalone code generation, reachable only inside a wrapping construct.</p>
+<h2 id="per-chip-numeric-limits"><a class="header" href="#per-chip-numeric-limits">Per-chip numeric limits</a></h2>
+<p>The status of an operation is one axis; the numeric envelope it runs in is the other.
+That envelope was measured from the live compiler across the five capability tiers, by calling every per-architecture parameter constructor on a single M1; a dash in <a href="#tbl-apa-numeric-limits">table A.1</a> marks an unsupported value.
+The <code>older</code> column is the pre-A13 legacy targets the compiler still has parameter tables for, below the floor of the operation-status table above.</p>
+<div class="table-wrapper"><table><thead><tr><th>Limit</th><th>older</th><th>M1, A13</th><th>A14</th><th>A15</th><th>A16, M5</th></tr></thead><tbody>
+<tr><td>max kernel W (default format, large)</td><td>29</td><td>29</td><td>32</td><td>32</td><td>32</td></tr>
+<tr><td>max kernel W (fp16, large)</td><td>13</td><td>13</td><td>16</td><td>16</td><td>16</td></tr>
+<tr><td>max kernel W (default, small)</td><td>15</td><td>15</td><td>16</td><td>16</td><td>16</td></tr>
+<tr><td>max kernel W (fp16, small)</td><td>7</td><td>7</td><td>8</td><td>8</td><td>8</td></tr>
+<tr><td>min kernel W (default / fp16, large)</td><td>16 / 8</td><td>16 / 8</td><td>1 / 1</td><td>1 / 1</td><td>1 / 1</td></tr>
+<tr><td>max kernel H (large / small)</td><td>29 / 15</td><td>29 / 15</td><td>32 / 16</td><td>32 / 16</td><td>32 / 16</td></tr>
+<tr><td>max kernel D (large / small)</td><td>1 / 1, no 3D</td><td>16 / 8</td><td>16 / 8</td><td>16 / 8</td><td>16 / 8</td></tr>
+<tr><td>max patch W / H / D</td><td>15 / 15 / 0</td><td>28 / 28 / 15</td><td>31 / 31 / 15</td><td>31 / 31 / 15</td><td>31 / 31 / 15</td></tr>
+<tr><td>max tensor W / H</td><td>16384</td><td>16384</td><td>16384</td><td>16384</td><td>65536</td></tr>
+<tr><td>max tensor D</td><td>1</td><td>16384</td><td>16384</td><td>16384</td><td>65536</td></tr>
+<tr><td>max tensor C</td><td>65536</td><td>65536</td><td>65536</td><td>65536</td><td>65536</td></tr>
+<tr><td>max tensor N (batch)</td><td>4096</td><td>65536</td><td>65536</td><td>65536</td><td>65536</td></tr>
+<tr><td>max transpose W / H</td><td>0, always split</td><td>16384</td><td>16384</td><td>16384</td><td>65536</td></tr>
+<tr><td>reduction-to-transpose threshold</td><td>none</td><td>192</td><td>192</td><td>384</td><td>384</td></tr>
+<tr><td>group-conv decompose limit (Cin·kW·kH)</td><td>64</td><td>2048</td><td>2048</td><td>2048</td><td>2048</td></tr>
+<tr><td>stride factor list</td><td>[2,3,4,8]</td><td>[2,3,4,8]</td><td>[2,3,4,8]</td><td>[2,3,4,8]</td><td>[2,3,4,8]</td></tr>
+<tr><td>matmul SRAM working set</td><td>2 MB, M9 1 MB</td><td>2 MB</td><td>2 MB</td><td>2 MB</td><td>2 MB</td></tr>
+<tr><td>DMA width granule</td><td>16 B</td><td>16 B</td><td>16 B</td><td>16 B</td><td>16 B</td></tr>
+<tr><td>patch-width floor / max</td><td>none</td><td>16 / 512 px</td><td>16 / 512</td><td>16 / 512</td><td>16 / 512</td></tr>
+<tr><td>instruction alignment</td><td>256 B</td><td>256 B</td><td>16 B</td><td>16 B</td><td>16 B</td></tr>
+<tr><td>has texture engine</td><td>no</td><td>no</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>kernel-memory budget</td><td>64 KB</td><td>64 KB</td><td>64 KB</td><td>64 KB</td><td>64 KB</td></tr>
+<tr><td>activation-LUT budget</td><td>150 B</td><td>86 B</td><td>86 B</td><td>86 B</td><td>86 B</td></tr>
+<tr><td>context-switch live-tensor limit</td><td>2</td><td>2</td><td>∞</td><td>∞</td><td>∞</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-numeric-limits"></a><strong>Table A.1.</strong> The per-chip numeric limits of the engine, measured from the live compiler across the five capability tiers.</p>
+<p>Four generational dividing lines run through it.
+The M1 adds the depth and three-dimensional axis and every reduction-class operation, and the texture engine arrives with the A14.
+At the A15 the reduction-to-transpose threshold rises from 192 to 384 and trigonometry goes native.
+The A16 then quadruples the maximum tensor and transpose dimensions from 16384 to 65536.</p>
+<h2 id="convolution-matrix-multiply-and-pooling"><a class="header" href="#convolution-matrix-multiply-and-pooling">Convolution, matrix multiply, and pooling</a></h2>
+<p><a href="#tbl-apa-conv-matmul-pool">Table A.2</a> lists the convolution, matrix-multiply, and pooling operations with their per-family status and the lowering note for each.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>conv</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>M1 kernels up to 29x29, M5 up to 32x32; Winograd auto-selected for eligible 3x3 stride-1 convs</td></tr>
+<tr><td><code>conv_transpose</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Deconvolution; strided axes use the small-kernel caps</td></tr>
+<tr><td><code>linear</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Folds to convolution when the right operand fits the on-chip working set</td></tr>
+<tr><td><code>linear_activation</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Fused linear and activation</td></tr>
+<tr><td><code>matmul</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Engine lane or convolution fold; same tensor caps as convolution</td></tr>
+<tr><td><code>ne_matmul</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Private engine-lane matrix-multiply unit</td></tr>
+<tr><td><code>einsum</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lowers to a matmul and transpose chain</td></tr>
+<tr><td><code>ne_conv</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Private engine-lane convolution unit</td></tr>
+<tr><td><code>avg_pool</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Window up to 29 on the M1, up to 31 from the M2</td></tr>
+<tr><td><code>max_pool</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>l2_pool</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table pool</td></tr>
+<tr><td><code>ne_pool</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Private engine-lane pooling unit</td></tr>
+<tr><td><code>pe_pool</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Private planar-engine pooling unit</td></tr>
+<tr><td><code>pe_elementwise</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Private planar-engine elementwise unit</td></tr>
+<tr><td><code>pe_goc</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Private planar-engine gain-offset unit, compiler-internal</td></tr>
+<tr><td><code>ne_bypass</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Private engine-lane bypass unit, compiler-internal</td></tr>
+<tr><td><code>scaled_dot_product_attention</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Runs on the matmul and softmax path, not texture-gated</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-conv-matmul-pool"></a><strong>Table A.2.</strong> Convolution, matrix-multiply, and pooling operations by device family.</p>
+<p>The <code>ne_</code> and <code>pe_</code> rows are private engine-lane and planar-engine unit selections of the same convolution, matrix-multiply, pooling, and elementwise atoms, not separate operations.</p>
+<h2 id="normalization"><a class="header" href="#normalization">Normalization</a></h2>
+<p>Every normalization operation is native from the M1 onward (<a href="#tbl-apa-norm">table A.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>batch_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Inference fold-to-affine; native statistics form from the M1</td></tr>
+<tr><td><code>layer_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>instance_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>l2_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>local_response_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Measured on the M1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-norm"></a><strong>Table A.3.</strong> Normalization operations by device family.</p>
+<h2 id="elementwise-arithmetic"><a class="header" href="#elementwise-arithmetic">Elementwise arithmetic</a></h2>
+<p>Across the elementwise arithmetic set, only <code>mod</code> takes no engine path (<a href="#tbl-apa-elementwise">table A.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>abs</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>add</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Constant and tensor forms</td></tr>
+<tr><td><code>sub</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lowered to add of a negated constant</td></tr>
+<tr><td><code>mul</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Constant and tensor forms</td></tr>
+<tr><td><code>real_div</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>General divide</td></tr>
+<tr><td><code>floor_div</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table assisted</td></tr>
+<tr><td><code>pow</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>square</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>sqrt</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table activation</td></tr>
+<tr><td><code>rsqrt</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>inverse</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Reciprocal lookup-table</td></tr>
+<tr><td><code>maximum</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>minimum</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>mod</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose on host</td></tr>
+<tr><td><code>cumsum</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Native through a curated runtime path, not the standard compile path; M1 measured</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-elementwise"></a><strong>Table A.4.</strong> Elementwise arithmetic operations by device family.</p>
+<h2 id="comparison-and-logical"><a class="header" href="#comparison-and-logical">Comparison and logical</a></h2>
+<p>The bitwise-logical operations decompose on the host, as the status columns of <a href="#tbl-apa-compare-logical">table A.5</a> show.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>equal</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>not_equal</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>greater</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>greater_equal</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>less</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>less_equal</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>logical_not</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>select</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>The where operation</td></tr>
+<tr><td><code>logical_and</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose through minimum or multiply on host</td></tr>
+<tr><td><code>logical_or</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose through maximum on host</td></tr>
+<tr><td><code>logical_xor</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose through not-equal on host</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-compare-logical"></a><strong>Table A.5.</strong> Comparison and logical operations by device family.</p>
+<h2 id="activations"><a class="header" href="#activations">Activations</a></h2>
+<p>The activations are native on every family, most of them lookup-table backed (<a href="#tbl-apa-activations">table A.6</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>relu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>relu6</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>leaky_relu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>prelu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Per-channel slope; native at rank 3 or above</td></tr>
+<tr><td><code>clamped_relu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>thresholded_relu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>threshold</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>clip</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>The clamp operation</td></tr>
+<tr><td><code>elu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>sigmoid</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Includes the hard variant</td></tr>
+<tr><td><code>sigmoid_hard</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>tanh</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>scaled_tanh</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>gelu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table approximation</td></tr>
+<tr><td><code>silu</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Also named swish; lookup-table</td></tr>
+<tr><td><code>softmax</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>softplus</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>softplus_parametric</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>softsign</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>erf</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>exp</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>exp2</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>log</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>sign</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>ceil</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>floor</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table</td></tr>
+<tr><td><code>round</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Round-to-nearest lookup-table</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-activations"></a><strong>Table A.6.</strong> Activation operations by device family.</p>
+<h2 id="reduction"><a class="header" href="#reduction">Reduction</a></h2>
+<p>Among the reductions, <code>reduce_argmin</code> is gated and <code>reduce_prod</code> takes no path (<a href="#tbl-apa-reduction">table A.7</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>reduce_sum</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Reduced axis at or above 192 takes the transpose route, at or above 384 from the M3</td></tr>
+<tr><td><code>reduce_mean</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>reduce_max</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>reduce_min</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>reduce_sum_square</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>The reduce-then-square fusion is M2 onward; the M1 emits an extra fp16 round</td></tr>
+<tr><td><code>reduce_l1_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>reduce_l2_norm</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>reduce_log_sum</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table assisted</td></tr>
+<tr><td><code>reduce_log_sum_exp</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Lookup-table assisted</td></tr>
+<tr><td><code>reduce_argmax</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Per-axis argmax on all families</td></tr>
+<tr><td><code>reduce_argmin</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Per-axis argmin; the intermediate-language route is gated to the M3, the bridge route works on the M1 and M2</td></tr>
+<tr><td><code>reduce_prod</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose through log-sum-exp on host</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-reduction"></a><strong>Table A.7.</strong> Reduction operations by device family.</p>
+<p>The whole-tensor argument reductions <code>global_argmax</code> and <code>global_argmin</code> follow the same gate as <code>reduce_argmin</code>: native on the intermediate-language route from the M3, reachable through the bridge on the M1.</p>
+<h2 id="data-movement-and-structural"><a class="header" href="#data-movement-and-structural">Data movement and structural</a></h2>
+<p>The data-movement and structural operations are the largest class, spanning reshape, slice, gather, scatter, and the space-channel set (<a href="#tbl-apa-data-movement">table A.8</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>reshape</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Metadata edit</td></tr>
+<tr><td><code>reshape_like</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>expand_dims</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>squeeze</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>flatten2d</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>transpose</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Capped by the maximum transpose extent, 16384 through the M3, 65536 on the M5</td></tr>
+<tr><td><code>concat</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>DMA</td></tr>
+<tr><td><code>split</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>stack</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>pad</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Constant pad is native everywhere; symmetric and reflect pad are texture-gated, software on the M1 and native from the M2</td></tr>
+<tr><td><code>slice_by_size</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>M1 and M2 nonzero width-offset routes through a fixed-point crop-DMA that saturates a magnitude above 4094 to infinity; clean from the M3</td></tr>
+<tr><td><code>slice_by_index</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Static-offset slice folds into the descriptor inside a graph</td></tr>
+<tr><td><code>slice_update</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>reverse</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Measured on the M1</td></tr>
+<tr><td><code>reverse_sequence</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose on host</td></tr>
+<tr><td><code>tile</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Factors of 2, 3, 4, and 8</td></tr>
+<tr><td><code>gather</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>M1 software path valid only for a batch of one and a depth of one; the hardware path is M2 onward</td></tr>
+<tr><td><code>gather_along_axis</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Same M1 envelope caveat</td></tr>
+<tr><td><code>gather_nd</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>M1 software envelope only (batch one, depth one, three-element index channel); native texture path from the M2</td></tr>
+<tr><td><code>scatter</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose on host</td></tr>
+<tr><td><code>scatter_along_axis</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose on host</td></tr>
+<tr><td><code>scatter_nd</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose on host</td></tr>
+<tr><td><code>depth_to_space</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>The pixel-shuffle operation</td></tr>
+<tr><td><code>space_to_depth</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>The pixel-unshuffle operation</td></tr>
+<tr><td><code>pixel_shuffle</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Engine-lane reorganization, factors of 2, 3, 4, and 8; z-factor must be 1</td></tr>
+<tr><td><code>pixel_unshuffle</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Engine-lane reorganization; input dimension divisible by the factor</td></tr>
+<tr><td><code>space_to_batch</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Factor in 2, 3, 4, 8; batch cap 4096 on older families, 65536 on the newer</td></tr>
+<tr><td><code>batch_to_space</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Inverse of the above</td></tr>
+<tr><td><code>identity</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Aliases a cast or no-op</td></tr>
+<tr><td><code>fill</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Constant tensor producer</td></tr>
+<tr><td><code>fill_like</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Constant tensor producer</td></tr>
+<tr><td><code>range_1d</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>M1 code generation rejects it; host-precompute the constant</td></tr>
+<tr><td><code>crop</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Slice and crop, distinct from the texture crop-resize</td></tr>
+<tr><td><code>band_part</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Mask on host</td></tr>
+<tr><td><code>non_zero</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Data-dependent shape</td></tr>
+<tr><td><code>one_hot</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose through an identity gather on host</td></tr>
+<tr><td><code>shape</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Static-shape graphs only</td></tr>
+<tr><td><code>sliding_windows</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose on host</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-data-movement"></a><strong>Table A.8.</strong> Data-movement and structural operations by device family.</p>
+<h2 id="image-resize-and-texture"><a class="header" href="#image-resize-and-texture">Image, resize, and texture</a></h2>
+<p><a href="#tbl-apa-image-texture">Table A.9</a> gives the image, resize, and texture operations, gated to the texture engine from the A14 with software fallbacks on the M1.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>resize</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Texture-gated; M1 takes a software transpose fallback with different rounding, native from the M2</td></tr>
+<tr><td><code>resize_bilinear</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Software fallback on the M1</td></tr>
+<tr><td><code>resize_nearest_neighbor</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Software fallback on the M1</td></tr>
+<tr><td><code>upsample_bilinear</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Software fallback on the M1</td></tr>
+<tr><td><code>upsample_nearest_neighbor</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Software fallback on the M1</td></tr>
+<tr><td><code>crop_resize</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Texture engine, M2 onward; no host substitution wired</td></tr>
+<tr><td><code>resample</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Texture engine, M2 onward</td></tr>
+<tr><td><code>affine</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Texture engine, M2 onward</td></tr>
+<tr><td><code>pixel_buffer_to_tensor</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Four-character-code image input; an entitlement gate, not a chip gate</td></tr>
+<tr><td><code>tensor_to_pixel_buffer</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Compiler-internal</td></tr>
+<tr><td><code>gamma</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Image-signal operation, compiler-internal</td></tr>
+<tr><td><code>degamma</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Image-signal operation, compiler-internal</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-image-texture"></a><strong>Table A.9.</strong> Image, resize, and texture operations by device family.</p>
+<h2 id="quantization-and-dtype"><a class="header" href="#quantization-and-dtype">Quantization and dtype</a></h2>
+<p>For the quantization and dtype operations the per-family streaming gates are carried in the note column of <a href="#tbl-apa-quant-dtype">table A.10</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>cast</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>fp16 to fp32 and bool native on the M1; cast to int32 is rejected on the M1</td></tr>
+<tr><td><code>quantize</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Not texture-gated</td></tr>
+<tr><td><code>dequantize</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td></td></tr>
+<tr><td><code>const</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Folded at compile, not a standalone code-generated operation</td></tr>
+<tr><td><code>constexpr_affine_dequantize</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>int4 lookup-table streams from the M1; int8 and affine fold to fp16 below the M2, and stream from the A14 and M2</td></tr>
+<tr><td><code>constexpr_lut_to_dense</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Palette and lookup-table stream; int4 lookup-table streams natively from the M1</td></tr>
+<tr><td><code>constexpr_lut_to_sparse</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Folded constant; sparse stream from the M3</td></tr>
+<tr><td><code>constexpr_blockwise_shift_scale</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Blockwise stream from the M3; folds to fp16 on the M1 and M2</td></tr>
+<tr><td><code>constexpr_sparse_blockwise_shift_scale</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Sparse and blockwise stream from the M3</td></tr>
+<tr><td><code>constexpr_sparse_to_dense</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Sparse streams natively from the M1</td></tr>
+<tr><td><code>constexpr_cast</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Rejected on every family</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-quant-dtype"></a><strong>Table A.10.</strong> Quantization and dtype operations by device family.</p>
+<h2 id="attention-control-flow-and-state"><a class="header" href="#attention-control-flow-and-state">Attention, control flow, and state</a></h2>
+<p>The state pair is native and the control-flow operations are compiler-internal (<a href="#tbl-apa-attn-control-state">table A.11</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>read_state</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Stateful; needs the inout tensor-descriptor plumbing for a key-value cache</td></tr>
+<tr><td><code>write_state</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Stateful</td></tr>
+<tr><td><code>tensor_buffer_to_tensor</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Ring and streaming buffer mover, reachable inside a stateful graph</td></tr>
+<tr><td><code>tensor_to_tensor_buffer</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Compiler-internal</td></tr>
+<tr><td><code>circular_buffer_to_tensor</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Ring-buffer reader</td></tr>
+<tr><td><code>tensor_to_circular_buffer</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Ring-buffer writer</td></tr>
+<tr><td><code>cond</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>No standalone code generation; flatten on host</td></tr>
+<tr><td><code>while_loop</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>No standalone code generation; unroll on host</td></tr>
+<tr><td><code>call</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Inlined</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-attn-control-state"></a><strong>Table A.11.</strong> Attention, control-flow, and state operations by device family.</p>
+<h2 id="recurrent-cells"><a class="header" href="#recurrent-cells">Recurrent cells</a></h2>
+<p>No recurrent cell takes an engine path; each unrolls on the host (<a href="#tbl-apa-recurrent">table A.12</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>gru</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Unroll to a convolution, matmul, and activation graph on host</td></tr>
+<tr><td><code>lstm</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Unroll on host</td></tr>
+<tr><td><code>rnn</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Unroll on host</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-recurrent"></a><strong>Table A.12.</strong> Recurrent-cell operations by device family.</p>
+<h2 id="trigonometric-special-and-math"><a class="header" href="#trigonometric-special-and-math">Trigonometric, special, and math</a></h2>
+<p><code>sin</code> and <code>cos</code> go native from the M3, and <code>atan</code> is the one M1-native primitive (<a href="#tbl-apa-trig-math">table A.13</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>sin</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Native from the M3; the M1 and M2 use a host polynomial</td></tr>
+<tr><td><code>cos</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Native from the M3; the M1 and M2 use a host polynomial</td></tr>
+<tr><td><code>atan</code></td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>The one trigonometric primitive native on the M1</td></tr>
+<tr><td><code>tan</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Decompose through a sin and cos identity on host</td></tr>
+<tr><td><code>asin</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>acos</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>atanh</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>asinh</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>acosh</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>sinh</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>cosh</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host decomposition</td></tr>
+<tr><td><code>cross_product</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Reachable through the bridge route, measured on the M1</td></tr>
+<tr><td><code>cost_volume</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Reachable through the bridge route, measured on the M1</td></tr>
+<tr><td><code>matrix_decomposition</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>No observed code generation</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-trig-math"></a><strong>Table A.13.</strong> Trigonometric, special, and math operations by device family.</p>
+<h2 id="detection-and-sampling"><a class="header" href="#detection-and-sampling">Detection and sampling</a></h2>
+<p><a href="#tbl-apa-detection-sampling">Table A.14</a> gives the detection and sampling operations, the rank and sort bridge gated to the M2 and the random and tensor-list operations off-engine.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th style="text-align: center">M1 (A13)</th><th style="text-align: center">M2 (A14)</th><th style="text-align: center">M3 (A15)</th><th style="text-align: center">M4, M5 (A16, A17)</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>non_maximum_suppression</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td>Reachable only with a CPU or GPU backend in the mask; the engine-only mask reports not supported on any backend, so it offloads to the CPU or GPU rather than the engine</td></tr>
+<tr><td><code>topk</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Rank and sort bridge, M2 onward; the validator is callable on the M1 but code generation rejects it</td></tr>
+<tr><td><code>argsort</code></td><td style="text-align: center">Family-gated</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Sort family, M2 onward; code-generation-rejected on the M1</td></tr>
+<tr><td><code>random_uniform</code></td><td style="text-align: center">Bridge</td><td style="text-align: center">Bridge</td><td style="text-align: center">Native</td><td style="text-align: center">Native</td><td>Hardware generator from the M3; host random below it</td></tr>
+<tr><td><code>random_bernoulli</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host random</td></tr>
+<tr><td><code>random_categorical</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host random</td></tr>
+<tr><td><code>random_normal</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Host random</td></tr>
+<tr><td><code>list_gather</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Tensor-list operation</td></tr>
+<tr><td><code>list_length</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Tensor-list operation</td></tr>
+<tr><td><code>list_read</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Tensor-list operation</td></tr>
+<tr><td><code>list_scatter</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Tensor-list operation</td></tr>
+<tr><td><code>list_write</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Tensor-list operation</td></tr>
+<tr><td><code>make_list</code></td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td style="text-align: center">No path</td><td>Tensor-list operation</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apa-detection-sampling"></a><strong>Table A.14.</strong> Detection and sampling operations by device family.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../back-matter/revision-history.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendices/b-hidden-layer-catalog.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../back-matter/revision-history.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendices/b-hidden-layer-catalog.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

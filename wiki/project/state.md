@@ -2,7 +2,7 @@
 title: "Current implementation and evidence"
 type: status
 status: measured
-updated: 2026-10-27
+updated: 2026-10-28
 sources: []
 ---
 
@@ -37,8 +37,8 @@ sources: []
 | MLX GPU path | Measured on this M4, partially | Doctor smoke, forward and one SGD step versus CPU for the default and 2-layer configs, and a 3-round loopback demo. No Metal capture. [Record](../../evidence/mlx-validation/README.md) |
 | Wi-Fi and mixed physical Macs | Not tested; no longer a research goal | [Wi-Fi protocol](../guides/wifi.md) kept as an operational guide |
 | CPU operator traces and Accelerate SGEMM | Executed | [Evidence inventory](../../evidence/README.md) |
-| ANE training | Explicit stacks named; none pinned or run | ANEForge, Orion, and maderix are the explicit calls. Core ML is the implicit request. `macreduce train-plan` records which import. [Decision 0003 amendment](../decisions/0003-build-target.md). [ANE gates](../guides/ane.md) |
-| QLoRA on WikiText-2 | Command exists; the curve is not measured | `src/macreduce/finetune.py`. Default is three epochs on the first 4,096 training lines, batch 8, accumulation 2. Validation and test stay full. A 100-step GPU probe was saved. The earlier full-split run was stopped before its first loss line |
+| ANE training | ANEForge 0.4.0 linear step measured; Qwen3 graph not compiled | Orion and maderix are still unpinned. The linear step and a 256-wide matmul drew Neural Engine power. [ANE gates](../guides/ane.md). [One-Mac probe](../experiments/2026-10-28-one-mac-feasibility.md) |
+| QLoRA on WikiText-2 | GPU plus Neural Engine run not finished | `python main.py --config configs/qlora_m4.yaml`. The base is Qwen3-0.6B 4-bit with rank-8 LoRA. `placement.mode` is `gpu_ane`: blocks 0–26 stay 4-bit QLoRA on the GPU, and block 27 (frozen base plus LoRA) is one Neural Engine program at device mask `0x4`, padded to sequence 512. On this M4 a one-block program at that length compiled with no dispatch-floor warning; a two-block backward overflowed, a four-block backward failed to execute, and eight blocks failed to compile. Each launch writes a timestamped directory under `evidence/qwen3-0.6b-curve/` with its own `run.log` and `figures/`. The 2026-10-28T22-12-30 launch, on LoRA scale 20 and a constant 1e-4, died at step 111 after the block output exceeded fp16. A float32 block 27 with that recipe also diverged, and an isolated rms_norm backward at magnitude 4608 matched float64, so the overflow was a consequence of the recipe. The config is now scale 2, AdamW peak 1e-4, weight decay 0.01, 300-step warmup, cosine to 1e-6, and clip 1.0. A 260-step GPU plus Neural Engine replay of that recipe stayed finite and every backward used cotangent peak 1. The three-epoch curve has not finished |
 | Federated QLoRA | Round loop tested on the CPU reference; QLoRA not run | `src/macreduce/federated.py` averages adapter deltas across GPU, combined, and split clients. `src/macreduce/lora_client.py` is the MLX local step and the fail-closed Neural Engine gate. `macreduce federate --execute` would train and has not been started. A second Mac still raises |
 | M5 GPU neural accelerators | Inventory concept; no M5 test; not planned | [Hardware guide](../guides/accelerators.md) |
 | Real corpus and 1M-parameter model | Not implemented; not on the critical path | [Model scaling](../guides/model-scaling.md) |

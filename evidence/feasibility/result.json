@@ -1,0 +1,534 @@
+{
+  "status": "ok",
+  "machine": "one Mac",
+  "memory_limit_bytes": 8589934592,
+  "attribution": "mactop power is system-wide, not per process",
+  "ane_active_note": "ane_active stayed unused as a residency bit; power and bandwidth are the trace",
+  "qwen_on_ane": false,
+  "arms": {
+    "gpu": {
+      "status": "ok",
+      "error": null,
+      "seconds": 6.019199916976504,
+      "mactop_status": "available",
+      "headless_samples": 5,
+      "prometheus_samples": 9,
+      "prometheus_port": 9096,
+      "energy": {
+        "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+        "gpu_joules": 41.13694128275199,
+        "gpu_sram_joules": 0.0019423838789161714,
+        "ane_joules": 0.0,
+        "cpu_joules": 5.406676393269691,
+        "dram_joules": 5.560970987800403,
+        "prometheus_gpu_joules": 34.92828630833099,
+        "prometheus_ane_joules": 0.0,
+        "gpu_watts_avg": 6.8342872558078165,
+        "gpu_sram_watts_avg": 0.0003226980172959345,
+        "ane_watts_avg": 0.0,
+        "cpu_watts_avg": 0.8982383818189429,
+        "dram_watts_avg": 0.9238721199666894
+      },
+      "power_max": {
+        "gpu_w": 15.901993943741234,
+        "ane_w": 0,
+        "ane_bw_gbs": 0,
+        "ane_active_max": 0
+      },
+      "series": [
+        {
+          "t": 1793229725.0,
+          "gpu": 10.787775271414109,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        },
+        {
+          "t": 1793229726.0,
+          "gpu": 13.287140708595638,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        },
+        {
+          "t": 1793229727.0,
+          "gpu": 15.19081610835086,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        },
+        {
+          "t": 1793229727.0,
+          "gpu": 15.901993943741234,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        },
+        {
+          "t": 1793229728.0,
+          "gpu": 13.819015824806499,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        }
+      ],
+      "work": {
+        "status": "ok",
+        "model": "mlx-community/Qwen3-0.6B-4bit",
+        "iters": 4,
+        "batch_size": 2,
+        "max_seq_length": 256,
+        "train_examples": 64,
+        "seconds": 4.383030750002945,
+        "trainable_parameters": 5046272,
+        "adapter_bytes_fp32": 20185088,
+        "adapter_bytes_int8": 5046280,
+        "baseline_test": {
+          "loss": 4.364206790924072,
+          "perplexity": 78.587039259726,
+          "batches": 2
+        },
+        "adapted_test": {
+          "loss": 3.873265266418457,
+          "perplexity": 48.099186602531844,
+          "batches": 2
+        },
+        "history": {
+          "train": [
+            {
+              "iteration": 4,
+              "train_loss": 4.7694854736328125,
+              "learning_rate": 9.999999747378752e-05,
+              "iterations_per_second": 4.673359072500986,
+              "tokens_per_second": 398.6375288843341,
+              "trained_tokens": 853,
+              "peak_memory": 1.219516716
+            }
+          ],
+          "validation": [
+            {
+              "iteration": 0,
+              "val_loss": 3.9081852436065674,
+              "val_time": 0.4398345419904217,
+              "val_perplexity": 49.80847964873303
+            },
+            {
+              "iteration": 3,
+              "val_loss": 3.893588066101074,
+              "val_time": 0.5111387500073761,
+              "val_perplexity": 49.08669723925671
+            }
+          ]
+        },
+        "mlx_peak_bytes": 1219516716,
+        "mlx_active_bytes": 16,
+        "qwen_lora": true
+      }
+    },
+    "ane": {
+      "status": "ok",
+      "error": null,
+      "seconds": 9.496314541000174,
+      "mactop_status": "available",
+      "headless_samples": 10,
+      "prometheus_samples": 14,
+      "prometheus_port": 9096,
+      "energy": {
+        "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+        "gpu_joules": 0.7150851912749199,
+        "gpu_sram_joules": 0.03329617344999408,
+        "ane_joules": 4.233147767932587,
+        "cpu_joules": 18.95588676367588,
+        "dram_joules": 3.6209773444503863,
+        "prometheus_gpu_joules": 0.6660769442944071,
+        "prometheus_ane_joules": 3.9925608326448416,
+        "gpu_watts_avg": 0.07530133802830055,
+        "gpu_sram_watts_avg": 0.0035062205770710763,
+        "ane_watts_avg": 0.44576743426684573,
+        "cpu_watts_avg": 1.9961308865491099,
+        "dram_watts_avg": 0.3813034339602884
+      },
+      "power_max": {
+        "gpu_w": 0.24465156186078052,
+        "ane_w": 0.7620648587257484,
+        "ane_bw_gbs": 3.27555263925145,
+        "ane_active_max": 0
+      },
+      "series": [
+        {
+          "t": 1793229731.0,
+          "gpu": 0.11992289170615211,
+          "ane": 0.7593015681371379,
+          "ane_bw_gbs": 3.2418108676732578
+        },
+        {
+          "t": 1793229732.0,
+          "gpu": 0.11866347269297887,
+          "ane": 0.7453868830223251,
+          "ane_bw_gbs": 2.7694281895847674
+        },
+        {
+          "t": 1793229733.0,
+          "gpu": 0.13738926476397925,
+          "ane": 0.7620648587257484,
+          "ane_bw_gbs": 3.2751689056207707
+        },
+        {
+          "t": 1793229733.0,
+          "gpu": 0.01778937267955126,
+          "ane": 0.7344919976587607,
+          "ane_bw_gbs": 2.95356695540324
+        },
+        {
+          "t": 1793229734.0,
+          "gpu": 0.24465156186078052,
+          "ane": 0.7603296693817346,
+          "ane_bw_gbs": 3.27555263925145
+        },
+        {
+          "t": 1793229735.0,
+          "gpu": 0.08594836675192666,
+          "ane": 0.7579726320814342,
+          "ane_bw_gbs": 3.2511733548208417
+        },
+        {
+          "t": 1793229735.0,
+          "gpu": 0.055283514961542934,
+          "ane": 0.7574043966056374,
+          "ane_bw_gbs": 3.268702013343884
+        },
+        {
+          "t": 1793229736.0,
+          "gpu": 0.11812492520275476,
+          "ane": 0.7552371848832093,
+          "ane_bw_gbs": 3.2720321248160986
+        },
+        {
+          "t": 1793229737.0,
+          "gpu": 0.05095705217365895,
+          "ane": 0.1731526080819157,
+          "ane_bw_gbs": 0.7210597906190951
+        },
+        {
+          "t": 1793229737.0,
+          "gpu": 0.06382730708043433,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        }
+      ],
+      "work": {
+        "status": "ok",
+        "model": "ANEForge linear 16x1 Adam, then a 256-wide matmul",
+        "qwen_lora": false,
+        "linear_losses": [
+          0.30810546875,
+          0.04833984375,
+          0.056732177734375,
+          0.360595703125
+        ],
+        "linear_steps": 4,
+        "weight_max_abs_move": 0.1839597374200821,
+        "matmul_calls": 122833,
+        "device_mask": "0x4",
+        "aneforge": "0.4.0",
+        "window_seconds": 8.0
+      }
+    },
+    "gpu_ane": {
+      "status": "ok",
+      "error": null,
+      "seconds": 4.719184249988757,
+      "mactop_status": "available",
+      "headless_samples": 3,
+      "prometheus_samples": 5,
+      "prometheus_port": 9096,
+      "energy": {
+        "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+        "gpu_joules": 20.132945686326764,
+        "gpu_sram_joules": 0.0009635945165135414,
+        "ane_joules": 0.9559500075221634,
+        "cpu_joules": 6.535354424015231,
+        "dram_joules": 3.010181004865627,
+        "prometheus_gpu_joules": 12.06038025456588,
+        "prometheus_ane_joules": 0.5529824483690634,
+        "gpu_watts_avg": 4.2661919136500615,
+        "gpu_sram_watts_avg": 0.00020418666987114076,
+        "ane_watts_avg": 0.2025667905474216,
+        "cpu_watts_avg": 1.3848483292490223,
+        "dram_watts_avg": 0.6378604532918583
+      },
+      "power_max": {
+        "gpu_w": 15.942159062386386,
+        "ane_w": 0.730966517185059,
+        "ane_bw_gbs": 1.9913112616497566,
+        "ane_active_max": 0
+      },
+      "series": [
+        {
+          "t": 1793229740.0,
+          "gpu": 15.942159062386386,
+          "ane": 0.730966517185059,
+          "ane_bw_gbs": 1.9913112616497566
+        },
+        {
+          "t": 1793229741.0,
+          "gpu": 12.07371860049112,
+          "ane": 0.5904667489296339,
+          "ane_bw_gbs": 1.8998818071311494
+        },
+        {
+          "t": 1793229742.0,
+          "gpu": 0.1762951092848965,
+          "ane": 0,
+          "ane_bw_gbs": 0
+        }
+      ],
+      "work": {
+        "status": "ok",
+        "model": "mlx-community/Qwen3-0.6B-4bit",
+        "iters": 4,
+        "batch_size": 2,
+        "max_seq_length": 256,
+        "train_examples": 64,
+        "seconds": 3.8320666670042556,
+        "trainable_parameters": 5046272,
+        "adapter_bytes_fp32": 20185088,
+        "adapter_bytes_int8": 5046280,
+        "baseline_test": {
+          "loss": 4.531993389129639,
+          "perplexity": 92.94364940468996,
+          "batches": 2
+        },
+        "adapted_test": {
+          "loss": 4.2511677742004395,
+          "perplexity": 70.18732745840559,
+          "batches": 2
+        },
+        "history": {
+          "train": [
+            {
+              "iteration": 4,
+              "train_loss": 4.679623126983643,
+              "learning_rate": 9.999999747378752e-05,
+              "iterations_per_second": 4.82410063024371,
+              "tokens_per_second": 214.19006798282072,
+              "trained_tokens": 444,
+              "peak_memory": 1.265077386
+            }
+          ],
+          "validation": [
+            {
+              "iteration": 0,
+              "val_loss": 3.933445453643799,
+              "val_time": 0.39873966699815355,
+              "val_perplexity": 51.08267781043895
+            },
+            {
+              "iteration": 3,
+              "val_loss": 4.158421993255615,
+              "val_time": 0.23535008399630897,
+              "val_perplexity": 63.970497035625534
+            }
+          ]
+        },
+        "mlx_peak_bytes": 1265077386,
+        "mlx_active_bytes": 16,
+        "qwen_lora": true,
+        "combined_means": "both devices were busy; their parameters were not averaged",
+        "ane_client": {
+          "status": "ok",
+          "model": "ANEForge linear 16x1 Adam, then a 256-wide matmul",
+          "qwen_lora": false,
+          "linear_losses": [
+            0.30810546875,
+            0.04833984375,
+            0.056732177734375,
+            0.360595703125
+          ],
+          "linear_steps": 4,
+          "weight_max_abs_move": 0.1839597374200821,
+          "matmul_calls": 33081,
+          "device_mask": "0x4",
+          "aneforge": "0.4.0",
+          "window_seconds": null
+        }
+      }
+    }
+  },
+  "cases": {
+    "1_gpu": {
+      "client": "one GPU QLoRA client",
+      "seconds": 6.019199916976504,
+      "energy": {
+        "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+        "gpu_joules": 41.13694128275199,
+        "gpu_sram_joules": 0.0019423838789161714,
+        "ane_joules": 0.0,
+        "cpu_joules": 5.406676393269691,
+        "dram_joules": 5.560970987800403,
+        "prometheus_gpu_joules": 34.92828630833099,
+        "prometheus_ane_joules": 0.0,
+        "gpu_watts_avg": 6.8342872558078165,
+        "gpu_sram_watts_avg": 0.0003226980172959345,
+        "ane_watts_avg": 0.0,
+        "cpu_watts_avg": 0.8982383818189429,
+        "dram_watts_avg": 0.9238721199666894
+      },
+      "power_max": {
+        "gpu_w": 15.901993943741234,
+        "ane_w": 0,
+        "ane_bw_gbs": 0,
+        "ane_active_max": 0
+      },
+      "validation": {
+        "baseline_test": {
+          "loss": 4.364206790924072,
+          "perplexity": 78.587039259726,
+          "batches": 2
+        },
+        "adapted_test": {
+          "loss": 3.873265266418457,
+          "perplexity": 48.099186602531844,
+          "batches": 2
+        },
+        "validation_during_training": [
+          {
+            "iteration": 0,
+            "val_loss": 3.9081852436065674,
+            "val_time": 0.4398345419904217,
+            "val_perplexity": 49.80847964873303
+          },
+          {
+            "iteration": 3,
+            "val_loss": 3.893588066101074,
+            "val_time": 0.5111387500073761,
+            "val_perplexity": 49.08669723925671
+          }
+        ],
+        "scope": "subset of batches named by eval_batches, not the full WikiText-2 splits"
+      },
+      "adapter_bytes_fp32": 20185088,
+      "adapter_bytes_int8": 5046280,
+      "wire_bytes": 0,
+      "status": "ok"
+    },
+    "1_gpu_plus_ane": {
+      "client": "one combined client, GPU QLoRA and Neural Engine graph concurrent",
+      "same_adapter": false,
+      "seconds": 4.719184249988757,
+      "energy": {
+        "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+        "gpu_joules": 20.132945686326764,
+        "gpu_sram_joules": 0.0009635945165135414,
+        "ane_joules": 0.9559500075221634,
+        "cpu_joules": 6.535354424015231,
+        "dram_joules": 3.010181004865627,
+        "prometheus_gpu_joules": 12.06038025456588,
+        "prometheus_ane_joules": 0.5529824483690634,
+        "gpu_watts_avg": 4.2661919136500615,
+        "gpu_sram_watts_avg": 0.00020418666987114076,
+        "ane_watts_avg": 0.2025667905474216,
+        "cpu_watts_avg": 1.3848483292490223,
+        "dram_watts_avg": 0.6378604532918583
+      },
+      "power_max": {
+        "gpu_w": 15.942159062386386,
+        "ane_w": 0.730966517185059,
+        "ane_bw_gbs": 1.9913112616497566,
+        "ane_active_max": 0
+      },
+      "validation": {
+        "baseline_test": {
+          "loss": 4.531993389129639,
+          "perplexity": 92.94364940468996,
+          "batches": 2
+        },
+        "adapted_test": {
+          "loss": 4.2511677742004395,
+          "perplexity": 70.18732745840559,
+          "batches": 2
+        },
+        "validation_during_training": [
+          {
+            "iteration": 0,
+            "val_loss": 3.933445453643799,
+            "val_time": 0.39873966699815355,
+            "val_perplexity": 51.08267781043895
+          },
+          {
+            "iteration": 3,
+            "val_loss": 4.158421993255615,
+            "val_time": 0.23535008399630897,
+            "val_perplexity": 63.970497035625534
+          }
+        ],
+        "scope": "subset of batches named by eval_batches, not the full WikiText-2 splits"
+      },
+      "ane": {
+        "status": "ok",
+        "model": "ANEForge linear 16x1 Adam, then a 256-wide matmul",
+        "qwen_lora": false,
+        "linear_losses": [
+          0.30810546875,
+          0.04833984375,
+          0.056732177734375,
+          0.360595703125
+        ],
+        "linear_steps": 4,
+        "weight_max_abs_move": 0.1839597374200821,
+        "matmul_calls": 33081,
+        "device_mask": "0x4",
+        "aneforge": "0.4.0",
+        "window_seconds": null
+      },
+      "status": "ok"
+    },
+    "1_gpu_and_1_ane": {
+      "client": "two clients, local work not overlapped",
+      "same_adapter": false,
+      "seconds": 15.515514457976678,
+      "gpu_joules": 41.852026474026914,
+      "ane_joules": 4.233147767932587,
+      "gpu_client": {
+        "baseline_test": {
+          "loss": 4.364206790924072,
+          "perplexity": 78.587039259726,
+          "batches": 2
+        },
+        "adapted_test": {
+          "loss": 3.873265266418457,
+          "perplexity": 48.099186602531844,
+          "batches": 2
+        },
+        "validation_during_training": [
+          {
+            "iteration": 0,
+            "val_loss": 3.9081852436065674,
+            "val_time": 0.4398345419904217,
+            "val_perplexity": 49.80847964873303
+          },
+          {
+            "iteration": 3,
+            "val_loss": 3.893588066101074,
+            "val_time": 0.5111387500073761,
+            "val_perplexity": 49.08669723925671
+          }
+        ],
+        "scope": "subset of batches named by eval_batches, not the full WikiText-2 splits"
+      },
+      "ane_client": {
+        "status": "ok",
+        "model": "ANEForge linear 16x1 Adam, then a 256-wide matmul",
+        "qwen_lora": false,
+        "linear_losses": [
+          0.30810546875,
+          0.04833984375,
+          0.056732177734375,
+          0.360595703125
+        ],
+        "linear_steps": 4,
+        "weight_max_abs_move": 0.1839597374200821,
+        "matmul_calls": 122833,
+        "device_mask": "0x4",
+        "aneforge": "0.4.0",
+        "window_seconds": 8.0
+      },
+      "status": "ok"
+    }
+  }
+}

@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>31. Power and thermal - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-8-system-internals/31-power-thermal.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="31-power-and-thermal"><a class="header" href="#31-power-and-thermal">31. Power and thermal</a></h1>
+<blockquote>
+<p>The engine runs at one fixed clock, with no voltage or frequency scaling.
+It manages power through a peak-power regulator, armed once at power-up by five loop-free stores with the control word <code>0x11</code>.
+Idle reads 0 W with rails off.
+A sustained convolution holds flat at about 1.66 W over 176 seconds, and the densest peak reaches about 4.7 W at 6.96 TFLOP/s.
+The firmware has no thermal logic and reads no temperature; thermal protection is off-engine in the system power manager.</p>
+</blockquote>
+<p>The engine runs at one fixed operating point and manages power through a peak-power regulator, not a frequency sequence.</p>
+<h2 id="boot-and-device-tree"><a class="header" href="#boot-and-device-tree">Boot and device tree</a></h2>
+<p>The engine appears in the device tree as a single node <code>ane0@84000000</code>, class <code>AppleARMIODevice</code>, <code>compatible = "ane,t8020"</code>, <code>device_type = "ane"</code>.
+The match key <code>ane,t8020</code> is the kext bind key even on a later die, since the engine block has the t8020-generation identity string across the whole M1 family.</p>
+<p>The node's properties decode as <a href="#tbl-c31-devicetree">Table 31.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Property</th><th>Decoded value</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>compatible</code></td><td><code>"ane,t8020"</code></td><td>the kext match key</td></tr>
+<tr><td><code>ane-type</code></td><td><code>0x60</code></td><td>engine variant identifier</td></tr>
+<tr><td><code>reg</code> bank 0</td><td><code>0x2_8400_0000</code>, length <code>0x200_0000</code></td><td>the 32 MB engine control aperture</td></tr>
+<tr><td><code>reg</code> bank 1</td><td><code>0x2_8E08_0000</code>, length <code>0xC02C</code></td><td>the power-manager slice</td></tr>
+<tr><td><code>interrupts</code></td><td><code>0x302</code></td><td>the engine interrupt number</td></tr>
+<tr><td><code>clock-ids</code></td><td><code>0x13e</code>, <code>0x13f</code>, <code>0x140</code>, <code>0x141</code></td><td>four clock identifiers, one per compute cluster</td></tr>
+<tr><td><code>clock-gates</code>, <code>power-gates</code></td><td><code>0x1cf</code></td><td>the single clock and power-gate index for the whole block</td></tr>
+<tr><td><code>asc-dram-mask</code></td><td><code>0x1F0_0000_0000</code></td><td>the high-address window the coprocessor may reach in DRAM</td></tr>
+<tr><td><code>segment-names</code></td><td><code>__TEXT;__DATA</code></td><td>the firmware segments the loader places</td></tr>
+<tr><td><code>pre-loaded</code></td><td><code>1</code></td><td>the firmware is resident in DRAM before the kernel attaches</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c31-devicetree"></a><strong>Table 31.1.</strong> The properties of the <code>ane0</code> device-tree node, with decoded value and meaning.</p>
+<p>Bank 0 is the engine control aperture at absolute physical <code>0x2_8400_0000</code>, 32 MB, holding the coprocessor registers, mailbox doorbells, and engine register file.
+Bank 1 is a small power-manager slice at <code>0x2_8E08_0000</code>, length <code>0xC02C</code>, whose base matches the base of the system power-manager node <code>pmgr@8E080000</code>, tying the engine's power-gate <code>0x1cf</code> directly to the power-management register neighborhood.
+The four clock identifiers <code>0x13e</code> through <code>0x141</code> are one per compute cluster, matching the four-cluster geometry of the power model.</p>
+<p>The firmware is not read from disk at first boot.
+The boot loader verifies the signed firmware image and pre-loads its segments into the carve-out named by the node's <code>segment-ranges</code>, marked by the property <code>pre-loaded = 1</code>.
+The kernel driver then attaches to <code>ane0</code>, hands the already-trusted image to the engine's coprocessor over the mailbox, and the coprocessor boots.
+The image itself is a bare uncompressed and unencrypted preload Mach-O wrapped in an Image4 container with the payload tag <code>anef</code>, and it has no embedded manifest, keybag, or code-signature load command of its own.
+The per-device personalized boot ticket enforces its authenticity externally, listing the <code>anef</code> object digest alongside the kernel, boot-loader, and device-tree digests and binding to the device by its unique chip identifier.
+A firmware image cannot be transplanted to a different machine.</p>
+<p>The power and peak-power tunables the firmware consumes are not on <code>ane0</code>.
+They are on <code>pmgr@8E080000</code>: the master enable <code>ane-dpe = 1</code>, calibration vector <code>dpe-ane-data</code> (ten 32-bit words), and per-operating-point current ceiling table <code>ifane-max</code>.
+The ten calibration words decode to <code>[9384, 661, 1323, 2641, 2395, 84489, 163813, 51491, 178500, 51491]</code>, the per-platform coefficients that convert dynamic-power-estimation activity counts to energy, with the repeated value <code>51491</code> as a shared scale factor.
+The <code>ifane-max</code> table is rows of an index key and three current ceilings: the head rows are index <code>0x1f8</code> with <code>{0x18000, 0x17333, 0x17333}</code>, index <code>0x2e8</code> with <code>{0x1fd70, 0x1fd70, 0x1fd70}</code>, index <code>0x498</code> with <code>{0x2deb8, 0x2deb8, 0x2deb8}</code>, index <code>0x6a8</code> with <code>{0x428f5, 0x428f5, 0x428f5}</code>, and index <code>0x858</code> with <code>{0x628c5, 0x65666, 0x65666}</code>.
+The first column is a monotone activity-keyed operating point, and the three trailing columns are the peak-current ceilings, one per energy-accumulator partition, that the peak-power regulator clamps against.
+A parameter-push call at init delivers these, and the firmware arms the power blocks from them.</p>
+<h2 id="power-model"><a class="header" href="#power-model">Power model</a></h2>
+<p><a href="#tbl-c31-power-facts">Table 31.2</a> collects the decoded boot, power, and clocking facts with their values and sources.</p>
+<div class="table-wrapper"><table><thead><tr><th>Fact</th><th>Value</th><th>Source</th></tr></thead><tbody>
+<tr><td>Engine node</td><td><code>ane0@84000000</code>, <code>compatible "ane,t8020"</code></td><td>device tree</td></tr>
+<tr><td>Engine aperture</td><td><code>0x2_8400_0000</code>, 32 MB</td><td>device tree</td></tr>
+<tr><td>Power-manager slice</td><td><code>0x2_8E08_0000</code>, length <code>0xC02C</code></td><td>device tree</td></tr>
+<tr><td>Power-block base</td><td><code>0x2_6b8f_0000</code></td><td>firmware disassembly</td></tr>
+<tr><td>Voltage base (opaque)</td><td><code>0x2_3b70_c008</code></td><td>firmware disassembly</td></tr>
+<tr><td>Power-block arm</td><td>5 fixed stores, no loop</td><td>firmware disassembly</td></tr>
+<tr><td>Peak-power control word</td><td><code>0x11</code></td><td>firmware disassembly</td></tr>
+<tr><td>Compute clusters</td><td>4, gated independently</td><td>device tree and firmware</td></tr>
+<tr><td>Idle power</td><td>0 W, rails off</td><td>M1/H13 measured</td></tr>
+<tr><td>Sustained convolution</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4831em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.66</span></span></span></span> W flat over 176 s</td><td>M1/H13 measured</td></tr>
+<tr><td>Densest peak</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4831em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4.7</span></span></span></span> W, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6.96</span></span></span></span> TFLOP/s</td><td>M1/H13 measured</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c31-power-facts"></a><strong>Table 31.2.</strong> The decoded boot, power, and clocking facts; the register-init constants are decoded in Appendix <a href="../appendices/c-decoded-tables.html">C</a>.</p>
+<p>The engine runs at a single fixed clock with no local voltage or frequency scaling of its own; any frequency change is the system power manager's to make externally.
+The only clock string in the firmware is the boot-time timebase report; the image has no frequency table, no enumerated operating points, and no voltage string.
+Voltage is the system power manager's concern, reached only through an opaque power-management base address (<code>0x2_3b70_c008</code>) that the firmware never interprets.</p>
+<p>Performance is modulated by two controls, neither of them frequency.
+The first is how many of the four compute clusters are powered.
+The second is a peak-power regulator that limits activity under a fixed budget.
+That regulator is the engine's substitute for a frequency and voltage sequence, and it has three parts the firmware arms once at power-up.
+Dynamic power estimation counts switching activity to estimate instantaneous dynamic power.
+Peak-power tracking watches that estimate against the budget and applies back-pressure on issue when the work would exceed it, throttling activity within the fixed clock.
+Leakage and energy estimation wires the result into the system power manager.
+The running energy total that the energy-model telemetry channel reports is held in three accumulator partitions.</p>
+<p>Arming this model is loop-free and idempotent: five memory-mapped stores at the fixed base <code>0x2_6b8f_0000</code>, gated on two per-instance enable flags at offsets <code>+0x95</code> and <code>+0x96</code>, with no ramp and no per-frequency programming (<a href="#lst-c31-arm-seq">Listing 31.1</a>).</p>
+<pre><code class="language-text">this+0x95 (byte)  : dynamic-power-estimation mode enabled?   (tested at entry)
+this+0x96 (byte)  : peak-power-tracking mode enabled?
+
+store  0x11             -&gt; [0x2_6b8f_0000]   ; peak-power-tracking control word
+store  (this+0x96 ? 1 : 0) -&gt; [0x2_6b8f_0004] ; dynamic-power-estimation control word
+reg = [0x2_6b8f_4000]; reg |= 1; store -&gt; [0x2_6b8f_4000]  ; leakage-and-energy enable bit
+store  0x3fff           -&gt; [0x2_6b8e_c42c]   ; trailing control word
+store  0xf              -&gt; [0x2_6b8e_c5dc]   ; trailing control word (= 0x2_6b8e_c42c + 0x1b0)
+</code></pre>
+<p><a id="lst-c31-arm-seq"></a><strong>Listing 31.1.</strong> The five-store arm sequence for the power-estimation and peak-power blocks, with the fixed control words at their decoded memory-mapped offsets.</p>
+<p>The leakage-and-energy block is enabled by setting bit 0 of the register at <code>0x2_6b8f_4000</code>, and two fixed trailing control words close the sequence.
+This estimation aperture at <code>0x2_6b8f_0000</code> is distinct from the power-gating base <code>0x2_3b70_c008</code>, so power gating and power estimation are separate hardware blocks.
+The system-on-chip leakage-and-energy enable bit folds the result into the system power manager.
+The rails drop fully when the engine goes idle, so the estimation block loses state and the firmware re-applies the retained calibration on every wake.</p>
+<p>The four compute clusters gate independently through a stride-eight status array, polled by the host driver until each domain's low byte reads <code>0xff</code>, meaning all eight power straps have settled (<a href="#tbl-c31-power-domains">Table 31.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Aperture-relative offset</th><th>Poll</th><th>Domain</th></tr></thead><tbody>
+<tr><td><code>0x2c8</code></td><td><code>expect 0xff, mask 0xff, retries 5000</code></td><td>top-level ready and fabric gate, validated first</td></tr>
+<tr><td><code>0xc000</code></td><td><code>expect 0xff, mask 0xff, retries 5000</code></td><td>base domain, the always-on control fabric</td></tr>
+<tr><td><code>0xc008</code></td><td><code>expect 0xff, mask 0xff, retries 5000</code></td><td>compute cluster 1</td></tr>
+<tr><td><code>0xc010</code></td><td><code>expect 0xff, mask 0xff, retries 5000</code></td><td>compute cluster 2</td></tr>
+<tr><td><code>0xc018</code></td><td><code>expect 0xff, mask 0xff, retries 5000</code></td><td>compute cluster 3</td></tr>
+<tr><td><code>0xc020</code></td><td><code>expect 0xff, mask 0xff, retries 5000</code></td><td>compute cluster 4</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c31-power-domains"></a><strong>Table 31.3.</strong> The power-domain status registers, a stride-eight array at <code>0xc000 + domain*8</code> polled until each low byte reads <code>0xff</code>.</p>
+<p>The five domains are one always-on base domain and four independently gated compute clusters; there is no fifth cluster.
+The firmware brings the base domain up first and adds a compute cluster only when work needs it, which is the mechanism behind the measured idle of 0 W.
+The engine is in the all-off state until a procedure call arrives, then brings the base domain up to a wait state and gates in the clusters, so the idle floor is rail-off rather than clock-gated.
+A free-running firmware timestamp pair is in the same aperture at <code>0x1170000</code> for the low word and <code>0x1170004</code> for the high word, distinct from the engine-internal timebase, and the firmware zeroes four scratch registers at <code>0x1840048</code> through <code>0x1840054</code> at init.</p>
+<p>For a workload held at the operating point for time <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>, the energy is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span></span></span></span></span></p>
+<p>with measured constants from a sustained saturating loop on the M1: a dense convolution at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1.66</span><span class="mord text"><span class="mord"> W</span></span></span></span></span> held flat over <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">176</span><span class="mord text"><span class="mord"> s</span></span></span></span></span>, and a densest-packed peak of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">4.7</span><span class="mord text"><span class="mord"> W</span></span></span></span></span>.
+At that peak the engine delivers <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6.96</span></span></span></span> TFLOP/s, which gives an efficiency of about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.5</span></span></span></span> TFLOP/s per watt in fp16, rising to about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2.6</span></span></span></span> TFLOP/s per watt on weight-reuse convolutions.
+The power scales with cluster engagement and lane density; no clock change is involved.
+Relative to a single cluster, throughput rises <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1.99</span><span class="mord">×</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3.02</span><span class="mord">×</span></span></span></span>, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4.00</span><span class="mord">×</span></span></span></span> at the second, third, and fourth clusters.
+The rail then climbs smoothly from <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">779</span></span></span></span> mW to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1429</span></span></span></span> mW as channels pack the four clusters, with no discrete steps.</p>
+<h2 id="thermal-behavior-and-the-operating-point"><a class="header" href="#thermal-behavior-and-the-operating-point">Thermal behavior and the operating point</a></h2>
+<p>A scan of the image for temperature, throttle, junction, and similar terms returns nothing.
+The engine does not read temperature, does not throttle on temperature, and emits no thermal event of its own.
+Thermal protection is entirely off-engine: the peak-power regulator bounds power, which indirectly bounds heat, and package-level thermal control is in the system power manager, which can delay or refuse dispatch but does not reach into any engine counter.</p>
+<p>A 176-second saturating loop sampled thermal pressure every two seconds and read nominal on every one of the 89 samples, with power and throughput flat to within half a percent and a slightly negative drift.
+A frequency-scaling engine would show a ramp or multiple power modes as it settled; a thermally limited engine would decay.
+The engine does neither; power and throughput hold flat.
+The single outbound power signal the firmware emits is a normalized margin level for the host to react to, holding no thermal field.</p>
+<p>The first dispatch after idle pays a fixed power-up cost because the engine reaches a true rails-off state between jobs.
+That cost grows from near zero at back-to-back dispatch to about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.5</span></span></span></span> ms once the idle gap reaches roughly 100 ms, then plateaus, which sets the residency window for keeping the engine warm.</p>
+<h3 id="operating-points-and-the-absence-of-local-dvfs"><a class="header" href="#operating-points-and-the-absence-of-local-dvfs">Operating points and the absence of local DVFS</a></h3>
+<p>The engine has no frequency-or-voltage sequence of its own.
+The kext delegates operating-point selection to the system power manager: the SoC CLPC within ApplePMGR.
+The kext has no clock register addresses.
+A disassembly of <code>enableAneSysClock</code> shows it performs no memory-mapped writes itself; it loads an ApplePMGR service object, authenticates the vtable pointer, and calls a PMGR method with the enable argument set, with the only literal in the path being the string <code>"ApplePMGR"</code>.
+The <code>ane0</code> device-tree node publishes the PMGR clock and power-gate identifiers but has no <code>dvfm-states</code>, <code>voltage-states</code>, or <code>perf-states</code> property, so the per-state frequency in Hz and voltage in mV stay held privately by ApplePMGR behind the power-manager base and are not recoverable from the engine binaries.</p>
+<p>What is on the engine side is the firmware <code>H13TunableManager</code> register-init table, where <code>H13</code> is the M1 family.
+A <code>TunableManager</code> descriptor at base <code>0x2_6b8f_4000</code> (<code>aneDpePpt_soc_dpe_lee</code>, the SoC dynamic-power-estimation control block) contains a 7-step monotonic credit sequence, written once at firmware bring-up and gated by chip revision (<a href="#tbl-c31-tunable">Table 31.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Mask</th><th>Value</th><th style="text-align: right">Decoded</th></tr></thead><tbody>
+<tr><td><code>+0x18</code></td><td><code>0x1ff</code></td><td><code>0x19</code></td><td style="text-align: right">25</td></tr>
+<tr><td><code>+0x1c</code></td><td><code>0x1ff</code></td><td><code>0x32</code></td><td style="text-align: right">50</td></tr>
+<tr><td><code>+0x20</code></td><td><code>0x1ff</code></td><td><code>0x46</code></td><td style="text-align: right">70</td></tr>
+<tr><td><code>+0x24</code></td><td><code>0x1ff</code></td><td><code>0x55</code></td><td style="text-align: right">85</td></tr>
+<tr><td><code>+0x28</code></td><td><code>0x1ff</code></td><td><code>0x5f</code></td><td style="text-align: right">95</td></tr>
+<tr><td><code>+0x2c</code></td><td><code>0x1ff</code></td><td><code>0x69</code></td><td style="text-align: right">105</td></tr>
+<tr><td><code>+0x30</code></td><td><code>0x1ff</code></td><td><code>0x73</code></td><td style="text-align: right">115</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c31-tunable"></a><strong>Table 31.4.</strong> The 7-step monotonic DPE/PPT credit sequence in the <code>aneDpePpt_soc_dpe_lee</code> block, with the decoded value of each 9-bit field.</p>
+<p>These nine-bit fields are the per-operating-point power-credit and peak-power-throttle thresholds the on-die estimator caps activity against, indexed by the perf state the CLPC selects.
+Their strictly increasing sequence is the signature of a seven-state perf sequence.
+The engine has seven operating points whose registers store throttle credits.
+A parallel eight-step sequence for the ASC block lists the values <code>4, 7, 13, 20, 27, 36, 46, 59</code>.</p>
+<p>Live read-only dtrace confirms the engine keeps one power state through sustained work.
+A six-layer matmul-and-relu program dispatched in a continuous loop for 16 seconds drove 56,527 dispatches, traced entry-only with no destructive flag.
+<code>ChangePowerState</code>, <code>populateCLPCPerfInfo</code>, <code>power_on_hardware</code>, and <code>setPowerStateGated</code> each fired exactly once at warm-up and never again across the 56,527 dispatches.
+Every dispatch instead walked a fixed path: <code>EnableANEClocksAndPower</code> to un-gate, one <code>submitWorkToPerfController</code> that hands an <code>ANEPerfRequest</code> and a modeled-performance hint to the CLPC, a <code>notifyPerfController</code> start-and-end pair, then <code>enableDynPowerGating_gated</code> to re-arm the idle gate.
+The kext does not walk a frequency sequence per submit; the engine stays in a single power-domain state for the whole run while the CLPC drives any frequency change internally and invisibly to the kext.
+This is the runtime counterpart to the flat power and throughput measured under sustained load: the firmware tracks a single PerfMode, and setting it twice is a no-op.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-8-system-internals/30-csne-protocol.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-8-system-internals/32-security.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-8-system-internals/30-csne-protocol.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-8-system-internals/32-security.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

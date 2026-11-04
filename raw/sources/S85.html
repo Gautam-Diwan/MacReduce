@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Revision history - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/back-matter/revision-history.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="revision-history"><a class="header" href="#revision-history">Revision history</a></h1>
+<blockquote>
+<p>This guide has two editions.
+The living web and PDF edition updates as findings are added or corrected; the arXiv snapshot carries a fixed version number.
+Each edition is numbered and dated; v1 is the original release and the arXiv edition is the stable point to cite.</p>
+</blockquote>
+<p>The web edition and the PDF rebuild whenever a finding is added, corrected, or hardened, and each edition is numbered and dated on the title page, beginning with v1.
+The arXiv edition, arXiv:2606.22283, is a snapshot taken at milestones, so its version number may lag the current edition after v1.
+The revisions below are listed newest first; the ones promoted to an arXiv version are marked.</p>
+<p>Each entry separates additions and corrections to the text from changes in the evidentiary status of a claim, since a claim moving from predicted or decompile-derived to measured is the change a returning reader most needs to see.</p>
+<h2 id="v3-october-14-2026"><a class="header" href="#v3-october-14-2026">v3 (October 14, 2026)</a></h2>
+<ul>
+<li>Promoted to arXiv:2606.22283 v2.</li>
+<li>Corrected the fp16 saturation figures in chapter <a href="../part-1-machine/03-numerics.html">3</a>: on the elementwise-multiply path the true fp16 limit is 65504, not 65536, and the multiply-accumulate ceiling at 32768 is just above half the fp16 maximum, where the text had said exactly half.</li>
+<li>Corrected the convolution cost step in chapter <a href="../part-6-silicon/20-datapath-mac.html">20</a>, where 192 to 256 output channels is a 1.33-fold increase in arithmetic and had been given as 1.8-fold.</li>
+<li>Corrected the energy comparisons in chapter <a href="../part-4-workloads/13-vision-conv-encoders.html">13</a>, which gave the ResNet-18 and twelve-layer-encoder results as multiples of energy rather than of energy efficiency and so inverted their sense against the same two figures in chapter <a href="../part-3-performance/11-ane-vs-gpu-vs-cpu.html">11</a>.</li>
+<li>Corrected the double-multiply eligibility rule in chapter <a href="../part-9-cross-silicon/36-upper-tier.html">36</a>: the mode applies when the activation-float and kernel-float bits agree, which is when their exclusive-or is zero.</li>
+<li>Corrected the conv weight-gradient saturation entry in chapter <a href="../part-4-workloads/15-training.html">15</a>, where 65504 divided by 16 is exact.</li>
+<li>Corrected the op-creation call order in section 12.6, which now passes the out-parameter first as the runtime header declares.</li>
+<li>Appendix <a href="../appendices/c-decoded-tables.html">C</a> no longer directs readers to an unpublished research corpus. The tables too large to print are now described as held in the collected data and not reproduced here.</li>
+<li>Editorial pass over the whole guide: varied how tables, listings and figures are introduced, removed the chapter-summary restatements that the following paragraph repeated, cut prose that re-read the rows of an adjacent table, thinned repeated statements of a single measurement, and reduced the contrastive construction that had become the default emphasis throughout. Comma splices, dropped articles, inconsistent numeral style and one British spelling were repaired along the way.</li>
+<li>Rewrote the abstract and the opening of the introduction.</li>
+<li>Added a statement on the use of AI tools in preparing the guide.</li>
+<li>Evidence: no claim changed evidentiary status in this edition. Every measured, decompile-derived and predicted mark stands as it did in v2.</li>
+</ul>
+<h2 id="v2-june-24-2026"><a class="header" href="#v2-june-24-2026">v2 (June 24, 2026)</a></h2>
+<ul>
+<li>Added section 35.11, a cross-generation comparison of the task-descriptor program. One convolution and one matmul are cross-compiled for the five base M-series targets, M1 through M5, from a single compiler build, and the codegen-revision stamp, the convolution op-config word, and the relocation-record stride are read per generation.</li>
+<li>Added a cross-source corroboration of the chapter <a href="../part-6-silicon/20-datapath-mac.html">20</a> datapath geometry against Handley's patent-based architectural analysis, with the work added to the references.</li>
+<li>Evidence: the per-generation versioning of the task descriptor, given in chapter <a href="../part-7-toolchain/23-program-format.html">23</a> as decompile-derived from the descriptor accessors, is now also confirmed against the emitted byte stream across M1 through M5.</li>
+</ul>
+<h2 id="v1-june-21-2026"><a class="header" href="#v1-june-21-2026">v1 (June 21, 2026)</a></h2>
+<ul>
+<li>Initial public release, arXiv:2606.22283 v1.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../back-matter/statements.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendices/a-op-device-matrix.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../back-matter/statements.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendices/a-op-device-matrix.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

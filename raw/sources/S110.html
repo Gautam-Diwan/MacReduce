@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>22. Compiler - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-7-toolchain/22-compiler.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="22-compiler"><a class="header" href="#22-compiler">22. Compiler</a></h1>
+<blockquote>
+<p>The compiler turns a network description into a loadable program through four phases.
+They are fusion to one compute operation, legalization to the hardware envelope, schedule and task-descriptor partition under the on-chip working set, and memory and direct-memory-access optimization.
+A frontend operation lowers to one or more backend <code>anec.*</code> operations, most of them one to one.
+A convolution absorbs its bias, activation, padding, and dequantize into one fused operation.
+An exported <code>_ANECValidate{Op}Layer</code> entry point checks each operation first, one of 50 per-layer validators among 55 <code>_ANECValidate*</code> exports.
+A callable validator signals that an operation is reachable on the direct path.
+A validator that accepts does not guarantee code generation: top-k, sort, dynamic-slice, and three-dimensional convolution pass validation and fail backend lowering on the M1.</p>
+</blockquote>
+<h2 id="pipeline"><a class="header" href="#pipeline">Pipeline</a></h2>
+<p>The compiler runs four phases in execution order, each listed in <a href="#tbl-c22-phases">Table 22.1</a> with its job and the passes that represent it.</p>
+<div class="table-wrapper"><table><thead><tr><th>phase</th><th>job</th><th>representative passes</th></tr></thead><tbody>
+<tr><td>1. Fusion</td><td>collapse the graph to one fused compute operation</td><td>transpose fusion, bias and activation hoisting into conv and matmul, elementwise-copy elimination</td></tr>
+<tr><td>2. Legalization</td><td>make the fused graph hardware-legal</td><td>dimension and rank legalization (rank <code>\le 5</code>), kernel-memory split, multi-segment graph cuts</td></tr>
+<tr><td>3. Schedule and task-descriptor partition</td><td>linearize the graph and carve it into on-engine partitions</td><td>parallel-execution discovery, the greedy list scheduler, partition emission</td></tr>
+<tr><td>4. Memory and direct-memory-access optimization</td><td>lay out buffers and streams</td><td>bank-conflict optimization, pad optimization, width-concat, weight packing</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c22-phases"></a><strong>Table 22.1.</strong> The four compiler phases in execution order, each with its job and representative passes.</p>
+<p>Traced as a dataflow, the same pipeline runs from the network description through the intermediate forms to the loadable program on the engine (<a href="#fig-c22-pipeline">figure 22.1</a>).</p>
+<figure id="fig-c22-pipeline">
+<pre class="mermaid">
+flowchart TB
+    NET["Network<br/>description"] --> MIL["MIL"] --> ANEC["anec IR"] --> SCH["Schedule and<br/>task-descriptor partition"] --> E5["Program format<br/>.e5 and .hwx"] --> SIL["Engine silicon"]
+    style ANEC fill:#22323f,stroke:#6fa8c9
+    style SIL fill:#2a2f34,stroke:#8a98a6
+</pre>
+<figcaption><strong>Figure 22.1.</strong> The compile pipeline from a network description to the loadable program.</figcaption>
+</figure>
+<p>Phase 1 collapses the whole graph to a single compute operation.
+Transposes are free: they fold into the adjacent operation or route to the dedicated transpose engine.
+A bias add and an activation that follow a convolution or a matrix multiply hoist into that operation, so <code>conv + bias + relu</code> and <code>matmul + bias + gelu</code> each become one fused operation rather than three.</p>
+<p>Phase 2 enforces the hardware envelope.
+Tensor rank is capped at five, per-dimension maxima apply, and an operation whose coefficients exceed the per-buffer kernel-memory cap is tiled or split.
+The compiler cuts a graph that cannot run as one segment into several at bridge operations.</p>
+<p>Phase 3 turns a fused operation into real on-engine work.
+A greedy priority-queue list scheduler linearizes the operation-layer graph into one execution order, then chunks that order into task-descriptor partitions under the on-chip working-set budget.
+The scheduler pops the highest-priority ready node each step, ordered by a fixed tie-break sequence: ring-buffer membership first, then branch-sibling score, then merge-sibling score, then the working-set-aware branch test, then topological order, then raw node id.
+The partition boundary is a memory test: the scheduler tentatively schedules a layer, queries the peak L2 pressure over its live range, and closes the current partition when</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">peak</span><span class="mspace"> </span><span class="mord mathrm">L2</span><span class="mspace"> </span><span class="mord mathrm">pressure</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">HAL</span></span><span class="mopen">[</span><span class="mord"><span class="mord mathtt">0x1b8</span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mpunct">,</span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">HAL</span></span><span class="mopen">[</span><span class="mord"><span class="mord mathtt">0x1b8</span></span><span class="mclose">]</span></span></span></span> is the 2 MB on-chip static-memory ceiling on the M1 and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> is a margin fraction below one.
+A partition grows until the next layer's live range would push the peak past that scaled budget.
+The branch decision that keeps the live set on chip reads the same 2 MB field: when a diamond's endpoints fit, the scheduler runs the larger-footprint branch first while its peak still fits in 2 MB, draining it before the working set grows.</p>
+<p>Phase 4 lays out the buffers the partitions read and write: it re-strides the destination buffers to avoid bank conflicts on the main engine, folds padding, and packs the weight stream.</p>
+<p>The allocator runs alongside phases 3 and 4.
+It tags every root tensor with an allocation type from a nine-state set that records whether the tensor is resident on chip, streamed from dynamic memory, chained directly into the next operation in the on-chip cache, or held as a ring buffer (<a href="#tbl-c22-alloc-states">Table 22.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>value</th><th>meaning</th></tr></thead><tbody>
+<tr><td>0</td><td>plain on-chip resident operand</td></tr>
+<tr><td>1</td><td>streamed from dynamic memory</td></tr>
+<tr><td>2</td><td>L2-chained, supplies the next operation directly in L2: the double-buffer state</td></tr>
+<tr><td>3</td><td>depends on an L2 producer</td></tr>
+<tr><td>4</td><td>in-place rewrite in L2</td></tr>
+<tr><td>5</td><td>in-place rewrite, L2-dependent</td></tr>
+<tr><td>6</td><td>ring-buffer resident</td></tr>
+<tr><td>7</td><td>ring-buffer resident, L2-dependent</td></tr>
+<tr><td>8</td><td>in-place in dynamic memory</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c22-alloc-states"></a><strong>Table 22.2.</strong> The nine allocation-type states the allocator assigns to each root tensor, decoded from the bit-test predicates that read them.</p>
+<p>A single-fanout producer immediately followed by a same-engine consumer with matching tile geometry is marked chainable, allocation type 2, the structural form of double-buffering: the producer output stays on chip and supplies the consumer in place instead of round-tripping through dynamic memory.
+Chainability is a structural pattern, not a size threshold.
+The decision is a conjunction.
+The per-chip chaining-enable bit must be set, the producer must have exactly one outgoing layer, and both ends must be the same engine class on the same engine.
+The producer's emitted tile geometry must match the consumer's declared input geometry, the consumer must be scheduled immediately after the producer with no other layer in the gap, and the producer's emitted rows must cover the consumer's first tile including overlap.
+The ring-buffer state, allocation type 6, is the state the scheduler ranks first when it orders ready operations.</p>
+<p>Phase 3 also discovers operations that can co-issue on the two engines.
+The rule is restrictive: two operations run concurrently only when one is a multiply-accumulate operation and the other is a planar-engine operation, since two operations on one engine cannot overlap.
+The discovery disqualifies a pair when either is unscheduled, when both are the same engine class, when they are on different engines, or when they stand in a producer-consumer relation.
+A pair is also disqualified when either input is chained or chainable, or when both outputs stream from dynamic memory and would serialize on the shared channel.
+A matrix multiply's resident weight is exempt from the last test, so it does not block its partner.
+The attention block is the operation this filter selects: a softmax on the planar engine co-issued with a value matrix multiply on the multiply-accumulate array.
+Chaining and co-issue are mutually exclusive: an operation is either pipelined into its neighbor or co-issued with an independent operation on the other engine, never both.</p>
+<h2 id="lowering-one-operation"><a class="header" href="#lowering-one-operation">Lowering one operation</a></h2>
+<p>A frontend operation lowers to one or more backend <code>anec.*</code> operations through the operation-converter pass, most of them one to one.
+A matrix multiply lowers to <code>anec.matmul</code>, which records the contraction as two attributes (<a href="#lst-c22-matmul-lower">listing 22.1</a>).</p>
+<pre><code class="language-text">mps.MatMulOp  -&gt;  anec.matmul
+  bottoms:  2   (A, B)
+  attrs:    transpose_lhs : bool
+            transpose_rhs : bool
+  constraints (checked before lowering):
+    depth(A) == 1 and depth(B) == 1
+    out_channels == channels(A)
+    width(A) + pad == channels(B)
+    out-channel bytes of A must fit kernel memory
+</code></pre>
+<p><a id="lst-c22-matmul-lower"></a><strong>Listing 22.1.</strong> The matrix-multiply lowering, with its operands, the transpose attributes that set the contraction direction, and the pre-lowering constraints.</p>
+<p>The contraction direction is parametric: <code>transpose_lhs</code> and <code>transpose_rhs</code> select which operands are transposed before the product, so one backend operation covers every transposed and non-transposed matrix-multiply form.
+The compiler rewrites a matrix multiply whose right-hand weight fits the on-chip working set into a resident convolution, a single fused operation; a weight above the 2 MB ceiling stays a tiled matrix multiply.</p>
+<p>A convolution lowers the same way and absorbs more of its neighborhood (<a href="#lst-c22-conv-lower">listing 22.2</a>).</p>
+<pre><code class="language-text">mps.Conv2DOp  -&gt;  anec.convolution
+  bottoms:  1   (+ weight and bias folded in)
+  attrs:    strides
+            dilation_rates
+            groups
+            explicit_padding / padding_style
+            kernel_sizes
+            weights_layout
+  constraints (checked before lowering):
+    filter and input rank 4 or 5
+    kernel within the per-chip [min, max]
+    in-channels and out-channels divisible by groups
+    padded input &gt;= kernel
+</code></pre>
+<p><a id="lst-c22-conv-lower"></a><strong>Listing 22.2.</strong> The convolution lowering, with its folded weight and bias, its attributes, and the constraints checked before lowering.</p>
+<p>The bias becomes the convolution's gain-offset control, and a following activation becomes a post-operation lookup table on the same operation.
+A padded, biased, activated convolution thus emits as one backend operation with the pad folded, bias as a per-channel affine, and activation as a 33-segment piecewise-linear table.
+A quantization scale folds into the per-channel output multiply that precedes that table, so a dequantize between the convolution and its activation does not become its own operation either.</p>
+<h2 id="fusion-rules"><a class="header" href="#fusion-rules">Fusion rules</a></h2>
+<p>Fusion does not happen in the MIL the host hands over.
+The MIL is the pre-fusion handoff: a biased, activated convolution arrives as three separate operations, <code>conv</code> then <code>add(x=conv, y=bias_const)</code> then <code>relu</code>, and the collapse into one engine layer happens entirely inside ANECompiler's <code>ZinIr</code>/<code>ZinMir</code> layer-graph stage.
+The fused hardware unit is the gain-offset control, <code>anec.gain_offset_control</code>, a per-channel or singular affine <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8623em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">gain</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathrm">offset</span></span></span></span></span> applied at engine output.
+The <code>ZinNEBypassLayer</code> container wraps a fused engine operation in a fixed seven-slot epilogue chain whose constructor argument order, given in <a href="#lst-c22-nebypass">listing 22.3</a>, fixes the seven slots.</p>
+<pre><code class="language-mlir">ZinNEBypassLayer( engine_op,
+    ZinTextureLayer,      // in-place spatial/texture remap
+    ZinBroadcastLayer,    // broadcast of a fused operand
+    ZinActivationLayer,   // pre-GOC activation
+    ZinGOCLayer,          // the gain/offset (scale + bias) unit
+    ZinActivationLayer,   // post-GOC activation
+    ZinTransposeLayer,    // output transpose / layout
+    ZinQuantLayer )       // output (re)quantization
+</code></pre>
+<p><a id="lst-c22-nebypass"></a><strong>Listing 22.3.</strong> The <code>ZinNEBypassLayer</code> constructor, whose argument order fixes the seven epilogue slots a single engine layer can absorb.</p>
+<p>A convolution, matrix multiply, pool, or elementwise operation absorbs, in slot order, a texture remap, broadcast, pre-GOC activation, the gain-offset affine, a post-GOC activation, output transpose, and output requantization.
+The bias-add fills the GOC offset, the scale or batch-norm gain fills the GOC gain, and the activation fills one of the two activation slots.
+The pass that forms the offset is <code>ScaledEWOrEWWithConstInToGOC</code>, and an internal guard reads <code>"Must have 2 inputs when convert EW to GOC"</code>: the elementwise-to-GOC rewrite needs exactly one live operand and one constant operand.
+That guard is the dividing line between a fusable epilogue and a fusion barrier (<a href="#tbl-c22-fusion">Table 22.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>pattern</th><th>fuses as</th><th>gating pass</th></tr></thead><tbody>
+<tr><td>bias-add (<code>add</code> with one constant)</td><td>GOC offset</td><td><code>ScaledEWOrEWWithConstInToGOC</code>, <code>ZinMirHoistGOCorActivationForConvFusion</code></td></tr>
+<tr><td>scale or batch-norm (<code>mul</code> with one constant)</td><td>GOC gain, or folded into the weights</td><td><code>FoldScale</code>, <code>FoldWeightsWithScale</code></td></tr>
+<tr><td>activation (relu, leaky, clamped, swish, sigmoid, tanh, gelu)</td><td>a pre- or post-GOC activation slot; transcendentals become a palette lookup table</td><td><code>MergeFusableActivationPairs</code>, <code>SimpleActivation</code></td></tr>
+<tr><td>transpose and reshape chains</td><td>the NEBypass transpose slot; symmetric pairs cancel</td><td><code>CollapseTranspose</code>, <code>ZinMirNETransposeFusion</code></td></tr>
+<tr><td>dequantize</td><td>folded into the convolution weight path as <code>kernel_scale</code> or <code>kernel_palettized_LUT</code></td><td><code>CollapseQuantDequant</code>, <code>DeduplicateStandaloneDequantGOCsAcrossConcat</code></td></tr>
+<tr><td>matrix multiply or linear</td><td>rewritten to a convolution, then takes the convolution epilogue rules</td><td><code>ReplaceMatmulWithConv</code></td></tr>
+<tr><td>two-live-input elementwise (<code>add(conv_a, conv_b)</code>)</td><td>does not fuse: stays a real <code>anec.add</code> engine layer (fails the one-constant guard)</td><td>barrier</td></tr>
+<tr><td>concat</td><td>a fusion boundary unless <code>IsFusableConcat</code> qualifies it</td><td>barrier</td></tr>
+<tr><td>scaled-dot-product attention</td><td>a hard segment cut between programs</td><td>barrier</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c22-fusion"></a><strong>Table 22.3.</strong> The fusable epilogues that collapse into the producing engine layer and the barriers that keep operations as separate layers.</p>
+<p>A two-live-input elementwise operation is the one barrier that follows from the GOC definition itself.
+The GOC is an affine of one tensor whose gain and offset are constants or per-channel vectors, so <code>add(conv_a, conv_b)</code> cannot be a GOC and remains a real <code>anec.add</code> engine layer that separates the two convolutions.
+A trailing activation can still fill the add's own post-GOC activation slot, but the add itself does not vanish.
+Concat is a boundary unless it qualifies as fusable, scaled-dot-product attention is a hard segment cut that matches the host's own segmentation, and the <code>ZinMir*Split</code> capacity passes can re-cut a fused layer that exceeds the tile or engine limit, so a fusion formed earlier can be undone downstream.</p>
+<h2 id="validator-surface"><a class="header" href="#validator-surface">Validator surface</a></h2>
+<p>Before an operation lowers, a per-layer validator checks it.
+The validators are a family of exported <code>_ANECValidate{Op}Layer</code> entry points, one per operation class, with an umbrella <code>_ANECValidateNetworkCreate</code> that iterates a network's layers and invokes the per-layer validator for each.
+The export table has 55 symbols whose name starts <code>_ANECValidate</code>, which split into 50 per-layer <code>…Layer</code> validators and 5 non-layer exports, whose roles are in <a href="#tbl-c22-nonlayer">Table 22.4</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>non-layer export</th><th>role</th></tr></thead><tbody>
+<tr><td><code>_ANECValidateNetworkCreate</code></td><td>the umbrella oracle: a dry-run of network creation that iterates the layers and invokes each per-layer validator</td></tr>
+<tr><td><code>_ANECValidate</code></td><td>the top-level wrapper for a single operation or descriptor</td></tr>
+<tr><td><code>_ANECValidateMPSModule</code>, <code>_ANECValidateMPSModuleCreate</code></td><td>validate an intermediate-language module before its conversion to the backend form</td></tr>
+<tr><td><code>_ANECValidateMutableProcedureInfo</code></td><td>validate a weight-editing procedure descriptor</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c22-nonlayer"></a><strong>Table 22.4.</strong> The five non-layer <code>_ANECValidate*</code> exports and the role of each, alongside the 50 per-layer validators.</p>
+<p>Five per-layer validators have no matching descriptor constructor, since they validate computed or umbrella operations rather than directly authored layers: argmin-max, global argmin-max, broadcast, cross-product, and elementwise.
+The same per-layer code runs in two places: the placement dry-run that decides whether an operation is eligible for the engine, and the backend legalizer during a real compile, so the eligibility prediction matches the compile outcome.</p>
+<p>Each validator checks the operand count and the shape, type, and attribute envelope for its operation, and emits a fixed reject string when a constraint fails.
+The matrix-multiply validator requires exactly two inputs, depth one on both, the output channel count equal to the first input's channel count, and the first input's output-channel bytes to fit kernel memory.
+It rejects with <code>"Matrix mult. layer can only have two bottoms"</code>, <code>"depth &gt; 1 is not supported for MatMult"</code>, and <code>"can not fit the Kmem"</code>.
+The convolution validator checks the kernel against the per-chip bounds and the channel-group divisibility, rejecting with <code>"Invalid conv kernel %s = %zd, It should be in [%zd,%zd]"</code> and <code>"input/output channels should be divisible by num group"</code>.</p>
+<p>The validators that gate a feature on the chip read a per-chip support byte, so the same operation can validate on one generation and reject on another (<a href="#tbl-c22-feature-gates">Table 22.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>operation</th><th>support byte</th><th>gated on</th></tr></thead><tbody>
+<tr><td>softmax</td><td><code>0x815</code></td><td>rejected on the older targets</td></tr>
+<tr><td>instance norm</td><td><code>0x816</code></td><td>per-chip</td></tr>
+<tr><td>dropout, random</td><td><code>0x4a9</code></td><td>the A15 and later generations only</td></tr>
+<tr><td>affine transform, resize, resample, padding mode</td><td><code>0x81d</code></td><td>the texture engine, absent on the M1</td></tr>
+<tr><td>dynamic gain-offset control</td><td><code>0x814</code></td><td>absent only on the smallest legacy parts</td></tr>
+<tr><td>three-dimensional convolution</td><td>dimension and kernel-depth fields</td><td>has the capability byte yet fails backend lowering</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c22-feature-gates"></a><strong>Table 22.5.</strong> Representative feature-gated validators, the per-chip support byte each reads, and the generation it gates on.</p>
+<p>The reject strings name the constraint plainly: a softmax on a target without <code>0x815</code> returns <code>"Softmax is not supported by this ANE architecture"</code>, a dropout without <code>0x4a9</code> returns <code>"Dropout layer is not supported on this architecture."</code>, and an affine transform without the texture engine returns <code>"affine transform is not supported on this architecture"</code>.
+The network-level umbrella adds its own checks, rejecting a module newer than the current schema, a bonded network the target cannot run, a unit-name collision, or a missing conversion record.
+The reject strings include <code>"Bonded networks are not supported on the target"</code> and <code>"ANE internal error: Unit name \"%s\" collision during MIL to ANEC IR conversion."</code>.</p>
+<p>Every per-layer validator is an exported, user-callable symbol: an operation whose validator accepts the schema is reachable by direct network authoring.
+This is the attested-is-not-reachable rule from chapter <a href="../part-1-machine/04-capability-surface.html">4</a> in its compiler form: an operation can pass its <code>_ANECValidate*Layer</code> schema check and still fail at backend lowering.
+On the M1 the top-k, sort, and dynamic-slice validators accept their inputs and then reject at code generation, and the unflatten validator passes yet fails lowering for every variant.
+Three-dimensional convolution has its capability byte yet fails backend lowering on every device mask.
+One opcode-surface gap exists below the validator layer: the contrast-adaptive-sharpening and reverse operations have an internal validation routine but no exported per-layer validator, so they are not reachable by direct authoring at all.
+The reachable surface here is confirmed against an on-device sweep.</p>
+<p>Validation happens in three distinct layers.
+The exported <code>_ANECValidate*</code> catalog, the per-layer and umbrella validators, is the outward face.
+Behind it the in-binary <code>ValidateSemantics_Impl</code> family has the <code>MatchParams</code> and <code>MatchStatus</code> pattern grammar that the exported validators are generated from.
+Below both, an in-kernel <code>ZinComputeProgramValidate*</code> family validates the compiled program again at load, across single-plane, multi-plane, uncompressed, and tiled-compressed matrix forms.</p>
+<h2 id="native-layers-and-netplist-authoring"><a class="header" href="#native-layers-and-netplist-authoring">Native layers and netplist authoring</a></h2>
+<p>The 50 per-layer validators pair with 45 native hardware layer descriptors, the operation classes the engine silicon implements.
+A few of these never reach the engine through the conversion-tool front door, since that path always decomposes them, yet they are reachable by authoring the network description directly.
+The fused scaled-dot-product-attention layer is one such: its descriptor takes four or five inputs, the query, key, value, scale, and an optional additive mask, and its validator rejects with <code>"4 or 5 bottoms must be present for SDPA"</code> and <code>"Mask format must be same as Q, K and V"</code>.
+Its one parsed parameter is the max-subtraction flag, which defaults to off and must be set on for a numerically correct softmax, and the causal-decode form is not a separate descriptor but the additive-mask variant.</p>
+<p>The network description is a property-list document, the netplist, schema version 1.0.10, whose keys the compiler reads verbatim and <a href="#tbl-c22-netplist">Table 22.6</a> names with the role of each.</p>
+<div class="table-wrapper"><table><thead><tr><th>key</th><th>role</th></tr></thead><tbody>
+<tr><td><code>Networks</code>, <code>ProcedureList</code></td><td>the network names and the callable entry points</td></tr>
+<tr><td><code>Units</code>, <code>Weights</code></td><td>the ordered layer list and the weight-blob files</td></tr>
+<tr><td><code>InputList</code>, <code>OutputList</code>, <code>OperationList</code></td><td>the external ports and the operation order</td></tr>
+<tr><td><code>Bottom</code>, <code>Type</code>, <code>Params</code></td><td>per-unit wiring, layer-type tag, and typed attributes</td></tr>
+<tr><td><code>BatchSize</code>, <code>InputChannels</code>, <code>InputDepth</code>, <code>InputHeight</code>, <code>InputWidth</code>, <code>InputInterleave</code></td><td>the port shape five-tuple and the channel-interleave packing</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c22-netplist"></a><strong>Table 22.6.</strong> The netplist dictionary keys the compiler reads, with the role of each.</p>
+<p>A layer is a unit with a <code>Type</code> tag, a <code>Bottom</code> wiring list, and a <code>Params</code> sub-dictionary of typed attributes, and the wiring is by symbol name.
+The compiled program that comes out is a container with the magic <code>0xbeefface</code>, whose text section contains the task-descriptor register-write stream and whose <code>__KERN_N</code> sections store the weight coefficients, the same image the kernel loads.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-6-silicon/21-memory-hierarchy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-7-toolchain/23-program-format.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-6-silicon/21-memory-hierarchy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-7-toolchain/23-program-format.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>23. Program and container format - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-7-toolchain/23-program-format.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="23-program-and-container-format"><a class="header" href="#23-program-and-container-format">23. Program and container format</a></h1>
+<blockquote>
+<p>A compiled network reaches the engine as two layered files.
+The upper one is a dispatch descriptor, a FlatBuffer that names the operations and binds the buffers.
+Beneath it the hardware container is a Mach-O-shaped file with the magic <code>0xbeefface</code>, holding the register-write program and the weight banks.
+The descriptor tracks dispatch count, not operation count.
+A fused graph of any depth reduces to one inference operation bracketed by input and output casts, and a bridge cut adds one per segment.
+Between them is the hardware task descriptor <code>ZinAneTdHw_v10</code>, a register image in seven groups.
+It serializes sparsely as 44-byte records whose buffer bases are relocation slots resolved at load.</p>
+</blockquote>
+<h2 id="two-layers"><a class="header" href="#two-layers">Two layers</a></h2>
+<p>A model passes through six on-disk and in-memory forms (<a href="#tbl-c23-forms">Table 23.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Stage</th><th>Format</th><th>Tag</th><th>Role</th></tr></thead><tbody>
+<tr><td>Intermediate-language text</td><td>text</td><td>versioned <code>3520.4.1</code></td><td>the compiler's input</td></tr>
+<tr><td>Network description</td><td>property list</td><td>version <code>1.0.10</code></td><td>the layer and wiring graph</td></tr>
+<tr><td>Hardware container</td><td>Mach-O shape</td><td><code>0xbeefface</code></td><td>register-write program plus weights</td></tr>
+<tr><td>Dispatch descriptor</td><td>FlatBuffer</td><td>vtable <code>0c00 1400 0400 0800</code></td><td>the operation chain the runtime submits</td></tr>
+<tr><td>Loaded program image</td><td>Mach-O shape, signed</td><td><code>0xbeefface</code></td><td>the same container, virtualized per load</td></tr>
+<tr><td>Firmware container</td><td>sectioned blob</td><td><code>ANEH</code> / <code>ANEP</code> / <code>ANES</code></td><td>the on-package load form</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-forms"></a><strong>Table 23.1.</strong> The six on-disk and in-memory forms a model passes through, each with its format, identifying tag, and role.</p>
+<p>The compiler produces a dispatch descriptor and a hardware container for one network, cached together.
+The dispatch descriptor is above the operation level of the intermediate language: it gives the operation chain as a parametric program structure, with each operation reduced to an argument frame and a kernel attribute blob.
+The hardware container is below that level: it stores the register-write stream, weight coefficients laid out for the streaming datapath, and typed input and output layout, all in a Mach-O-shaped file with the magic <code>0xbeefface</code>.
+The hardware container and the loaded program image share one byte format: the loaded copy is the on-disk container after the address relocations are resolved.</p>
+<p>The <a href="#fig-c23-stack">figure 23.1</a> shows the layering, with the dispatch descriptor over the hardware container over the task-descriptor register groups that drive the DMA engines and the multiply array.</p>
+<figure id="fig-c23-stack">
+<pre class="mermaid">
+flowchart TB
+  E5["Dispatch descriptor, FlatBuffer, format_version 4"] --> HWX
+  subgraph HWX["Hardware container, Mach-O shape, magic 0xbeefface"]
+    TD["Hardware task descriptor, ZinAneTdHw_v10, seven register groups"]
+  end
+  TD --> DMA["Tile-DMA and kernel-DMA engines, relocation-slot bases"]
+  TD --> MUL["Multiply-accumulate array, op-mode and dimension registers"]
+</pre>
+<figcaption><strong>Figure 23.1.</strong> The program format, with the dispatch descriptor over the hardware container over the task-descriptor register groups that control the DMA engines and the multiply array.</figcaption>
+</figure>
+<h2 id="dispatch-descriptor"><a class="header" href="#dispatch-descriptor">Dispatch descriptor</a></h2>
+<p>The dispatch descriptor is a FlatBuffer whose root table has four fields.
+The serializer method set yields the root layout, validated byte for byte against a real descriptor (<a href="#tbl-c23-root">Table 23.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>Voffset</th><th>Contents</th><th>Type</th></tr></thead><tbody>
+<tr><td>0</td><td>4</td><td>the symbol and section name vector</td><td><code>symbol_names: [string]</code></td></tr>
+<tr><td>1</td><td>8</td><td>build-info key and value pairs</td><td><code>build_info: BuildInfo</code></td></tr>
+<tr><td>2</td><td>12</td><td>the section descriptor vector</td><td><code>sections: [Section]</code></td></tr>
+<tr><td>3</td><td>16</td><td>inline scalar, value <code>4</code></td><td><code>format_version: int</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-root"></a><strong>Table 23.2.</strong> The four fields of the dispatch-descriptor root table, with their vtable offsets, contents, and types.</p>
+<p>The operation set the descriptor can contain is fixed.
+The serializer instantiates one attribute-serialization template per operation kind, and the twelve instantiations enumerate the complete set that <a href="#lst-c23-schema">listing 23.1</a> recovers as the root table and the operation-type enumeration.</p>
+<pre><code class="language-fbs">// E5Program root table, recovered from the E5Serializer symbol family
+// and validated against a real H13C dispatch descriptor (3816 B).
+table E5Program {
+  symbol_names: [string];     // operation, tensor, and section names
+  build_info: BuildInfo;      // compiler version and source path k/v
+  sections: [Section];        // per-operation arg_frame + op_attrs refs
+  format_version: int;        // observed == 4
+}
+
+enum OpType : ubyte {
+  Cast, AneInference, EirInference, CpuInference, BnnsCpuInference,
+  MlcCpuInference, MpsGraphInference, E5MinimalCpu, Quant, Dequant,
+  Barrier, JitCall            // ordinals inferred; membership measured
+}
+</code></pre>
+<p><a id="lst-c23-schema"></a><strong>Listing 23.1.</strong> The recovered FlatBuffer schema for the dispatch-descriptor root table and the twelve-member operation-type enumeration.</p>
+<p>The schema was recovered from the serializer symbol family rather than from embedded reflection, since the runtime strips the binary schema and the schema source.
+The deciding evidence is the <code>E5Serializer</code> method set, one serializer method per schema table, with the attribute-serialization template instantiated once per operation kind, so the table list and the operation-type enumeration fall straight out of the symbols.
+<a href="#tbl-c23-serializers">Table 23.3</a> pairs each demangled serializer method with the schema table or operation-type union it proves.</p>
+<div class="table-wrapper"><table><thead><tr><th>Demangled serializer method</th><th>Schema element it proves</th></tr></thead><tbody>
+<tr><td><code>SerializeFunction</code></td><td><code>table Function</code></td></tr>
+<tr><td><code>SerializeBlock</code></td><td><code>table Block</code></td></tr>
+<tr><td><code>SerializeOperation</code></td><td><code>table Operation</code></td></tr>
+<tr><td><code>SerializeOpArgFrame</code></td><td>the <code>__arg_frame</code> section of an operation</td></tr>
+<tr><td><code>SerializeOperand</code></td><td><code>table Operand</code></td></tr>
+<tr><td><code>SerializeIOPort</code></td><td><code>table IOPort</code></td></tr>
+<tr><td><code>SerializeAliasSymbol(string, uint, uint)</code></td><td><code>table AliasSymbol{name, symbol_index, addr_offset}</code></td></tr>
+<tr><td><code>SerializeBuildInfo</code></td><td><code>table BuildInfo</code></td></tr>
+<tr><td><code>SerializeOpAttrs&lt;CastOpT&gt;</code> and 11 more</td><td><code>union OpAttrs</code> and <code>enum OpType</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-serializers"></a><strong>Table 23.3.</strong> The dispatch-descriptor serializer methods, each proving one schema table or the operation-type union.</p>
+<p>The tensor and surface descriptor each have a fixed field list, lifted verbatim from one runtime type-encoding string and reproduced in <a href="#lst-c23-tensordesc">listing 23.2</a>.</p>
+<pre><code class="language-c">/* TensorDescriptor, the per-operand layout record, from the runtime type encoding.
+   Q = u64, i = i32; the two leading pointers are runtime-only and not serialized. */
+struct TensorDescriptor {
+  void    *data, *reserved;     /* runtime pointers, not on the wire */
+  uint64_t dim[4], stride[4];
+  uint64_t width, height, channels, batch_number, sequence_length;
+  uint64_t stride_width, stride_height, stride_channels;
+  uint64_t stride_batch_number, stride_sequence_length;
+  int32_t  storage_type;        /* the element-type code */
+};
+</code></pre>
+<p><a id="lst-c23-tensordesc"></a><strong>Listing 23.2.</strong> The tensor and surface descriptor field list, recovered verbatim from a runtime type-encoding string.</p>
+<p>The canonical program shape is a fused compute operation bracketed by input and output format casts.
+A network that fuses to one engine dispatch decodes as <code>Op0_Cast</code> then <code>Op1_AneInference</code> then <code>Op2_Cast</code>.
+The cast operations convert the host half-precision layout to the engine-internal interleaved layout on input and back on output; the single inference operation is the entire fused graph.</p>
+<p>Each operation has two sections: an argument frame that names the operand binding and the per-axis tensor layout, and an attribute blob that sets the kernel parameters.
+The attribute blob is a nested FlatBuffer sub-descriptor, not expanded microcode: its byte diversity is 0.19, the low value of a structured and sparse record, and the descriptor size does not change with the compute shape.
+A contraction over an inner dimension of 64 and one over an inner dimension of 256 both produce the same descriptor size, so the compute shape is a parameter the descriptor records.</p>
+<p>Two properties follow from this structure.
+The descriptor is depth-invariant: a one-operation graph and a six-operation fused graph both reduce to a single inference operation of the same size.
+It tracks the dispatch count: a bridge operation that cuts the graph into three segments produces three inference operations and a larger descriptor.</p>
+<h2 id="hardware-task-descriptor"><a class="header" href="#hardware-task-descriptor">Hardware task descriptor</a></h2>
+<p>The hardware task descriptor is the register-level program the engine runs: each group below is a block of register writes that configures one engine unit.</p>
+<div class="table-wrapper"><table><thead><tr><th>Group</th><th>Struct base</th><th>Registers</th><th>Register base</th><th>Contents</th></tr></thead><tbody>
+<tr><td>Kernel and common</td><td><code>+0x2c</code></td><td>34</td><td><code>0x5500</code></td><td>kernel-DMA enable, format, stride, task type, network id</td></tr>
+<tr><td>Dimensions</td><td><code>+0xfc</code></td><td>19</td><td>none</td><td>input and output width, height, depth, channels, groups, transpose</td></tr>
+<tr><td>Tile DMA</td><td><code>+0x150</code></td><td>69</td><td><code>0x4d00</code></td><td>the three tile-DMA engines: enable, cache hints, base address, strides</td></tr>
+<tr><td>Element-wise and planar</td><td><code>+0x26c</code></td><td>30</td><td><code>0x4100</code></td><td>element-wise and planar-engine config, padding mode</td></tr>
+<tr><td>L2 and texture</td><td><code>+0x2ec</code></td><td>14</td><td><code>0x4500</code></td><td>L2 source and result config, texture mode</td></tr>
+<tr><td>Kernel format and op mode</td><td><code>+0x32c</code></td><td>11</td><td><code>0x4900</code></td><td>op mode, kernel alignment, sparse and palette format, bias enables</td></tr>
+<tr><td>L2 result</td><td><code>+0x360</code></td><td>21</td><td><code>0x5100</code></td><td>L2-result base, strides, wrap, result format</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-td-groups"></a><strong>Table 23.4.</strong> The seven register groups of the hardware task descriptor, each with its struct base offset, register count, addressable aperture base, and contents.</p>
+<p>Between the parametric attribute blob and the register-write records the engine executes is the hardware task descriptor.
+On the M1 generation it is the versioned descriptor <code>ZinAneTdHw_v10</code>, a flat register image the compiler fills field by field and then serializes into address and value pairs, partitioned into the seven groups <a href="#tbl-c23-td-groups">Table 23.4</a> lists.
+The version family is per generation: the same descriptor is instantiated under a different version number for each silicon family, and the byte offsets, register addresses, and field widths move between versions.</p>
+<p>The dimension fields show the hardware encoding behind the per-axis size limits.
+Spatial dimensions are 15-bit and channel dimensions are 17-bit, read from the register getters and confirmed against the vendor's own field symbols, as <a href="#lst-c23-td-fields">listing 23.3</a> gives with each field's descriptor offset and bit mask.</p>
+<pre><code class="language-c">/* ZinAneTdHw_v10 dimension and DMA fields, offsets on the descriptor base.
+   Field names and widths confirmed against the vendor TD symbol table. */
+Win        @0x0f4  mask 0x07fff   /* input width,  15-bit */
+Hin        @0x0f6  mask 0x07fff   /* input height, 15-bit */
+Cin        @0x100  mask 0x1ffff   /* input channels,  17-bit (up to 131071) */
+Cout       @0x104  mask 0x1ffff   /* output channels, 17-bit */
+OCGSize    @0x118  mask 0x07      /* output-channel-group size, 3-bit */
+numGroups  @0x11c  mask 0x1fff    /* conv groups, 13-bit */
+
+/* The four DMA engines. Base addresses are relocation slots, resolved
+   at load; strides and formats are written in-image. */
+TileDMASrc1 base   reloc reg 0x1344   /* input tile read  */
+TileDMASrc2 base   reloc reg 0x134a   /* second operand   */
+TileDMADst  base   reloc reg 0x1442   /* output tile write */
+KernelDMASrc       group G0 @0x2c     /* weight banks, up to 16 sub-buffers */
+</code></pre>
+<p><a id="lst-c23-td-fields"></a><strong>Listing 23.3.</strong> The dimension and direct-memory-access fields of the hardware task descriptor, with their descriptor offsets and bit masks.</p>
+<p>The compiler does not write buffer base addresses into the image at compile time.
+It leaves each as a named relocation slot keyed by a register address, and the loader patches the device address in.
+The full v10 address-register relocation table is the input tile, second operand, output tile, and four kernel coefficient streams, which <a href="#tbl-c23-reloc">Table 23.5</a> maps slot by slot.</p>
+<div class="table-wrapper"><table><thead><tr><th>Relocation register</th><th>Slot</th></tr></thead><tbody>
+<tr><td><code>0x1344</code></td><td>input tile read base</td></tr>
+<tr><td><code>0x134a</code></td><td>second-operand read base</td></tr>
+<tr><td><code>0x1442</code></td><td>output tile write base</td></tr>
+<tr><td><code>0x1554</code></td><td>kernel bias stream</td></tr>
+<tr><td><code>0x1558</code></td><td>kernel post-scale stream</td></tr>
+<tr><td><code>0x155c</code></td><td>kernel palette-lookup stream</td></tr>
+<tr><td><code>0x1560</code></td><td>kernel activation-lookup stream</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-reloc"></a><strong>Table 23.5.</strong> The v10 relocation-register map, the address slots left symbolic at compile time and patched to device addresses at load.</p>
+<p>The four weight sub-streams, bias, post-scale, palette lookup, and activation lookup, each get their own relocation slot, so a convolution with a folded batch normalization lowers to four independent weight streams.
+Each direct-memory-access stride is a 26-bit signed field located at bit 6 of its register word, range-checked against a per-chip bound table.
+A tensor's element strides become these register words: a row stride, channel stride, depth stride, and group stride per engine.</p>
+<p>The loader patches more than buffer bases.
+Each relocation is a custom bar that writes a resolved value, a device address, an on-chip-memory data-set identifier, or a buffer offset, into an exact descriptor bit-field named by its register, bit offset, and bit width.
+Runtime-variable shapes and strides bind separately as live-in parameters, each tied to a named procedure input and range-checked against a start, stop, and step, so one compiled program serves a range of input shapes without recompiling.</p>
+<p>The descriptor layout is versioned per silicon generation: the M1 builds the v10 image, and other generations build a different version under the same family of accessors, with the dimension block, relocation-register addresses, and field widths all moving between versions.
+The M1 v10 image omits the compute-cache direct-memory-access engine entirely: every setter for the on-chip atomic, counter, and wait-event primitives asserts that it is unsupported on this architecture.
+This is the silicon-level reason a resident in-place state buffer cannot be expressed on the M1 and falls back to a shared buffer.
+Any tool that reads task-descriptor bytes must dispatch on the version number.</p>
+<p>The serializer emits the image sparsely: a register reaches the stream only when its value differs from the architectural default, which is why a small contraction yields only six to eight records.
+Each surviving record is a fixed 44 bytes: a count marker, the register address in one IOMMU aperture, and one or two device addresses in a second aperture that are written to the DMA base-address registers.
+The register addresses are per-load device addresses, virtualized by the IOMMU, so the same logical register resolves to different addresses across loads.</p>
+<h2 id="a-decoded-program"><a class="header" href="#a-decoded-program">A decoded program</a></h2>
+<p>A 64-to-64 half-precision linear layer with an identity weight matrix is the smallest real program on the M1 host that includes a resolved layout sidecar.
+Its container is a Mach-O-shaped file with the magic <code>0xbeefface</code>, a pseudo-architecture marker, and the executable file type.
+The resolved frame runs <code>[1, 1, 1, 64]</code> half-precision input to <code>[1, 1, 1, 64]</code> half-precision output, all strides 128 bytes.</p>
+<p>The container maps each external tensor and the weight bank to its own page-aligned aperture in the engine virtual address space, base <code>0x30000000</code>, decoded segment by segment in <a href="#tbl-c23-segmap">Table 23.6</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Segment</th><th>Section</th><th>Virtual address</th><th>Size</th><th>Protection</th><th>Role</th></tr></thead><tbody>
+<tr><td>guard</td><td>none</td><td><code>0x00000000</code></td><td><code>0x4000</code></td><td>none</td><td>guard page</td></tr>
+<tr><td>input</td><td>const</td><td><code>0x30008000</code></td><td><code>0x80</code></td><td>read</td><td>input aperture</td></tr>
+<tr><td>output</td><td>data</td><td><code>0x3000c000</code></td><td><code>0x80</code></td><td>write</td><td>output aperture</td></tr>
+<tr><td>text</td><td>text</td><td><code>0x30010000</code></td><td><code>0x474</code></td><td>read and execute</td><td>register-write program</td></tr>
+<tr><td>weights</td><td>kernel</td><td><code>0x30018000</code></td><td><code>0x2000</code></td><td>read</td><td>weight coefficients</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-segmap"></a><strong>Table 23.6.</strong> The segment map of the decoded identity linear layer container, with each segment's virtual address, size, protection, and role.</p>
+<p>The segment protection encodes the hardware read and write direction: read for the input and the weights, write for the output.
+Two named port descriptors form the external binding table, each a 24-byte body of <code>{byteSize, apertureVA, nameRef}</code>, binding <code>t0</code> to the input aperture and <code>t2</code> to the output aperture.</p>
+<p>The register-write program in the text section is 0x474 bytes: a 12-byte header then a sparse packed register image holding exactly two task-descriptor blocks, an input layout-convert and the fused matrix-multiply, matching the two operations the symbol table names.
+<a href="#tbl-c23-regprog">Table 23.7</a> decodes the program record by record, each with its offset, bytes, and meaning.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Bytes</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>header</td><td><code>00 00 00 00 00 00 9c 00 08 04</code></td><td>size and version words, register-count base <code>0x408</code></td></tr>
+<tr><td>TD-0 +0x010</td><td><code>28 00 00 00 ...</code></td><td>record marker <code>0x28</code>, a tile-DMA base relocation slot</td></tr>
+<tr><td>TD-0 +0x034</td><td>16 times <code>80 00 00 00</code></td><td>per-group value <code>0x80</code> for the 16 output-channel-group partitions</td></tr>
+<tr><td>TD-0 +0x0c8</td><td><code>21 a0 00 50 41 20 00 00</code></td><td>register <code>0x5021</code> set to <code>0x2041</code>, the kernel-common record</td></tr>
+<tr><td>TD-0 +0x128</td><td><code>31 20 00 01</code></td><td>op-config descriptor <code>0x2031</code>, starts the operation</td></tr>
+<tr><td>TD-1 +0x234</td><td>16 times <code>81 00 00 00</code></td><td>the second descriptor's 16 partitions</td></tr>
+<tr><td>TD-1 +0x274</td><td><code>00 02 04 ... 1e</code></td><td>the 16 output-channel-group offset indices</td></tr>
+<tr><td>TD-1 +0x470</td><td><code>31 20 30 01</code></td><td>op-config descriptor variant, terminates the program</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-regprog"></a><strong>Table 23.7.</strong> The register-write program decoded record by record, with each record's offset, bytes, and meaning.</p>
+<p>The 16-wide register runs are the binary form of the 16 output-channel-group partitions, one per weight sub-kernel.
+The kernel-common record <code>0x5021</code> set to <code>0x2041</code> is identical across both descriptor blocks and matches the firmware's own program-manager log byte for byte.</p>
+<p>A live M1 program image has the same shape in the task-descriptor stream itself.
+Its program-image text section contains three chained <code>ZinAneTd&lt;7u&gt;</code> records linked by a next-record pointer at offset <code>+0x1c</code> and followed to a null terminator.
+Each operation descriptor has a 32-bit opcode word, and the three operations of this program decode as the opcode words <a href="#tbl-c23-opcodes">Table 23.8</a> lists.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th>Opcode word</th></tr></thead><tbody>
+<tr><td>Convolution</td><td><code>0x5042a063</code></td></tr>
+<tr><td>Reduce-mean</td><td><code>0x5000a021</code></td></tr>
+<tr><td>Matrix multiply</td><td><code>0x5000b021</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-opcodes"></a><strong>Table 23.8.</strong> The version-7 codegen opcode words of three operations decoded from a live M1 task-descriptor stream.</p>
+<p>These are the version-7 H13 codegen opcodes.
+The high half-word, <code>0x5042</code> or <code>0x5000</code>, is shared across operations, and the low 16 bits distinguish the operation.
+The full operation identity is spread across the lookup-table and configuration words as well as the opcode word.
+The container closes with an <code>LC_THREAD</code> trailer holding the procedure and tensor names <code>main_ane</code>, <code>t0_ane</code>, and <code>t5_ane@output</code>.</p>
+<p>The container header is a 32-byte Mach-O-shaped block (<a href="#tbl-c23-header">Table 23.9</a>), and its load-command census names the binding and configuration records the loader walks.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Value</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0x00</code></td><td>magic</td><td><code>0xbeefface</code></td><td>engine compute executable</td></tr>
+<tr><td><code>0x04</code></td><td>cputype</td><td><code>0x80</code></td><td>engine pseudo-architecture</td></tr>
+<tr><td><code>0x08</code></td><td>cpusubtype</td><td><code>0x4</code></td><td>the H13 codegen revision</td></tr>
+<tr><td><code>0x0c</code></td><td>filetype</td><td><code>0x2</code></td><td>executable</td></tr>
+<tr><td><code>0x10</code></td><td>ncmds</td><td>15</td><td>load-command count</td></tr>
+<tr><td><code>0x14</code></td><td>sizeofcmds</td><td><code>0x32d8</code></td><td>load-command bytes</td></tr>
+<tr><td><code>0x18</code></td><td>flags</td><td><code>0x200000</code></td><td></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-header"></a><strong>Table 23.9.</strong> The hardware-container header fields of the decoded identity linear layer, with each field's value and meaning.</p>
+<p>The 15 load commands of this container break down as seven segment commands, two input and output port descriptors, three operation descriptors, one build-info banner, one source-note, and one symbol table.
+The two-port, three-operation-descriptor signature is the form of a single-input, single-output graph: one header descriptor that lists the aperture bases plus one descriptor per engine pass.
+The header operation descriptor has an aperture-address table that pre-resolves the segment bases to the engine virtual map, re-virtualized per load by the input-output memory-management unit.</p>
+<p>The build-info banner is the compiler invocation that produced the container, recorded verbatim.
+It names the toolchain (<code>zin_ane_compiler v9.509.0</code>, the intermediate-language component <code>3520.4.1</code>) and the target plus the live flag set, of which the relevant entries <a href="#lst-c23-buildinfo">listing 23.4</a> reproduces are the target selector and the streaming and cache policy.</p>
+<pre><code class="language-text">-t h13g                              target H13, the M1 engine
+--fl2-cache-mode=resident            keep the L2 working set resident
+--fkernel-rewind=enabled             kernel-stream rewind
+--split-kernel-section=true          split the weight section
+--max-kernel-section-size=134217728  128 MB weight-section ceiling
+--e4m3-overflow-setting=Saturate     fp8 overflow policy: clamp, not NaN
+--memcache-size=4194304  --bss-limit=3221225472
+--foptimize-ne-utilization=true  --enable-global-cw-optimization=true
+-i  .../model.mil   -o  .../model.hwx.tmp
+</code></pre>
+<p><a id="lst-c23-buildinfo"></a><strong>Listing 23.4.</strong> The entries of the build-info banner, the target selector plus the streaming, cache, and fp8 policy flags.</p>
+<p>The container is self-describing.
+Its symbol table lists the 24-entry element-type catalog with range encodings, half-precision as type 5, the 8-bit floating form as type 16, and 4-bit integer as type 23, alongside the per-axis stride frame for each tensor as a typed array, both reproduced in <a href="#lst-c23-typecat">listing 23.5</a>.</p>
+<pre><code class="language-c">void:t1  int8:t2=r2;0;127  uint8:t3  int16:t4  float16:t5=r1;2;0  float:t6=r1;4;0
+... e4m3:t16=r1;1;0 ... int4:t23=r1;-8;7
+t0:t44=ar1;0;1; s128n: s128c: s128h: s2w:5   // batch, channel, height, width strides
+</code></pre>
+<p><a id="lst-c23-typecat"></a><strong>Listing 23.5.</strong> The container's element-type catalog and per-axis stride frame.</p>
+<p>The container stores each weight tensor at a decoded symbol region with a fixed tiling.
+A convolution weight is in a <code>0xC0</code>-stride layout and a matrix-multiply weight in a <code>0x40</code>-stride layout, the two strides <a href="#tbl-c23-wtstride">Table 23.10</a> gives, and a weight-value edit leaves the program descriptor unchanged, so weights are patchable in place.</p>
+<div class="table-wrapper"><table><thead><tr><th>Weight kind</th><th style="text-align: right">Tiling stride</th></tr></thead><tbody>
+<tr><td>Convolution weight</td><td style="text-align: right"><code>0xC0</code></td></tr>
+<tr><td>Matrix-multiply weight</td><td style="text-align: right"><code>0x40</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-wtstride"></a><strong>Table 23.10.</strong> The decoded weight-region tiling stride per weight kind, the fixed layout that lets a host patch weight values without recompiling.</p>
+<p>The weight bank has 16 sub-kernels at a 512-byte stride.
+Decoding the bytes proves the model: only 64 of the 8192 bytes are nonzero, each the half-precision value <code>0x3c00</code> equal to 1.0, laid one per partition across the 16 sub-kernels, the diagonal of a 64-by-64 identity matrix.
+The container is the complete compiled form of an identity linear layer that copies its input through the multiply-accumulate array.</p>
+<p>The dispatch descriptor and the container correspond to one network at a time.
+A stateful recurrent model with one input and five held states decodes as six input casts, one fused inference operation, and six output casts, with the state buffers laid at 16-kilobyte strides.
+The whole fused graph is still a single inference operation and a single dispatch.</p>
+<h2 id="on-disk-container-decoded-segment-by-segment"><a class="header" href="#on-disk-container-decoded-segment-by-segment">On-disk container, decoded segment by segment</a></h2>
+<p>A second M1 sample, an <code>h13g</code> container of 64 kibibytes, confirms the same format and contributes the deltas below; its segment map, <code>+0x1c</code> next-record chain, <code>0xC0</code> and <code>0x40</code> weight strides, build-info banner, and element-type catalog all match the identity-layer decode above.
+The delta that proves the format is a Mach-O variant rather than a Mach-O proper is the header magic: <code>0xbeefface</code> is little-endian bytes <code>CE FA EF BE</code> where a real 64-bit Mach-O would have <code>0xfeedfacf</code>.
+Patching those four bytes lets <code>otool</code> and <code>rabin2</code> parse the file, while the in-kernel loader accepts the engine magic directly.</p>
+<p>The segment commands name <code>__FVMLIB</code>, <code>__TEXT</code>, and <code>__KERN_0</code> regions.
+The two <code>__FVMLIB</code> windows declare the input and output tensors with <code>fileoff</code> and <code>filesize</code> both zero: they have no on-disk bytes and exist only as virtual-memory declarations that the kernel maps into the address-translation aperture at submit time.
+The window sections align to <code>0x4000</code>, the 16-kibibyte page granule of the address-translation unit, while the task-descriptor and weight sections align to <code>0x40</code>, the 64-byte engine tile granule.
+A pair of window-binding load commands, each a <code>{u32 size, u32 pad, u64 vmaddr, char name[8]}</code> record, binds the symbolic names <code>t0_ane</code> and <code>t5_ane</code> to the input and output virtual addresses.</p>
+<h3 id="task-descriptor-linked-list"><a class="header" href="#task-descriptor-linked-list">Task-descriptor linked list</a></h3>
+<p>This sample has three <code>ZinAneTd</code> records linked through the <code>+0x1c</code> next-offset field at <code>0x000</code> to <code>0x300</code> to <code>0x500</code> to terminator.
+Each descriptor header decodes into a small set of fields, among them the next-offset field that chains the list (<a href="#tbl-c23-td-header">Table 23.11</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>+0x00</code></td><td>index and flags</td><td>a 16-bit index plus a flags high byte, where <code>0x03</code> marks the last or barrier record</td></tr>
+<tr><td><code>+0x04</code></td><td>size</td><td>a per-descriptor size or latency field</td></tr>
+<tr><td><code>+0x08</code></td><td>op and engine config</td><td>an operation-kind word whose low byte distinguishes the engine pass</td></tr>
+<tr><td><code>+0x10</code></td><td>config mask</td><td>an engine configuration mask sharing a <code>0x00fff8xx</code> prefix across records</td></tr>
+<tr><td><code>+0x18</code></td><td>DMA word</td><td>the direct-memory-access or compute descriptor word</td></tr>
+<tr><td><code>+0x1c</code></td><td>next offset</td><td>the byte offset of the next descriptor, zero at the tail</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-td-header"></a><strong>Table 23.11.</strong> The decoded header fields of a <code>ZinAneTd</code> task descriptor, with the next-offset field at <code>+0x1c</code> that chains the list.</p>
+<p>The weight bases each descriptor consumes are not in the header but in an inline array of relocations against <code>__KERN_0</code>.
+The twelve relocations on <code>__text</code> are the tile base offsets: the first weighted descriptor reads eight tiles, the third reads four, and the middle descriptor has no kernel relocation and so is a non-weighted pass such as an activation, reshape, or pool.</p>
+<h3 id="weight-tiling-and-the-per-lane-naming"><a class="header" href="#weight-tiling-and-the-per-lane-naming">Weight tiling and the per-lane naming</a></h3>
+<p>The <code>__kern_0</code> section stores the half-precision weight coefficients split into 64-byte-aligned tiles, one tile per engine compute lane, named in the symbol table as <code>K&lt;sha256&gt;_ne_&lt;i&gt;</code> where the index <code>i</code> selects the lane.
+The first weight in this sample, <code>K596A4B73…</code>, splits into eight tiles <code>_ne_0</code> through <code>_ne_7</code> at the <code>0xc0</code>-byte convolution stride of <code>3 × 64</code>.
+The second weight, <code>KE125552B…</code>, splits into four tiles <code>_ne_0</code> through <code>_ne_3</code> at the <code>0x40</code>-byte matrix-multiply stride, each tile a small weight padded up to the 64-byte tile granule.
+The symbol table also lists tiles <code>_ne_4</code> through <code>_ne_15</code> for that second weight, all pointing at the section end as empty sentinel tiles for the unused lanes, distinguished by a <code>desc</code> field of zero against <code>0x0002</code> on the live tiles.
+The tiling rule this sample exhibits is that a weight splits into <code>min(8, lanes)</code> tiles, each padded to a multiple of 64 bytes and laid out contiguously, with each descriptor referencing tile <code>i</code> by its 64-byte-aligned offset through a relocation.</p>
+<h3 id="stabs-style-shape-descriptors"><a class="header" href="#stabs-style-shape-descriptors">Stabs-style shape descriptors</a></h3>
+<p>The input and output tensors are shaped through stabs-style type descriptors in the symbol table, the entries with symbol type <code>0x20</code>, encoded as <code>s&lt;stride&gt;&lt;axis&gt;</code> byte-stride lists over the four axes <code>n</code> for batch, <code>c</code> for channel, <code>h</code> for height, and <code>w</code> for width, as <a href="#lst-c23-stabs">listing 23.6</a> gives for the bound input and output.</p>
+<pre><code class="language-c">t0_ane  (input,  vm 0x30000000):  s8192n / s1024c / s64h / s2w
+t5_ane  (output, vm 0x30004000):  s64n   / s64c   / s64h / s2w
+</code></pre>
+<p><a id="lst-c23-stabs"></a><strong>Listing 23.6.</strong> The stabs-style shape descriptors for the bound input and output tensors, encoding the per-axis byte stride.</p>
+<p>The input strides describe an eight-channel tensor packed channel-major into the 64-byte tile and 16-kibibyte page tiling.
+The width stride of 2 bytes is one half-precision element, the height stride of 64 bytes is one tile row, and the channel stride of 1024 bytes is sixteen height rows.
+The same symbol table enumerates the full hardware element-type catalog, the wider set decoded under the element-type enumeration section below.</p>
+<h3 id="build-manifest"><a class="header" href="#build-manifest">Build manifest</a></h3>
+<p>The build manifest matches the banner decoded above and also names the bundle <code>com.apple.ANECompilerFramework</code>.
+Three <code>LC_THREAD</code> commands store the per-engine register and thread state, the context-restore blobs the kernel pushes before it launches the descriptor chain.</p>
+<h2 id="element-type-and-operation-enumerations"><a class="header" href="#element-type-and-operation-enumerations">Element-type and operation enumerations</a></h2>
+<p>The serialization element-type enumeration the descriptor uses for an operand is a closed set of eleven codes, which <a href="#tbl-c23-eltcodes">Table 23.12</a> gives.</p>
+<div class="table-wrapper"><table><thead><tr><th>Code</th><th>Type</th><th>Code</th><th>Type</th></tr></thead><tbody>
+<tr><td>0</td><td>int4</td><td>6</td><td>uint16</td></tr>
+<tr><td>1</td><td>uint8</td><td>7</td><td>int32</td></tr>
+<tr><td>2</td><td>int8</td><td>8</td><td>uint32</td></tr>
+<tr><td>3</td><td>float16</td><td>9</td><td>int64</td></tr>
+<tr><td>4</td><td>float32</td><td>10</td><td>uint64</td></tr>
+<tr><td>5</td><td>int16</td><td></td><td></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-eltcodes"></a><strong>Table 23.12.</strong> The eleven serialization element-type codes the dispatch descriptor uses for an operand.</p>
+<p>The 8-bit floating forms and the palettized index types are a separate hardware element-type space, not part of this serialization enumeration: they are gated by the hardware-abstraction table and held as typed fields.
+The container's symbol-table catalog runs to 24 entries because it lists that wider hardware set.</p>
+<p>The single inference operation the descriptor names is a fused graph of backend operations, each one of a fixed micro-operation opcode space and one operation-class selector.
+The operation-class enumeration, the unit the descriptor calls the operation mode, has 79 members; the compute-unit entries a developer reaches appear in <a href="#tbl-c23-opclass">Table 23.13</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Class</th><th>Code</th><th>Class</th><th>Code</th></tr></thead><tbody>
+<tr><td>Conv</td><td>1</td><td>MatrixMultiplication</td><td>18</td></tr>
+<tr><td>Pooling</td><td>2</td><td>Reduction</td><td>20</td></tr>
+<tr><td>Concat</td><td>3</td><td>Linear</td><td>60</td></tr>
+<tr><td>ElementWise</td><td>4</td><td>NEConv</td><td>68</td></tr>
+<tr><td>ScaledElementWise</td><td>5</td><td>NEMatMul</td><td>69</td></tr>
+<tr><td>Neuron</td><td>6</td><td>NEPool</td><td>70</td></tr>
+<tr><td>GOC</td><td>8</td><td>SDPA</td><td>77</td></tr>
+<tr><td>Softmax</td><td>24</td><td>AllReduce</td><td>78</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-opclass"></a><strong>Table 23.13.</strong> Selected entries of the 79-member operation-class enumeration, the selector the descriptor calls the operation mode.</p>
+<p>There is no transposed-convolution class: a transposed convolution lowers to a convolution, cross-correlation, or kernel rasterizer.
+The full 79-member set and the 126-member micro-operation opcode space are decoded in full in Appendix <a href="../appendices/c-decoded-tables.html">C</a>.</p>
+<h2 id="submission-abi"><a class="header" href="#submission-abi">Submission ABI</a></h2>
+<p>The runtime hands the dispatch descriptor and the bound buffers to the driver through one external-method interface keyed by a selector and a structure size, and the kernel disambiguates an overloaded selector by the structure size, method by method in <a href="#tbl-c23-abi">Table 23.14</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Selector</th><th>Method</th><th>In bytes</th><th>Out bytes</th></tr></thead><tbody>
+<tr><td>0</td><td>device open</td><td>104</td><td>104</td></tr>
+<tr><td>2</td><td>program send request</td><td>2376</td><td>40 async</td></tr>
+<tr><td>3</td><td>program create</td><td>32</td><td>0</td></tr>
+<tr><td>3</td><td>program output set enqueue</td><td>40</td><td>0</td></tr>
+<tr><td>4</td><td>program prepare</td><td>56</td><td>pointer</td></tr>
+<tr><td>4</td><td>program inputs ready</td><td>3104</td><td>0</td></tr>
+<tr><td>5</td><td>program memory map request</td><td>1 scalar</td><td>2080</td></tr>
+<tr><td>6</td><td>program destroy</td><td>16</td><td>0</td></tr>
+<tr><td>8</td><td>program create instance</td><td>32</td><td>0</td></tr>
+<tr><td>8</td><td>program chaining set active procedure</td><td>32</td><td>0</td></tr>
+<tr><td>9</td><td>program chaining prepare</td><td>16</td><td>pointer</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c23-abi"></a><strong>Table 23.14.</strong> The external-method selectors of the submission interface, with the structure size that disambiguates each overloaded selector.</p>
+<p>The submit call is the asynchronous selector 2, whose 2376-byte argument structure contains the program token, a sequence number, the quality-of-service pair, and the array of input, output, and intermediate surface identifiers.
+The 40-byte asynchronous reply gives the sequence result and the echoed token, and completion arrives on a wake port.
+The chaining-prepare and chaining-set-active selectors build the firmware chaining cache, the structure a multi-segment descriptor and the resident-state path use to wire one inference segment to the next.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-7-toolchain/22-compiler.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-7-toolchain/24-hal-gates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-7-toolchain/22-compiler.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-7-toolchain/24-hal-gates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

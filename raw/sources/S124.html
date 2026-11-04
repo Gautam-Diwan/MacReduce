@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>36. Predicted upper tier - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-9-cross-silicon/36-upper-tier.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="36-predicted-upper-tier"><a class="header" href="#36-predicted-upper-tier">36. Predicted upper tier</a></h1>
+<blockquote>
+<p>Two datapaths are above the M5 in the compiler, and no part measured here can run them.
+They are an fp8 weight and activation format, and a multi-die collective communication layer.
+Both are present as decoded structure, gated off on every family this guide reached, and stated as predicted, not measured.
+The fp8 gate is the capability byte at offset <code>0x52d</code>, set on H18 alone.
+The collective-enable byte at offset <code>0x48b</code> reads zero on all 28 targets.</p>
+</blockquote>
+<h2 id="64-core-ceiling"><a class="header" href="#64-core-ceiling">64-core ceiling</a></h2>
+<p>The largest die this guide measured is the 16-core H17s, and the line ends at the 64-core H17d that no part here could run.
+The decode shows that nothing extra is family-gated for the 64-core case beyond the count itself, and the following is a compiler decode, with no 64-core part on hand to measure.
+Core count arrives as a runtime parameter, the <code>ne_core_count</code> value sourced from the hardware-abstraction blob, rather than as a hard-coded per-family constant.
+<code>getDeviceInfo</code> takes that count as its second argument and buckets it against the thresholds 7, 10, 20, and 40, which straddle the four die sizes 8, 16, 32, and 64 held by the <code>g</code>, <code>s</code>, <code>c</code>, and <code>d</code> target suffixes.
+Several device-information fields then scale linearly with the count, and the top bucket reached on the A14-and-above branch stores the 800-unit peak.
+The compiler thus emits a 64-core-scaled cost model for H17d purely from the count of 64, and the geometry is decoded while the realized 64-core throughput stays an on-silicon measurement.</p>
+<p>The two datapaths above the M5 are the fp8 weight format and the multi-die collective layer (<a href="#tbl-c36-overview">table 36.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>field</th><th>E4M3</th><th>E5M2</th><th>collective layer</th></tr></thead><tbody>
+<tr><td>sign bits</td><td>1</td><td>1</td><td>not applicable</td></tr>
+<tr><td>exponent bits</td><td>4</td><td>5</td><td>not applicable</td></tr>
+<tr><td>mantissa bits</td><td>3</td><td>2</td><td>not applicable</td></tr>
+<tr><td>exponent bias</td><td>7</td><td>15</td><td>not applicable</td></tr>
+<tr><td>max finite magnitude</td><td>448</td><td>57344</td><td>not applicable</td></tr>
+<tr><td>role</td><td>gated weight and activation</td><td>fp16 conversion</td><td>mesh reduce, gather, slice</td></tr>
+<tr><td>family gate</td><td><code>0x52d</code> set on H18 only</td><td>folds to fp16 broadly</td><td><code>0x48b</code> zero on all 28</td></tr>
+<tr><td>register encoding</td><td>present from A17 encoder</td><td>output slot on modern encoders</td><td>every setter a stub</td></tr>
+<tr><td>state on M5</td><td>off</td><td>conversion available</td><td>inert</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-overview"></a><strong>Table 36.1.</strong> The decoded fields of the two fp8 formats and the collective layer, with their gates and their state on the M5.</p>
+<h2 id="fp8-datapath"><a class="header" href="#fp8-datapath">fp8 datapath</a></h2>
+<p>The compiler has two eight-bit floating-point formats, and they are not symmetric in role.
+They live in the internal <code>ZinTensorFormat</code> code-generation and direct-memory-access enumeration, which is separate from the serialization data-type enumeration that the operation attributes use.
+The serialization enumeration runs codes 0 through 10 with fp16 at 3, fp32 at 4, and int8 at 2, and has no fp8 codepoint at all; the fp8 formats are recovered from the byte-size map <code>_ZinTensorFormatGetSizeInBytes</code> (<a href="#tbl-c36-tensorfmt">table 36.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th><code>ZinTensorFormat</code> code</th><th>Format</th><th>Bytes</th></tr></thead><tbody>
+<tr><td>1</td><td>int8</td><td>1</td></tr>
+<tr><td>2</td><td>uint8</td><td>1</td></tr>
+<tr><td>3</td><td>fp16</td><td>2</td></tr>
+<tr><td><code>0xb</code> (11)</td><td>fp32</td><td>4</td></tr>
+<tr><td><code>0xc</code> (12)</td><td>E4M3</td><td>1</td></tr>
+<tr><td><code>0xd</code> (13)</td><td>E5M2</td><td>1</td></tr>
+<tr><td><code>0xe</code> (14)</td><td>two-byte live-input format</td><td>2</td></tr>
+<tr><td><code>0x10</code> (16)</td><td>int4</td><td>under 1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-tensorfmt"></a><strong>Table 36.2.</strong> The fp8 codepoints in the internal tensor-format enumeration, with the integer and half-precision neighbors that bound them.</p>
+<p>The compiler has the full set of fp8 variant types as C++ symbols, <code>e4m3_t</code> with 1273 references and <code>e5m2_t</code> with 176, alongside the finite-and-NaN and unsigned-zero variant type classes.
+The shipping format is the E4M3FN variant, proven by the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">448</span></span></span></span> saturation bound that <code>ZinPadLayer::ValidateBackgroundPaddingValue</code> enforces with the string "in [%u, %u] for e4m3 format" and the NaN-only special case in <code>ZinE4M3Expand</code>.</p>
+<p>E4M3 is the gated weight and activation format.
+A value decodes from a sign bit, four-bit exponent, and three-bit mantissa as</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mbin mtight">−</span><span class="mord mtight">7</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span></span></span></span></span></p>
+<p>for a normal value, with an exponent bias of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span> and a maximum finite magnitude of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">448</span></span></span></span>.
+The shipping variant is E4M3FN, the finite-and-NaN form: it has no infinity, the all-ones exponent with a full mantissa encodes NaN, and a value past <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">448</span></span></span></span> either maps to NaN or clamps to the maximum normal.
+A one-bit mode held per direct-memory-access source controls the overflow behavior, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> for NaN and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> for saturate, so a narrowing cast picks the bit pattern <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">0x7e</span></span></span></span></span> for the saturated maximum or <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">0x7f</span></span></span></span></span> for NaN.
+The narrower exponent and the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">448</span></span></span></span> ceiling cap the representable range below half precision.</p>
+<p>The other format, E5M2, serves conversion.
+It decodes as</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mbin mtight">−</span><span class="mord mtight">15</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span></span></span></span></span></p>
+<p>with five exponent bits, a two-bit mantissa, and the same exponent bias of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">15</span></span></span></span> as half precision.
+That shared exponent is why E5M2 is the high byte of an fp16 value: the conversion to fp16 is a left shift of eight bits, and the inverse is the top byte with round-to-nearest and an infinity clamp.
+E5M2 folds to fp16 by a direct-memory-access conversion, so it is broadly available wherever that conversion path exists, and the upscaler layer accepts it as input.
+The fold asymmetry is exact in the conversion functions.
+<code>ZinE5M2ToF16</code> is a left shift of eight bits, the literal high byte, and <code>ZinF16ToE5M2</code> is the top byte with round-to-nearest and an infinity clamp at <code>0x7c00</code>.
+E4M3 is not so trivial.
+<code>ZinE4M3Expand</code> is a bit-surgery decode with sign at bit 7, the four-bit exponent at bits 6 through 3, and the three-bit mantissa at bits 2 through 0, handling the subnormal and NaN encodings.
+<code>ZinF32ToE4M3</code> narrows and selects the overflow byte, <code>0x7e</code> for the saturated maximum and <code>0x7f</code> for NaN.
+The fold predicate <code>IsFormatDMAConvertibleToFP16</code> returns <code>(fmt &lt; 0xe) &amp; (0x2ff0 &gt;&gt; fmt)</code>, and the mask <code>0x2ff0</code> includes code 13 and excludes code 12.
+E5M2 thus folds by direct-memory-access conversion and E4M3 cannot, which is the binary-level reason E4M3 requires the native datapath that is gated.</p>
+<p>The family gate is a single hardware-abstraction-layer capability byte at offset <code>0x52d</code>, the E4M3 direct-memory-access and kernel-format capability.
+It is clear on the M1 generation, clear on the M5 generation, and clear on the intermediate families, and it reads set on the H18 family alone of the twenty-eight compiler targets.
+The master per-format direct-memory-access validity function <code>CheckValidDMAFormat</code> takes the four capability bytes <code>HAL[0x52c]</code>, <code>HAL[0x52d]</code>, <code>HAL[0x52e]</code>, and <code>HAL[0x685]</code>.
+It validates fp32 against <code>0x52c</code>, E4M3 against <code>0x52d</code>, E5M2 against <code>0x52e</code>, and the two-byte live formats against <code>0x685</code>, with every code below <code>0xb</code> always valid.
+Three operation-semantics sites re-check the byte and abort with "E4M3 is not supported on this architecture": the dequantize validator at line 129078, the quantize validator at line 227466, and a third semantics validator at line 3407368.
+Below that runtime gate is a harder compile-time limit on the M1 generation.
+The M1 task-descriptor encoder packs the source element format into a two-bit field, which stores only the integer and half-precision codes and has no bit space for the E4M3 codepoint.
+Feeding fp8 to the M1 encoder thus aborts the compile rather than refusing the operation at runtime.
+The encoder that does have the E4M3 codepoint widens that field to three bits and adds a distinct output slot, and that wider encoder is present from the A17 generation onward even though the runtime capability at <code>0x52d</code> fires only on H18.</p>
+<p>The operation-side gate matches the encoder, decoded from the compiler and not measured on an H18 part.
+The <code>MinimumFamily&lt;N&gt;</code> trait that chapter <a href="35-per-family-codegen.html">35</a> reads as the operation-legality floor has a high-N set, a few operations at N=5, N=6, and N=7, the A16, A17, and A18 floors, and the fp8-bearing operations are in that set.
+The fp8 converters and the quant-unit storage are compiled into the one byte-identical image, so an fp8 operation parses and type-checks on any target.
+Native execution depends on both that high-N family floor and the <code>0x52d</code> capability byte, which is why the datapath is present yet inert below H18.</p>
+<p>The format-register delta between the M1 and the H18 encoder is exact.
+The M1 generation builds the generation-5 and generation-7 descriptors, whose <code>SetCommonInFmt</code> writes a two-bit field at <code>this+0x48</code> holding only int8, uint8, and fp16, and the code <code>0xc</code> aborts with "Error: Invalid Common InFmt E4M3".
+The generation-20 descriptor that the A17 generation builds packs all three format fields into a 32-bit word at <code>this+0x228</code>, widening each lane to three bits.
+<code>SetCommonInFmt</code> gives E4M3 the source-one code 4 at bits 2 through 0, <code>SetCommonSrc2InFmt</code> gives it the source-two code <code>0x20</code> at bits 5 through 3, and <code>SetCommonOutFmt</code> gives it a distinct output slot <code>0x100</code> at bits 8 through 6.
+<a href="#tbl-c36-fmtreg">Table 36.3</a> gives the task-descriptor format-register delta.</p>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>M1 generation-5 at <code>this+0x48</code></th><th>H18 generation-20 at <code>this+0x228</code></th></tr></thead><tbody>
+<tr><td>source-one format</td><td>two-bit lane, int8, uint8, fp16 only</td><td>three-bit lane, plus E4M3 as 4</td></tr>
+<tr><td>source-two format</td><td>folded into the two-bit space, no distinct E4M3 code</td><td>three-bit lane, E4M3 as <code>0x20</code></td></tr>
+<tr><td>output format</td><td>two-bit lane, E5M2 reuses the fp16 slot <code>0x20</code></td><td>three-bit lane, E4M3 as <code>0x100</code></td></tr>
+<tr><td>E4M3 codepoint</td><td>absent, a compile-time assert</td><td>present as 4, <code>0x20</code>, <code>0x100</code></td></tr>
+<tr><td>E4M3 overflow register</td><td>stub assert on the generation-8 setter</td><td><code>this+0x2fc</code> and <code>this+0x300</code>, bit 24</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-fmtreg"></a><strong>Table 36.3.</strong> The task-descriptor format-register delta across the upper-tier generations.</p>
+<p>The overflow mode is a per-source register field on the generation-20 encoder, <code>SetTileDmaSrc1E4M3Overflow</code> writing bit 24 of <code>this+0x2fc</code> and <code>SetTileDmaSrc2E4M3Overflow</code> writing bit 24 of <code>this+0x300</code>, where 1 selects saturate and 0 selects NaN.
+On the older encoders the same setter is a stub that asserts "E4M3Overflow is not supported" only when the overflow option is engaged.</p>
+<p>In the multiply array fp8 is an input width, not an accumulator width.
+An E4M3 weight expands to fp16 going into the multiply, the products accumulate in the same wide register every family uses, and the output port rounds the result to fp16.
+No fp8 accumulator type, register field, or symbol exists in the compiler: the generation-20 format word encodes only the source-one, source-two, and output element formats, with no accumulator-format field.
+E4M3 is a native kernel format, code 6 in the kernel-format set that <code>ZinSetFormat</code> admits through the mask <code>0x3b</code>, alongside int8, uint8, fp16, and fp32; E5M2 is absent from that set, so it is a conversion and upscaler-input format rather than a kernel format.
+Throughput runs on the same double-rate path int8 uses, gated by <code>ZinDoubleMacMode::CanUseDoubleMacModeBasedOnFormats</code>.
+A one-byte activation against a one-byte kernel of the same numeric class is eligible for the double-multiply mode, the eligibility turning on the exclusive-or of the activation-float and kernel-float bits being zero, which holds only when the two bits agree.
+An E4M3 activation against an E4M3 kernel is both one-byte and both float, so it runs at twice the per-element rate into the fp16 accumulator, while a mixed int8-against-E4M3 pair is not eligible.
+E4M3 is symmetric-only, with the zero point forced to zero, the same constraint the M1 imposes on int8.
+The quantize and dequantize validators reject a zero point with "Zero point is not supported for quant with E4M3 output format", and the same rule reaches the palette layer.
+E4M3 weights stream as a palette through <code>ZinIrWeight::DePalettizeWeightData&lt;e4m3_t&gt;</code>, a codebook of E4M3 values indexed by a packed stream at bit-widths 1, 2, 3, 4, 6, and 8.
+This is the identical machinery the int4, int8, and fp16 palettes use under template specialization, dequantized as scale times E4M3 with no zero point.</p>
+<h2 id="multi-die-collective-layer"><a class="header" href="#multi-die-collective-layer">Multi-die collective layer</a></h2>
+<p>Each collective operation in the multi-die dialect has a backend operation class and a unit-type code (<a href="#tbl-c36-collops">table 36.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>silc mnemonic</th><th>C++ operation class</th><th>role</th><th>unit-type code</th></tr></thead><tbody>
+<tr><td><code>silc.all_reduce</code></td><td><code>SilcAllReduceOp</code></td><td>reduce a tensor in place across a mesh axis</td><td>78</td></tr>
+<tr><td><code>silc.all_gather</code></td><td><code>SilcAllGatherOp</code></td><td>concatenate shards into a replicated tensor</td><td>76</td></tr>
+<tr><td><code>silc.all_slice</code></td><td><code>SilcAllSliceOp</code></td><td>scatter a replicated tensor into shards</td><td>75</td></tr>
+<tr><td><code>silc.mesh</code></td><td><code>SilcMeshOp</code></td><td>declare the device mesh</td><td>none</td></tr>
+<tr><td><code>silc.call</code></td><td><code>SilcCallOp</code></td><td>per-die single-program call</td><td>79</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-collops"></a><strong>Table 36.4.</strong> The collective operations of the multi-die dialect, their backend operation classes, and the unit-type code of each.</p>
+<p>The collective layer is a cross-die data path, not the independent per-job steering a multi-die part otherwise does.
+The kernel load-balancer steers whole independent submissions to the least-busy engine die and never exchanges tensor data between them, and the driver supports up to four dies.
+The M1 and the M1 Max each register a single engine die, so this steering engages only on a multi-die part such as the Ultra.
+The compiler's collective instead splits one tensor across dies and exchanges partials, threaded through an <code>optional&lt;ZinIrDeviceMesh&gt;</code> that <code>GetAndValidateSpmdDeviceMesh</code> and <code>ZinParseDeviceMeshAttributes</code> build, so a program compiled with a device-mesh attribute gets a real all-reduce, all-gather, or all-slice across the mesh.
+The cross-die move itself is the <code>HandleCcdmaLayer</code> direct-memory-access primitive below, and <code>ValidateMeshAxesInTensorFamily</code> is the family gate on whether a given die admits the mesh.
+This contrast is decode-derived; whether a two-die Ultra in any reached family accepts the mesh path is a multi-die measurement this guide does not have.</p>
+<p>It is a distinct intermediate-language dialect, <code>mlir::silc</code>, whose closed operation set is the three collectives above over a device mesh, plus the mesh declaration and the per-die call.
+The operation-class list is exactly these, with no reduce-scatter and no broadcast, the all-slice operation standing in for the scatter.
+The collective operations have the attributes <code>mesh</code>, <code>mesh_axes</code>, <code>sharding</code>, the <code>members</code> membership list, and <code>reduce_op</code>.</p>
+<p>The reduction kind is an enumerated attribute decoded directly from the packed-string compare in <code>symbolizeReductionKind</code>, token by token (<a href="#tbl-c36-redkind">table 36.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Integer</th></tr></thead><tbody>
+<tr><td><code>sum</code></td><td>1</td></tr>
+<tr><td><code>max</code></td><td>2</td></tr>
+<tr><td><code>min</code></td><td>3</td></tr>
+<tr><td><code>product</code></td><td>4</td></tr>
+<tr><td><code>mean</code></td><td>5</td></tr>
+<tr><td>miss</td><td>0, invalid</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-redkind"></a><strong>Table 36.5.</strong> The reduction-kind enumeration the all-reduce reduce-operation attribute holds.</p>
+<p>The mesh is an N-dimensional grid of dies by engines-per-die, a vector of per-axis extents held in <code>ZinIrDeviceMesh</code>, which exposes the die count, total engine count, and engines-per-die count.
+A device identifier maps to a mesh coordinate and an engine index by a mixed-radix split at the die axis, which <code>ZinSPMDUtils::AneIndexFromDeviceId</code> computes:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord"><span class="mord mathrm">ane</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4882em;vertical-align:-1.4382em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">≥</span><span class="mord mathnormal mtight">d</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3973em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">id</span></span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">&gt;</span><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">≥</span><span class="mord mathnormal mtight">d</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∏</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4382em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">ext</span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:3.1638em;vertical-align:-1.4138em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">(</span></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">d</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3295em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">id</span></span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">i</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∏</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">ext</span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathrm">anesPerDie</span></span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> is the die-axis split index: the axes above the die axis fold into the within-die engine offset, and the axes below fold into the die index, multiplied by engines-per-die.
+The inverse decode is <code>DeviceIdFromAneIndex</code>.
+A layer runs on a die through <code>ZinEngineLayer::RunsOnDeviceId</code>.
+A layer not assigned to the single-program path runs on all dies.
+Otherwise it emits on a die only when the engine index for that die is a key in the layer's engine-set map, which is how the <code>members</code> attribute becomes a per-die emit decision.</p>
+<p>A sharding attribute maps each tensor axis to a mesh axis, splitting that axis into one shard per device along the axis.
+The split requires even divisibility, which the strings "Input tensor dimension must be divisible by the number of shards along the tensor dimension" and "Kernel dimension must be divisible by number of shards" enforce.
+The compiler rejects sharding the same mesh dimension twice and allows a replicated section only on a multi-die network.</p>
+<p>The reduce-across-the-mesh operation lowers to a collective direct-memory-access that contains a hardware atomic read-modify-write: the reduction happens in memory as the direct-memory-access writes into a shared buffer, which is why the operation requires in-memory-reduction support that the single-die families lack.
+The reduction-to-atomic map is decoded from the <code>ZinIrReductionTypeToZinAtomicOpType</code> switch (<a href="#tbl-c36-atomic">table 36.6</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Reduction type</th><th>Atomic-op register value</th></tr></thead><tbody>
+<tr><td>1</td><td>4</td></tr>
+<tr><td>2</td><td>3</td></tr>
+<tr><td>4</td><td>1</td></tr>
+<tr><td>5</td><td>2</td></tr>
+<tr><td>8</td><td>5</td></tr>
+<tr><td>9</td><td>6</td></tr>
+<tr><td>10</td><td>7</td></tr>
+<tr><td>3, 6, 7, 11</td><td>assert, no hardware atomic</td></tr>
+<tr><td>other</td><td>0</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-atomic"></a><strong>Table 36.6.</strong> The reduction-type-to-atomic-operation register map for the all-reduce collective, with the reductions that have no hardware atomic and are rejected.</p>
+<p>The atomic configuration packs as <code>(atomicOp &amp; 0xff) | (atomicDataType &lt;&lt; 8)</code>, and the input supplied to the collective must arrive through a bypass pass-through, asserted by "Input to inter-die AllReduce should be NEBypass".
+The all-reduce lowering itself further asserts "AllReduce is currently not supported for architectures that do not support in-memory reductions".</p>
+<p><code>HandleCcdmaLayer&lt;Nu&gt;</code> programs the collective direct-memory-access into the task descriptor, instantiated for the generations <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">6</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">8</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">10</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">11</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">17</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">19</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">20</span><span class="mclose">}</span></span></span></span>.
+Each opens with the collective-enable gate and the per-die predicate before driving the setters in a fixed order.
+That order is the source mode, the counter mode, the data size, five shape words, four destination strides, the destination base address, the optional constant, four source strides, the source base address, the wait-event address from the mesh symbol, the counter address, the atomic data type, the atomic operation, the counter amount, and the wait-event value.
+The base addresses are all emitted through <code>ZinSPMDUtils::GetSymbolOffsetToBaseAddr</code>, the extended-addressing path that needs the cross-die address-reach byte.</p>
+<p>The layer is decoded but inert in the compiler this guide reads.
+Every collective direct-memory-access register setter is a stub that asserts "CCDMA is not supported for this arch", in every task-descriptor generation present including generation 20, the would-be Ultra path: the body calls the full setter sequence, but the setters abort.
+The collective-enable capability byte at offset <code>0x48b</code> reads zero on all twenty-eight targets including the M-class and Ultra-reference targets.
+The cross-die capability bytes sit alongside it (<a href="#tbl-c36-capbytes">table 36.7</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Byte</th><th>Capability</th><th>Floor</th><th>M1 (H13)</th><th>A14</th><th>A15</th><th>M5 (H17s)</th><th>H18</th><th>M-class</th></tr></thead><tbody>
+<tr><td><code>0x48b</code></td><td>collective-enable</td><td>none in this build</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td><code>0x55c</code></td><td>cross-die extended addressing</td><td>A14</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>mixed, M11 and U2, U3 set, U1 clear</td></tr>
+<tr><td><code>0x564</code></td><td>multi-die hazard tracking</td><td>A14</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td><code>0x687</code></td><td>multi-die remote dependency</td><td>A15</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td><code>0x4a4</code></td><td>M-class secondary cap</td><td>M-class only</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c36-capbytes"></a><strong>Table 36.7.</strong> The collective and cross-die capability bytes decoded across the twenty-eight targets, with the collective-enable byte clear everywhere.</p>
+<p>No family in this compiler arms the register encoding that would drive the engine, though the front end is there in full: the operation set, mesh and sharding math, reduction-to-atomic map, and per-die dispatch.</p>
+<p>A second-layer gate is in the source-direct-memory-access emitters, where the single-program flag drives an assert "This target does not allow sharding or SPMD functions".
+A third gate in the tasklet emitter asserts "No tasklet for given architecture" when the per-section tasklet bit and the single-program predicate are not both set.
+On the M1 all three gates fail, so the M1 is single-die.</p>
+<p>The pieces the single-die M1 silicon does touch are the on-die ordering bits the same machinery shares.
+Those bits are the layer-two barrier, event masks, and remote-dependency bookkeeping, none of which is the cross-die reduction itself.
+On the M1 generation-10 descriptor the layer-two barrier sets bit 23 of <code>TD+0x134</code> and the forward barrier sets bit 30.
+The event setter writes a 26-bit signal mask into <code>TD+0x10</code> and a 26-bit wait mask into <code>TD+0x18</code>, and a direct-memory-backed event is rejected with "DRAM Events not supported for architecture".
+The distributed unit is the tasklet, the multi-die variant of the descriptor instruction, one tasklet per participating die.</p>
+<h2 id="what-requires-newer-parts"><a class="header" href="#what-requires-newer-parts">What requires newer parts</a></h2>
+<p>The fp8 datapath requires an H18-class part to set the capability byte and exercise the native E4M3 multiply; the collective layer requires a multi-die part and a newer compiler that arms the collective-enable byte and replaces the register stubs with a real encoding.
+Until that hardware and that compiler are in hand, the encodings here stand as the predicted upper tier of the line.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-9-cross-silicon/35-per-family-codegen.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../back-matter/methodology.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-9-cross-silicon/35-per-family-codegen.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../back-matter/methodology.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

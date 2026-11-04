@@ -1,0 +1,388 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>17. Model-design rules - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-5-practice/17-model-design-rules.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="17-model-design-rules"><a class="header" href="#17-model-design-rules">17. Model-design rules</a></h1>
+<blockquote>
+<p>A network compiles only when every operation is inside the validator limits: fp16 activations, width and height at most 16384, channel at most 65536.
+Convolution kernel width is capped at 13 and arg-min and arg-max reduce an axis of at most 2048.
+Keep a single operation's largest live operand under 2 MB or it tiles and streams from DRAM.
+Make channel counts a multiple of the interleave factor and group counts divide the core count, or the engine pads lanes and runs slower.</p>
+</blockquote>
+<p>The validator limits are design rules: the shape, rank, dtype, and mode constraints the per-operation validators enforce, the working-set threshold that decides whether a tensor stays on chip or tiles, and the channel and kernel bounds that distinguish a fast layer from a padded one.
+Chapter <a href="../part-1-machine/04-capability-surface.html">4</a> gives the operation set that these shapes apply to.</p>
+<h2 id="dtype-rule"><a class="header" href="#dtype-rule">Dtype rule</a></h2>
+<p>The datapath is fp16, so every operand a model presents to the engine is fp16.
+The backend accepts the fp32, int32, and bf16 type annotations, but does not implement them as wider arithmetic, and they do not reach the silicon.
+The M1 rejects a cast to int32, and bf16 is not usable as a program input or output dtype.
+The one widened quantity is the matrix-multiply accumulator, which lives inside the datapath and never appears among the tensors a model declares.</p>
+<p>Weights are the exception that still resolves to fp16 at the compute step.
+The engine accepts an int8 weight and runs it through the quantized-convolution path, and the compressed weight forms in chapter <a href="../part-2-reaching/07-weights-and-compression.html">7</a> stream in their stored width.
+Activation tensors that flow between operations stay fp16 regardless.</p>
+<h2 id="shape-and-rank-limits"><a class="header" href="#shape-and-rank-limits">Shape and rank limits</a></h2>
+<p>Tensor extent is bounded per axis, and the bounds are exact.
+A tensor may span up to 16384 along width, 16384 along height, and 65536 along channel; one element past any of these rejects at compile time.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">16384</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">16384</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65536</span></span></span></span></span></p>
+<p>These were measured on the M1 by sweeping each axis until compile flipped from accept to reject, and the boundary matched the decompiled maximum-dimension field exactly.
+Width 16384 compiles and 16385 rejects, and the same one-element step holds for height and for channel.</p>
+<p>Convolution has its own kernel bounds, narrower than the tensor bounds and set by the kernel-format field.
+On the M1 the fp16 convolution kernel width is bounded at 13: a kernel of width 14 rejects.
+Kernel height reaches 29 when the input is tall enough to hold it, and a kernel taller than its input rejects as a too-large kernel.
+Stride, dilation, and padding do not reject on the M1.
+A stride outside the native set decomposes to a large-stride path and still compiles, dilation up to 8 compiles, and padding up to 16 compiles.
+The pooling window is far looser than the convolution kernel and accepts sizes of 128 and beyond, with a tile-alignment quirk that rejects specific odd windows near a power-of-two boundary.</p>
+<p>Several operations cap a reduction axis to hold fp16 accuracy.
+The arg-min and arg-max operations reduce a channel of at most 2048, and the spatial form caps height or width at 2048 the same way; 2049 rejects.
+This 2048 limit is independent of the 16384 and 65536 tensor bounds and applies to the reduction axis alone.</p>
+<h2 id="mode-and-divisibility-rules"><a class="header" href="#mode-and-divisibility-rules">Mode and divisibility rules</a></h2>
+<p>The matrix-multiply backend operation requires the contracted depth to be one on both operands, and a depth greater than one rejects.
+The two operands broadcast on batch and on height when one side is one, and the inner dimensions must agree so that the left width plus padding equals the right channel count.</p>
+<p>Grouped convolution divides both the input and the output channel count by the group count, and a count that does not divide rejects.
+For throughput, the group count should also divide the engine core count, which is four on the M1.
+A group count of one, two, or four maps one neural-engine lane to one lookup-table lane.
+A count that does not divide the core count loses that one-to-one mapping and runs slower.</p>
+<p>Channel counts should be a multiple of the interleave factor.
+The engine stores tensors channel-interleaved, and a channel dimension that is not a multiple of the interleave factor is padded out to one, leaving lanes unused.
+The width axis aligns to a 16-byte direct-memory-access granule, the same factor of 16 that governs the slice-tiling path.
+Interleave-aligned, power-of-two channel counts avoid silent padding.
+A fully-connected layer reaches the convolution datapath once it is rewritten as the equivalent one-by-one convolution (<a href="#lst-c17-interleave-conv">listing 17.1</a>).</p>
+<pre><code class="language-python"># Tensor order is [N, D, C, H, W]; the engine stores it channel-interleaved
+# and aligns the last axis to the 16-byte DMA granule.
+
+aligned = (1, 1, 64, 56, 56)   # channels first, W = 56 fills 16-byte lanes
+padded  = (1, 1, 64, 56,  1)   # singleton last axis pads out to the granule,
+                               # wasting every lane but the first
+
+# Replace a fully-connected layer with an equivalent 1x1 convolution so it
+# runs on the convolution datapath. A linear y = x @ W.T over C_in -&gt; C_out
+# is the same arithmetic as a 1x1 conv over a [N, 1, C_in, 1, 1] feature map.
+def linear_as_1x1_conv(x, W):
+    # W: [C_out, C_in] reshaped to a 1x1 kernel [C_out, 1, C_in, 1, 1]
+    kernel = W.reshape(W.shape[0], 1, W.shape[1], 1, 1)
+    return conv(x, kernel, strides=[1, 1], groups=1, kernel_sizes=[1, 1])
+</code></pre>
+<p><a id="lst-c17-interleave-conv"></a><strong>Listing 17.1.</strong> Channel-interleaved tensor layout and a fully-connected layer rewritten as an equivalent one-by-one convolution.</p>
+<p>Several mode constraints are family-gated and reject on the M1 specifically.
+The symmetric and reflect padding modes need the texture engine and are unavailable on the M1, where they decompose or are refused.
+A square-after-reduction fused mode is absent on the M1 and arrives on the A14.
+The texture-engine sampling operations, resize as a hardware sampler, crop-resize, resample, and affine, are absent on the M1 and arrive on the A14, and the trigonometric sine and cosine arrive on the A15.</p>
+<h2 id="working-set-rule"><a class="header" href="#working-set-rule">Working-set rule</a></h2>
+<p>The decisive size rule is the on-chip working set.
+A tensor that fits the on-chip static memory stays resident across the operation; a tensor that exceeds it splits into tiles that the engine streams one at a time.
+The working set is the 2 MB on-chip region, and the matrix-multiply path also bounds the output-channel footprint against a 64 KB kernel-memory budget, rejecting a matrix multiply whose output channels do not fit.</p>
+<p>Tiling preserves the result.
+A reduction or transpose over an axis larger than the on-chip threshold switches to a tiled route at no change to the output, so the threshold is a performance boundary, not a correctness one.
+Where latency matters, keep a single operation's largest live operand under 2 MB.
+At fp16, 2 MB stores about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">21</span></span></span></span></span></span></span></span></span><span class="mord">/2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1.05</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span> elements, so a square activation of side near 1024 is at the edge of the resident regime, and a larger one streams.
+This is the working-set input to the cost model in chapter <a href="18-optimization-cost-model.html">18</a>, where the roofline relation turns the resident-versus-streaming split into a latency estimate.</p>
+<h2 id="validating-shapes-against-the-design-rules"><a class="header" href="#validating-shapes-against-the-design-rules">Validating shapes against the design rules</a></h2>
+<p>The cost estimate reports the binding limit for each operation, so a shape violation or a working set above 2 MB shows before the program reaches the compiler.
+<a href="#lst-c17-validate">Listing 17.2</a> walks every layer against the rank, extent, kernel, group, interleave, and working-set rules.</p>
+<pre><code class="language-python"># Tensor order is [N, D, C, H, W]; the engine stores it channel-interleaved.
+# Check every layer against the design rules before building, target = H13.
+
+for each layer in graph G:
+    # Rank rule: at most 5 axes
+    if rank(layer.output) &gt; 5:
+        flag(layer, "rank above 5 rejects at compile")
+
+    # Per-axis extent rules
+    if width(layer)   &gt; 16384:  flag(layer, "width above 16384 rejects")
+    if height(layer)  &gt; 16384:  flag(layer, "height above 16384 rejects")
+    if channel(layer) &gt; 65536:  flag(layer, "channel above 65536 rejects")
+
+    # Convolution kernel and group rules
+    if layer is conv:
+        if kernel_width(layer) &gt; 13: flag(layer, "kernel width above 13")
+        if (in_channel(layer) mod groups(layer)) != 0: flag(layer, "in-channels % groups != 0")
+        if (out_channel(layer) mod groups(layer)) != 0: flag(layer, "out-channels % groups != 0")
+        if (core_count mod groups(layer)) != 0: warn(layer, "groups do not divide cores, slower")
+
+    # Reduction-axis rule for arg-min / arg-max
+    if layer is argmin or layer is argmax:
+        if reduced_axis_extent(layer) &gt; 2048:  flag(layer, "arg reduction axis above 2048 rejects")
+
+    # Channel-interleave rule: pad warning, not a reject
+    if (channel(layer) mod interleave_factor) != 0:
+        warn(layer, "channel not interleave-aligned: pads out, wastes lanes")
+
+    # Width DMA-granule rule: last axis aligned to 16 bytes
+    if (width(layer) mod 16) != 0:
+        warn(layer, "width not aligned to 16-byte DMA granule: pads to granule")
+
+    # Working-set rule: largest live operand under 2 MB stays on-chip, else it tiles and streams
+    bytes = element_count(largest_live_operand(layer)) * 2     # fp16 = 2 bytes per element
+    if bytes &gt; 2 * MB:
+        warn(layer, "working set above 2 MB: tiles and streams from DRAM (slower, still correct)")
+
+# Reshape any flagged layer before tuning; address pad/tile warnings where latency matters.
+</code></pre>
+<p><a id="lst-c17-validate"></a><strong>Listing 17.2.</strong> Walking every layer of a graph against the design rules, flagging each reject and pad warning before the build.</p>
+<p>A graph that prints <code>validates</code> false, a working set above 2 MB, or nonzero channel padding is reshaped before any other tuning, because a rejected shape never reaches the silicon and a padded channel leaves lanes unused on every dispatch.</p>
+<h2 id="reference-the-per-operation-design-rules"><a class="header" href="#reference-the-per-operation-design-rules">Reference: the per-operation design rules</a></h2>
+<p>Every validator limit a model must satisfy is collected in <a href="#tbl-c17-design-rules">table 17.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Constraint</th><th>Limit</th><th>Consequence if exceeded</th></tr></thead><tbody>
+<tr><td>Activation dtype</td><td>fp16 only</td><td>int32 cast and bf16 input or output rejected on M1</td></tr>
+<tr><td>Width axis</td><td>16384</td><td>16385 rejects at compile</td></tr>
+<tr><td>Height axis</td><td>16384</td><td>16385 rejects at compile</td></tr>
+<tr><td>Channel axis</td><td>65536</td><td>65537 rejects at compile</td></tr>
+<tr><td>Conv kernel width (fp16)</td><td>13</td><td>14 rejects at compile</td></tr>
+<tr><td>Conv kernel height</td><td>29, input permitting</td><td>kernel taller than input rejects</td></tr>
+<tr><td>Arg-min/arg-max reduction axis</td><td>2048</td><td>2049 rejects for fp16 accuracy</td></tr>
+<tr><td>Matrix-multiply operand depth</td><td>1</td><td>depth greater than 1 rejects</td></tr>
+<tr><td>Matrix-multiply output channels</td><td>64 KB kernel-memory budget</td><td>rejects when output channels do not fit</td></tr>
+<tr><td>Conv group count</td><td>divides input and output channels</td><td>non-dividing count rejects</td></tr>
+<tr><td>Conv group count, for speed</td><td>divides core count (4 on M1)</td><td>one-to-one lane mapping lost, slower</td></tr>
+<tr><td>Channel multiple of interleave</td><td>interleave-aligned</td><td>padded out, lanes unused</td></tr>
+<tr><td>On-chip working set</td><td>2 MB</td><td>operand tiles and streams, no error</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c17-design-rules"></a><strong>Table 17.1.</strong> The per-operation validator limits a model must satisfy, with each limit and the result of exceeding it.</p>
+<h2 id="reference-the-per-operation-validator-envelopes"><a class="header" href="#reference-the-per-operation-validator-envelopes">Reference: the per-operation validator envelopes</a></h2>
+<p>The shape rules are enforced one operation at a time by a family of per-layer validators, the <code>_ANECValidate&lt;Op&gt;Layer</code> checkers the compiler runs as the back-end legalizer.
+There are 50 per-layer validators, and the same code runs both when a high-level model is segmented and when a hand-authored layer is compiled, so a validator that accepts a shape never drifts from the real compile outcome.
+For the operations a model presents most often, the binding constraint and the reject string read straight out of the <code>_ANECValidate&lt;Op&gt;Layer</code> family (<a href="#tbl-c17-validators">table 17.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th>Validator</th><th>Binding constraint</th><th>Reject string</th></tr></thead><tbody>
+<tr><td>Convolution</td><td><code>Conv</code></td><td>kernel W, H, D each within the per-chip <code>[min, max]</code>; in-C and out-C each divisible by groups; groups within the HAL group range</td><td><code>"Invalid conv kernel %s = %zd, It should be in [%zd,%zd]"</code>; <code>"input/output channels should be divisible by num group"</code></td></tr>
+<tr><td>Linear</td><td><code>Linear</code></td><td>exactly one input; input rank under 5</td><td><code>"Linear layer must have only one single input."</code>; <code>"ANE cannot support Linear with input rank &gt;= 5"</code></td></tr>
+<tr><td>Matrix multiply</td><td><code>MatrixMult</code></td><td>exactly two inputs; depth one on both operands; output channel equals the left channel; left width plus padding equals right channel; output channel bytes fit the kernel-memory budget</td><td><code>"Matrix mult. layer can only have two bottoms"</code>; <code>"depth &gt; 1 is not supported for MatMult"</code>; <code>"can not fit the Kmem"</code></td></tr>
+<tr><td>Pooling</td><td><code>Pool</code></td><td>one input; window per axis under the input extent; padding under the kernel; max-pool padding negative, min-pool positive</td><td><code>"Pool layer must have only one single input."</code>; <code>"Pooling mode \"%s\" is not available on this ANE architecture."</code></td></tr>
+<tr><td>Reduction</td><td><code>Reduction</code></td><td>one input; each axis at most 4; non-reduced output extent equals input extent, reduced output extent one; square-after-reduce requires the A14 family flag</td><td><code>"Reduction layer can only have one bottom"</code>; <code>"square operation after reduction is not supported"</code></td></tr>
+<tr><td>Arg-min/arg-max</td><td><code>ArgMinMax</code></td><td>channel reduction at most 2048, otherwise height or width at most 2048; padding non-negative and under the kernel; equal left and right padding; pool stride in {1, 2, 4}</td><td><code>"ArgMinMax left padding value should be smaller than kernel width %d, but %d is given"</code></td></tr>
+<tr><td>Layer norm</td><td><code>LayerNorm</code></td><td>one input; output type float; channel divisible by the group count; grouped form requires depth one</td><td><code>"... does not yet support depth &gt; 1"</code></td></tr>
+<tr><td>Softmax</td><td><code>Softmax</code></td><td>one input; non-empty axis set; output type float; the general full-axis form is family-gated</td><td><code>"Softmax is not supported by this ANE architecture"</code></td></tr>
+<tr><td>Transpose</td><td><code>Transpose</code></td><td>one input; each dimension appears once; extent at most 16384 on A13 through A15 and 65536 on A16; without three-dimensional support a channel transpose must factor into {2, 3, 4, 8} with height one</td><td><code>"NE Input Transpose is not supported for this arch"</code></td></tr>
+<tr><td>Concat</td><td><code>Concat</code></td><td>at least two inputs; every input matches the first on every non-concatenated axis; constant positive axis; matching layout</td><td><code>"ANE Concat supports only supports const positive axis"</code>; <code>"both concat inputs must have the same layout"</code></td></tr>
+<tr><td>Pad</td><td><code>Pad</code></td><td>one input; height or width axes only, no channel or depth padding; reflect and symmetric modes require the texture engine</td><td><code>"Channel padding is not supported on ANE"</code>; <code>"Architecture does not support padding mode."</code></td></tr>
+<tr><td>Broadcast</td><td><code>Broadcast</code></td><td>one input; broadcast only from a length-one axis; depth-axis broadcast requires a family flag absent on the M1</td><td><code>"Broadcast along depth axis is not supported on this architecture"</code></td></tr>
+<tr><td>Gather</td><td><code>Gather</code></td><td>index channel divisible by the interleave factor; on the M1 the software envelope requires data batch one, data depth one, index channel three, index width one, index depth one, and a gather-axes count of three</td><td><code>"Cannot decompose layer on this architecture"</code></td></tr>
+<tr><td>Reshape</td><td><code>Reshape</code></td><td>one input; element count preserved; rank at most 5</td><td><code>"Cannot reshape a tensor of rank &gt; 5"</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c17-validators"></a><strong>Table 17.2.</strong> Per-operation validator constraints and reject strings, read from the <code>_ANECValidate&lt;Op&gt;Layer</code> family.</p>
+<p>A validator that accepts a shape does not guarantee the operation compiles.
+A second class of operations passes the schema validator and then fails the code generator below it, the attested-is-not-reachable split of chapter <a href="../part-1-machine/04-capability-surface.html">4</a>.
+On the M1 the sort and dynamic-slice validators accept their inputs and the code generator rejects the lowering, and top-k compiles only outside a specific forbidden parameter band.
+The validator predicts schema reachability; only a compile-and-run on the target confirms an operation runs.</p>
+<h2 id="reference-the-channel-and-divisibility-rules"><a class="header" href="#reference-the-channel-and-divisibility-rules">Reference: the channel and divisibility rules</a></h2>
+<p><a href="#tbl-c17-divisibility">Table 17.3</a> lists the layout and divisibility rules and what missing each costs.</p>
+<div class="table-wrapper"><table><thead><tr><th>Rule</th><th>Constraint</th><th>Consequence</th></tr></thead><tbody>
+<tr><td>Channel interleave</td><td>channel a multiple of the family interleave factor, found from the HAL table and the dimensions</td><td>a non-multiple pads out to one, leaving lanes unused</td></tr>
+<tr><td>Width granule</td><td>last-axis width aligned to the 16-byte direct-memory-access granule, the times-16 quantum</td><td>misaligned width pads to the granule</td></tr>
+<tr><td>Group-to-core ratio</td><td>active neural-engine count divisible by the group count, four cores on the M1 so groups in {1, 2, 4}</td><td>a non-dividing count loses the one-to-one core-to-lookup-table mapping and runs slower</td></tr>
+<tr><td>Max-pool channel</td><td>input channel under the per-operation maximum-pool channel bound</td><td>a large-channel max-pool tiles</td></tr>
+<tr><td>Unicast channel</td><td>channel at most the unicast input-channel maximum for the broadcast-to-all-cores path</td><td>above it the operation takes the multicast lowering</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c17-divisibility"></a><strong>Table 17.3.</strong> The layout and divisibility rules that separate a fast layer from a padded one, with the constraint and the consequence of missing it.</p>
+<p>Depthwise convolution, where the group count equals the input channel count, lowers to the channelwise path and is exempt from the group-to-core preference.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-4-workloads/16-numerical-scientific.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-5-practice/18-optimization-cost-model.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-4-workloads/16-numerical-scientific.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-5-practice/18-optimization-cost-model.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

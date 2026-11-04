@@ -1,0 +1,767 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Appendix C. Decoded reference tables - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/appendices/c-decoded-tables.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="appendix-c-decoded-reference-tables"><a class="header" href="#appendix-c-decoded-reference-tables">Appendix C. Decoded reference tables</a></h1>
+<blockquote>
+<p>This appendix collects the decoded values cited throughout the guide into one reference.
+They are enum tokens, struct layouts, status codes, the register-init table, command table, register map, and program-container schema.
+Each section begins with its table, and says when only a representative excerpt of a larger decoded set is reproduced here.</p>
+</blockquote>
+<p>Each section reproduces the representative and structurally important rows of a larger table.
+Where a table runs to hundreds or thousands of rows, the section reproduces an excerpt and the full set stays in the collected data behind this guide.
+Every value here is read out of an M1/H13 binary by static analysis.</p>
+<h2 id="c1-operation-attribute-enum-tokens-to-integer-values"><a class="header" href="#c1-operation-attribute-enum-tokens-to-integer-values">C.1 Operation-attribute enum tokens to integer values</a></h2>
+<p>These are the integer codes the compiler resolves attribute string tokens to.
+<a href="#tbl-apc-activation-tokens">Table C.1</a> is the front-end activation token map (<code>MILOpConverter::NeuronTypeFromString</code>, 33 entries, miss resolves to 0).</p>
+<div class="table-wrapper"><table><thead><tr><th>token</th><th>int</th><th>token</th><th>int</th></tr></thead><tbody>
+<tr><td><code>relu</code></td><td>1</td><td><code>gelu</code></td><td>23</td></tr>
+<tr><td><code>leaky_relu</code></td><td>2</td><td><code>degamma</code></td><td>25</td></tr>
+<tr><td><code>clamped_relu</code></td><td>3</td><td><code>trunc</code></td><td>26</td></tr>
+<tr><td><code>relu_n</code> (relu6)</td><td>4</td><td><code>round_nearest</code></td><td>27</td></tr>
+<tr><td><code>sigmoid</code></td><td>5</td><td><code>floor</code></td><td>28</td></tr>
+<tr><td><code>sigmoid_high_precision</code></td><td>6</td><td><code>ceil</code></td><td>29</td></tr>
+<tr><td><code>tanh</code></td><td>7</td><td><code>erf</code></td><td>31</td></tr>
+<tr><td><code>silu</code> (alias <code>swish</code>)</td><td>9</td><td><code>threshold_relu</code></td><td>32</td></tr>
+<tr><td><code>swish_hard</code></td><td>10</td><td><code>gamma</code></td><td>33</td></tr>
+<tr><td><code>sqr</code></td><td>11</td><td><code>inv</code></td><td>14</td></tr>
+<tr><td><code>sqrt</code></td><td>12</td><td><code>log2</code></td><td>15</td></tr>
+<tr><td><code>rsqrt</code></td><td>13</td><td><code>exp2</code></td><td>16</td></tr>
+<tr><td><code>elu</code></td><td>18</td><td><code>exp</code></td><td>17</td></tr>
+<tr><td><code>sin</code></td><td>20</td><td><code>sign</code></td><td>19</td></tr>
+<tr><td><code>cos</code></td><td>21</td><td><code>sigmoid_hard</code></td><td>22</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-activation-tokens"></a><strong>Table C.1.</strong> The front-end activation token names and the integer neuron codes they resolve to.</p>
+<p>The serialization dtype enum (<code>ANECIRDataType</code>, the <code>dtype</code> / <code>storage_type</code> attribute) is an 11-code space, given as <a href="#tbl-apc-dtype-enum">table C.2</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>int</th><th>type</th><th>int</th><th>type</th></tr></thead><tbody>
+<tr><td>0</td><td>int4</td><td>6</td><td>uint16</td></tr>
+<tr><td>1</td><td>uint8</td><td>7</td><td>int32</td></tr>
+<tr><td>2</td><td>int8</td><td>8</td><td>uint32</td></tr>
+<tr><td>3</td><td>fp16</td><td>9</td><td>int64</td></tr>
+<tr><td>4</td><td>fp32</td><td>10</td><td>uint64</td></tr>
+<tr><td>5</td><td>int16</td><td></td><td></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-dtype-enum"></a><strong>Table C.2.</strong> The serialization data-type codes and the element types they name.</p>
+<p>The MLIR <code>symbolize*</code> enums are a length-dispatched chain of packed integer string compares, fully static, each miss resolving to 0, collected in <a href="#tbl-apc-symbolize">table C.3</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>attribute</th><th>token</th><th>int</th></tr></thead><tbody>
+<tr><td><code>padding_style</code></td><td><code>EXPLICIT</code> / <code>TF_VALID</code> / <code>TF_SAME</code> / <code>EXPLICIT_OFFSET</code> / <code>ONNX_SAME_LOWER</code></td><td>0 / 1 / 2 / 3 / 4</td></tr>
+<tr><td><code>nearest_rounding_mode</code></td><td><code>round_prefer_ceil</code> / <code>round_prefer_floor</code> / <code>ceil</code> / <code>floor</code> / <code>round_to_even</code> / <code>round_to_odd</code></td><td>0 / 1 / 2 / 3 / 4 / 5</td></tr>
+<tr><td><code>reduce_op</code></td><td><code>min</code> / <code>max</code> / <code>sum</code> / <code>prod</code> / <code>argMin</code> / <code>argMax</code></td><td>0 / 1 / 2 / 3 / 4 / 5</td></tr>
+<tr><td><code>data_layout</code></td><td><code>NCHW</code> / <code>NHWC</code> / <code>OIHW</code> / <code>HWIO</code> / <code>CHW</code> / <code>HWC</code> / <code>HW</code></td><td>0 / 1 / 2 / 3 / 4 / 5 / 6</td></tr>
+<tr><td><code>data_layout</code></td><td><code>NCDHW</code> / <code>NDHWC</code> / <code>OIDHW</code> / <code>DHWIO</code></td><td>7 / 8 / 9 / 10</td></tr>
+<tr><td><code>scatter</code> mode</td><td><code>add</code> / <code>subtract</code> / <code>multiply</code> / <code>divide</code> / <code>min</code> / <code>max</code> / <code>set</code></td><td>0 / 1 / 2 / 3 / 4 / 5 / 6</td></tr>
+<tr><td>pool <code>indices_mode</code></td><td><code>GlobalFlatten1D</code>..<code>4D</code> / <code>LocalFlatten1D</code>..<code>4D</code></td><td>0..3 / 4..7</td></tr>
+<tr><td>RNN gate activation</td><td><code>none</code> / <code>relu</code> / <code>tanh</code> / <code>sigmoid</code> / <code>hard_sigmoid</code> / <code>scaled_tanh</code></td><td>0 / 1 / 2 / 3 / 4 / 5</td></tr>
+<tr><td>stencil <code>padding_mode</code></td><td><code>constant</code> / <code>mirror</code> / <code>mirrorWithEdge</code> / <code>clampToEdge</code> / <code>zero</code> / <code>periodic</code> / <code>antiPeriodic</code></td><td>0 / 1 / 2 / 3 / 4 / 5 / 6</td></tr>
+<tr><td><code>pixel_format</code></td><td><code>R8Unorm</code> / <code>RG8Unorm</code> / <code>RGBA8Unorm</code> / <code>BGRA8Unorm</code> / <code>R16Float</code></td><td>0 / 1 / 2 / 3 / 4</td></tr>
+<tr><td><code>pixel_format</code></td><td><code>RG16Float</code> / <code>RGBA16Float</code> / <code>R32Float</code> / <code>RG32Float</code> / <code>RGBA32Float</code></td><td>5 / 6 / 7 / 8 / 9</td></tr>
+<tr><td><code>arith::RoundingMode</code></td><td><code>to_nearest_even</code> / <code>downward</code> / <code>upward</code> / <code>toward_zero</code> / <code>to_nearest_away</code></td><td>0 / 1 / 2 / 3 / 4</td></tr>
+<tr><td>collective reduction</td><td><code>sum</code> / <code>max</code> / <code>min</code> / <code>prod</code> / <code>mean</code></td><td>1 / 2 / 3 / 4 / 5</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-symbolize"></a><strong>Table C.3.</strong> The symbolized attribute tokens and the integer values each one maps to.</p>
+<p>A second class of enum is in a packed pointer table in the data segment, the internal <code>Zin</code> enums (<a href="#tbl-apc-zin-enums">table C.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>enum</th><th>value to token</th></tr></thead><tbody>
+<tr><td><code>ZinIrPoolingType</code></td><td>1 Avg, 2 Max, 3 ChannelMax, 4 Min, 5 ChannelMin, 6 L1, 7 L2, 8 SpatialAndChannelAvg, 9 SpatialAndChannelMax, 10 SpatialAndChannelMin, 11 SpatialArgMax, 12 ChannelArgMax, 13 SpatialArgMin, 14 ChannelArgMin</td></tr>
+<tr><td><code>ZinIrReductionType</code></td><td>0 Sum, 1 Min, 2 Max, 3 Avg, 4 SatSum, 5 SatSub, 6 ArgMin, 7 ArgMax, 8 BitwiseAnd, 9 BitwiseOr, 10 BitwiseXor</td></tr>
+<tr><td><code>ZinIrEWType</code></td><td>1 Add, 2 Mult, 3 Square, 4 Sub, 5 Power, 6 Div, 7 Max, 8 Min, 9 Abs, 10 EqualZero, 11 NotEqualZero, 12 LessThanZero, 13 LessThanEqualZero, 14 GreaterThanEqualZero, 15 GreaterThanZero, 16 Equal, 17 NotEqual, 18 LessThan, 19 LessThanEqual, 20 GreaterThanEqual, 21 GreaterThan</td></tr>
+<tr><td><code>ZinIrScaledEWType</code></td><td>1 Add, 2 Mult, 3 SumSquare, 4 Max, 5 Min</td></tr>
+<tr><td><code>ZinIrPaddingMode</code></td><td>1 Zero, 2 Negative, 3 Replication, 5 Symmetric, 6 Reflective, 7 Background, 8 DontCare</td></tr>
+<tr><td><code>ZinIrSamplingMethod</code></td><td>0 Linear, 1 NearestNeighbor</td></tr>
+<tr><td><code>ZinIrSamplingGridMode</code></td><td>0 AlignedCorners, 1 UnalignedCorners, 2 OffsetCorners, 3 Default, 4 OffsetDefault, 5 OffsetDefaultWithNominalScale, 6 StrictAlignedCorners</td></tr>
+<tr><td><code>ZinIrCoordinateMode</code></td><td>0 NonNormalized, 1 NormalizedSymmetric, 2 NormalizedReflect</td></tr>
+<tr><td><code>ZinArgMode</code></td><td>1 SpatialArgMin, 2 ChannelArgMin, 3 SpatialArgMax, 4 ChannelArgMax</td></tr>
+<tr><td><code>ZinIrSortDirection</code></td><td>0 Invalid, 1 Ascending, 2 Descending</td></tr>
+<tr><td><code>ZinIrTopKType</code></td><td>0 Invalid, 1 Min, 2 Max</td></tr>
+<tr><td><code>ZinIrFlattenType</code></td><td>1 NCHW, 2 NHWC</td></tr>
+<tr><td><code>ZinIrDimension</code></td><td>0 N, 1 D, 2 C, 3 H, 4 W</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-zin-enums"></a><strong>Table C.4.</strong> The internal <code>Zin</code> enum value-to-token maps the lowering layer dispatches on.</p>
+<p>The op-class selector is the <code>ZinUnitType</code> table of 79 entries, reproduced in full as <a href="#tbl-apc-zinunittype">table C.5</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>int</th><th>unit</th><th>int</th><th>unit</th><th>int</th><th>unit</th></tr></thead><tbody>
+<tr><td>1</td><td>Conv</td><td>28</td><td>LayerNormalization</td><td>55</td><td>RandomGenerator</td></tr>
+<tr><td>2</td><td>Pooling</td><td>29</td><td>LocalResponseNormalization</td><td>56</td><td>Alias</td></tr>
+<tr><td>3</td><td>Concat</td><td>30</td><td>CostVolume</td><td>57</td><td>CrossProduct</td></tr>
+<tr><td>4</td><td>ElementWise</td><td>31</td><td>PixelShuffle</td><td>58</td><td>Quant</td></tr>
+<tr><td>5</td><td>ScaledElementWise</td><td>32</td><td>PixelUnshuffle</td><td>59</td><td>DeQuant</td></tr>
+<tr><td>6</td><td>Neuron</td><td>33</td><td>FurthestPointSampling</td><td>60</td><td>Linear</td></tr>
+<tr><td>7</td><td>NeuronCustom</td><td>34</td><td>SpaceToBatch</td><td>61</td><td>RingBufferWriter</td></tr>
+<tr><td>8</td><td>GOC</td><td>35</td><td>BatchToSpace</td><td>62</td><td>RingBufferReader</td></tr>
+<tr><td>9</td><td>DynamicGOC</td><td>36</td><td>SpaceToChannel</td><td>63</td><td>BatchNorm</td></tr>
+<tr><td>10</td><td>ConstMatrixMatrixMult</td><td>37</td><td>ChannelToSpace</td><td>64</td><td>Phi</td></tr>
+<tr><td>11</td><td>Flatten</td><td>38</td><td>RadiusSearch</td><td>65</td><td>Condition</td></tr>
+<tr><td>12</td><td>Unflatten</td><td>39</td><td>Gather</td><td>66</td><td>WaitForEvent</td></tr>
+<tr><td>13</td><td>CrossCorrelation</td><td>40</td><td>AffineTransform</td><td>67</td><td>SignalEvent</td></tr>
+<tr><td>14</td><td>KernelRasterizer</td><td>41</td><td>Resize</td><td>68</td><td>NEConv</td></tr>
+<tr><td>15</td><td>ArgMinMax</td><td>42</td><td>ResizeAs</td><td>69</td><td>NEMatMul</td></tr>
+<tr><td>16</td><td>GlobalArgMinMax</td><td>43</td><td>Resample</td><td>70</td><td>NEPool</td></tr>
+<tr><td>17</td><td>InputView</td><td>44</td><td>Padding</td><td>71</td><td>NEBypass</td></tr>
+<tr><td>18</td><td>MatrixMultiplication</td><td>45</td><td>Tile</td><td>72</td><td>PEPool</td></tr>
+<tr><td>19</td><td>Broadcast</td><td>46</td><td>CropResize</td><td>73</td><td>PEElementWise</td></tr>
+<tr><td>20</td><td>Reduction</td><td>47</td><td>DynamicSlice</td><td>74</td><td>PEGOC</td></tr>
+<tr><td>21</td><td>Transpose</td><td>48</td><td>PlaneReader</td><td>75</td><td>AllSlice</td></tr>
+<tr><td>22</td><td>Reshape</td><td>49</td><td>PlaneWriter</td><td>76</td><td>AllGather</td></tr>
+<tr><td>23</td><td>Shape</td><td>50</td><td>Sort</td><td>77</td><td>SDPA</td></tr>
+<tr><td>24</td><td>Softmax</td><td>51</td><td>TopK</td><td>78</td><td>AllReduce</td></tr>
+<tr><td>25</td><td>InstanceNormalization</td><td>52</td><td>NMS</td><td>79</td><td>FunctionCall</td></tr>
+<tr><td>26</td><td>L2Normalization</td><td>53</td><td>MatrixDecomposition</td><td></td><td></td></tr>
+<tr><td>27</td><td>MinMaxNormalization</td><td>54</td><td>Dropout</td><td></td><td></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-zinunittype"></a><strong>Table C.5.</strong> The complete 79-entry <code>ZinUnitType</code> op-class table and the engine unit each value selects.</p>
+<p>The activation non-linear-mode space is a parallel table, <code>NonLinearModeToString</code>, 48 slots indexed directly by the lower hardware mode value, reproduced as <a href="#tbl-apc-nonlinearmode">table C.6</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>idx</th><th>mode</th><th>idx</th><th>mode</th><th>idx</th><th>mode</th></tr></thead><tbody>
+<tr><td>0</td><td><code>none</code></td><td>16</td><td><code>rsqrt</code></td><td>32</td><td><code>sin</code></td></tr>
+<tr><td>1</td><td><code>relu</code></td><td>17</td><td><code>clamped_relu_rsqrt</code></td><td>33</td><td><code>cos</code></td></tr>
+<tr><td>2</td><td><code>sigmoid</code></td><td>18</td><td><code>inv</code></td><td>34</td><td><code>gelu</code></td></tr>
+<tr><td>3</td><td><code>sigmoid_high_precision</code></td><td>19</td><td><code>sqr</code></td><td>35</td><td><code>gelu_sigmoid_approximation</code></td></tr>
+<tr><td>4</td><td><code>relu_sigmoid</code></td><td>20</td><td><code>log2</code></td><td>36</td><td><code>degamma</code></td></tr>
+<tr><td>5</td><td><code>sigmoid_hard</code></td><td>21</td><td><code>exp2</code></td><td>37</td><td><code>round_nearest</code></td></tr>
+<tr><td>6</td><td><code>tanh</code></td><td>22</td><td><code>exp</code></td><td>38</td><td><code>trunc</code></td></tr>
+<tr><td>7</td><td><code>clamped_relu</code></td><td>23</td><td><code>elu</code></td><td>39</td><td><code>floor</code></td></tr>
+<tr><td>8</td><td><code>prelu</code></td><td>24</td><td><code>sign</code></td><td>40</td><td><code>ceil</code></td></tr>
+<tr><td>9</td><td><code>relun</code></td><td>25</td><td><code>equal_zero</code></td><td>41</td><td><code>atan</code></td></tr>
+<tr><td>10</td><td><code>swish</code></td><td>26</td><td><code>not_equal_zero</code></td><td>42</td><td><code>atan_part1</code></td></tr>
+<tr><td>11</td><td><code>swish_hard</code></td><td>27</td><td><code>less_than_zero</code></td><td>43</td><td><code>atan_part2</code></td></tr>
+<tr><td>12</td><td><code>dirac</code></td><td>28</td><td><code>less_than_equal_zero</code></td><td>44</td><td><code>erf</code></td></tr>
+<tr><td>13</td><td><code>int</code></td><td>29</td><td><code>greater_than_equal_zero</code></td><td>45</td><td><code>thresholded_relu</code></td></tr>
+<tr><td>14</td><td><code>frac</code></td><td>30</td><td><code>greater_than_zero</code></td><td>46</td><td><code>gamma</code></td></tr>
+<tr><td>15</td><td><code>sqrt</code></td><td>31</td><td><code>custom_lut</code></td><td>47</td><td><code>abs</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-nonlinearmode"></a><strong>Table C.6.</strong> The complete 48-slot <code>NonLinearModeToString</code> table indexed by hardware non-linear-mode value.</p>
+<p>The micro-op opcode space (<code>ZinIrOpLayerOpCodeType</code>, 126 codes, <code>0x00</code>..<code>0x7d</code>) has the codes the task-descriptor builder dispatches on, given in full as <a href="#tbl-apc-microop-opcodes">table C.7</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>op</th><th>dec</th><th>string</th><th>op</th><th>dec</th><th>string</th></tr></thead><tbody>
+<tr><td><code>0x00</code></td><td>0</td><td><code>CONV</code></td><td><code>0x3f</code></td><td>63</td><td><code>AFFINE_TRANFORM</code></td></tr>
+<tr><td><code>0x01</code></td><td>1</td><td><code>POOL</code></td><td><code>0x40</code></td><td>64</td><td><code>PLANE_READER</code></td></tr>
+<tr><td><code>0x02</code></td><td>2</td><td><code>SCALE_BIAS</code></td><td><code>0x41</code></td><td>65</td><td><code>PLANE_WRITER</code></td></tr>
+<tr><td><code>0x03</code></td><td>3</td><td><code>TERNARY_DYNAMIC_GOC</code></td><td><code>0x42</code></td><td>66</td><td><code>SORT</code></td></tr>
+<tr><td><code>0x04</code></td><td>4</td><td><code>ACTIVATION</code></td><td><code>0x43</code></td><td>67</td><td><code>TOP_K</code></td></tr>
+<tr><td><code>0x05</code></td><td>5</td><td><code>EW</code></td><td><code>0x44</code></td><td>68</td><td><code>RCAS</code></td></tr>
+<tr><td><code>0x06</code></td><td>6</td><td><code>SCALED_EW</code></td><td><code>0x45</code></td><td>69</td><td><code>INDEX</code></td></tr>
+<tr><td><code>0x07</code></td><td>7</td><td><code>CONCAT</code></td><td><code>0x46</code></td><td>70</td><td><code>NMS</code></td></tr>
+<tr><td><code>0x08</code></td><td>8</td><td><code>SPLIT</code></td><td><code>0x47</code></td><td>71</td><td><code>DROPOUT</code></td></tr>
+<tr><td><code>0x09</code></td><td>9</td><td><code>COPY</code></td><td><code>0x48</code></td><td>72</td><td><code>TYPE_CAST</code></td></tr>
+<tr><td><code>0x0a</code></td><td>10</td><td><code>FLATTEN</code></td><td><code>0x49</code></td><td>73</td><td><code>STOCHASTIC_ROUND</code></td></tr>
+<tr><td><code>0x0b</code></td><td>11</td><td><code>UNFLATTEN</code></td><td><code>0x4a</code></td><td>74</td><td><code>RANDOM_GENERATOR</code></td></tr>
+<tr><td><code>0x0c</code></td><td>12</td><td><code>CROSS_CORRELATION</code></td><td><code>0x4b</code></td><td>75</td><td><code>LINEAR</code></td></tr>
+<tr><td><code>0x0d</code></td><td>13</td><td><code>CROSS_PRODUCT</code></td><td><code>0x4c</code></td><td>76</td><td><code>RINGBUFFER_WRITER</code></td></tr>
+<tr><td><code>0x0e</code></td><td>14</td><td><code>KERNEL_RASTERIZER</code></td><td><code>0x4d</code></td><td>77</td><td><code>RINGBUFFER_READER</code></td></tr>
+<tr><td><code>0x0f</code></td><td>15</td><td><code>ARG_MIN_MAX</code></td><td><code>0x4e</code></td><td>78</td><td><code>CONDITION</code></td></tr>
+<tr><td><code>0x10</code></td><td>16</td><td><code>GLOBAL_ARG_MIN_MAX</code></td><td><code>0x4f</code></td><td>79</td><td><code>PHI</code></td></tr>
+<tr><td><code>0x11</code></td><td>17</td><td><code>MATRIX_MULT</code></td><td><code>0x50</code></td><td>80</td><td><code>BASICBLOCK_IN</code></td></tr>
+<tr><td><code>0x12</code></td><td>18</td><td><code>BROADCAST</code></td><td><code>0x51</code></td><td>81</td><td><code>BASICBLOCK_OUT</code></td></tr>
+<tr><td><code>0x13</code></td><td>19</td><td><code>FLATTEN_COMPOSITE</code></td><td><code>0x52</code></td><td>82</td><td><code>BATCHNORM</code></td></tr>
+<tr><td><code>0x14</code></td><td>20</td><td><code>UNFLATTEN_COMPOSITE</code></td><td><code>0x53</code></td><td>83</td><td><code>WAIT_FOR_EVENT</code></td></tr>
+<tr><td><code>0x15</code></td><td>21</td><td><code>FPS_WITH_RADIUS_COMPOSITE</code></td><td><code>0x54</code></td><td>84</td><td><code>SIGNAL_EVENT</code></td></tr>
+<tr><td><code>0x16</code></td><td>22</td><td><code>PIXEL_SHUFFLE_COMPOSITE</code></td><td><code>0x55</code></td><td>85</td><td><code>ALL_SLICE</code></td></tr>
+<tr><td><code>0x17</code></td><td>23</td><td><code>PIXEL_UNSHUFFLE_COMPOSITE</code></td><td><code>0x56</code></td><td>86</td><td><code>ALL_GATHER</code></td></tr>
+<tr><td><code>0x18</code></td><td>24</td><td><code>CONV_COMPOSITE</code></td><td><code>0x57</code></td><td>87</td><td><code>SCALED_DOT_PRODUCT_ATTENTION</code></td></tr>
+<tr><td><code>0x19</code></td><td>25</td><td><code>MATDECOMP_MATMULT_COMPOSITE</code></td><td><code>0x58</code></td><td>88</td><td><code>ALL_REDUCE</code></td></tr>
+<tr><td><code>0x1a</code></td><td>26</td><td><code>CHANNEL_TO_SPACE_LARGE_FACTOR_COMPOSITE</code></td><td><code>0x59</code></td><td>89</td><td><code>PEFUSED_ELEMENTWISE</code></td></tr>
+<tr><td><code>0x1b</code></td><td>27</td><td><code>LIVE_IN</code></td><td><code>0x5a</code></td><td>90</td><td><code>PEFUSED_SECUREFLUSH</code></td></tr>
+<tr><td><code>0x1c</code></td><td>28</td><td><code>LIVEIN_PARAM</code></td><td><code>0x5b</code></td><td>91</td><td><code>PEFUSED_POOL</code></td></tr>
+<tr><td><code>0x1d</code></td><td>29</td><td><code>CONST_IN</code></td><td><code>0x5c</code></td><td>92</td><td><code>PEFUSED_GOC</code></td></tr>
+<tr><td><code>0x1e</code></td><td>30</td><td><code>LIVE_STATE</code></td><td><code>0x5d</code></td><td>93</td><td><code>NEFUSED_CONV</code></td></tr>
+<tr><td><code>0x1f</code></td><td>31</td><td><code>LIVE_OUT</code></td><td><code>0x5e</code></td><td>94</td><td><code>NEFUSED_KERNEL_RASTERIZER</code></td></tr>
+<tr><td><code>0x20</code></td><td>32</td><td><code>REDUCTION</code></td><td><code>0x5f</code></td><td>95</td><td><code>NEFUSED_CROSS_CORRELATION</code></td></tr>
+<tr><td><code>0x21</code></td><td>33</td><td><code>ALIAS</code></td><td><code>0x60</code></td><td>96</td><td><code>NEFUSED_MATMUL</code></td></tr>
+<tr><td><code>0x22</code></td><td>34</td><td><code>REINTERPRET_INNERMOST_DIMENSION</code></td><td><code>0x61</code></td><td>97</td><td><code>NEFUSED_POOL</code></td></tr>
+<tr><td><code>0x23</code></td><td>35</td><td><code>REINTERPRET_CAST</code></td><td><code>0x62</code></td><td>98</td><td><code>NEFUSED_EW</code></td></tr>
+<tr><td><code>0x24</code></td><td>36</td><td><code>RESHAPE</code></td><td><code>0x63</code></td><td>99</td><td><code>NEFUSED_DUAL_SOURCE_EW</code></td></tr>
+<tr><td><code>0x25</code></td><td>37</td><td><code>VIEW</code></td><td><code>0x64</code></td><td>100</td><td><code>NEFUSED_BYPASS</code></td></tr>
+<tr><td><code>0x26</code></td><td>38</td><td><code>TRANSPOSE</code></td><td><code>0x65</code></td><td>101</td><td><code>NEFUSED_RCAS</code></td></tr>
+<tr><td><code>0x27</code></td><td>39</td><td><code>SPACE_TO_BATCH</code></td><td><code>0x66</code></td><td>102</td><td><code>TRANSPOSE_ENGINE_OP</code></td></tr>
+<tr><td><code>0x28</code></td><td>40</td><td><code>BATCH_TO_SPACE</code></td><td><code>0x67</code></td><td>103</td><td><code>TE_RESAMPLE</code></td></tr>
+<tr><td><code>0x29</code></td><td>41</td><td><code>SPACE_TO_CHANNEL</code></td><td><code>0x68</code></td><td>104</td><td><code>TE_AFFINE_TRANSFORM</code></td></tr>
+<tr><td><code>0x2a</code></td><td>42</td><td><code>CHANNEL_TO_SPACE</code></td><td><code>0x69</code></td><td>105</td><td><code>TE_PAD</code></td></tr>
+<tr><td><code>0x2b</code></td><td>43</td><td><code>SOFTMAX</code></td><td><code>0x6a</code></td><td>106</td><td><code>TE_CROP_RESIZE</code></td></tr>
+<tr><td><code>0x2c</code></td><td>44</td><td><code>INSTANCE_NORM</code></td><td><code>0x6b</code></td><td>107</td><td><code>TE_SLICE</code></td></tr>
+<tr><td><code>0x2d</code></td><td>45</td><td><code>L2_NORM</code></td><td><code>0x6c</code></td><td>108</td><td><code>TE_GATHER</code></td></tr>
+<tr><td><code>0x2e</code></td><td>46</td><td><code>MINMAX_NORM</code></td><td><code>0x6d</code></td><td>109</td><td><code>TE_RESIZE</code></td></tr>
+<tr><td><code>0x2f</code></td><td>47</td><td><code>LAYER_NORM</code></td><td><code>0x6e</code></td><td>110</td><td><code>TM_WAIT_FOR_EVENT</code></td></tr>
+<tr><td><code>0x30</code></td><td>48</td><td><code>LRN</code></td><td><code>0x6f</code></td><td>111</td><td><code>TM_SIGNAL_EVENT</code></td></tr>
+<tr><td><code>0x31</code></td><td>49</td><td><code>COST_VOLUME</code></td><td><code>0x70</code></td><td>112</td><td><code>TM_BRANCH</code></td></tr>
+<tr><td><code>0x32</code></td><td>50</td><td><code>PIXEL_SHUFFLE</code></td><td><code>0x71</code></td><td>113</td><td><code>TM_FETCH</code></td></tr>
+<tr><td><code>0x33</code></td><td>51</td><td><code>PIXEL_UNSHUFFLE</code></td><td><code>0x72</code></td><td>114</td><td><code>TM_STORE</code></td></tr>
+<tr><td><code>0x34</code></td><td>52</td><td><code>MATRIX_DECOMPOSITION</code></td><td><code>0x73</code></td><td>115</td><td><code>TM_OPERATE</code></td></tr>
+<tr><td><code>0x35</code></td><td>53</td><td><code>FPS</code></td><td><code>0x74</code></td><td>116</td><td><code>TM_USER_SLOT_LOAD</code></td></tr>
+<tr><td><code>0x36</code></td><td>54</td><td><code>RS</code></td><td><code>0x75</code></td><td>117</td><td><code>DMA_CONVERT</code></td></tr>
+<tr><td><code>0x37</code></td><td>55</td><td><code>RESAMPLE</code></td><td><code>0x76</code></td><td>118</td><td><code>QUANT</code></td></tr>
+<tr><td><code>0x38</code></td><td>56</td><td><code>GATHER</code></td><td><code>0x77</code></td><td>119</td><td><code>DEQUANT</code></td></tr>
+<tr><td><code>0x39</code></td><td>57</td><td><code>TILE</code></td><td><code>0x78</code></td><td>120</td><td><code>SNE_COND</code></td></tr>
+<tr><td><code>0x3a</code></td><td>58</td><td><code>SLICE</code></td><td><code>0x79</code></td><td>121</td><td><code>SNE_GOC</code></td></tr>
+<tr><td><code>0x3b</code></td><td>59</td><td><code>PAD</code></td><td><code>0x7a</code></td><td>122</td><td><code>CCDMA_CONST</code></td></tr>
+<tr><td><code>0x3c</code></td><td>60</td><td><code>RESIZE</code></td><td><code>0x7b</code></td><td>123</td><td><code>CCDMA_MEMORY</code></td></tr>
+<tr><td><code>0x3d</code></td><td>61</td><td><code>RESIZEAS</code></td><td><code>0x7c</code></td><td>124</td><td><code>SPILL_FILL_DUMMY</code></td></tr>
+<tr><td><code>0x3e</code></td><td>62</td><td><code>CROP_RESIZE</code></td><td><code>0x7d</code></td><td>125</td><td><code>INVALID</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-microop-opcodes"></a><strong>Table C.7.</strong> The complete 126-entry micro-operation opcode table and the layer-kind name each value dispatches on.</p>
+<p>The opcode <code>0x3f</code> is spelled <code>AFFINE_TRANFORM</code> in the binary, a vendor source typo preserved on the wire.</p>
+<h2 id="c2-operation-attribute-schema-and-iokit-external-method-struct-layouts"><a class="header" href="#c2-operation-attribute-schema-and-iokit-external-method-struct-layouts">C.2 Operation-attribute schema and IOKit external-method struct layouts</a></h2>
+<p>The attribute schema is string-keyed: the token is the wire encoding the compiler matches on, and most integer constants are not recoverable statically.
+The converter recognizes 171 literal attribute keys, of which roughly 140 are op-facing (<a href="#tbl-apc-attribute-keys">table C.8</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>key</th><th>type</th><th>meaning</th><th>value encoding</th></tr></thead><tbody>
+<tr><td><code>activation</code></td><td>enum</td><td>neuron mode</td><td>token into the 22-field PWL descriptor</td></tr>
+<tr><td><code>strides</code></td><td>int[]</td><td>per-axis stride</td><td>NDCHW int array; deconv restricted to {1,2}</td></tr>
+<tr><td><code>groups</code></td><td>int</td><td>group count</td><td>channel-wise requires <code>groups == out.C</code></td></tr>
+<tr><td><code>padding_mode</code></td><td>enum</td><td>fill rule</td><td><code>constant</code> / <code>reflect</code> / <code>replicate</code> / <code>symmetric</code></td></tr>
+<tr><td><code>weights_layout</code></td><td>enum</td><td>weight axis order</td><td><code>NCHW</code> / <code>NHWC</code> / <code>OIHW</code> / <code>HWIO</code>; weight buffer is <code>MACI</code></td></tr>
+<tr><td><code>compressed</code></td><td>bool/enum</td><td>weight compression</td><td>format set by the MIL-op-count contract</td></tr>
+<tr><td><code>interleave</code></td><td>int</td><td>channel-tiling quantum</td><td>one of {1,2,3,4,8}</td></tr>
+<tr><td><code>epsilon</code></td><td>float</td><td>norm stability</td><td>scalar</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-attribute-keys"></a><strong>Table C.8.</strong> Representative operation-attribute keys with their value types, meanings, and wire encodings.</p>
+<p>The host-to-kernel IOKit dispatch key is the (selector, struct-size) tuple, not the selector alone (<a href="#tbl-apc-iokit-selectors">table C.9</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>sel</th><th>method</th><th>in-struct</th><th>out/scalar</th></tr></thead><tbody>
+<tr><td>0</td><td><code>ANE_DeviceOpen</code></td><td>104</td><td>104</td></tr>
+<tr><td>2</td><td><code>ANE_ProgramSendRequest</code></td><td>2376 + 1 scalar</td><td>40 async</td></tr>
+<tr><td>3</td><td><code>ANE_ProgramCreate</code></td><td>32</td><td>0</td></tr>
+<tr><td>4</td><td><code>ANE_ProgramPrepare</code></td><td>56</td><td>56</td></tr>
+<tr><td>6</td><td><code>ANE_ProgramDestroy</code></td><td>16</td><td>0</td></tr>
+<tr><td>7</td><td><code>ANE_GetStatus</code></td><td>0</td><td>32</td></tr>
+<tr><td>8</td><td><code>ANE_ProgramCreateInstance</code></td><td>32</td><td>0</td></tr>
+<tr><td>10</td><td><code>ANE_GetVersion</code></td><td>0</td><td>1 scalar</td></tr>
+<tr><td>21</td><td><code>ANE_ProgramInputsReady</code></td><td>3104</td><td>0</td></tr>
+<tr><td>22</td><td><code>ANE_MemoryMapRequest</code></td><td>2080 + 1 scalar</td><td>1 scalar</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-iokit-selectors"></a><strong>Table C.9.</strong> The IOKit control-client selectors with their method names and decoded input and output struct sizes.</p>
+<p>The <code>ANEDeviceOpen</code> shared in/out buffer (104 bytes, selector 0) decodes by byte offset as <a href="#tbl-apc-anedeviceopen">table C.10</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>offset</th><th>field</th></tr></thead><tbody>
+<tr><td><code>+0x00</code></td><td>usage type (1 standard, 2 unsupported) plus session token</td></tr>
+<tr><td><code>+0x08</code></td><td>callback function pointer</td></tr>
+<tr><td><code>+0x10</code></td><td>receiver context pointer</td></tr>
+<tr><td><code>+0x18</code></td><td>timeout <code>0x2710</code> (10000)</td></tr>
+<tr><td><code>+0x48</code></td><td>version pair <code>32, 256</code></td></tr>
+<tr><td><code>+0x50</code></td><td>NumANEs <code>0, 1</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-anedeviceopen"></a><strong>Table C.10.</strong> The field layout of the ANEDeviceOpen shared input and output buffer by byte offset.</p>
+<p>The full 171-key attribute set, the decoded enum-value tables, and the per-selector field layouts for the HW direct-path client are from collected data not reproduced here.</p>
+<h2 id="c3-numeric-error-status-and-return-codes"><a class="header" href="#c3-numeric-error-status-and-return-codes">C.3 Numeric error, status, and return codes</a></h2>
+<p>The ANE stack has no flat numeric status enum.
+The fixed numeric values that exist are the IOKit return constants and the firmware magic and sentinel words; <a href="#tbl-apc-ioreturn">table C.11</a> collects the first group.</p>
+<div class="table-wrapper"><table><thead><tr><th>macro</th><th>hex</th><th>ANE path meaning</th></tr></thead><tbody>
+<tr><td><code>kIOReturnSuccess</code></td><td><code>0x00000000</code></td><td>success</td></tr>
+<tr><td><code>kIOReturnError</code></td><td><code>0xe0000001</code></td><td>general failure</td></tr>
+<tr><td><code>kIOReturnBusy</code></td><td><code>0xe0000007</code></td><td>gate or command busy</td></tr>
+<tr><td><code>kIOReturnNoMemory</code></td><td><code>0xe00002bd</code></td><td>allocation failure</td></tr>
+<tr><td><code>kIOReturnNoResources</code></td><td><code>0xe00002be</code></td><td>out of resources, queue or slot exhaustion</td></tr>
+<tr><td><code>kIOReturnNotPrivileged</code></td><td><code>0xe00002c1</code></td><td>privilege check failed</td></tr>
+<tr><td><code>kIOReturnBadArgument</code></td><td><code>0xe00002c2</code></td><td>typed-args validation failure</td></tr>
+<tr><td><code>kIOReturnUnsupported</code></td><td><code>0xe00002c7</code></td><td>disabled or stub path; also what a gated feature returns when its entitlement is absent</td></tr>
+<tr><td><code>kIOReturnNotReady</code></td><td><code>0xe00002d0</code></td><td>device or channel not ready</td></tr>
+<tr><td><code>kIOReturnAborted</code></td><td><code>0xe00002eb</code></td><td>request aborted</td></tr>
+<tr><td><code>kIOReturnNotFound</code></td><td><code>0xe00002f0</code></td><td>program or process handle not found</td></tr>
+<tr><td><code>kIOReturnTimeout</code></td><td><code>0xe0000404</code></td><td>firmware op timed out</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-ioreturn"></a><strong>Table C.11.</strong> The IOKit return constants and their meanings on the engine dispatch path.</p>
+<p>At every layer the error surface is name-based or message-based.
+The client-visible surface above IOKit is an error factory that wraps the lower-layer code into a structured error across four domains, named <code>errorDomainCompiler</code>, <code>errorDomainEspresso</code>, <code>errorDomainGeneric</code>, and <code>errorDomainVirtIO</code>.
+Its factory methods are the taxonomy: a generic wrapper, a missing-code-signing form, program-load and new-instance-load forms that contain the lower-layer code, surface map and unmap forms, and a virtualization-kernel form.
+The single most look-up-worthy client-visible value is <code>0xe00002c7</code> (<code>kIOReturnUnsupported</code>), returned on a disabled or unsupported path and when a gated feature's entitlement is absent.</p>
+<p>The second group is in <a href="#tbl-apc-firmware-magic">table C.12</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>constant</th><th>hex</th><th>meaning</th></tr></thead><tbody>
+<tr><td>package magic</td><td><code>0x414E4548</code> (<code>ANEH</code>)</td><td>loader package header</td></tr>
+<tr><td>program magic</td><td><code>0x414E4550</code> (<code>ANEP</code>)</td><td>loader program header</td></tr>
+<tr><td>section magic</td><td><code>0x414E4553</code> (<code>ANES</code>)</td><td>loader section header</td></tr>
+<tr><td>AFPP control magic</td><td><code>0x55AA55AA</code></td><td>AFPP control struct</td></tr>
+<tr><td>checksum-valid sentinel</td><td><code>0xFFFFFFFF</code></td><td>command checksum initialized and valid</td></tr>
+<tr><td>invalid id</td><td><code>0xFFFFFFFF</code></td><td><code>ECSneCmdId_Invalid</code>, unbound program or process</td></tr>
+<tr><td>padding</td><td><code>0x00000000</code></td><td>command padding must be zero</td></tr>
+<tr><td>power-status byte</td><td><code>0xFF</code> / <code>0x00</code></td><td>fully on / fully off</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-firmware-magic"></a><strong>Table C.12.</strong> The fixed firmware magic words and sentinel constants with their meanings.</p>
+<p>This section shows the three loader magic words as 32-bit integers; on disk the bytes are little-endian, so a raw byte scan finds <code>HENA</code>, <code>PENA</code>, and <code>SENA</code> (the characters of <code>ANEH</code>, <code>ANEP</code>, <code>ANES</code> reversed).
+The firmware-to-host notification names, inline <code>status=0x%x</code> print sites, AArch64 and L2C fault-register dump fields, and compiler diagnostic categories are from collected data not reproduced here.</p>
+<h2 id="c4-the-tunable-register-init-table"><a class="header" href="#c4-the-tunable-register-init-table">C.4 The tunable register-init table</a></h2>
+<p>The per-chip register init is a sequence of 12-byte <code>(offset, mask, value)</code> records, each applied as a masked read-modify-write, <code>reg = (reg &amp; ~mask) | value</code>, where <code>reg</code> is the block MMIO base plus the offset.
+The M1 (ASC AscChinook) firmware has 1994 records across 10 named MMIO blocks, each block reached through a 32-byte descriptor of name, MMIO base, record pointer, and count (<a href="#tbl-apc-reginit-blocks">table C.13</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>block name</th><th>MMIO base</th><th>records</th></tr></thead><tbody>
+<tr><td><code>ASC_CHINOOK</code></td><td><code>0x2_6b00_0000</code></td><td>24</td></tr>
+<tr><td><code>ASCWRAP</code></td><td><code>0x2_6b40_0000</code></td><td>2</td></tr>
+<tr><td><code>sneCtrl</code></td><td><code>0x2_6b84_0000</code></td><td>15</td></tr>
+<tr><td><code>ANE</code></td><td><code>0x2_6bc0_0000</code></td><td>47</td></tr>
+<tr><td><code>aneDpePpt</code></td><td><code>0x2_6b8e_c000</code></td><td>304</td></tr>
+<tr><td><code>aneDpePptAccp0</code></td><td><code>0x2_6b8e_d000</code></td><td>528</td></tr>
+<tr><td><code>aneDpePptAccp1</code></td><td><code>0x2_6b8e_e000</code></td><td>528</td></tr>
+<tr><td><code>aneDpePptAccp2</code></td><td><code>0x2_6b8e_f000</code></td><td>528</td></tr>
+<tr><td><code>aneDpeSys</code></td><td><code>0x2_6b8f_0000</code></td><td>9</td></tr>
+<tr><td><code>aneDpePpt_soc_dpe_lee</code></td><td><code>0x2_6b8f_4000</code></td><td>9</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-reginit-blocks"></a><strong>Table C.13.</strong> The named MMIO register-init blocks with their bases and record counts.</p>
+<p>One or more records from each block are reproduced in <a href="#tbl-apc-reginit-records">table C.14</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>regAddr</th><th>mask</th><th>value</th><th>meaning</th></tr></thead><tbody>
+<tr><td><code>0x2_6b14_0020</code></td><td><code>0xf80000</code></td><td><code>0x780000</code></td><td>ASC clock or PLL divider field set to 15</td></tr>
+<tr><td><code>0x2_6b40_080c</code></td><td><code>0x6000_0001</code></td><td><code>0x6000_0001</code></td><td>fabric clock and QoS enable</td></tr>
+<tr><td><code>0x2_6b84_0028</code> .. <code>0044</code></td><td><code>0x8fff_c000</code></td><td><code>0x8fff_c000</code></td><td>8 identical SNE QoS and credit words, one per set</td></tr>
+<tr><td><code>0x2_6bc0_d014</code> .. <code>fec4</code></td><td><code>0x1</code></td><td><code>0x1</code></td><td>32 per-tile MAC clock and power enables</td></tr>
+<tr><td><code>0x2_6bc1_400c</code></td><td><code>0xffff_ff00</code></td><td><code>0x4010_1000</code></td><td>DMA descriptor base and config word</td></tr>
+<tr><td><code>0x2_6b8e_c000</code></td><td><code>0xffff</code></td><td><code>0x267e</code></td><td>peak-power-tracking base budget word</td></tr>
+<tr><td><code>0x2_6b8e_c42c</code></td><td><code>0x3fff</code></td><td><code>0x0</code></td><td>DPE trailing-control reg, armed live to <code>0x3fff</code></td></tr>
+<tr><td><code>0x2_6b8e_d000</code></td><td><code>0xffff_ffff</code></td><td><code>0x0077_3594</code></td><td>per-counter energy scale coefficient (7811476)</td></tr>
+<tr><td><code>0x2_6b8f_0014</code></td><td><code>0xffff_ffff</code></td><td><code>0x0000_23e1</code></td><td>DPE config and period word</td></tr>
+<tr><td><code>0x2_6b8f_0038</code></td><td><code>0xffff_ffff</code></td><td><code>0x0003_2dcc</code></td><td>DPE accumulation window and divisor (207820)</td></tr>
+<tr><td><code>0x2_6b8f_4000</code></td><td><code>0x1e</code></td><td><code>0xc</code></td><td>SoC-level LEE control field</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-reginit-records"></a><strong>Table C.14.</strong> Representative register-init records with their address, mask, value, and meaning.</p>
+<p>The 32 <code>mask=1 value=1</code> records at a regular stride are direct evidence of the 32-tile MAC array geometry, each tile individually clock and power gateable.
+The DPE system block has seven ascending sampling thresholds (25, 50, 70, 85, 95, 105, 115), and the SoC leakage-estimation block has eight (10, 22, 39, 64, 89, 121, 164, 189): the firmware-side breakpoints of the power model.
+All 1994 decoded records are from collected data not reproduced here.</p>
+<h2 id="c5-the-csne_cmd_-numeric-command-table"><a class="header" href="#c5-the-csne_cmd_-numeric-command-table">C.5 The <code>CSNE_CMD_*</code> numeric command table</a></h2>
+<p>The host-to-firmware command set is 93 entries, numbered <code>0x00</code> through <code>0x5c</code>, indexed by <code>eCSneCmdId</code> into the firmware command-name string table, whose index is the numeric command identifier.
+<code>0xFFFFFFFF</code> is the no-command sentinel.
+The full set follows in <a href="#tbl-apc-command-table">table C.15</a>, whose <code>dir</code> column reads <code>H-&gt;FW</code> for a host request and <code>FW-&gt;H</code> for a firmware notification; the subsystem codes are lifecycle, power, secure, program, execution, cache, ipc, buffer, property, and stats.</p>
+<div class="table-wrapper"><table><thead><tr><th>id</th><th>name</th><th>dir</th><th>subsystem</th><th>purpose</th></tr></thead><tbody>
+<tr><td><code>0x00</code></td><td><code>STOP</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>stop the controller</td></tr>
+<tr><td><code>0x01</code></td><td><code>RESET</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>reset controller state</td></tr>
+<tr><td><code>0x02</code></td><td><code>CONFIG_GET</code></td><td><code>H-&gt;FW</code></td><td>property</td><td>read config blob</td></tr>
+<tr><td><code>0x03</code></td><td><code>PRINT_ENABLE</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>enable firmware print</td></tr>
+<tr><td><code>0x04</code></td><td><code>REG_FILE_LOAD</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>load a register file</td></tr>
+<tr><td><code>0x05</code></td><td><code>BUILDINFO</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>return firmware build string</td></tr>
+<tr><td><code>0x06</code></td><td><code>TIMEPROFILE_START</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>begin time-profiling</td></tr>
+<tr><td><code>0x07</code></td><td><code>TIMEPROFILE_STOP</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>stop time-profiling</td></tr>
+<tr><td><code>0x08</code></td><td><code>TIMEPROFILE_SHOW</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>dump profile</td></tr>
+<tr><td><code>0x09</code></td><td><code>FW_RUN_MODE</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>select firmware run mode</td></tr>
+<tr><td><code>0x0a</code></td><td><code>POWER_DOWN</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>full power-down</td></tr>
+<tr><td><code>0x0b</code></td><td><code>SET_SNE_PMU_BASE</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>set PMU MMIO base</td></tr>
+<tr><td><code>0x0c</code></td><td><code>SET_SNE_RPC_CHECK_CMD</code></td><td><code>H-&gt;FW</code></td><td>property</td><td>RPC sanity-check command</td></tr>
+<tr><td><code>0x0d</code></td><td><code>RPC_ENABLE</code></td><td><code>H-&gt;FW</code></td><td>property</td><td>enable the back-channel RPC channel</td></tr>
+<tr><td><code>0x0e</code></td><td><code>PLATFORM_INFO</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>platform descriptor</td></tr>
+<tr><td><code>0x0f</code></td><td><code>BOOT</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>bring firmware to booted state</td></tr>
+<tr><td><code>0x10</code></td><td><code>PING</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>liveness probe</td></tr>
+<tr><td><code>0x11</code></td><td><code>CONFIG_GET_EXT</code></td><td><code>H-&gt;FW</code></td><td>property</td><td>extended config read</td></tr>
+<tr><td><code>0x12</code></td><td><code>POWER_DEVICE_ON</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>power the device on</td></tr>
+<tr><td><code>0x13</code></td><td><code>POWER_DEVICE_OFF</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>power device off</td></tr>
+<tr><td><code>0x14</code></td><td><code>IPC_ENDPOINT_SET</code></td><td><code>H-&gt;FW</code></td><td>ipc</td><td>bind an IPC endpoint</td></tr>
+<tr><td><code>0x15</code></td><td><code>IPC_ENDPOINT_UNSET</code></td><td><code>H-&gt;FW</code></td><td>ipc</td><td>unbind endpoint</td></tr>
+<tr><td><code>0x16</code></td><td><code>CH_INFO_GET</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>channel info query</td></tr>
+<tr><td><code>0x17</code></td><td><code>CH_BUFFER_RECYCLE_MODE_SET</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>set buffer-recycle mode</td></tr>
+<tr><td><code>0x18</code></td><td><code>CH_BUFFER_RECYCLE_START</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>start recycling</td></tr>
+<tr><td><code>0x19</code></td><td><code>CH_BUFFER_RECYCLE_STOP</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>stop recycling</td></tr>
+<tr><td><code>0x1a</code></td><td><code>CH_BUFFER_RETURN</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>return one pooled buffer</td></tr>
+<tr><td><code>0x1b</code></td><td><code>CH_BUFFER_POOL_CONFIG_GET</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>read buffer-pool config</td></tr>
+<tr><td><code>0x1c</code></td><td><code>CH_BUFFER_POOL_CONFIG_SET</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>configure buffer-pool</td></tr>
+<tr><td><code>0x1d</code></td><td><code>CH_DATA_FILE_LOAD</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>stream a data file over channel</td></tr>
+<tr><td><code>0x1e</code></td><td><code>CH_PROPERTY_WRITE</code></td><td><code>H-&gt;FW</code></td><td>property</td><td>write a register or property</td></tr>
+<tr><td><code>0x1f</code></td><td><code>CH_PROPERTY_READ</code></td><td><code>H-&gt;FW</code></td><td>property</td><td>read a register or property</td></tr>
+<tr><td><code>0x20</code></td><td><code>TRACE_ENABLE</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>enable tracing</td></tr>
+<tr><td><code>0x21</code></td><td><code>RESOURCE_INFO_GET</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>query engine resources</td></tr>
+<tr><td><code>0x22</code></td><td><code>STATS_BUFFER_SIZE_GET</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>compute required stats-buffer size</td></tr>
+<tr><td><code>0x23</code></td><td><code>SUSPEND</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>suspend engine</td></tr>
+<tr><td><code>0x24</code></td><td><code>DSID_SET</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>set data-set identifiers for prefetch</td></tr>
+<tr><td><code>0x25</code></td><td><code>MCACHE_SIZE_GET</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>query memory-cache size</td></tr>
+<tr><td><code>0x26</code></td><td><code>SECURE_MODE_START</code></td><td><code>H-&gt;FW</code></td><td>secure</td><td>enter secure mode</td></tr>
+<tr><td><code>0x27</code></td><td><code>SECURE_MODE_STOP</code></td><td><code>H-&gt;FW</code></td><td>secure</td><td>leave secure mode</td></tr>
+<tr><td><code>0x28</code></td><td><code>SET_SNE_PMU_BASE2</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>version 2 PMU base set</td></tr>
+<tr><td><code>0x29</code></td><td><code>IPC_ENDPOINT_SET2</code></td><td><code>H-&gt;FW</code></td><td>ipc</td><td>version 2 endpoint bind</td></tr>
+<tr><td><code>0x2a</code></td><td><code>IPC_ENDPOINT_UNSET2</code></td><td><code>H-&gt;FW</code></td><td>ipc</td><td>version 2 unbind</td></tr>
+<tr><td><code>0x2b</code></td><td><code>CH_DATA_FILE_LOAD2</code></td><td><code>H-&gt;FW</code></td><td>buffer</td><td>version 2 data-file load</td></tr>
+<tr><td><code>0x2c</code></td><td><code>SET_DYNAMIC_POWERGATE</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>configure dynamic clock and power gating</td></tr>
+<tr><td><code>0x2d</code></td><td><code>ANE_DEFAULT_SETTING_SET</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>bulk default-settings push</td></tr>
+<tr><td><code>0x2e</code></td><td><code>INIT_SHARED_EVENT_INFO</code></td><td><code>H-&gt;FW</code></td><td>ipc</td><td>initialize shared-event table</td></tr>
+<tr><td><code>0x2f</code></td><td><code>EXCLAVE_MODE_START</code></td><td><code>H-&gt;FW</code></td><td>secure</td><td>enter exclave mode (stubbed on H13)</td></tr>
+<tr><td><code>0x30</code></td><td><code>EXCLAVE_MODE_STOP</code></td><td><code>H-&gt;FW</code></td><td>secure</td><td>leave exclave mode</td></tr>
+<tr><td><code>0x31</code></td><td><code>QUIESCE_STATE</code></td><td><code>H-&gt;FW</code></td><td>lifecycle</td><td>drain in-flight work</td></tr>
+<tr><td><code>0x32</code></td><td><code>CPU_LOAD_GET</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>sample CPU load</td></tr>
+<tr><td><code>0x33</code></td><td><code>SECURE_MODE_RESUME_TRANSITION</code></td><td><code>H-&gt;FW</code></td><td>secure</td><td>resume a paused secure transition</td></tr>
+<tr><td><code>0x34</code></td><td><code>CH_ERROR_NOTIFICATION</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>error notification</td></tr>
+<tr><td><code>0x35</code></td><td><code>CH_POWER_CONTROL</code></td><td><code>H-&gt;FW</code></td><td>power</td><td>channel-level power control</td></tr>
+<tr><td><code>0x36</code></td><td><code>CH_SIGNPOST_NOTIFICATION</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>32-bit signpost notification</td></tr>
+<tr><td><code>0x37</code></td><td><code>CH_SIGNPOST_NOTIFICATION_GROUP</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>grouped 32-bit signpost</td></tr>
+<tr><td><code>0x38</code></td><td><code>CH_RESET_NOTIFICATION</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>reset notification</td></tr>
+<tr><td><code>0x39</code></td><td><code>CH_SIGNPOST64_NOTIFICATION</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>64-bit signpost</td></tr>
+<tr><td><code>0x3a</code></td><td><code>CH_SIGNPOST64_NOTIFICATION_GROUP</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>grouped 64-bit signpost</td></tr>
+<tr><td><code>0x3b</code></td><td><code>CPU_LOAD_NOTIFICATION</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>CPU-load notification</td></tr>
+<tr><td><code>0x3c</code></td><td><code>TM_SYNC_ERR_NOTIFICATION</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>tile-manager sync error</td></tr>
+<tr><td><code>0x3d</code></td><td><code>LOAD_PROGRAM</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>load a compiled program into a slot</td></tr>
+<tr><td><code>0x3e</code></td><td><code>UNLOAD_PROGRAM</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>unload a program</td></tr>
+<tr><td><code>0x3f</code></td><td><code>CREATE_PROCESS</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>instantiate a process for a program</td></tr>
+<tr><td><code>0x40</code></td><td><code>TERMINATE_PROCESS</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>tear down a process</td></tr>
+<tr><td><code>0x41</code></td><td><code>PROCEDURE_CALL</code></td><td><code>H-&gt;FW</code></td><td>execution</td><td>baseline network invocation</td></tr>
+<tr><td><code>0x42</code></td><td><code>LOAD_AFPP</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>load AFPP prefetch program</td></tr>
+<tr><td><code>0x43</code></td><td><code>UNLOAD_AFPP</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>unload AFPP</td></tr>
+<tr><td><code>0x44</code></td><td><code>PROGRAM_INTERFACE_VERSION_CHECK</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>negotiate program-interface version</td></tr>
+<tr><td><code>0x45</code></td><td><code>PROCEDURE_CALL_CACHE_REQUEST</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>install a resident cache request</td></tr>
+<tr><td><code>0x46</code></td><td><code>PROCEDURE_CALL_TRIGGER_CACHE_REQUEST</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>fire an installed cache request</td></tr>
+<tr><td><code>0x47</code></td><td><code>PROCEDURE_CALL_RECYCLE_OUTPUT_BUFFER</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>return a consumed output buffer</td></tr>
+<tr><td><code>0x48</code></td><td><code>PROCEDURE_CALL_INVALIDATE_CACHE_REQUEST</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>destroy a cache request</td></tr>
+<tr><td><code>0x49</code></td><td><code>PROCEDURE_CALL_WITH_CUSTOM_BARS</code></td><td><code>H-&gt;FW</code></td><td>execution</td><td>proc-call with custom barrier array</td></tr>
+<tr><td><code>0x4a</code></td><td><code>PREMAP_BUFFER</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>pre-map an inference-property buffer</td></tr>
+<tr><td><code>0x4b</code></td><td><code>PROCEDURE_CALL_CACHE_REQUEST_WITH_CUSTOM_BARS</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>cache request with custom bars</td></tr>
+<tr><td><code>0x4c</code></td><td><code>PROCEDURE_CALL_CACHE_REQUEST_WITH_SHARED_EVENTS</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>cache request with shared events</td></tr>
+<tr><td><code>0x4d</code></td><td><code>FORCE_DISABLE_CACHE_REQUESTS</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>global cache-request disable</td></tr>
+<tr><td><code>0x4e</code></td><td><code>PROCEDURE_CALL_WITH_SIGNAL_EVENTS</code></td><td><code>H-&gt;FW</code></td><td>execution</td><td>proc-call with wait and signal events</td></tr>
+<tr><td><code>0x4f</code></td><td><code>SET_ACTIVE_CACHE_REQUEST_IN_GROUP</code></td><td><code>H-&gt;FW</code></td><td>cache</td><td>select active member of a cache-request group</td></tr>
+<tr><td><code>0x50</code></td><td><code>PROGRAM_EVENT</code></td><td><code>FW-&gt;H</code></td><td>program</td><td>per-program event notification</td></tr>
+<tr><td><code>0x51</code></td><td><code>USER_EVENT</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>user event marker</td></tr>
+<tr><td><code>0x52</code></td><td><code>DBG_EVENT</code></td><td><code>FW-&gt;H</code></td><td>stats</td><td>debug event</td></tr>
+<tr><td><code>0x53</code></td><td><code>DATA_CHAINING_EVENT</code></td><td><code>FW-&gt;H</code></td><td>cache</td><td>data-chaining stage completion</td></tr>
+<tr><td><code>0x54</code></td><td><code>PREFETCH_DSID_EVENT</code></td><td><code>FW-&gt;H</code></td><td>cache</td><td>prefetch completion</td></tr>
+<tr><td><code>0x55</code></td><td><code>SECURE_MODE_EVENT</code></td><td><code>FW-&gt;H</code></td><td>secure</td><td>secure-mode state-change event</td></tr>
+<tr><td><code>0x56</code></td><td><code>REQUEST_PROGRAM_ID</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>allocate a program-id slot</td></tr>
+<tr><td><code>0x57</code></td><td><code>RETURN_PROGRAM_ID</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>free a program-id slot</td></tr>
+<tr><td><code>0x58</code></td><td><code>REQUEST_PROCESS_ID</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>allocate a process-id</td></tr>
+<tr><td><code>0x59</code></td><td><code>RETURN_PROCESS_ID</code></td><td><code>H-&gt;FW</code></td><td>program</td><td>free a process-id</td></tr>
+<tr><td><code>0x5a</code></td><td><code>INFERENCE_CALL</code></td><td><code>H-&gt;FW</code></td><td>execution</td><td>high-level inference submission</td></tr>
+<tr><td><code>0x5b</code></td><td><code>BACK_CHANNEL_RPC</code></td><td><code>FW&lt;-&gt;H</code></td><td>property</td><td>firmware-initiated back-channel RPC</td></tr>
+<tr><td><code>0x5c</code></td><td><code>DEBUG_COMMAND_DATA_CHECK</code></td><td><code>H-&gt;FW</code></td><td>stats</td><td>validate command-data integrity</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-command-table"></a><strong>Table C.15.</strong> The complete 93-entry host-to-firmware command table with name, direction, subsystem, and purpose.</p>
+<p>Two strings the prior corpus counted have no numeric identifier: <code>CSNE_CMD_START</code> is a standalone lifecycle log alias, and <code>CSNE_CMD_IPC_ENDPOINT_TYPE_DATA_CHAINING</code> is an endpoint-type enum value rather than a command.
+The per-call numeric limits the command bodies enforce on the M1 are fixed.
+The dispatch caps are at most 16 signal events per call, at most 32 custom barriers on the wire (128 in the program container), at most 128 custom execute-order entries, at most 16 trigger input buffers, and fewer than 2 active shared events.
+Priority levels run 0 through 7, split into a privileged band of 0 and 1 and a normal band of 2 through 7.
+The single dispatch path takes exactly one output buffer set, one task-descriptor partition, and one engine request per list.</p>
+<p>A fixed header, <code>sCSneControllerCmdHdr</code>, prefixes every ring message (<a href="#tbl-apc-command-header">table C.16</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>field</th><th>offset</th><th>width</th><th>meaning</th></tr></thead><tbody>
+<tr><td><code>id</code></td><td><code>0x00</code></td><td><code>u32</code></td><td>the <code>eCSneCmdId</code> selector</td></tr>
+<tr><td><code>size</code></td><td><code>0x04</code></td><td><code>u32</code></td><td>byte length of the command body</td></tr>
+<tr><td><code>priority</code></td><td><code>0x08</code></td><td><code>u32</code></td><td>scheduling band, 0..7 (0..1 realtime, 2..7 normal)</td></tr>
+<tr><td><code>programId</code></td><td><code>0x0c</code></td><td><code>i32</code></td><td>loaded-program slot, <code>-1</code> invalid</td></tr>
+<tr><td><code>processId</code></td><td><code>0x10</code></td><td><code>i32</code></td><td>per-program process instance, <code>-1</code> none</td></tr>
+<tr><td><code>procedureId</code></td><td><code>0x14</code></td><td><code>u32</code></td><td>index into the program's procedure table</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-command-header"></a><strong>Table C.16.</strong> The fixed command-header fields with their offsets, widths, and meanings.</p>
+<p>The full 93-entry table with file offsets, the decoded request structs, and the per-call numeric limits are from collected data not reproduced here.</p>
+<h2 id="c6-the-task-descriptor-hardware-register-map"><a class="header" href="#c6-the-task-descriptor-hardware-register-map">C.6 The task-descriptor hardware register map</a></h2>
+<p>A captured <code>ane_reg</code> record is a <code>(regAddr, regValue)</code> pair whose low address selects one of 7 aperture groups.
+The aperture map converts a raw address to a group (<a href="#tbl-apc-aperture-map">table C.17</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>regAddr range</th><th>group</th><th>image base</th><th>window</th></tr></thead><tbody>
+<tr><td><code>&lt; 0x4c</code></td><td>G1 dimensions</td><td><code>0xf4</code></td><td>19 words</td></tr>
+<tr><td><code>0x4100</code> .. <code>0x4177</code></td><td>G3 elementwise / planar / pad</td><td><code>0x264</code></td><td>30 words</td></tr>
+<tr><td><code>0x4500</code> .. <code>0x4537</code></td><td>G4 L2 / texture</td><td><code>0x2e4</code></td><td>14 words</td></tr>
+<tr><td><code>0x4900</code> .. <code>0x492b</code></td><td>G5 kernel-fmt / op-mode</td><td><code>0x324</code></td><td>11 words</td></tr>
+<tr><td><code>0x4d00</code> .. <code>0x4e13</code></td><td>G2 tile DMA</td><td><code>0x148</code></td><td>69 words</td></tr>
+<tr><td><code>0x5100</code> .. <code>0x5153</code></td><td>G6 L2-result</td><td><code>0x358</code></td><td>21 words</td></tr>
+<tr><td><code>0x5500</code> .. <code>0x5587</code></td><td>G0 kernel / common</td><td><code>0x24</code></td><td>34 words</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-aperture-map"></a><strong>Table C.17.</strong> The register-address ranges and the aperture group, image base, and window each maps to.</p>
+<p>The G1 dimension fields also pack the format and control bits, a representative set of them in <a href="#tbl-apc-g1-fields">table C.18</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>regAddr</th><th>field</th><th>bits</th><th>width</th><th>meaning</th></tr></thead><tbody>
+<tr><td><code>0x00</code></td><td>Win</td><td>[14:0]</td><td>15</td><td>input tile width</td></tr>
+<tr><td><code>0x02</code></td><td>Hin</td><td>[14:0]</td><td>15</td><td>input tile height</td></tr>
+<tr><td><code>0x0c</code></td><td>Cin</td><td>[16:0]</td><td>17</td><td>input channels, max 131071</td></tr>
+<tr><td><code>0x10</code></td><td>Cout</td><td>[16:0]</td><td>17</td><td>output channels</td></tr>
+<tr><td><code>0x10</code></td><td>CommonInFmt</td><td>[1:0]</td><td>2</td><td>source-1 element format</td></tr>
+<tr><td><code>0x10</code></td><td>CommonOutFmt</td><td>[5:4]</td><td>2</td><td>output element format</td></tr>
+<tr><td><code>0x28</code></td><td>numGroups</td><td>[12:0]</td><td>13</td><td>convolution groups</td></tr>
+<tr><td><code>0x38</code></td><td>CommonTaskType</td><td>[7:4]</td><td>4</td><td>hardware task class (9 valid)</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-g1-fields"></a><strong>Table C.18.</strong> Representative G1 dimension register fields with their bit ranges, widths, and meanings.</p>
+<p>To invert a raw value: DMA strides are 26-bit signed at bits [31:6]; L2-result base and strides are 17-bit at bits [20:4]; a full device address is <code>(hi &lt;&lt; 32) | lo</code> with <code>lo</code> 64-byte aligned and <code>hi</code> 10 bits, capped at 42 bits.
+The complete inventory of roughly 190 register fields across the 7 groups, 11 reloc slots, and on-M1 stubbed engines (CCDMA, atomic scatter, LDTID) is from collected data not reproduced here.</p>
+<p>Each operation descriptor in the task-descriptor stream has a 32-bit opcode word.
+Three such words were decoded from a live M1 program (<a href="#tbl-apc-opcode-words">table C.19</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>operation</th><th>opcode word</th></tr></thead><tbody>
+<tr><td>convolution</td><td><code>0x5042a063</code></td></tr>
+<tr><td>reduce-mean</td><td><code>0x5000a021</code></td></tr>
+<tr><td>matrix multiply</td><td><code>0x5000b021</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apc-opcode-words"></a><strong>Table C.19.</strong> The version-7 / H13 codegen opcode words for three operations, with the high half-word shared and the low 16 bits selecting the operation.</p>
+<h2 id="c7-the-e5-flatbuffer-schema"><a class="header" href="#c7-the-e5-flatbuffer-schema">C.7 The <code>.e5</code> FlatBuffer schema</a></h2>
+<p>The program container is a FlatBuffer whose root table has four fields, the schema given as <a href="#lst-apc-e5-schema">listing C.1</a>.
+The schema reconstructs from the serializer method set and the wire bytes, since the binary strips the reflection schema, and round-trips cleanly through the FlatBuffers tool to 23 tables, 4 enums, and 1 union.
+The data-type and op-type enums are recovered by name; the numeric ordinals are inferred.</p>
+<pre><code class="language-fbs">namespace E5RT.fb;
+
+enum TensorDataType : int {
+  Invalid = 0, Float16 = 1, Float32 = 2, Int8 = 3, UInt8 = 4,
+  Int16 = 5, Int32 = 6, Int4 = 7, Bool = 8, E4M3 = 9, E5M2 = 10
+}
+
+enum OpType : int {
+  Cast = 0, AneInference = 1, EirInference = 2, CpuInference = 3,
+  BnnsCpuInference = 4, MlcCpuInference = 5, MpsGraphInference = 6,
+  E5MinimalCpu = 7, Quant = 8, Dequant = 9, Barrier = 10, JitCall = 11
+}
+
+table TensorDescriptor {
+  dim:[ulong];
+  stride:[ulong];
+  width:ulong;
+  height:ulong;
+  channels:ulong;
+  batch_number:ulong;
+  sequence_length:ulong;
+  stride_width:ulong;
+  stride_height:ulong;
+  stride_channels:ulong;
+  stride_batch_number:ulong;
+  stride_sequence_length:ulong;
+  storage_type:TensorDataType;
+  component_pack:int;
+}
+
+table BuildInfoEntry { key:string; value:string; }
+table BuildInfo { entries:[BuildInfoEntry]; }   // 7 key-value pairs in the sample
+
+table AliasSymbol { name:string; symbol_index:uint; addr_offset:uint; }
+
+table IOPort { name:string; byte_size:ulong; aperture_va:ulong; }
+
+table Operand { descriptor:TensorDescriptor; }
+
+table CastAttrs { src_dtype:TensorDataType; dst_dtype:TensorDataType; component_pack:int; }
+
+table AneInferenceAttrs {
+  procedure_name:string;
+  anehash:string;
+  program_symbol:string;
+  intermediate_buffer_handle:uint;
+  compiler_options:string;
+}
+
+table Operation {
+  name:string;
+  op_type:OpType;
+  inputs:[uint];
+  outputs:[uint];
+  arg_frame:string;        // __arg_frame section reference
+  attrs_section:string;    // __op_attrs section reference
+}
+
+table Block { name:string; operations:[Operation]; }
+
+table Function { name:string; anehash_path:string; blocks:[Block]; }
+
+table Section { name:string; kind:int; }
+
+table E5Program {
+  symbol_names:[string];   // field[0] name vector
+  build_info:BuildInfo;    // field[1] 7-entry sub-table
+  sections:[Section];      // field[2] 6-entry section vector
+  format_version:int;      // field[3] inline scalar == 4
+}
+
+root_type E5Program;
+</code></pre>
+<p><a id="lst-apc-e5-schema"></a><strong>Listing C.1.</strong> The reconstructed program-container FlatBuffer schema: root table, type enums, tensor descriptor, section tables, and operation structure.</p>
+<p>The whole fused graph collapses to a single <code>AneInference</code> operation, with the surrounding <code>Cast</code> operations holding the input and output dtype conversion.
+The validation against the round-9 <code>H13C.e5</code> sample reads the four root fields, the seven build-info pairs (<code>built-for-profiling</code>, <code>input-file-path</code>, the component versions, and <code>on-device-compilation</code>), and the operation chain <code>Cast</code>, <code>AneInference</code>, <code>Cast</code> straight out of the bytes with no contradiction.
+The enum ordinals, the <code>e4m3</code> and <code>e5m2</code> dtypes, segment-chaining fields, and field sets of the ten op-attribute tables other than <code>CastAttrs</code> and <code>AneInferenceAttrs</code> are inferred rather than byte-confirmed in this single-segment sample.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../appendices/b-hidden-layer-catalog.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendices/d-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../appendices/b-hidden-layer-catalog.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendices/d-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

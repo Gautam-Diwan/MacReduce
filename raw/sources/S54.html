@@ -1,0 +1,2309 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../op-quirks/">
+      
+      
+        <link rel="next" href="../autograd/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Capabilities & targets - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/developer/capabilities-and-targets/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capabilities-and-targets" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Capabilities & targets
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../op-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numerics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-capability-census" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The capability census
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The capability census">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classification-discipline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classification discipline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-cracked-layer-manifest-the-26-cracked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cracked-layer manifest (the "26 cracked")
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cracked-but-unpromoted-native-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cracked-but-unpromoted native layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arch-gated-walls-negatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arch-gated walls (negatives)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arch-gated walls (negatives)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#native-op-gaps-reachable-by-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native-op gaps reachable by decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#true-walls-no-in-graph-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        True walls (no in-graph route)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dtype-walls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dtype walls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-codegen-walls-validator-accepts-schema-m5-hwx-codegen-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer / codegen walls (validator accepts schema, M5 HWX codegen fails)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-optimizer-gated-and-architectural-walls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal-optimizer-gated and architectural walls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-predicted-frontier-pad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The predicted frontier (Pad)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targets-the-28-ane-families" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targets: the 28 ANE families
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Targets: the 28 ANE families">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-family-gating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-family gating
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-compile-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-compile validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-chip-fp16-divergence-direction-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip fp16 divergence (Direction B)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-chip fp16 divergence (Direction B)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-pre-a16-slice-saturation-quirk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pre-A16 slice saturation quirk
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-capability-census" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The capability census
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The capability census">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classification-discipline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classification discipline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-cracked-layer-manifest-the-26-cracked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cracked-layer manifest (the "26 cracked")
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cracked-but-unpromoted-native-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cracked-but-unpromoted native layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arch-gated-walls-negatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arch-gated walls (negatives)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arch-gated walls (negatives)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#native-op-gaps-reachable-by-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native-op gaps reachable by decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#true-walls-no-in-graph-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        True walls (no in-graph route)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dtype-walls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dtype walls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-codegen-walls-validator-accepts-schema-m5-hwx-codegen-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer / codegen walls (validator accepts schema, M5 HWX codegen fails)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-optimizer-gated-and-architectural-walls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal-optimizer-gated and architectural walls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-predicted-frontier-pad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The predicted frontier (Pad)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targets-the-28-ane-families" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targets: the 28 ANE families
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Targets: the 28 ANE families">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-family-gating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-family gating
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-compile-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-compile validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-chip-fp16-divergence-direction-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip fp16 divergence (Direction B)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-chip fp16 divergence (Direction B)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-pre-a16-slice-saturation-quirk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pre-A16 slice saturation quirk
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="capabilities-and-targets">Capabilities and targets<a class="headerlink" href="#capabilities-and-targets" title="Permanent link">&para;</a></h1>
+<p>ANEForge keeps a machine-checkable census of which ANE capabilities it surfaces - the capability registry in <code>_capabilities.py</code> - and a per-family target table covering 28 ANE chips.</p>
+<h2 id="the-capability-census">The capability census<a class="headerlink" href="#the-capability-census" title="Permanent link">&para;</a></h2>
+<p>The authoritative runtime op sets are <code>_EMIT</code> (the fused e5rt-MIL emitters) and <code>NETPLIST_OPS</code> (the native Path-A bridge ops), both in <code>_compile.py</code>. But the discovery evidence behind them - which layers were proven on silicon, which are genuine hardware walls, which are only predicted - was scattered across the reverse-engineering corpus with nothing reconciling the two. A new op could appear unclassified, or a "surfaced" op could silently stop compiling unnoticed.</p>
+<p><code>build_registry()</code> closes the loop. It introspects the live <code>_EMIT</code> / <code>NETPLIST_OPS</code> and merges them with curated, citation-carrying classification data for everything that can't be introspected (cracked-but-not-promoted layers, arch-gated negatives, the predicted-but-unbuilt frontier). The result is a closed classification of every ANE capability ANEForge knows about. <code>tests/test_routes.py</code> fails CI if the live runtime drifts from this registry either way.</p>
+<div class="admonition note">
+<p class="admonition-title">This is a publication artifact</p>
+<p>Every entry carries evidence. <code>cracked</code> entries cite their bridge in the reverse-engineering corpus; every negative cites the finding that established the wall; every <code>reachable</code>/<code>not-authorable</code> cites the sweep matrix.</p>
+</div>
+<h3 id="classification-discipline">Classification discipline<a class="headerlink" href="#classification-discipline" title="Permanent link">&para;</a></h3>
+<p>Every entry is exactly one of:</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fused</code></td>
+<td>In <code>_EMIT</code>; lowers to e5rt-MIL, fuses into one program.</td>
+</tr>
+<tr>
+<td><code>bridge</code></td>
+<td>In <code>NETPLIST_OPS</code>; runs as a native Path-A sub-program (a graph cut).</td>
+</tr>
+<tr>
+<td><code>cracked</code></td>
+<td>Reverse-engineered native layer <strong>proven on silicon</strong> in the corpus, but not yet promoted to the frontend.</td>
+</tr>
+<tr>
+<td><code>reachable</code></td>
+<td>The native MIL op compiles + runs correct on ANEForge's own e5rt path (proven by the full-vocabulary sweep), but is not promoted to a frontend <code>_EMIT</code> emitter or <code>af.</code> method. Reachable through the MIL door, not direct <code>Type=</code> netplist authoring - so not a cracked native layer.</td>
+</tr>
+<tr>
+<td><code>arch-gated-negative</code></td>
+<td>Known <strong>not</strong> to work, carrying the specific wall (an authored op/config the ANE backend rejects or fails to lower).</td>
+</tr>
+<tr>
+<td><code>not-authorable</code></td>
+<td>Control-flow / list / state ops (cond, while_loop, make_list, read_state, ...) with no single-op MIL form on the single-procedure feed-forward surface - the recurrence/scan wall. Recorded, not defeated.</td>
+</tr>
+<tr>
+<td><code>predicted</code></td>
+<td>Predicted crackable by the callable-<code>_ANECValidate*</code> heuristic, but not built and not verified.</td>
+</tr>
+</tbody>
+</table>
+<p><code>fused</code>/<code>bridge</code>/<code>cracked</code>/<code>reachable</code> all carry <code>verified="silicon"</code> - the distinction between them is promotion, not evidence. <code>predicted</code> is explicitly <code>verified="no"</code>.</p>
+<p>The registry is exhaustive over the full 166-op MIL vocabulary swept in <code>full_mil_vocabulary_sweep.json</code> (116/166 reachable), not just the 50 <code>_ANECValidate*Layer</code> validators. A sweep layer (D) synthesizes an entry for every swept op not already represented, classifying from its sweep <code>klass</code>: <code>reachable+correct</code>/<code>reachable</code> -&gt; <code>reachable</code>; <code>not-implemented-on-ANE</code> -&gt; <code>arch-gated-negative</code>; <code>compile-walled</code> -&gt; <code>not-authorable</code> for control-flow/list/state, else <code>arch-gated-negative</code>. Curated entries always win over the sweep (exact-name match skipped), preserving hand-written walls and evidence.</p>
+<h3 id="the-cracked-layer-manifest-the-26-cracked">The cracked-layer manifest (the "26 cracked")<a class="headerlink" href="#the-cracked-layer-manifest-the-26-cracked" title="Permanent link">&para;</a></h3>
+<p>A cracked native hardware layer is a distinct native ANE layer reached by the netplist-authoring method (authoring <code>Type=&lt;Layer&gt;</code> directly in the netplist / Path-A) which Apple's user-space MIL frontend does not emit. In the registry these are exactly the entries with status in <code>{cracked, bridge}</code>: <code>bridge</code> ops are Path-A netplist sub-programs authored directly; <code>cracked</code> ops are unpromoted direct-netplist cracks.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>distinct cracked layers = (#cracked) + (#bridge) - 1
+</code></pre></div>
+<p>The one dedupe: <code>slice_by_index</code> (cracked) is the same hardware capability as <code>input_view</code> (bridge) - both <code>Type=InputView</code> - folded in so the 26 are distinct layers, not 27 with an alias.</p>
+<div class="admonition note">
+<p class="admonition-title">Promoted ops are not retroactively counted as cracks</p>
+<p>Some <code>fused</code> ops (e.g. PixelShuffle, L2Norm) were originally reached by netplist authoring before being promoted to a MIL <code>@op</code> emitter. They're excluded from the manifest: their current route is the MIL emitter, not direct <code>Type=</code> authoring. The manifest counts the current direct-netplist route only.</p>
+</div>
+<h2 id="cracked-but-unpromoted-native-layers">Cracked-but-unpromoted native layers<a class="headerlink" href="#cracked-but-unpromoted-native-layers" title="Permanent link">&para;</a></h2>
+<p>Native layers proven on silicon (a self-verifying <code>*_fused.py</code> in the corpus) but not promoted into <code>_EMIT</code> / <code>NETPLIST_OPS</code>:</p>
+<ul>
+<li>Dropout (<code>Type=Dropout</code>) - inference identity at rate 0; not promoted (no training-time use on the inference engine).</li>
+<li>Broadcast (<code>Type=Broadcast</code>, BroadcastInfo replicates a length-1 axis) - MIL add/sub/mul already broadcast in the fused path; standalone layer unneeded.</li>
+<li>Resample (<code>Type=Resample</code>, NearestNeighbor mode) - the BILINEAR mode is now promoted to fused (<code>resize_bilinear</code>/<code>upsample_bilinear</code>); NearestNeighbor stays cracked (fused <code>resize_nearest_neighbor</code> covers it).</li>
+<li>RandomGenerator (Normal/Bernoulli/Categorical/Gaussian) - on-device RNG compiles, but seeding/streaming semantics are unsettled; host RNG used today.</li>
+<li>Shape - static shapes are known at compile time, so no frontend need yet.</li>
+<li>DynamicGOC (gain-offset-clamp, <code>out=idx*(data+upd)</code>) - compiles+loads; it is not a scatter (Mode/Axis are inert). Niche.</li>
+<li>Tile - <code>Params</code> is a dimension-NAME-keyed factor dict (<code>{'Width':fx,'Height':fy,'Channel':fc}</code>, not FactorX/Y/Z). Cracked 2026-05-30 (was <code>predicted</code>). A clean bridge-promotion candidate (B=1 static).</li>
+<li>slice_by_index (<code>Type=InputView</code>) - bit-exact contiguous slice, the same capability as the <code>input_view</code> bridge op. Promotable as a frontend <code>slice</code>, not a new layer (not double-counted).</li>
+</ul>
+<h2 id="arch-gated-walls-negatives">Arch-gated walls (negatives)<a class="headerlink" href="#arch-gated-walls-negatives" title="Permanent link">&para;</a></h2>
+<p>A negative means: rejected at compile, or the named configuration fails ANECCompile/HWX codegen even though the validator accepts the schema. Each carries its specific wall; the <code>probe</code> field (when present) is a tiny ANEForge call CI runs to confirm it still fails.</p>
+<h3 id="native-op-gaps-reachable-by-decomposition">Native-op gaps reachable by decomposition<a class="headerlink" href="#native-op-gaps-reachable-by-decomposition" title="Permanent link">&para;</a></h3>
+<p>A key distinction (2026-05-31 calibration): the native op is unimplemented on the ANE backend ("Not implemented ... not supported on any backend"), but the capability is reachable on the same e5rt path via a decomposition - native-op gaps, not hardware walls:</p>
+<ul>
+<li>reduce_prod -&gt; <code>exp(reduce_sum(log(x)))</code> (relerr ~1e-3; positive inputs; sign/zero need extra ops).</li>
+<li>gather -&gt; for trace-time-constant (STATIC) indices, a one-hot @ matmul (bit-exact). Only dynamic large-vocab embedding lookup stays host-side (one-hot is O(vocab) and needs runtime indices).</li>
+<li>cumsum -&gt; an upper-triangular ones matmul <code>x @ U</code> (relerr ~3e-4; O(N^2) in the matmul) - not a "no parallel-prefix silicon" wall.</li>
+</ul>
+<h3 id="true-walls-no-in-graph-route">True walls (no in-graph route)<a class="headerlink" href="#true-walls-no-in-graph-route" title="Permanent link">&para;</a></h3>
+<ul>
+<li>scan / iir_recurrence - no data-dependent in-graph loop: sequential recurrence is inexpressible on the feed-forward engine. Only static FIR-unroll fits.</li>
+<li>scatter - no scatter-write path; DynamicGOC is gain-offset-clamp only.</li>
+</ul>
+<h3 id="dtype-walls">dtype walls<a class="headerlink" href="#dtype-walls" title="Permanent link">&para;</a></h3>
+<ul>
+<li>fp32_compute - the ANE computes in fp16 only. ANEForge accepts fp32/fp64 weights but silently casts them to fp16 (no frontend raise - the wall is a compute-precision fact).</li>
+<li>int32_compute - rejected at MIL parse ("not implemented"). probe: <code>int32_weight</code>.</li>
+<li>bf16_compute - no path on the backend (cleanly rejected; numpy has no native bf16, so no clean frontend probe).</li>
+</ul>
+<h3 id="layer-codegen-walls-validator-accepts-schema-m5-hwx-codegen-fails">Layer / codegen walls (validator accepts schema, M5 HWX codegen fails)<a class="headerlink" href="#layer-codegen-walls-validator-accepts-schema-m5-hwx-codegen-fails" title="Permanent link">&para;</a></h3>
+<ul>
+<li>conv_kernel_ge16 - conv (and the CrossCorrelation bridge) is capped at kernel K&lt;=15 on M5: a 1xK kernel with K&gt;=16 fails ANECCompile. (<code>aneforge/dsp.py</code> routes wider kernels to FFT.)</li>
+<li>group_norm_large_featuremap - relaxed by rank-4 tiling: group_norm lowers to <code>[1,G,C/groups,H*W]</code>, so the bound is <code>max(C/groups, H*W)</code> vs. the per-axis cap 65536, not the flattened product. SD-UNet's 640ch@64 (81920) and 512ch@128 (262144) now compile in fp16; <code>af.group_norm</code> only raises when a single tiled axis &gt; 65536.</li>
+<li>square_opcode_tiling - the native <code>square</code> opcode fused with a following nonlinearity fails ANECCompile when <code>(Width % 128) &gt; 64</code>. ANEForge emits <code>mul(x,x)</code> instead (identical math, compiles everywhere), so it never surfaces this.</li>
+<li>rank5_transpose_matmul - transpose+matmul fails ANECCompile at rank&gt;=5 (the rank-4 cap): a fully-split tensor carries at most 3 factor groups, forcing matmul-FFT to 3-stage rather than full log-depth radix-2.</li>
+<li>batch_to_space_indivisible - BatchToSpace with input batch <code>N % (FactorX*FactorY) != 0</code> fails HWX codegen. (<code>af.batch_to_space</code> guards at construction.) probe: <code>batch_to_space_indivisible</code>.</li>
+<li>topk_k3_k4 - TopK with K in {3,4} is a fixed forbidden band (ANECCompile fails); K=1,2 and K&gt;=5 work. (<code>af.topk</code> guards.) probe: <code>topk_k3</code>.</li>
+<li>minmax_norm_channel_axis - MinMaxNormalization over the Channel axis fails HWX codegen; Width/Height work. (<code>af.minmax_norm</code> rejects Channel.) probe: <code>minmax_norm_channel</code>.</li>
+<li>lrn_channels_ge16 - LocalResponseNormalization with KernelChannel=C fails ANECCompile for C&gt;=16; C&lt;=15 works. (<code>af.lrn</code> guards.) probe: <code>lrn_c16</code>.</li>
+<li>scaled_elementwise_sub - ScaledElementWise op='Sub' is rejected; op='Mult' silently ignores <code>scale</code>. (<code>af.scaled_elementwise</code> guards both.) probe: <code>scaled_elementwise_sub</code>.</li>
+<li>Unflatten - fails HWX codegen for all variants (composite-lowering specific); bare Reshape/Transpose compile fine.</li>
+<li>KernelRasterizer - im2col unfold only compiles in the degenerate identity config (OutputChannels=1, output dims = input dims); real im2col always fails ANECCompile.</li>
+<li>RingBufferWriter - a multi-procedure streaming-state primitive; fails from any single-procedure netplist regardless of Params.</li>
+<li>CropResize - texture-family codegen gate: direct-netplist CropResize fails ANECCompile on M5 (plane-equation coefficient constraint).</li>
+</ul>
+<h3 id="internal-optimizer-gated-and-architectural-walls">Internal-optimizer-gated and architectural walls<a class="headerlink" href="#internal-optimizer-gated-and-architectural-walls" title="Permanent link">&para;</a></h3>
+<ul>
+<li>MATDECOMP_MATMULT_0x19 - internal-optimizer-gated (not schema-gated): the fused matrix-decomp-matmul composite (0x19) is emitted only by <code>ZinIrOpt::BatchMatDecompMatMul</code> on a batched topology the netplist can't express; 7 variants all lower to 0x60.</li>
+<li>PEFUSED_GOC_0x5C - internal-optimizer-gated: nested-container grammar recovered but no single-0x5C HWX emerged.</li>
+<li>RCAS - internal-optimizer-gated: opcodes 0x44/0x65 have a <code>ZinRCASLayer</code> + internal validate but no exported <code>_ANECValidateRCASLayer</code> and no .tbd entry - not netplist-reachable. Same class as MATDECOMP_MATMULT_0x19.</li>
+<li>MatrixDecomposition_factorization - the native MatrixDecomposition (NonQRGivens) is not currently callable (carriers compile, the factorization doesn't). The LAPACK wall is architectural, not numerical.</li>
+<li>on_device_rng_seeded - RandomGenerator compiles but seeding/streaming semantics are unsettled; RNG kept host-side.</li>
+<li>custom_hwx_load - hits the kernel-signature wall (unentitled).</li>
+<li>nan_to_num - the ANE does not propagate NaN, so NaN-handling ops are broken (no fix).</li>
+<li>bitwise_logical - bitwise/logical ops (and/or/xor/not) rejected (not in the fp16 surface); trig/hyperbolic inverses (acos/asin/sinh) are netplist dead-ends too.</li>
+<li>Reverse - the native netplist Reverse layer is schema-unreachable (no exported <code>_ANECValidateReverseLayer</code>, no atlas opcode - only an internal MIL-frontend op that lowers away). The <code>predicted</code> classification was over-optimistic. The MIL <code>reverse</code> op, however, is reachable+correct on the e5rt path, so the reversal capability is available through the MIL door.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Walls reconciled to reachable (2026-06-02)</p>
+<p>Several earlier "walls" were over-cautious direct-netplist probes scoped to the netplist door; the equivalent MIL ops compile + run on the e5rt path. AffineTransform -&gt; <code>affine</code> (genuine warp, relerr 2.3e-3) and Resample_Bilinear -&gt; <code>resize_bilinear</code>/<code>upsample_bilinear</code> (relerr 2e-4) now ship as fused _EMIT ops. instance_norm -&gt; fused <code>x.instance_norm(...)</code> (the decomposition route remains too). NMS -&gt; <code>non_maximum_suppression</code> is now <code>reachable</code> (presence-only, not numerically validated - selection-ordering output). No quantization walls remain: the former "blockwise_int8"/"int4_weight"/"sparse" negatives were malformed empty-paren probes (the named-arg form compiles, relerr ~3e-4); int8-affine, int4-LUT, sparse, and blockwise all ship via <code>compress=</code>. The remaining texture-family negative is CropResize.</p>
+</div>
+<h2 id="the-predicted-frontier-pad">The predicted frontier (Pad)<a class="headerlink" href="#the-predicted-frontier-pad" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Pad - predicted netplist (<code>ZinPadLayer</code> + <code>ZinPadValidator</code>; the <code>kANECNetUnitPaddingInfo</code> dict schema is unrecovered). The validator accepts the schema (status=1) but ~13 binary-derived PaddingInfo spellings all fail ANECCompile; spatial-only, constant amount_before/after. Next step: recover the exact dict from a CoreML-emitted Pad bundle. As with Reverse, the MIL <code>pad</code> op is reachable+correct, so the padding capability is available through the MIL door.</li>
+</ul>
+<h2 id="targets-the-28-ane-families">Targets: the 28 ANE families<a class="headerlink" href="#targets-the-28-ane-families" title="Permanent link">&para;</a></h2>
+<p>ANEForge models 28 ANE targets across the M1-M5 generations (<code>_targets._ARCH_FAMILY</code> tiers). Each carries per-family capability caps - conv kernel width, max tensor dim, and the per-op <code>MinimumFamily</code> floor - all HAL-data gated. The cost model's per-chip curves (<code>costmodel_curves.json</code>) cover the distinct cost profiles; an arch missing its own entry (h14g, h16c, h17a, h18, ...) folds to its family's representative die.</p>
+<p>Three families are silicon-measured (own a cost anchor): A13/h13 (M1), A14/h14 (M2 Pro), A16/h17s (M5). The A16 tier folds H16/H17* into the h17s point. Every other target is extrapolated by its <code>{cores, clock, efficiency}</code> curve - see the <a href="../optimizer-and-cost/#the-analytic-per-chip-model-direction-a">analytic per-chip model</a>.</p>
+<h3 id="per-family-gating">Per-family gating<a class="headerlink" href="#per-family-gating" title="Permanent link">&para;</a></h3>
+<p><code>_retarget_for</code> gates a graph for a target family before lowering: it raises on the H13+ hard floor (ANEForge requires an A13+ ANE - MIL is only supported for H13+), on an unreachable op, or on a tensor exceeding the family's limits, and substitutes below-floor ops that have an in-graph decomposition (<code>sin</code>/<code>cos</code> -&gt; <code>aneforge.special</code>). On the host family with an all-native graph it's a no-op fast path.</p>
+<h2 id="cross-compile-validation">Cross-compile validation<a class="headerlink" href="#cross-compile-validation" title="Permanent link">&para;</a></h2>
+<p><code>cross_compile_check</code> asks: does the graph compile for another ANE family, checked from this host? It returns True iff the e5rt compiler produces a library for that <code>TargetArchitecture</code> - compile-level validation only, since a different-family host cannot execute there. It's the keystone of cross-chip CI: validate that the op corpus compiles for every chip family on one box. Numeric correctness still needs real silicon.</p>
+<div class="admonition warning">
+<p class="admonition-title">Three traps the gate must avoid</p>
+<ol>
+<li>Silent host fallback. The e5rt compiler silently falls back to the host target on an unrecognized <code>TargetArchitecture</code> string (measured: <code>'zzz'</code> compiles fine), turning a typo into a false cross-target pass. Gate on the known-target table first.</li>
+<li>Caps not enforced cross-family. A target's per-family caps (conv kernel width, max tensor dim, below-<code>MinimumFamily</code> ops) are HAL-data gated, and the host cross-compiler does not reliably enforce a different family's caps when emitting for its <code>TargetArchitecture</code> - so a cap violation would compile here and only fail on real silicon (a false CI pass). <code>preflight()</code> answers the same question statically and family-aware (it's what <code>compile(target=)</code> gates on), so reject up front and skip the compiler entirely.</li>
+<li>fp16 divergence. Annotate cross-chip fp16 divergence risk (Direction B) before compiling - warn-only, so a typo'd/unreachable graph still surfaces its compile error.</li>
+</ol>
+</div>
+<h2 id="cross-chip-fp16-divergence-direction-b">Cross-chip fp16 divergence (Direction B)<a class="headerlink" href="#cross-chip-fp16-divergence-direction-b" title="Permanent link">&para;</a></h2>
+<p><code>CrossChipFP16Warning</code> fires (via <code>cross_compile_check</code>) when a graph compiles for a different-family target but carries an op whose fp16 value can diverge from the host's on that chip (per the Direction B HAL-field predictor). The compile is still valid - this is a numeric heads-up, not a rejection. <code>_warn_fp16_cross_chip</code> groups by risk class (one line per opxclass) and never rejects.</p>
+<p><code>_fp16_risk_kind</code> maps a node to the predictor's op-kind: <code>'slice'</code>, <code>'reduce_square'</code> (a reduce feeding a square/mul = variance/L2/RMS - the 0x494 fuse axis, flagged only when a source is a reduction, not every elementwise square), <code>'reduce'</code> (any reduction/softmax/norm), or <code>''</code>. The risk classes:</p>
+<ul>
+<li>saturation - finite-&gt;inf; <code>|value| &gt; 4094</code> on A13's x16 crop-DMA slice.</li>
+<li>round1 - ~1 fp16 round; the 0x494 reduce-&gt;square fusion differs A13&lt;-&gt;A14+.</li>
+<li>ulp1 - &lt;=1 ULP; the 0x3f0 reduction-route threshold differs.</li>
+</ul>
+<h3 id="the-pre-a16-slice-saturation-quirk">The pre-A16 slice saturation quirk<a class="headerlink" href="#the-pre-a16-slice-saturation-quirk" title="Permanent link">&para;</a></h3>
+<p>A silicon-pinned quirk worth its own note: nonzero-width (last-axis) <code>slice_by_size</code> offsets on a pre-A16 ANE lower through a Q.4 fixed-point crop-DMA (an implied x16 scale), with two failure modes:</p>
+<ol>
+<li>Wrong elements when multiple width-offset slices are concatenated - the gather axis-1 bug, confirmed on A14 and A13 at any magnitude. A single width-offset slice selects correctly (a 180-config bare-slice sweep is numpy-exact on A14), so this mode is specific to the concat-of-width-slices pattern.</li>
+<li>Saturation - a sliced element with <code>|value| &gt; 4094</code> (= 65504/16) clamps to +/-inf, magnitude-driven, on a single width-offset slice. Silicon-confirmed on A13 (conv weight-grad) and A14 (4094 finite -&gt; 4100 inf, bit-exact); A15 pending M3 data.</li>
+</ol>
+<p>A zero last-axis begin, or an offset on any non-last axis, avoids the path and is exact; A16/M5 is unaffected. <code>gather</code> and the conv im2col backward already route off the last axis, so <code>_warn_h13_slice_saturation</code> is a safety net for any remaining hand-written occurrence.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

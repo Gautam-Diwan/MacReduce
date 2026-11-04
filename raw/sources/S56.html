@@ -1,0 +1,2279 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../autograd/">
+      
+      
+        <link rel="next" href="../../development/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Model loaders - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/developer/models/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pretrained-models" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Model loaders
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../op-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numerics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capabilities-and-targets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-host-ane-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The host / ANE split
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-bert-family-sentence-encoders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load() - BERT-family sentence encoders
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crossencoder-reranker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CrossEncoder() - reranker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_resnet-torchvision-imagenet-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_resnet() - torchvision ImageNet classifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_vit-hugging-face-vit-image-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_vit() - Hugging Face ViT image classifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_gpt2-gpt-2-text-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_gpt2() - GPT-2 text generation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_clip-clip-zero-shot-imagetext-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_clip() - CLIP zero-shot image/text classification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_whisper-speech-to-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_whisper() - speech to text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weight-layout-he-init-is-layout-dependent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weight layout: He init is layout-dependent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trainable-graph-builders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trainable-graph builders
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sentence-transformers-drop-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sentence-transformers drop-in
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sentence-transformers drop-in">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parity-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parity claims
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-driven-pooling-normalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config-driven pooling / normalize
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rag-on-the-ane-examplesrag_chatpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RAG on the ANE (examples/rag_chat.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-host-ane-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The host / ANE split
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-bert-family-sentence-encoders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load() - BERT-family sentence encoders
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crossencoder-reranker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CrossEncoder() - reranker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_resnet-torchvision-imagenet-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_resnet() - torchvision ImageNet classifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_vit-hugging-face-vit-image-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_vit() - Hugging Face ViT image classifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_gpt2-gpt-2-text-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_gpt2() - GPT-2 text generation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_clip-clip-zero-shot-imagetext-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_clip() - CLIP zero-shot image/text classification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load_whisper-speech-to-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_whisper() - speech to text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weight-layout-he-init-is-layout-dependent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weight layout: He init is layout-dependent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trainable-graph-builders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trainable-graph builders
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sentence-transformers-drop-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sentence-transformers drop-in
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sentence-transformers drop-in">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parity-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parity claims
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-driven-pooling-normalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config-driven pooling / normalize
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rag-on-the-ane-examplesrag_chatpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RAG on the ANE (examples/rag_chat.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="pretrained-models">Pretrained models<a class="headerlink" href="#pretrained-models" title="Permanent link">&para;</a></h1>
+<p>ANEForge loads pretrained models as fused ANE programs from real weights, alongside the trainable-graph builders for the <a href="../autograd/">on-ANE autograd</a>. Heavy dependencies (transformers, torchvision) load lazily.</p>
+<h2 id="the-host-ane-split">The host / ANE split<a class="headerlink" href="#the-host-ane-split" title="Permanent link">&para;</a></h2>
+<p>The loaders split work deliberately:</p>
+<ul>
+<li>Host: tokenisation and the embedding lookup (<code>gather</code> is not an ANE op), plus pooling/normalise in some configurations.</li>
+<li>ANE: the transformer layers, compiled as fused programs (a batch is padded to one length and shares a single program). Conv-heavy classifiers run entirely on the ANE.</li>
+</ul>
+<h2 id="load-bert-family-sentence-encoders">load() - BERT-family sentence encoders<a class="headerlink" href="#load-bert-family-sentence-encoders" title="Permanent link">&para;</a></h2>
+<p><code>af.load("sentence-transformers/all-MiniLM-L6-v2")</code> returns a callable embedder:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">embed</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"sentence-transformers/all-MiniLM-L6-v2"</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">vecs</span>  <span class="o">=</span> <span class="n">embed</span><span class="p">([</span><span class="s2">"hello world"</span><span class="p">,</span> <span class="s2">"the cat sat"</span><span class="p">])</span>   <span class="c1"># [2, D], L2-normalised</span>
+</code></pre></div>
+<p>The transformer layers run on the ANE: a batch is padded to its longest sequence and compiled as one fused program (padded keys are masked out); tokenisation + embedding lookup run on the host.</p>
+<p><code>pooling</code> selects how per-token states reduce to one vector:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Default for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"mean"</code> (default)</td>
+<td>MiniLM, E5</td>
+</tr>
+<tr>
+<td><code>"cls"</code> (first token)</td>
+<td>BGE, GTE</td>
+</tr>
+<tr>
+<td><code>"max"</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>A model's correct mode lives in its sentence-transformers config; <code>aneforge.sentence_transformers</code> reads it for you (see below).</p>
+<h2 id="crossencoder-reranker">CrossEncoder() - reranker<a class="headerlink" href="#crossencoder-reranker" title="Permanent link">&para;</a></h2>
+<p><code>aneforge.sentence_transformers.CrossEncoder</code> scores <code>(query, passage)</code> pairs, mirroring <code>sentence_transformers.CrossEncoder</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">aneforge.sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossEncoder</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">ce</span> <span class="o">=</span> <span class="n">CrossEncoder</span><span class="p">(</span><span class="s2">"cross-encoder/ms-marco-MiniLM-L-6-v2"</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">scores</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">predict</span><span class="p">([(</span><span class="n">query</span><span class="p">,</span> <span class="n">passage</span><span class="p">)</span> <span class="k">for</span> <span class="n">passage</span> <span class="ow">in</span> <span class="n">passages</span><span class="p">])</span>   <span class="c1"># higher = more relevant</span>
+</code></pre></div>
+<p>It reuses <code>load()</code>'s encoder graph, then applies the sequence-classification head host-side. Supports BERT-family, RoBERTa/XLM-R (e.g. bge-reranker), and DistilBERT (<code>pre_classifier -&gt; ReLU -&gt; classifier</code>) <code>AutoModelForSequenceClassification</code> heads, detected by head shape.</p>
+<h2 id="load_resnet-torchvision-imagenet-classifier">load_resnet() - torchvision ImageNet classifier<a class="headerlink" href="#load_resnet-torchvision-imagenet-classifier" title="Permanent link">&para;</a></h2>
+<p><code>af.load_resnet()</code> loads a torchvision ResNet as a fused ANE classifier. Depths 18, 34, 50 and 101 are supported; <code>af.load_resnet18()</code> stays as the shorthand for depth 18.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">clf</span>    <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load_resnet</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>                  <span class="c1"># 50, "50" and "resnet50" all work</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">clf</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>                          <span class="c1"># [1,3,224,224] -&gt; [1,1000]</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">clf</span>    <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load_resnet</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s2">"int4"</span><span class="p">)</span> <span class="c1"># 4-bit LUT weights</span>
+</code></pre></div>
+<p>BatchNorm is folded into the preceding conv at load, so the ANE graph is pure conv/relu/pool/add/fc - conv is the ANE's strongest workload. <code>compress</code> picks the weight encoding (see <code>af.compile</code>); <code>build_dir</code> keeps the packed program on disk (its <code>weights.bin</code> is the packed-model size).</p>
+<p>18 and 34 are BasicBlock (3x3 -&gt; 3x3); 50 and 101 are Bottleneck (1x1 -&gt; 3x3 -&gt; 1x1, 4x expansion). Two details to know if you touch this code:</p>
+<ul>
+<li>The stride sits on the Bottleneck's 3x3, not its first 1x1 - torchvision's ResNet V1.5 variant. Moving it keeps every tensor shape intact and still agrees on top-1, so shape checks will not catch the mistake.</li>
+<li>A block's shortcut is projected or not according to its weights, never its stage index. Bottleneck projects stage 1 (64 -&gt; 256 at stride 1) while BasicBlock does not.</li>
+</ul>
+<h2 id="load_vit-hugging-face-vit-image-classifier">load_vit() - Hugging Face ViT image classifier<a class="headerlink" href="#load_vit-hugging-face-vit-image-classifier" title="Permanent link">&para;</a></h2>
+<p><code>af.load_vit()</code> loads any HF <code>ViTForImageClassification</code> (and compatible DeiT/BEiT-style models with a CLS token) as a fused ANE classifier:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">vit</span>    <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load_vit</span><span class="p">(</span><span class="s2">"google/vit-base-patch16-224"</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">vit</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>             <span class="c1"># [1,3,H,W] -&gt; [1,num_labels]</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">top</span>    <span class="o">=</span> <span class="n">vit</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>    <span class="c1"># top-k (label, logit)</span>
+</code></pre></div>
+<p>A strided <code>PxP</code> patch conv is walled on the ANE, so patch embedding runs as <code>space_to_depth(P)</code> followed by a 1x1 conv; the CLS token's row is picked out of the encoder output via a one-hot picker matmul (a bare row slice is also walled). The loader auto-detects two HF layer namings: modern (<code>vit.layers.{i}.attention.q_proj</code>, <code>mlp.fc1/fc2</code>) and legacy (<code>vit.encoder.layer.{i}.attention.attention.query</code>, <code>intermediate.dense</code>).</p>
+<h2 id="load_gpt2-gpt-2-text-generation">load_gpt2() - GPT-2 text generation<a class="headerlink" href="#load_gpt2-gpt-2-text-generation" title="Permanent link">&para;</a></h2>
+<p><code>af.load_gpt2()</code> loads a GPT-2-family checkpoint - the pre-norm, pure-LayerNorm decoder - as a fused ANE program:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">gpt2</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load_gpt2</span><span class="p">(</span><span class="s2">"gpt2-medium"</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">ids</span>  <span class="o">=</span> <span class="n">gpt2</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="s2">"The future of artificial intelligence is"</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>  <span class="c1"># greedy; returns token ids</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">gpt2</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span>                     <span class="c1"># 1-D ids -&gt; [S, vocab], for custom decoding</span>
+</code></pre></div>
+<p>GPT-2 loads through the unified LLM runner (<code>LlamaPrefill</code>): the same prefill + resident-KV-cache decode path as Llama/Qwen, adapted for GPT-2's pre-norm LayerNorm blocks and <code>gelu_new</code> MLP. It is the first family to need the LayerNorm-at-<code>D&gt;=1024</code> fix (Llama/Qwen use RMSNorm, so <code>load_llm</code> never hit that wall). The tied lm_head is tiled along the 50257 vocab: a matmul that wide exceeds the ANE's per-op dimension cap on the A13-A15 families, so it is emitted as vocab-sized output-port tiles and stitched host-side (a single tile fits on A16/M-series). Token + positional embedding lookup runs on the host (<code>gather</code> is not an ANE op).</p>
+<p>Decode keeps a resident KV cache on the engine (via the shared runner), streaming tokens instead of recomputing the growing sequence - ~140 tok/s on <code>gpt2-medium</code> on an M5 Pro. <code>examples/gpt2.py</code> loads via <code>af.load_llm</code>, checks the prefill logits against Hugging Face fp32, runs a resident-KV-cache greedy decode token-identical to HF, and includes a &gt;512-token long-context test.</p>
+<h2 id="load_clip-clip-zero-shot-imagetext-classification">load_clip() - CLIP zero-shot image/text classification<a class="headerlink" href="#load_clip-clip-zero-shot-imagetext-classification" title="Permanent link">&para;</a></h2>
+<p><code>af.load_clip()</code> loads any Hugging Face CLIP dual-encoder checkpoint (<code>CLIPModel</code>) to run both the Vision Transformer and the causal Text Transformer on the ANE:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">clip</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load_clip</span><span class="p">(</span><span class="s2">"openai/clip-vit-base-patch32"</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">img_feat</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">encode_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>             <span class="c1"># [1, 3, 224, 224] -&gt; [1, 512] L2-normalised</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">txt_feat</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">encode_text</span><span class="p">([</span><span class="s2">"a photo of a cat"</span><span class="p">,</span> <span class="s2">"a photo of a dog"</span><span class="p">])</span>  <span class="c1"># [2, 512] L2-normalised</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">ranked</span>   <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">[</span><span class="s2">"a photo of a cat"</span><span class="p">,</span> <span class="s2">"a photo of a dog"</span><span class="p">])</span> <span class="c1"># [(label, prob), ...]</span>
+</code></pre></div>
+<p>Both towers compile as fused ANE programs:
+- Vision: Patch embedding via <code>space_to_depth(P)</code> + 1x1 conv, CLS token + positional embedding, pre-norm Transformer stack with <code>QuickGELU</code> (<code>x * sigmoid(1.702 * x)</code>), CLS pooling, visual projection, and in-graph L2 normalisation.
+- Text: Causal self-attention with precomputed triangular mask, QuickGELU MLP, EOT token extraction, text projection, and in-graph L2 normalisation.</p>
+<p><code>examples/clip_zero_shot.py</code> demonstrates zero-shot image classification end-to-end on the ANE with ranking and probability comparison against Hugging Face PyTorch.</p>
+<h2 id="load_whisper-speech-to-text">load_whisper() - speech to text<a class="headerlink" href="#load_whisper-speech-to-text" title="Permanent link">&para;</a></h2>
+<p><code>af.load_whisper()</code> loads a Hugging Face Whisper checkpoint (default <code>openai/whisper-base.en</code>) and runs both towers - the audio encoder and the autoregressive text decoder - on the ANE:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">w</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">load_whisper</span><span class="p">(</span><span class="s2">"openai/whisper-base.en"</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">text</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>         <span class="c1"># 16 kHz mono float32 waveform -&gt; greedy English transcript</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">feats</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>            <span class="c1"># audio features [1500, 512] (the encoder alone)</span>
+</code></pre></div>
+<ul>
+<li>Encoder (one fused program, run once per clip): the two Whisper conv layers (the strided <code>conv2</code> runs directly on the ANE), sinusoidal positional embedding, six pre-norm blocks, final layer norm -&gt; audio features <code>[1500, 512]</code>.</li>
+<li>Decoder (one fused single-token program with a resident KV cache): token + learned positional embedding (host gather), six pre-norm blocks of causal self-attention against a resident <code>[H, M, dh]</code> cache (the one-hot positional write the LLM runner uses) + cross-attention to the audio features + a GELU MLP, then the tied <code>lm_head</code>. Each layer's cross-attention K/V over the audio is computed once per clip and held resident, so decode never re-projects the 1500 audio frames. Whisper's <code>k_proj</code> carries no bias.</li>
+<li>Host-side only: the log-mel spectrogram (Whisper's <code>WhisperFeatureExtractor</code>) and tokenization, the same split as the LLM loaders.</li>
+<li>Greedy decoding reads the start prompt and the logit suppressions (<code>suppress_tokens</code>, <code>begin_suppress_tokens</code>) from the checkpoint's generation config, so <code>transcribe</code> reproduces <code>generate</code> rather than assuming English ids. The resident cache holds up to <code>max_target_positions</code> (448) tokens, Whisper's own decode ceiling.</li>
+</ul>
+<p>Scope: greedy, no timestamps; the <code>.en</code> default is English. <code>examples/whisper.py</code> transcribes a sample clip and validates the encoder features (cosine) and the greedy transcript against Hugging Face.</p>
+<h2 id="weight-layout-he-init-is-layout-dependent">Weight layout: He init is layout-dependent<a class="headerlink" href="#weight-layout-he-init-is-layout-dependent" title="Permanent link">&para;</a></h2>
+<p><code>_he</code> (He/Kaiming-normal init) computes <code>fan_in</code> from the weight layout, which differs between conv and fc weights:</p>
+<table>
+<thead>
+<tr>
+<th>Weight</th>
+<th>Layout</th>
+<th><code>fan_in</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>conv</td>
+<td><code>[Cout, Cin, kH, kW]</code></td>
+<td><code>Cin*kH*kW</code> (product of trailing dims)</td>
+</tr>
+<tr>
+<td>fc</td>
+<td><code>[in, out]</code></td>
+<td><code>in</code> (the leading dim)</td>
+</tr>
+</tbody>
+</table>
+<p>Getting this wrong silently mis-scales the initial weights, so the layout dependence is explicit.</p>
+<h2 id="trainable-graph-builders">Trainable-graph builders<a class="headerlink" href="#trainable-graph-builders" title="Permanent link">&para;</a></h2>
+<p>These build graphs whose parameters are real trainable leaves, every op carrying a VJP so input/affine gradients run on the ANE.</p>
+<ul>
+<li><code>group_norm_train</code> - GroupNorm built from primitives so it works at any batch N (the stock <code>Tensor.group_norm</code> op is batch-1 only) and so the affine <code>gamma</code>/<code>beta</code> are real trainable parameters. <code>x</code> is <code>[N,C,H,W]</code>; <code>gamma</code>/<code>beta</code> are <code>[1,C,1,1]</code> parameter Tensors. Normalizes per-(group, sample) over the <code>C/groups*H*W</code> elements, then applies the affine. Mirrors the <code>group_norm</code> VJP math.</li>
+<li><code>conv_block</code> - conv -&gt; GroupNorm -&gt; ReLU -&gt; optional max-pool.</li>
+<li><code>cifar_cnn</code> - the full CIFAR-10 CNN, returning <code>(x_input, logits, params)</code> where <code>params</code> is the trainable list in a fixed order:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>block1  conv 3-&gt;w0   GN ReLU maxpool2   (32x32 -&gt; 16x16)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>block2  conv w0-&gt;w1  GN ReLU maxpool2   (16x16 -&gt;  8x8)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>block3  conv w1-&gt;w2  GN ReLU            ( 8x8)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>global-avg-pool over H,W -&gt; fc(w2 -&gt; classes)
+</code></pre></div>
+<h2 id="sentence-transformers-drop-in">sentence-transformers drop-in<a class="headerlink" href="#sentence-transformers-drop-in" title="Permanent link">&para;</a></h2>
+<p><code>aneforge.sentence_transformers.SentenceTransformer</code> is a drop-in that runs the encoder on the Neural Engine:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">aneforge.sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">"BAAI/bge-small-en-v1.5"</span><span class="p">)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">emb</span>   <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="s2">"a query"</span><span class="p">,</span> <span class="s2">"a passage"</span><span class="p">])</span>   <span class="c1"># [2, D] on the ANE</span>
+</code></pre></div>
+<p>Design notes:</p>
+<ul>
+<li>The transformer layers run on the ANE as one fused e5rt program (a batch is padded to one length and shares it).</li>
+<li>Only numpy + aneforge are needed - the <code>sentence-transformers</code> package is not imported. This mirrors its <code>.encode</code> surface; it does not wrap it.</li>
+<li>Pooling mode and L2-normalise are read from the model's own config (below), so a mean-pooled model (MiniLM, E5) and a cls-pooled model (BGE, GTE) both come out correct.</li>
+<li><code>device</code> is accepted for signature parity and ignored - the encoder always runs on the Neural Engine.</li>
+<li><code>encode()</code>'s <code>batch_size</code> is accepted for parity but does not change the result (the ANE path is fused per sequence length and cached).</li>
+</ul>
+<h3 id="parity-claims">Parity claims<a class="headerlink" href="#parity-claims" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Cosine vs reference</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default (fp16)</td>
+<td><strong>~1.0</strong></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>int8=True</code></td>
+<td><strong>~0.9999</strong></td>
+<td>half the weight size (int8 streamed)</td>
+</tr>
+</tbody>
+</table>
+<p>Embeddings match the reference encoder at a fraction of the GPU's energy.</p>
+<h3 id="config-driven-pooling-normalize">Config-driven pooling / normalize<a class="headerlink" href="#config-driven-pooling-normalize" title="Permanent link">&para;</a></h3>
+<p><code>_read_st_config</code> returns <code>(pooling_mode, has_normalize)</code> from the model's sentence-transformers config, defaulting to <code>("mean", False)</code> for a raw model with no such config:</p>
+<ul>
+<li>Pooling comes from <code>1_Pooling/config.json</code> (<code>pooling_mode_cls_token</code> / <code>pooling_mode_max_tokens</code> / <code>pooling_mode_mean_tokens</code>).</li>
+<li>Normalize is true if <code>modules.json</code> lists a <code>Normalize</code> module. A model that ships a Normalize module is L2-normalised regardless of <code>normalize_embeddings</code>, matching sentence-transformers.</li>
+</ul>
+<h2 id="rag-on-the-ane-examplesrag_chatpy">RAG on the ANE (examples/rag_chat.py)<a class="headerlink" href="#rag-on-the-ane-examplesrag_chatpy" title="Permanent link">&para;</a></h2>
+<p><code>examples/rag_chat.py</code> is a chat-with-your-docs demo where every stage - embedding,
+reranking, and generation - runs on the Neural Engine. There is no host-side model, and no
+GPU or CPU inference path in the loop.</p>
+<p>Run it against a folder of <code>.md</code>/<code>.txt</code> files:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python3 examples/rag_chat.py [path]   # path defaults to this repo's docs/
+</code></pre></div>
+<p>It walks <code>path</code>, chunks each file (<code>examples._rag.chunk_text</code>), embeds every chunk with
+<code>SentenceTransformer</code>, and holds the vectors in memory. Each query is embedded, matched
+by cosine similarity against the corpus (<code>top_k</code>), reranked with a <code>CrossEncoder</code>, packed
+into a prompt (<code>pack_context</code>), and answered by a resident-KV-cache Qwen3-0.6B decode
+(<code>aneforge.load_llm</code>) that streams tokens as they are produced.</p>
+<p>Model stack:</p>
+<ul>
+<li><code>sentence-transformers/all-MiniLM-L6-v2</code> for embeddings</li>
+<li><code>cross-encoder/ms-marco-MiniLM-L-6-v2</code> for reranking</li>
+<li><code>Qwen/Qwen3-0.6B</code> for generation</li>
+</ul>
+<p>All three are fixed and small enough to keep the demo's compile and load times short.</p>
+<p><code>MAX_LEN</code> is a fixed 512-token context (<code>ANSWER_TOKENS = 160</code> reserved for the answer, so
+the packed prompt budget is 352 tokens). The decode program is compiled once via
+<code>llm.warmup(MAX_LEN)</code> before the first question, so every subsequent query streams
+immediately instead of paying a per-query compile cost.</p>
+<p><code>--energy</code> adds a per-query joules line (needs <code>sudo</code> and <code>powermetrics</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo python3 examples/rag_chat.py --energy
+</code></pre></div>
+<p>It samples package power with <code>powermetrics</code> over one <code>Pipeline.answer</code> call and reports
+the query's energy as <code>~NNN mJ this query, 0 GPU</code> -- 0 GPU because the whole pipeline,
+generation included, never leaves the Neural Engine. Without <code>sudo</code> (or without
+<code>powermetrics</code>), the flag runs the query with no energy figure rather than failing.</p>
+<p>The demo works best on prose documents, but the corpus can be any mix of lengths: the ANE
+encoder pads each batch to one length and masks the padding, so a whole corpus -- long
+files or many tiny ones -- embeds through a single compiled program.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

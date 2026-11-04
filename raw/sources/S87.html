@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/intro.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="apple-neural-engine"><a class="header" href="#apple-neural-engine">Apple Neural Engine</a></h1>
+<h2 id="architecture-programming-and-performance"><a class="header" href="#architecture-programming-and-performance">Architecture, Programming, and Performance</a></h2>
+<p>Spencer H. Bryngelson</p>
+<p><em>School of Computational Science &amp; Engineering, Georgia Institute of Technology, Atlanta, GA 30332, USA</em></p>
+<p>ORCID 0000-0003-1750-7265</p>
+<p>Current edition: v3 (October 14, 2026). Original release: v1 (June 21, 2026). See the <a href="back-matter/revision-history.html">revision history</a> for changes.</p>
+<p>This is the web edition of the guide. Use the sidebar to move between the parts and chapters; the search box indexes the full text.</p>
+<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>The Apple Neural Engine (ANE) is among the most widely deployed machine-learning accelerators, and among the least documented.
+Apple built the ANE into every Apple system on chip since the A11 in 2017 and the M1 in 2020, so nearly every iPhone and iPad active today has one.
+The count of active Apple devices surpasses 2.5 billion (measured early 2026) <a href="references.html#ref-appleactivedevices2026">[AppleActiveDevices2026]</a>.
+On these devices it largely runs the vision, speech, and language models used by the operating system and its applications.
+Of the programmable engines on an Apple chip (CPU, GPU, and ANE), the ANE is the most opaque.
+There is no public instruction set, no driver interface, and no documented way for a program to confirm that a computation ran on it.
+An application reaches the ANE indirectly, through the lightly documented Apple Core ML framework, which treats the engine as one option behind a placement hint.
+Core ML is at least partly documented.
+Nothing below it is: the datapath and numerics, the performance and energy envelope, the compiler and program format, the kernel driver, the firmware, and the command protocol.</p>
+<p>Here we report what was not previously available about the ANE, recovered by reverse engineering from the silicon datapath to the system interface.
+Our evidence is of two kinds, checked against each other.
+We measure on Apple silicon.
+We decompile the private runtime, compiler, kernel driver, and firmware, and attach to them at run time.
+We find the engine reachable directly from an ordinary user process, below Core ML.
+The ANE compiler lowers a graph to the engine's own program format, the runtime loads and dispatches it without the model framework, and the operations the compiler accepts need no special entitlement.
+This direct route is what opens the rest of the device to measurement.
+Some of the quantities we report, and some of the bytecodes we emit, are likely to break across operating-system updates.
+Nothing here should be built into software that has to keep working.</p>
+<p>We stage the performance results around a roofline.
+On the M1 Max, the engine reaches about 12 fp16 TFLOP/s of compute, bounded above by a DRAM-bandwidth ceiling.
+The roofline has a ridge point near 141 FLOP per byte, a 2 MB working-set threshold, a 0.23 ms floor under any single dispatch, and efficiency near 0.37 picojoules per FLOP at peak compute.
+On a 256-channel 3x3 convolution it runs about 3.8 times faster than the same chip's GPU and is 9 times more energy-efficient.
+We take the power side of those figures from shipped device measurement tooling.</p>
+<p>Reaching the engine is not the same as running an arbitrary computational graph on it.
+The operations the engine executes are distinct from the ones a capability bit advertises.
+We count a feature only once a compile-and-run confirms it.
+Attestation in the hardware tables, or acceptance by the compiler frontend, is not enough.
+Several advertised operations never lower to the engine at all, three-dimensional convolution among them.
+Weight compression on the direct path cuts bandwidth, not only stored size.
+On the unentitled engine, int4 lookup-table weights run about 2.37 times faster than fp16, and structured sparsity 1.55 to 1.64 times faster at 0.43 times the bytes.</p>
+<p>The engine runs on a private stack beneath the datapath.
+It contains the compiler and its backend dialect, the on-disk program and container format, the kernel-driver IOKit ABI, the unencrypted firmware and its ninety-three-command host protocol, and the address-translation path that maps host buffers into the engine.
+We decode twenty-eight compiler targets, spanning the A11 through A18 and M1 through M5 families.
+The decode yields the rule that maps each M-series part to its internal H-series identity, the per-family operation floors, and an operation-by-device matrix.
+Our cross-generation predictions held when we checked them on a second physical chip, and a seeded training run reproduced across generations to within 0.001 in final accuracy.</p>
+<h2 id="related-work"><a class="header" href="#related-work">Related work</a></h2>
+<p>The closest precedent is <a href="references.html#ref-orion2026">[Orion2026]</a>, concurrent work that characterizes and programs the engine for large-language-model training and inference.
+A line of community reverse engineering precedes it.
+The tinygrad project recovered the HWX program format and the AppleH11ANEInterface IOKit path <a href="references.html#ref-tinygrad">[tinygrad]</a>, and Yoon's <code>ane</code> project built a reverse-engineered Linux driver and the <code>anecc</code> compiler <a href="references.html#ref-eilnane">[eilnANE]</a>.
+Singh's recent series decodes the M4 engine <a href="references.html#ref-singh2026">[Singh2026]</a>, and Handley reconstructs the engine's hardware architecture from Apple's patent filings <a href="references.html#ref-handley">[Handley]</a>.</p>
+<p>The <code>libane</code> native runtime exposes the engine to ordinary programs <a href="references.html#ref-libane">[libane]</a>, and whisper.cpp reaches it through the Core ML-routed path <a href="references.html#ref-whispercpp">[whispercpp]</a>.
+The long-maintained catalog of Hollemans <a href="references.html#ref-hollemans">[Hollemans]</a> and Apple's own engineering note on deploying Transformers <a href="references.html#ref-appleanetransformers">[AppleANETransformers]</a> collect what is publicly known.
+Several further repositories document direct access and runtime APIs <a href="references.html#ref-communityane">[CommunityANE]</a>, and an earlier thesis treats decoupling on-device intelligence from the application on IoT hardware <a href="references.html#ref-plyenkov2019">[Plyenkov2019]</a>.</p>
+<p>The performance treatment is organized around the roofline model <a href="references.html#ref-williams2009">[Williams2009]</a> and its later refinements: the energy roofline <a href="references.html#ref-choi2013">[Choi2013]</a>, the cache-aware roofline <a href="references.html#ref-ilic2014">[Ilic2014]</a>, the instruction roofline <a href="references.html#ref-ding2019">[Ding2019]</a>, hierarchical roofline analysis <a href="references.html#ref-yang2020">[Yang2020]</a>, and its application to machine-learning accelerators <a href="references.html#ref-verhelst2025">[Verhelst2025]</a>.
+It belongs to a wider body of work on neural accelerators and edge inference.
+That work includes the in-datacenter analysis of the first tensor processing unit <a href="references.html#ref-jouppi2017">[Jouppi2017]</a>, smartphone deep-learning benchmarks <a href="references.html#ref-ignatov2019">[Ignatov2019]</a>, and edge-platform inference benchmarking <a href="references.html#ref-jayanth2024">[Jayanth2024]</a>.
+It also includes energy-and-time roofline studies on edge accelerators <a href="references.html#ref-prashanthi2025">[Prashanthi2025]</a>, NPU energy efficiency on microcontrollers <a href="references.html#ref-fanariotis2025">[Fanariotis2025]</a>, LLM inference trade-offs across mobile NPU and GPU under sustained load <a href="references.html#ref-tummalapalli2026">[Tummalapalli2026]</a>, and on-device LLM roofline benchmarking <a href="references.html#ref-bi2026">[Bi2026]</a>.
+The work closest in workload studies heterogeneous on-device LLM inference: fast NPU inference <a href="references.html#ref-xu2025">[Xu2025]</a>, GPU-NPU hybrid serving for long context <a href="references.html#ref-moon2025">[Moon2025]</a>, and mobile-SoC characterization for heterogeneous execution <a href="references.html#ref-chen2025">[Chen2025]</a>.
+On Apple silicon specifically, Benazir and Lin study mixture-of-experts inference on the NPU <a href="references.html#ref-benazir2026">[Benazir2026]</a>, Hübner and colleagues evaluate the M-series for HPC efficiency <a href="references.html#ref-hubner2025">[Hubner2025]</a>, and the ML.ENERGY project <a href="references.html#ref-zeus2025">[Zeus2025]</a> treats the programmatic energy measurement the power figures here depend on.</p>
+<p>We do not claim to be first to reach the engine.
+The direct route we measure is released as the open-source ANEForge runtime <a href="references.html#ref-aneforge2026">[ANEForge2026]</a>, which this guide accompanies.
+Our account differs from prior work in scope and in method, since the coverage runs the full stack, from the fp16 datapath down to the firmware and command protocol.
+Beyond the access result we add a reachable-operation census, unentitled weight streaming, a prediction of an operation's reachability from a callable compiler validator, and an account of how the compiler fuses a whole graph into one program.
+Earlier Apple-silicon rooflines are GPU-only; here we cover the engine, pair it with measured power, and give a batched-serving energy crossover.</p>
+<h2 id="how-to-read-this-guide"><a class="header" href="#how-to-read-this-guide">How to read this guide</a></h2>
+<p>We have written the two halves to be taken independently.
+The front half, Parts I through V, covers using the engine: what the hardware is, how to reach it, how it performs, and how to fit real workloads to it.
+The back half, Parts VI through IX, covers the architecture and system internals beneath that surface, down to the firmware and command protocol.
+The appendices collect the operation-by-device matrix, decoded reference tables, glossary, and provenance record, and the references close the guide.</p>
+<p>Every substantive claim has an evidentiary mark.
+A measured claim was observed directly on Apple silicon, primarily the M1 and M5.
+We read decompile-derived claims out of the disassembled runtime, compiler, kernel driver, or firmware.
+Predicted claims we inferred from a model or a per-chip table; silicon has not confirmed them yet.
+Appendix <a href="appendices/f-provenance.html">E</a> records the mark on every claim.
+The methodology describes how we reached the engine, and the open questions name what we were unable to measure.</p>
+<h2 id="license-and-citation"><a class="header" href="#license-and-citation">License and citation</a></h2>
+<p>This guide is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0)</a>. Apple, Apple silicon, Core ML, and the Apple Neural Engine are trademarks of Apple Inc.; this is an independent work and is not affiliated with, authorized by, or endorsed by Apple Inc.</p>
+<p>To cite: Spencer H. Bryngelson. <em>Apple Neural Engine: Architecture, Programming, and Performance.</em> <a href="https://arxiv.org/abs/2606.22283">arXiv:2606.22283</a>, 2026.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="part-1-machine/01-what-the-ane-is.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="part-1-machine/01-what-the-ane-is.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+        <script src="home-link.js"></script>
+        <script src="highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

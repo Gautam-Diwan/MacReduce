@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>24. HAL and capability gates - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-7-toolchain/24-hal-gates.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="24-hal-and-capability-gates"><a class="header" href="#24-hal-and-capability-gates">24. HAL and capability gates</a></h1>
+<blockquote>
+<p>The compiler is one binary that builds any chip in the line from a per-chip data table, the hardware abstraction layer, read at compile time.
+The table has scalar fields indexed by byte offset for the numeric limits.
+A dense capability-byte region runs from offset <code>0x48f</code> through <code>0x8cc</code>, each byte read as <code>hal[offset] &amp; 1</code> to gate one operation or format.
+A <code>MinimumFamily&lt;N&gt;</code> trait on the operation declares its legality: native only when the target family index is <code>N</code> or greater, decomposed below that floor.
+No compute operation floors above A15.
+A capability in the table attests support at the layer that reads it; it does not prove the operation runs.
+Three-dimensional convolution has its kernel-depth attestation at <code>0x70</code> and fails backend lowering on every device mask.</p>
+</blockquote>
+<p>What separates one target from the next is a per-chip data table, read at compile time, that records every size limit and every per-operation switch for that silicon.</p>
+<h2 id="hal-property-table"><a class="header" href="#hal-property-table">HAL property table</a></h2>
+<p>The hardware-abstraction-layer table is the compiler's profile of a target, one packed structure that contains both the numeric limits and the feature gates for a chip, with representative scalar fields and their M1 values in <a href="#tbl-c24-hal-scalars">Table 24.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Meaning</th><th>M1 (H13)</th><th>Changes at</th></tr></thead><tbody>
+<tr><td><code>0x1b8</code></td><td><code>max_operand_bytes</code></td><td>on-chip SRAM working set</td><td>2 MB</td><td>constant across the line (1 MB on M9)</td></tr>
+<tr><td><code>0x1c0</code></td><td><code>dram_alignment</code></td><td>DMA width granule in bytes</td><td>16</td><td>constant (1 only on the small profiles)</td></tr>
+<tr><td><code>0x1c8</code></td><td><code>l2_bank_align</code></td><td>DMA bank-conflict modulo</td><td>64</td><td>constant</td></tr>
+<tr><td><code>0x1f0</code></td><td>L2-resident buffer threshold</td><td>dedicated-buffer trip</td><td>0</td><td>32768 at A15, 262144 at A16</td></tr>
+<tr><td><code>0x200</code></td><td>dense kernel-memory cap</td><td>non-streamed weight ceiling</td><td>64 KB</td><td>the fold-path budget</td></tr>
+<tr><td><code>0x210</code></td><td>streamed kernel-memory cap</td><td>streamed weight ceiling</td><td>16 MB</td><td>the stream-path budget</td></tr>
+<tr><td><code>0x218</code></td><td>instruction or segment alignment</td><td>record packing granule</td><td>256</td><td>16 at A14</td></tr>
+<tr><td><code>0x228</code></td><td><code>ne_perf_cycle_divisor</code></td><td>cost-model per-cycle divisor</td><td>64</td><td>32 on H11, 16 on M9</td></tr>
+<tr><td><code>0x238</code></td><td><code>num_nes</code></td><td>NE-core count</td><td>4 (base)</td><td>die-keyed: 4, 8, 16, 32, 64</td></tr>
+<tr><td><code>0x288</code></td><td>extended dual-kernel-memory mode</td><td>16 MB versus 64 KB select</td><td>0</td><td>0 on all 28 targets</td></tr>
+<tr><td><code>0x70</code></td><td><code>max_large_conv_kernel_dim_z</code></td><td>3D-conv kernel depth</td><td>16</td><td>capability attested at A13 (1 below)</td></tr>
+<tr><td><code>0x138</code></td><td><code>max_tensor_width</code></td><td>maximum tensor width</td><td>16384</td><td>65536 at A16</td></tr>
+<tr><td><code>0x158</code></td><td><code>max_tensor_depth</code></td><td>maximum tensor depth</td><td>16384</td><td>1 below A13, 65536 at A16</td></tr>
+<tr><td><code>0x3f0</code></td><td>reduction-via-transpose extent</td><td>reduction route threshold</td><td>192</td><td>384 at A15</td></tr>
+<tr><td><code>0x400</code></td><td><code>pe_min_patch_width_log2</code></td><td>the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>-pixel tiling floor</td><td>4</td><td>constant M1 and M5</td></tr>
+<tr><td><code>0x580</code></td><td>cost-model policy name</td><td>roofline anchor string</td><td><code>Simple</code></td><td><code>None</code> on older and small profiles</td></tr>
+<tr><td><code>0x668</code></td><td>interchange-format map size</td><td>count of accepted image formats</td><td>3</td><td>13 at A14, 16 at A15, 14 at A16</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c24-hal-scalars"></a><strong>Table 24.1.</strong> Representative scalar fields of the hardware-abstraction table; the full decoded register map is in Appendix <a href="../appendices/c-decoded-tables.html">C</a>.</p>
+<p>The hardware abstraction layer is a single packed structure the compiler constructs for its target, holding two kinds of entry.
+The first is a block of scalar fields, indexed by byte offset, that record numeric limits: maximum kernel sizes, maximum tensor dimensions per axis, the on-chip working-set size, data-movement alignment granule, and cost-model curve.
+The second is a dense region of single-byte boolean flags, the capability bytes, each gating one operation or one format on or off for the target.
+A family of constructors, one per architecture, builds the structure per target inside the compiler.
+The scalar region runs from offset <code>0x18</code> to roughly <code>0x348</code> as plain data, with non-scalar members such as the format map and the cost-model curve extending past it.
+The capability-byte region occupies offsets <code>0x48f</code> through <code>0x8cc</code> and has on the order of 165 single-byte flags, of which 24 have recovered field names and the rest are enumerated by offset and classified by the family that enables them.
+The compiler reads a scalar as a value at its offset and a capability byte as <code>hal[offset] &amp; 1</code>, so every limit and every gate is one indexed read into this one table (<a href="#lst-c24-hal-struct">Listing 24.1</a>).
+The same structure stores the cost model: a policy-name string at <code>0x580</code>, frequency-to-efficiency curve at <code>0x7a8</code>, and per-cycle divisor at <code>0x228</code>, which the roofline of chapter <a href="../part-5-practice/18-optimization-cost-model.html">18</a> reads from this table.</p>
+<pre><code class="language-c">/* ZinIrHalParameters, selected fields at their byte offsets (M1/H13 values) */
+struct ZinIrHalParameters {
+    /* ... */
+    uint64_t max_large_conv_kernel_dim_z;  /* 0x70:  3D-conv kernel depth   = 16  */
+    /* ... */
+    uint64_t max_tensor_width;             /* 0x138: max tensor width       = 16384 */
+    /* ... */
+    uint64_t max_operand_bytes;            /* 0x1b8: SRAM working set       = 2 MB  */
+    uint64_t dram_alignment;               /* 0x1c0: DMA width granule      = 16    */
+    uint64_t l2_bank_align;                /* 0x1c8: DMA/L2 bank count      = 64    */
+    /* ... */
+    uint64_t num_nes;                      /* 0x238: NE-core count          = 4     */
+    /* ... */
+    uint8_t  cap_bytes[0x8cd - 0x48f];     /* 0x48f..0x8cc: per-op capability flags */
+};
+</code></pre>
+<p><a id="lst-c24-hal-struct"></a><strong>Listing 24.1.</strong> A partial C view of the per-target hardware-abstraction structure, with selected scalar fields and the capability-byte region at their recovered offsets.</p>
+<p>The capability bytes are read one at a time as <code>hal[offset] &amp; 1</code>, for example the texture engine at <code>0x81d</code> and the kernel-streaming master at <code>0x48f</code>.</p>
+<h2 id="operation-gate"><a class="header" href="#operation-gate">Operation gate</a></h2>
+<p>Operation legality is declared not in the HAL table but on the operation itself, as a trait the compiler attaches to every backend operation.
+The trait is a minimum-family index: the operation <code>MinimumFamily&lt;N&gt;</code> is natively legal only inside a compilation whose family index is <code>N</code> or greater, and below that floor the compiler decomposes it into legal operations.
+The family index orders the generations: <code>A11Legacy</code> is 0, <code>A12</code> is 1, <code>A13</code> is 2, <code>A14</code> is 3, <code>A15</code> is 4, and so on, with the M1 at <code>A13</code> and the M5 at <code>A17</code>.</p>
+<p>The check the compiler runs on each backend operation is the trait floor against the target family index (<a href="#lst-c24-family-gate">listing 24.2</a>).</p>
+<pre><code class="language-python"># mlir::OpTrait::anec::MinimumFamily&lt;N&gt;: native iff target family &gt;= N
+def op_is_native(op, target_family):
+    return target_family &gt;= op.minimum_family   # e.g. softmax N=2 (A13), sin N=4 (A15)
+
+def lower_op(op, target_family):
+    if op_is_native(op, target_family):
+        emit_native(op)                          # one anec op
+    else:
+        decompose(op)                            # rewrite into ops legal below the floor
+</code></pre>
+<p><a id="lst-c24-family-gate"></a><strong>Listing 24.2.</strong> The minimum-family gate, where an operation is emitted natively when the target family meets its floor and decomposed otherwise.</p>
+<p>The M1 has family index two and the M5 has family index six, so an operation with floor four, such as sin, is native on the M5 and decomposed on the M1.</p>
+<p>The floors fall into a small number of tiers.
+The base tier, family 0, lists the operations every engine runs: convolution, matrix multiply, pooling, the elementwise and activation set, reshape, transpose, and concat.
+At A13 come softmax, the normalizations, the reductions, fused attention, and the square-root and error functions.
+A14 brings the texture-engine samplers, crop-resize, and resample; A15 brings native sin and cos.
+No compute operation floors above A15, so the newest generations add core count and clock.</p>
+<p>The two gate mechanisms work together.
+A capability byte read as <code>hal[offset] &amp; 1</code> decides a route inside a single operation, for example whether the texture engine at byte <code>0x81d</code> is present, which on the M1 reads 0 and forces resize to a decomposition.
+The minimum-family trait decides whether the operation is native at all.
+When either gate is closed, the compiler either emits a decomposition into legal operations or rejects the operation with a message naming the architecture, depending on whether a legal decomposition exists.</p>
+<p>The floors a developer reaches, and the families each is native on, are in <a href="#tbl-c24-floors">Table 24.2</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Floor</th><th>Native on</th><th>Representative operations</th></tr></thead><tbody>
+<tr><td>F0</td><td>all families</td><td>convolution, matmul, pooling, elementwise, reshape, transpose, concat</td></tr>
+<tr><td>F2 (A13+)</td><td>A13 onward</td><td>softmax, layer and instance and batch norm, reductions, attention, erf, sqrt</td></tr>
+<tr><td>F3 (A14+)</td><td>A14 onward</td><td>crop-resize, resample</td></tr>
+<tr><td>F4 (A15+)</td><td>A15 onward</td><td>sin, cos, global argmin and argmax</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c24-floors"></a><strong>Table 24.2.</strong> The minimum-family floors a developer reaches, with the families each is native on and representative operations.</p>
+<p>The compiler text that rewrites an operation is identical across the family, and the chip selects a different limit, gate, or decomposition strategy from the table beneath it.</p>
+<h2 id="capability-byte-gates-across-the-line"><a class="header" href="#capability-byte-gates-across-the-line">Capability-byte gates across the line</a></h2>
+<p>A capability byte is a single-byte switch in that table that turns one operation or feature on or off for a target.
+The named capability bytes, each with its gate and its value across the M1 and the later generations, are in <a href="#tbl-c24-capbytes">Table 24.3</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Byte</th><th>Gate</th><th>M1 (H13)</th><th>A14</th><th>A15</th><th>A16</th><th>A18</th></tr></thead><tbody>
+<tr><td><code>0x48f</code></td><td>kernel-streaming master, the 64 KB to 16 MB select</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x494</code></td><td>square-after-reduction fusion</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x4a9</code></td><td>dropout and random</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x4f2</code></td><td>global argmin and argmax</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x529</code></td><td>per-format kernel-stride enable, the palette stream</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x52d</code></td><td>fp8 E4M3 kernel format</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td><code>0x563</code></td><td>FIFO-mode direct memory access</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td><code>0x815</code></td><td>softmax, native</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x816</code></td><td>instance normalization, native</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x81a</code></td><td>local-response normalization, native</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>0x81d</code></td><td>texture engine</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c24-capbytes"></a><strong>Table 24.3.</strong> The named capability bytes.</p>
+<p>The texture engine at byte <code>0x81d</code> is the largest M1 functional gap: it reads 0 on the M1 and 1 from A14 onward.
+It gates resize, crop-resize, resample, affine transform, hardware gather, and symmetric padding all together, so each of those routes through a software decomposition on the M1.
+The fp8 byte <code>0x52d</code> is set on the A18 generation alone of the 28 targets, so the M5, an A17 part, does not have it.
+The streaming master at byte <code>0x48f</code> and the palette-stream byte <code>0x529</code> both read 1 on the M1, which is why the int4 palette and the sparse form stream on the M1, while int8 and blockwise fold, a mechanism chapter <a href="25-compression-internals.html">25</a> develops.
+The compiler builds the table for a target by calling that target's constructor, so a single host recovers the table for every chip in the line whether or not it is the chip that is running.</p>
+<h2 id="per-family-scalar-matrix"><a class="header" href="#per-family-scalar-matrix">Per-family scalar matrix</a></h2>
+<p>The scalar parameters show the same pattern across the generation anchors: a value holds for a span of generations and then steps once (<a href="#tbl-c24-scalar-matrix">Table 24.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Field (offset)</th><th>M1 (H13)</th><th>A14</th><th>A15</th><th>A16 (M4)</th><th>A17 (M5)</th></tr></thead><tbody>
+<tr><td><code>num_nes</code> (<code>0x238</code>)</td><td>4</td><td>4</td><td>4</td><td>4</td><td>16</td></tr>
+<tr><td><code>max_operand_bytes</code> (<code>0x1b8</code>)</td><td>2 MB</td><td>2 MB</td><td>2 MB</td><td>2 MB</td><td>2 MB</td></tr>
+<tr><td><code>max_tensor_width</code> (<code>0x138</code>)</td><td>16384</td><td>16384</td><td>16384</td><td>65536</td><td>65536</td></tr>
+<tr><td><code>max_tensor_depth</code> (<code>0x158</code>)</td><td>16384</td><td>16384</td><td>16384</td><td>65536</td><td>65536</td></tr>
+<tr><td><code>max_large_conv_kernel_dim_z</code> (<code>0x70</code>)</td><td>16</td><td>16</td><td>16</td><td>16</td><td>16</td></tr>
+<tr><td>L2-resident threshold (<code>0x1f0</code>)</td><td>0</td><td>0</td><td>32768</td><td>262144</td><td>262144</td></tr>
+<tr><td>instruction alignment (<code>0x218</code>)</td><td>256</td><td>16</td><td>16</td><td>16</td><td>16</td></tr>
+<tr><td>reduction-transpose extent (<code>0x3f0</code>)</td><td>192</td><td>192</td><td>384</td><td>384</td><td>384</td></tr>
+<tr><td>interchange-format count (<code>0x668</code>)</td><td>3</td><td>13</td><td>16</td><td>14</td><td>14</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c24-scalar-matrix"></a><strong>Table 24.4.</strong> The scalar parameters at the generation anchors.</p>
+<p>The base-name M5 reads <code>num_nes</code> of 16 because the column is the 16-core Pro-class profile, while the base A17 profile has 4.
+The per-die sequence runs 4 for the base name, 8 for the <code>g</code> suffix, 16 for <code>s</code> and the legacy 16-core profile, 32 for <code>c</code>, and 64 for the <code>d</code> Ultra-class die.</p>
+<h2 id="kernel-memory-split"><a class="header" href="#kernel-memory-split">Kernel-memory split</a></h2>
+<p>The streaming master byte does more than gate the compressed-weight stream: it selects which of two kernel-memory caps a layer's weights are sized against.
+The legalization check is two lines of logic, reading a streamable flag and the master byte to pick the offset of the cap, then comparing the demand against it, as <a href="#lst-c24-kmem-split">listing 24.3</a> gives.</p>
+<pre><code class="language-python"># ExceedKmemSizeLimit: split-legalize a layer's weights when they exceed the cap
+def exceeds_kmem(hal, demand, is_streamable):
+    cap = hal[0x210] if (is_streamable and hal[0x48f]) else hal[0x200]
+    return cap &lt; demand   # 0x200 = 64 KB dense, 0x210 = 16 MB streamed
+</code></pre>
+<p><a id="lst-c24-kmem-split"></a><strong>Listing 24.3.</strong> The kernel-memory split, where a streamable weight under the streaming master is sized against the 16 MB cap and a dense weight against the 64 KB cap.</p>
+<p>An ordinary non-streamed weight over 64 KB, or any weight over 16 MB, is thus split into multiple sub-layers on the M1, which raises the dispatch count and the compile time.
+A streamed compressed weight is sized against the 16 MB cap and has far more weight per layer.
+This is the weight path; it does not bound the activations, which stay within the maximum-tensor-dimension caps, so a layer with a tiny weight and a large activation hits the tiling cost in the partition passes before it hits this discrete limit.</p>
+<h2 id="dead-and-family-gated-fields"><a class="header" href="#dead-and-family-gated-fields">Dead and family-gated fields</a></h2>
+<p>Not every per-target value in the table is a live gate.
+A byte-granular re-diff of all 28 target blobs leaves zero undecoded scalar fields, but several offsets that vary by family are populated by the per-chip builder and never read back through the table pointer, so their value is a write-only mirror.
+Five scalar offsets are dead as table fields in this fashion: the global element cap at <code>0x18</code>, kernel-depth constant at <code>0x80</code>, legacy tiling granule at <code>0x260</code>, offset at <code>0x320</code>, and die-class flag at <code>0x29c</code>.
+Each varies meaningfully by family, but the value a reader consumes is read off a different object that shares the byte displacement, a tensor-dimensions, compiler-parameters, or memory-pools structure, not the table.
+The distinguishing test is whether the base register at the access stores the table pointer, since the same displacement aliases dozens of other by-reference structures, so a raw displacement match inside a table-typed function is not proof of a table read.</p>
+<p>The one offset that looks dead on the M1 but is not is the FIFO-mode byte at <code>0x563</code>: it reads 0 on the M1 and is read through the table pointer under a branch that is taken only when the byte is set, which happens on the A18 generation.
+A per-family value pattern alone does not establish a live gate; only a traced reader off the table base does.</p>
+<h2 id="naming-the-remaining-capability-flags"><a class="header" href="#naming-the-remaining-capability-flags">Naming the remaining capability flags</a></h2>
+<p>The capability bytes and the scalar limits are both fields of one struct, <code>ZinIrHalParameters</code>, the per-family blob the compiler builds for its target.
+The struct has no per-field getter method, so the compiler reads a field through an inlined <code>ldrb</code> or <code>ldr</code> off the table pointer at a fixed offset, which is why a first pass recovers offsets and values but not names.
+The names survive in one place only.
+The compiler retains full mangled C++ symbols, and a reader function whose signature has <code>ZinIrHalParameters const&amp;</code> reads each field, so the reader's name labels the field it reads.
+A read is attributed to the table only when the load's base register is the function's <code>ZinIrHalParameters const&amp;</code> argument, since the same byte displacement aliases dozens of other by-reference structures.</p>
+<p>Cross-referencing the unnamed offsets against these reader functions names 95 more of them, of which roughly 30 resolve to a precise individual meaning with the base register verified against the table argument (<a href="#tbl-c24-named-flags">Table 24.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Reader function</th></tr></thead><tbody>
+<tr><td><code>0x4a8</code></td><td>PE work-unit-shape supported</td><td><code>PERasterization::ComputeWUShape</code></td></tr>
+<tr><td><code>0x4ac</code></td><td>small-source-mode compression supported</td><td><code>ZinANELayer::AllowCompressionBasedOnSmallSourceMode</code></td></tr>
+<tr><td><code>0x4b0</code></td><td>non-power-of-2 work-unit width supported</td><td><code>NERasterization::CanUseNonPowerOf2WUs</code></td></tr>
+<tr><td><code>0x4f0</code></td><td>preferred kernel layout format</td><td><code>ZinIrKernel::GetPreferredKernelLayoutFormat</code></td></tr>
+<tr><td><code>0x500</code></td><td>transpose and multicast configuration</td><td><code>ZinNELayer::FindValidMirInfoForTransposeCore</code></td></tr>
+<tr><td><code>0x520</code></td><td>secure-mode cache-hint DSID gate</td><td><code>GetDSIDFromPriorityHalAndSecureMode</code></td></tr>
+<tr><td><code>0x52c</code></td><td>tensor-format support flag, pairs with the named <code>0x52d</code> fp8 byte</td><td><code>ZinLayerValidationUtils::ValidateFormat</code></td></tr>
+<tr><td><code>0x54c</code></td><td>cache-prefetch kernel-task-interval limit</td><td><code>ZinValidateTd&lt;17&gt;::ValidateCachePrefetchKernelTaskInterval</code></td></tr>
+<tr><td><code>0x5a8</code></td><td>cache-hint DSID value</td><td><code>GetDSIDFromPriorityHalAndSecureMode</code></td></tr>
+<tr><td><code>0x708</code></td><td>reflective-padding maximum extent</td><td><code>ZinValidateTd&lt;20&gt;::ValidateReflectivePaddingMode</code></td></tr>
+<tr><td><code>0x748</code></td><td>gather and texture-engine descriptor pointer</td><td><code>ZinGatherLayer::CreateTELayer</code></td></tr>
+<tr><td><code>0x8b4</code></td><td>tile-height-errata threshold</td><td><code>ZinTileHeightErrata::Workaround</code></td></tr>
+<tr><td><code>0x8bc</code></td><td>chaining enabled</td><td><code>ZinIrRegAllocUtil::IsChainable</code></td></tr>
+<tr><td><code>0x8e0</code></td><td>kernel-caching enabled</td><td><code>ZinIrTdValidationUtil::ValidateKernelCaching&lt;N&gt;</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c24-named-flags"></a><strong>Table 24.5.</strong> Precise capability-flag names recovered this round, each attributed to its reader function.</p>
+<p>The remaining 95-minus-30 additions are class-named: the reader identifies the subsystem the field gates without the exact semantics.
+Examples are the per-axis DMA range bounds read by <code>ZinValidateTd&lt;N&gt;::CheckInRangeDmaAccess</code> and the texture-engine plane-equation coefficients in the <code>0x820</code> to <code>0x8f8</code> block gated by the named <code>0x81d</code> texture-engine byte on A14 and later.
+Two candidates were rejected as table fields despite matching a displacement inside a table-typed function: <code>0xcf8</code> loads off an <code>adrp</code>-formed read-only constant, and <code>0x678</code> loads off a nested object two pointers deep.
+The same base-register test that found the five dead fields above also rules these out.</p>
+<p>With this round the silicon-capability subset of the packed bitfield, the part the compiler reads to gate a feature per family, is fully named.
+The struct is <code>0x938</code> bytes, and the few entries inside it that are not capability flags are the cost-model coefficient block at offsets <code>0x580</code> through <code>0x7f0</code>.
+This block contains the frequency-to-efficiency curve, rate indices, performance multiplier that the roofline of chapter <a href="../part-5-practice/18-optimization-cost-model.html">18</a> reads, and about two soft fp64 coefficients.
+These are all performance coefficients, with no legality cap among them.
+A small number of capability fields are also true holdouts, read only off aliased bases.
+The offsets past <code>0x938</code> have no table: an earlier reading that located an A12 operation-emulation catalog at <code>0xa30</code> through <code>0xe84</code> was a read into the adjacent zeroed memory beyond the struct, not a real field.</p>
+<h2 id="attested-is-not-reachable"><a class="header" href="#attested-is-not-reachable">Attested is not reachable</a></h2>
+<p>A capability recorded in the HAL table attests support at the layer that reads the table.
+It does not by itself prove that the operation lowers to a task descriptor and runs on the silicon.
+These are distinct layers, and a capability present at the first can fail at the second.</p>
+<p>The case that fixes the rule is three-dimensional convolution.
+The HAL scalar at offset <code>0x70</code> records a 3D-conv kernel depth of 16 on the M1, attesting that the kernel geometry is permitted, and the compiler frontend recognizes the operation.
+It still fails backend lowering on every device mask, returning the message that it is not supported on any backend.
+The capability is in the table and the operation does not run.</p>
+<p>The gap appears in the other direction as well, where a checker accepts an operation the code generator rejects: on the M1 the top-k, sort, and dynamic-slice validators are all callable and all three are refused at code generation.
+A bit in the table, a frontend that recognizes an operation, or a validator that passes are each a claim about one layer; only a compile-and-run on the target confirms the operation at the layer that executes it.
+This is why the reachable surface of chapter <a href="../part-1-machine/04-capability-surface.html">4</a> is smaller than the surface the table advertises, and why each native entry there was compiled and run on the M1 rather than inferred from a capability byte.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-7-toolchain/23-program-format.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-7-toolchain/25-compression-internals.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-7-toolchain/23-program-format.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-7-toolchain/25-compression-internals.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

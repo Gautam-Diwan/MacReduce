@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>5. Software stack - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-2-reaching/05-software-stack.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="5-software-stack"><a class="header" href="#5-software-stack">5. Software stack</a></h1>
+<blockquote>
+<p>Four user-space layers separate an application from the engine.
+The execution runtime beneath the model framework is reachable directly, with no placement planner and no entitlement for accepted operations.
+The model framework segments work across the processor, graphics processor, and engine by a shortest-path solve over a per-operation cost graph.
+The public model-plan read-out reports that solve.
+A system daemon has the single privileged device gate, a content-hashed program cache, and one time-shared request queue that arbitrates every client.</p>
+</blockquote>
+<p>Part I treated the engine as a machine: a fixed-function matrix accelerator with an fp16 datapath, driven as an autonomous coprocessor through a command mailbox.
+Part II treats it as a target a developer can address.
+Between an application and the silicon are several layers of system software, each with a defined job.
+This chapter maps those layers and marks the one this Part enters.</p>
+<h2 id="layered-stack"><a class="header" href="#layered-stack">Layered stack</a></h2>
+<p>The full stack runs from the application down to the silicon, with two routes reaching the runtime (<a href="#fig-c5-stack">figure 5.1</a>).
+A system daemon and a kernel driver are below the four user-space layers, out of the dispatch band.</p>
+<figure id="fig-c5-stack">
+<pre class="mermaid">
+flowchart TB
+    subgraph HOST["Host"]
+        direction TB
+        APP["Application"]
+        CML["Model framework (Core ML)<br/>placement planner"]
+        RT["Execution runtime (Espresso / e5rt)<br/>compile, load, dispatch"]
+        AND["System daemon (aned)<br/>broker, signs the program"]
+        KRN["Kernel driver<br/>trust and signature gate"]
+    end
+    subgraph DEV["Apple Neural Engine"]
+        direction TB
+        FW["Firmware (styx RTOS)<br/>scheduler, command state machine"]
+        SIL["MAC array silicon<br/>fp16 datapath"]
+    end
+    APP --> CML --> RT
+    APP -. direct route .-> RT
+    RT --> AND --> KRN
+    KRN -- command mailbox and doorbell --> DEV
+    FW --> SIL
+    style RT fill:#22323f,stroke:#6fa8c9
+    style FW fill:#22323f,stroke:#6fa8c9
+    style SIL fill:#2a2f34,stroke:#8a98a6
+</pre>
+<figcaption><strong>Figure 5.1.</strong> The full stack from an application down through the kernel driver, the engine firmware, and the silicon, with the two routes to the runtime.</figcaption>
+</figure>
+<p>The top layer is the model framework.
+It accepts a trained network, decides which operations the engine can accept, and segments the work across the central processor, graphics processor, and engine under a cost-driven placement planner.
+Device choice is not the caller's at this layer, and the placement is never reported back.
+Chapter <a href="../part-1-machine/01-what-the-ane-is.html">1</a> describes this public surface.</p>
+<p>Beneath it is the execution runtime, the layer every path passes through.
+It owns compilation: it turns a network in the intermediate representation into the engine's program format, writes the result to a content-addressed cache on disk, and produces a loadable program.
+It owns the program library and the callable functions inside it.
+It owns the execution stream, the queue against which a compiled program is encoded and dispatched, and the descriptors that bind operands to a program's named ports.
+The same runtime runs the central-processor and graphics-processor executors as alternative backends, so a single stream can contain operations placed on different devices.
+The engine is one backend among those three.</p>
+<p>Beneath the runtime, on the path to the engine, is the client layer.
+It splits into two duties.
+The client layer hands program lifecycle, meaning compile, load, instantiate, cache, and purge, to the system daemon over an interprocess channel.
+Per-inference dispatch goes directly to the kernel driver once a program instance exists.
+The daemon has the privileged device handle and the on-disk program cache; the client process keeps the connection it uses for the hot path.</p>
+<p>The lowest user-space layer is a thin shim over the kernel driver.
+Its calls translate into driver method invocations on the engine's user client.
+Below that is the kernel driver itself, then the firmware and the silicon.</p>
+<p><a href="#tbl-c5-layers">Table 5.1</a> lists the four user-space layers and their reachability from ordinary user space.</p>
+<div class="table-wrapper"><table><thead><tr><th>Layer</th><th>Role</th><th>Reachable directly</th></tr></thead><tbody>
+<tr><td>Model framework</td><td>Cost-driven placement planner; segments work across processor, graphics, and engine</td><td>No: device is a scheduling outcome, not a choice</td></tr>
+<tr><td>Espresso runtime</td><td>Network loading and operator graph beneath the framework</td><td>Yes, but the framework drives it</td></tr>
+<tr><td>Execution runtime</td><td>Owns compile, program library, execution stream, and operand descriptors</td><td>Yes: names the engine as target, no entitlement for accepted ops</td></tr>
+<tr><td>Client / user-client layer</td><td>Splits program lifecycle to the daemon from per-inference dispatch to the driver</td><td>Yes, for the hot dispatch path</td></tr>
+<tr><td>System daemon (out of band)</td><td>Holds the privileged device gate and the content-hashed program cache; arbitrates clients</td><td>No: reached through its interprocess channel</td></tr>
+<tr><td>Kernel-driver shim (out of band)</td><td>Thin user-space translation into driver method invocations on the engine's user client</td><td>Yes, as the lowest user-space call</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c5-layers"></a><strong>Table 5.1.</strong> Layers of the engine software stack, each layer's role, and whether a caller can reach it directly.</p>
+<p>Each layer has a distinct symbol family in the binaries, and the family name identifies the layer a call is on.
+The execution runtime exports a flat C facade over a C++ core in the <code>E5RT::</code> namespace, with every entry point prefixed <code>e5rt_</code>.
+The client layer is Objective-C, every class prefixed <code>_ANE</code>.
+The daemon communicates over a private interprocess protocol whose selectors name the arguments verbatim.
+The shim into the kernel driver is the <code>ANEServices</code> C and C++ entry points, which lower to the IOKit <code>IOConnectCall*</code> calls on the engine's user client.
+Each family appears beside its layer in <a href="#tbl-c5-symbols">table 5.2</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Layer</th><th>Symbol family (entry points)</th></tr></thead><tbody>
+<tr><td>Execution runtime (<code>Espresso.framework</code>)</td><td><code>e5rt_e5_compiler_compile</code> (compile MIL to <code>.e5</code>), <code>e5rt_program_library_retain_program_function</code>, <code>e5rt_program_function_load_for_execution</code>, <code>e5rt_execution_stream_execute_sync</code> / <code>_submit_async</code>; C++ core <code>E5RT::E5Compiler</code>, <code>E5RT::ExecutionStream</code></td></tr>
+<tr><td>Client layer (<code>AppleNeuralEngine</code>)</td><td><code>_ANEClient</code>, <code>_ANEModel</code> / <code>_ANEInMemoryModel</code>, <code>_ANERequest</code>, <code>_ANEIOSurfaceObject</code>, <code>evaluateWithQoS:options:request:error:</code></td></tr>
+<tr><td>System daemon (<code>aned</code>, NSXPC <code>com.apple.aned</code>)</td><td><code>createProgramInstanceForModel:modelToken:...:statsMask:memoryPoolID:enableLateLatch:...:error:</code></td></tr>
+<tr><td>Kernel-driver shim (<code>ANEServices.framework</code>)</td><td><code>_ANEServicesProgramCreate</code>, <code>ANE::ANEServicesDevice::ANE_ProgramSendRequest(...)</code> to <code>IOConnectCallAsyncMethod(selector=2)</code> on <code>H11ANE</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c5-symbols"></a><strong>Table 5.2.</strong> The entry-point symbol family that marks each layer of the engine software stack, from the execution runtime down to the kernel-driver shim.</p>
+<h2 id="runtime-is-reachable-below-the-framework"><a class="header" href="#runtime-is-reachable-below-the-framework">Runtime is reachable below the framework</a></h2>
+<p>The same execution runtime that the system's own dispatchers use is callable from ordinary user space, below the model framework.
+A caller can compile a network to the engine's program format, open the resulting program library, load a function for execution, bind operand buffers to its ports, encode the operation onto a stream, and submit it.
+No placement planner is in this path, and the operations the compiler accepts require no special entitlement.
+The caller names the engine as the target.</p>
+<h3 id="runtime-surface-and-its-tunable-dictionary"><a class="header" href="#runtime-surface-and-its-tunable-dictionary">Runtime surface and its tunable dictionary</a></h3>
+<p>The execution runtime is a flat C facade over a refcounted C++ core in the <code>E5RT::</code> namespace.
+The binary exports 292 <code>e5rt_</code> entry points, organized into five object families: a compiler and its configuration, program library and the functions inside it, precompiled compute operation, execution stream with its buffer and port objects, and asynchronous event for fences.
+Each family pairs a <code>_create</code> constructor with a <code>_release</code> destructor, and each has a create-options object whose typed get/set accessors are the runtime's tunable dictionary.</p>
+<p>The dictionary spans four objects.
+The compile-time options object (<code>e5rt_e5_compiler_options_</code>) exposes 21 keys: the backend bitmask (<code>compute_device_types_mask</code>, where <code>0x4</code> names the engine), the cache controls <code>force_recompilation</code> and <code>force_fetch_from_cache</code>, the <code>segmenter</code> selection, and a set of backend-preference and experimental toggles.
+A separate compiler-configuration object (<code>e5rt_e5_compiler_config_options_</code>) has the 2 cache keys: <code>cache_bundle_location</code>, the directory the daemon writes the compiled bundle into, and <code>bundle_cache_apfs_purgeable</code>, which marks that bundle reclaimable under storage pressure.
+The per-operation options object (<code>e5rt_precompiled_compute_op_create_options_</code>) contains 14 keys, including <code>operation_name</code>, <code>allocate_intermediate_buffers</code>, the resident-weight path <code>mutable_mil_weight_paths</code>, and a cross-process IOSurface pool binding.
+The execution-stream configuration object has 3 keys: <code>enable_concurrent_sync_execution</code>, <code>enable_low_latency_async_events</code>, and <code>skip_io_fences</code>.
+A neutral all-engine compile sets only a small subset of these: the engine bitmask, <code>force_recompilation</code>, and the <code>"graph"</code> segmenter, leaving every other key at its runtime default.</p>
+<p>The on-disk program cache the daemon writes is keyed by content, not by source filename.
+The runtime assembles a <code>cacheURLIdentifier</code> from a per-segment key computed over each segment's network structure and weight blob containers, combined with the resolved source URL, options dictionary, and platform.
+Two compiles of structurally identical graphs with identical weights and options resolve to the same identifier and hit the cache, while changing any weight, shape, operation, the device mask, or the segmenter changes the key.
+The <code>force_recompilation</code> key bypasses the cache fetch and rewrites the bundle unconditionally, which is the documented inverse of <code>force_fetch_from_cache</code>.</p>
+<h3 id="dispatch-selector-that-splits-the-path"><a class="header" href="#dispatch-selector-that-splits-the-path">Dispatch selector that splits the path</a></h3>
+<p>The split between the daemon and the client described above resolves to specific kernel-driver selectors, measured by read-only tracing of <code>IOConnectCall*Method</code> on this M1.
+Per-inference submit is <code>IOConnectCallAsyncMethod</code> selector 2, the <code>ANE_ProgramSendRequest</code> handler in the H11ANE dispatch table, and the unentitled client issues it directly: a freshly compiled program issued selector 2 exactly once per execute, observed in the client process and never in the daemon.
+The daemon issues only the lifecycle selectors over its own connection during the same compile and prepare, the synchronous selectors 3 through 6 for program destroy, status, instance create with unprepare, and program create.
+The division of labor is precise: the daemon compiles the network and creates, prepares, and destroys the program object over IOKit, while the client submits each inference over selector 2 itself.
+A warm re-execute on an already-submitted program issued no additional <code>IOConnectCall</code> from the client, since the runtime reuses the armed async submit ring and signals the engine without a fresh external method per call.
+This is consistent with the warm-eval cost being firmware round-trip bound rather than dispatch-call bound.</p>
+<h2 id="placement-segmenter-above-the-runtime"><a class="header" href="#placement-segmenter-above-the-runtime">Placement segmenter above the runtime</a></h2>
+<p>The model framework adds one stage the direct route does not have: it decides, per operation, which of the three backends runs it.
+When the framework places a model, it segments the operation graph across the central processor, graphics processor, and engine by solving a shortest path (Dijkstra) over a cost graph with one node per operation-and-backend pair.
+The per-operation cost on each backend comes from a set of learned regression decision trees, several hundred of them, keyed by operation and by backend.
+Two coarse compute and bandwidth anchors order the backends, and the trees supply the calibrated per-operation cost the solver minimizes.
+A fixed launch penalty per segment and a transfer penalty at every backend boundary bias the solution toward fewer and larger engine segments, for the reason given with the cost equation below.
+An operation the engine cannot accept has no engine node in the cost graph, so the minimum-cost path routes around the engine through the central or graphics processor.
+This mechanism drives the framework's automatic fallback, and the direct route skips it by authoring a single all-engine graph.</p>
+<p>A developer can read this placement decision without running inference, through the supported public model-plan API.
+<code>MLComputePlan.load</code> parses a compiled model and reports the segmenter's choice per operation.
+<code>deviceUsage(for:)</code> returns the set of devices that could run an operation and the one device the planner preferred, with a <code>Reason</code> describing why an operation is or is not supported on a device.
+<code>estimatedCost(of:)</code> returns the per-operation cost weight the segmenter compared.
+These are documented at developer.apple.com/documentation/coreml <a href="../references.html#ref-applecoreml">[AppleCoreML]</a>.</p>
+<p>The segmenter is a named pipeline inside the ahead-of-time compiler.
+The compiler canonicalizes the intermediate program for the platform, expands the requested compute-unit mask into a set of backend identifiers, then runs one of three segmenters over the graph.
+Its stages run from eligibility through validity and cost to segmentation (<a href="#tbl-c5-segmenter">table 5.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Stage</th><th>Component</th><th>Role</th></tr></thead><tbody>
+<tr><td>Eligibility</td><td><code>ComputeUnitsToBackends</code></td><td>expands the compute-unit mask into concrete backend identifiers</td></tr>
+<tr><td>Validity</td><td><code>AneValidator</code>, <code>BnnsValidator</code>, <code>MpsGraphValidator</code></td><td>per-backend per-operation legality, one validator per backend</td></tr>
+<tr><td>Cost</td><td><code>EstimatorMILDecisionTree</code>, <code>ConstCostEstimator</code></td><td>the per-operation cost the solver minimizes</td></tr>
+<tr><td>Segmentation</td><td><code>SegmenterCoarse</code>, <code>SegmenterGraph</code>, <code>SegmenterShortestPath</code></td><td>greedy, graph-grouped, or shortest-path placement</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c5-segmenter"></a><strong>Table 5.3.</strong> The named stages of the placement segmenter inside the ahead-of-time compiler.</p>
+<p>The cost the shortest-path segmenter minimizes is the larger of compute and bandwidth time plus penalties.
+The per-operation compute cost is the larger of the compute time and the bandwidth time, drawn from the engine compute rate and bandwidth primitives <code>GetEngineGflopsPerS</code> and <code>GetEngineBwGbPerS</code>.
+The placement adds a fixed launch cost per segment and a transfer cost at each backend boundary.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord"><span class="mord mathrm">cost</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">gflops</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">flops</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm" style="margin-right:0.01389em;">bw</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">bytes</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">launch</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathrm">transfer</span></span></span></span></span></span></p>
+<p>The transfer cost is why the minimum-cost solution favors long single-backend runs: each boundary charges a tensor repack between the engine channel-interleaved fp16 layout and the host layout, so one engine segment is cheaper than several.
+The placement audit trail is itself a queryable compile output: the program library exposes a post-compile analytics dictionary, keyed by <code>selected_backend</code>, <code>backend_support</code>, <code>estimated_runtime</code>, <code>op_type</code>, <code>op_path</code>, and <code>validation_messages</code>, so the chosen backend and predicted runtime for each operation are readable without running inference.</p>
+<h2 id="broker"><a class="header" href="#broker">Broker</a></h2>
+<p>A system daemon mediates access to the engine.
+Only that daemon and its per-user sibling have the kernel gate that opens the device, so every other process reaches the engine through it.
+A client proves itself to the daemon over the interprocess channel, and the daemon performs the privileged device open on the client's behalf, returning a program handle the client then drives.</p>
+<p>The daemon arbitrates across clients.
+There is one physical engine, so concurrent demand resolves by time-division on a single request queue.
+The daemon owns the shared program cache, keyed by a content hash of each compiled network, so a network already compiled by one client is a cache hit for the next.
+It sets a quality-of-service value on every request and adjusts a client's requested queue depth under contention, which keeps one client from depriving another of service.
+A request from a developer-signed program and a request from a system dispatcher arrive at the same broker, and the same queue arbitrates both.</p>
+<p>The daemon is the one process holding the kernel gate, and its interprocess surface is the program-lifecycle protocol every client drives.
+The program-instance method lists the per-instance parameters verbatim in its selector, the residency, power, and statistics arguments among them (<a href="#lst-c5-instance-selectors">listing 5.1</a>).</p>
+<pre><code class="language-objectivec"># the daemon's central program-instance method (recovered selector, NSXPC _ANEDaemonProtocol)
+createProgramInstanceForModel:modelToken:modelFilePath:qos:isPreCompiled:
+  enablePowerSaving:skipPreparePhase:statsMask:memoryPoolID:enableLateLatch:
+  modelIdentityStr:owningPid:cacheUrlIdentifier:aotCacheUrlIdentifier:
+  optOutOfModelMemoryUnwiring:error:
+
+# the weights-streaming variant: one resident base, a thin adapter per call
+createProgramInstanceWithWeights:modelToken:qos:baseModelIdentifier:
+  owningPid:numWeightFiles:error:
+</code></pre>
+<p><a id="lst-c5-instance-selectors"></a><strong>Listing 5.1.</strong> The daemon's program-instantiation selectors, with the per-instance residency, power, and statistics parameters held as named arguments.</p>
+<p>The on-the-wire instance is a C struct the daemon returns to the client, two opaque pointers, two 512-byte name buffers, the input and output port tables, a procedure record, and counters, with its recovered type encoding in <a href="#lst-c5-instance-struct">listing 5.2</a>.</p>
+<pre><code class="language-objectivec"># ANEProgramInstanceStruct (recovered NSXPC type encoding)
+^{ANEProgramInstanceStruct=^v^vQQC^[512c]^Q^{ANEProgramIOInfoStruct}
+  ^{ANEProgramIOInfoStruct}C^[512c]^QC^{ANEProgramProcedureStruct}QIQQcQQiC}
+</code></pre>
+<p><a id="lst-c5-instance-struct"></a><strong>Listing 5.2.</strong> The program-instance struct the daemon returns over the interprocess channel.</p>
+<h2 id="access-control-model"><a class="header" href="#access-control-model">Access-control model</a></h2>
+<p>The device has one user-space entry point.
+The kernel driver denies opening the user client without the entitlement <code>com.apple.ane.iokit-user-access</code>, and exactly two binaries on the system have it: the daemon and its per-user sibling.
+Every other process proves itself to the daemon over the interprocess channel instead, gated by a <code>com.apple.aned.private.*</code> entitlement family that the daemon checks per connection and per method.
+<a href="#tbl-c5-entitlements">Table 5.4</a> gives that entitlement family and what each member authorizes.</p>
+<div class="table-wrapper"><table><thead><tr><th>Entitlement</th><th>What it authorizes</th><th style="text-align: right">Holders</th></tr></thead><tbody>
+<tr><td><code>com.apple.ane.iokit-user-access</code></td><td>the hard kernel gate: privileged device open, compile, cache</td><td style="text-align: right">2</td></tr>
+<tr><td><code>com.apple.aned.private.allow</code></td><td>baseline: compile, load, and instantiate models through the daemon</td><td style="text-align: right">18</td></tr>
+<tr><td><code>com.apple.aned.private.ANEAccess.allow</code></td><td>the inference-client access grant</td><td style="text-align: right">14</td></tr>
+<tr><td><code>com.apple.aned.private.adapterWeight.allow</code></td><td>stream adapter weights onto a shared resident base model</td><td style="text-align: right">5</td></tr>
+<tr><td><code>com.apple.aned.private.processModelShare.allow</code></td><td>share one resident model across processes</td><td style="text-align: right">4</td></tr>
+<tr><td><code>com.apple.aned.private.secondaryANECompilerServiceAccess.allow</code></td><td>use the longer-duration secondary compiler service</td><td style="text-align: right">1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c5-entitlements"></a><strong>Table 5.4.</strong> The entitlement family that gates the engine, with the count of system binaries holding each in this build.</p>
+<p>A privileged subset of 27 binaries also has a sandbox exception for the class <code>H11ANEInDirectPathClient</code>, which lets a latency-sensitive client open the low-latency user client and drive per-inference submission on its own connection rather than round-tripping each inference through the daemon.
+The exception grants no device access by itself: the daemon still performs the privileged open and returns the program handle.
+A developer-signed binary cannot assert the kernel gate, since it names a restricted user-client class that ad-hoc and development signing cannot claim.
+The direct route reaches the engine the same way a sanctioned application does, through the daemon.
+It authors its work at the model and program layer.</p>
+<h2 id="compiler-is-its-own-gated-service"><a class="header" href="#compiler-is-its-own-gated-service">Compiler is its own gated service</a></h2>
+<p>Compilation does not happen in the calling process.
+The service that turns a network into the engine's program format is a separate sandboxed interprocess service, <code>com.apple.ANECompilerService</code>, reached through an <code>NSXPCConnection</code> named for it.
+That service vends a single entry point, the method <code>compileModelAt:csIdentity:sandboxExtension:options:tempDirectory:...:withReply:</code>, and admits a connection only through an entitlement gate.
+The service's <code>listener:shouldAcceptNewConnection:</code> delegate calls <code>valueForEntitlement:</code> on the connection against the string returned by <code>+compilerServiceAccessEntitlement</code>, then logs whether the client has the entitlement or is missing it.</p>
+<p>This is the concrete reason compilation leaves the calling process even for a hand-authored or self-compiled program.
+The service has two entitlements an ordinary process does not: it writes the system-protected compile cache under <code>rootless.storage.ane_model_cache</code>, and it decrypts under <code>coreml.decypt_allowed</code>.
+A caller hands its network to the service and receives the compiled bundle back, the same separation the daemon imposes on device access.</p>
+<p>The service keeps a warm-start cache so a repeat compile of the same network is not re-paid.
+The cache is a nested directory tree of the form <code>cache/com.apple.e5rt.e5bundlecache/&lt;os-build&gt;/&lt;hash&gt;/</code>, keyed by the model hash <code>model.anehash</code>, which is a double SHA-256 over the program.
+A repeat compile of the same program reuses the cached bundle.
+The <code>force_recompilation</code> option defeats the warm start and compiles from scratch.</p>
+<h2 id="entering-the-runtime-below-the-framework"><a class="header" href="#entering-the-runtime-below-the-framework">Entering the runtime below the framework</a></h2>
+<p>A caller that names the engine as the target enters at the execution-runtime layer rather than the model framework, so no placement planner is in the path.
+The runtime compiles a graph to the engine program format, loads it, and dispatches it.</p>
+<p>The neutral workflow builds a graph, compiles it to a chip target, and dispatches, with no segmenter between the graph and the engine.</p>
+<pre><code class="language-c">/* Enter at the execution-runtime layer: compiler -&gt; library -&gt; function -&gt; stream. */
+e5rt_e5_compiler_create_with_config(&amp;compiler, config);            /* the runtime object */
+e5rt_e5_compiler_compile(compiler, model_path, options, &amp;library); /* to the engine format */
+
+/* The program library vends the callable function, below any model framework. */
+e5rt_program_library_retain_program_function(library, fn_name, &amp;function);
+e5rt_precompiled_compute_op_create_options_create_with_program_function(&amp;op_opts, function);
+e5rt_execution_stream_operation_create_precompiled_compute_operation_with_options(&amp;op, op_opts);
+
+/* The execution stream is the runtime's dispatch queue, with no segmenter above it. */
+e5rt_execution_stream_operation_retain_input_port(op, "x", &amp;in_port);
+e5rt_io_port_bind_buffer_object(in_port, in_buf);
+e5rt_execution_stream_create(&amp;stream);
+e5rt_execution_stream_encode_operation(stream, op);
+e5rt_execution_stream_execute_sync(stream);
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-1-machine/04-capability-surface.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-2-reaching/06-dispatch-without-coreml.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-1-machine/04-capability-surface.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-2-reaching/06-dispatch-without-coreml.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "status": "error",
+  "error": "RuntimeError: neural engine backward is not finite",
+  "dataset": "Salesforce/wikitext",
+  "config": "wikitext-2-raw-v1",
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "mlx_peak_bytes": 7160061602,
+  "seconds_wall": 824.860974500014,
+  "energy": {
+    "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+    "scope": "system",
+    "gpu_joules": 5558.090773576119,
+    "gpu_sram_joules": 40.584910808646,
+    "ane_joules": 16.146468680430615,
+    "cpu_joules": 1789.4635288183545,
+    "dram_joules": 1203.8205702393736,
+    "prometheus_gpu_joules": 5547.886226951585,
+    "prometheus_ane_joules": 16.062840523835405,
+    "sample_span_s": 821.0,
+    "gpu_watts_avg": 6.769903500092715,
+    "gpu_sram_watts_avg": 0.04943350890212667,
+    "ane_watts_avg": 0.019666831523057995,
+    "cpu_watts_avg": 2.1796145296204075,
+    "dram_watts_avg": 1.4662857128372395
+  },
+  "mactop_status": "available",
+  "headless_samples": 632,
+  "prometheus_samples": 808,
+  "prometheus_port": 9096,
+  "memory_limit_bytes": 19069665280,
+  "placement": "gpu_ane",
+  "log": "evidence/qwen3-0.6b-curve/2026-10-28T21-38-09/run.log",
+  "figures": [
+    "evidence/qwen3-0.6b-curve/2026-10-28T21-38-09/figures/energy.png",
+    "evidence/qwen3-0.6b-curve/2026-10-28T21-38-09/figures/memory.png"
+  ],
+  "latency": {
+    "median_iteration_ms": null,
+    "median_tokens_per_second": null,
+    "median_validation_s": null,
+    "reports": 0
+  },
+  "run_dir": "evidence/qwen3-0.6b-curve/2026-10-28T21-38-09"
+}

@@ -1,0 +1,67 @@
+batch fit: trying 64
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1537.44it/s]
+╭─ [1mmlx_lm.lora[0m ────────────────────────────────────────────────────────────────╮
+│    model           [1mmlx-community/Qwen3-0.6B-4bit[0m                             │
+│    type            [1mlora · -1 layers · rank 8[0m                                 │
+│    dataset         [1mdata/wikitext-2-raw-v1-curve-64[0m                           │
+│    optimizer       [1madamw · lr 1.0e-04[0m                                        │
+│    batch · iters   [1m64 · 1[0m                                                    │
+│    max seq         [1m512[0m                                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Trainable parameters: 0.847% (5.046M/596.050M)
+  [1miter   train_loss     tok/s     tokens[0m
+     1    [1mval[0m [1m4.414[0m    15.40s
+     1    [1m4.342 ▼[0m    [1m  183[0m      7.2k
+  [1msave[0m  0000001_adapters.safetensors
+[1mtrain[0m ██████████████████████████████ [1m100%[0m · [1m    1[0m/1
+
+batch fit: over at 64
+batch fit: trying 32
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 3877.23it/s]
+╭─ [1mmlx_lm.lora[0m ────────────────────────────────────────────────────────────────╮
+│    model           [1mmlx-community/Qwen3-0.6B-4bit[0m                             │
+│    type            [1mlora · -1 layers · rank 8[0m                                 │
+│    dataset         [1mdata/wikitext-2-raw-v1-curve-64[0m                           │
+│    optimizer       [1madamw · lr 1.0e-04[0m                                        │
+│    batch · iters   [1m32 · 1[0m                                                    │
+│    max seq         [1m512[0m                                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Trainable parameters: 0.847% (5.046M/596.050M)
+  [1miter   train_loss     tok/s     tokens[0m
+     1    [1mval[0m [1m4.172[0m    4.39s
+     1    [1m4.373 ▼[0m    [1m  132[0m      4.5k
+  [1msave[0m  0000001_adapters.safetensors
+[1mtrain[0m ██████████████████████████████ [1m100%[0m · [1m    1[0m/1
+
+batch fit: over at 32
+batch fit: trying 16
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 4383.27it/s]
+╭─ [1mmlx_lm.lora[0m ────────────────────────────────────────────────────────────────╮
+│    model           [1mmlx-community/Qwen3-0.6B-4bit[0m                             │
+│    type            [1mlora · -1 layers · rank 8[0m                                 │
+│    dataset         [1mdata/wikitext-2-raw-v1-curve-64[0m                           │
+│    optimizer       [1madamw · lr 1.0e-04[0m                                        │
+│    batch · iters   [1m16 · 1[0m                                                    │
+│    max seq         [1m512[0m                                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Trainable parameters: 0.847% (5.046M/596.050M)
+  [1miter   train_loss     tok/s     tokens[0m
+     1    [1mval[0m [1m4.086[0m    8.16s
+     1    [1m4.631 ▼[0m    [1m   49[0m      1.1k
+  [1msave[0m  0000001_adapters.safetensors
+[1mtrain[0m ██████████████████████████████ [1m100%[0m · [1m    1[0m/1
+
+batch fit: ok at 16
+batch fit: trying 24
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 5090.86it/s]
+╭─ [1mmlx_lm.lora[0m ────────────────────────────────────────────────────────────────╮
+│    model           [1mmlx-community/Qwen3-0.6B-4bit[0m                             │
+│    type            [1mlora · -1 layers · rank 8[0m                                 │
+│    dataset         [1mdata/wikitext-2-raw-v1-curve-64[0m                           │
+│    optimizer       [1madamw · lr 1.0e-04[0m                                        │
+│    batch · iters   [1m24 · 1[0m                                                    │
+│    max seq         [1m512[0m                                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Trainable parameters: 0.847% (5.046M/596.050M)
+  [1miter   train_loss     tok/s     tokens[0m
+     1    [1mval[0m [1m3.823[0m    7.52s

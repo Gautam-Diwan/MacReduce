@@ -1,0 +1,44 @@
+{
+  "status": "error",
+  "error": "RuntimeError: neural engine cotangent is not finite",
+  "dataset": "Salesforce/wikitext",
+  "config": "wikitext-2-raw-v1",
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "mlx_peak_bytes": 7160126362,
+  "seconds_wall": 899.4214985419821,
+  "energy": {
+    "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+    "scope": "system",
+    "gpu_joules": 5495.92822994244,
+    "gpu_sram_joules": 50.28154178949301,
+    "ane_joules": 19.672708770674237,
+    "cpu_joules": 2239.2550658985488,
+    "dram_joules": 1254.1149370056708,
+    "prometheus_gpu_joules": 5525.67574936443,
+    "prometheus_ane_joules": 19.99301893084206,
+    "sample_span_s": 894.0,
+    "gpu_watts_avg": 6.147570727004966,
+    "gpu_sram_watts_avg": 0.05624333533500337,
+    "ane_watts_avg": 0.022005267081291094,
+    "cpu_watts_avg": 2.5047595815420007,
+    "dram_watts_avg": 1.4028131286416898
+  },
+  "mactop_status": "available",
+  "headless_samples": 718,
+  "prometheus_samples": 878,
+  "prometheus_port": 9096,
+  "memory_limit_bytes": 19069665280,
+  "placement": "gpu_ane",
+  "log": "evidence/qwen3-0.6b-curve/2026-10-28T22-12-30/run.log",
+  "figures": [
+    "evidence/qwen3-0.6b-curve/2026-10-28T22-12-30/figures/energy.png",
+    "evidence/qwen3-0.6b-curve/2026-10-28T22-12-30/figures/memory.png"
+  ],
+  "latency": {
+    "median_iteration_ms": null,
+    "median_tokens_per_second": null,
+    "median_validation_s": null,
+    "reports": 0
+  },
+  "run_dir": "evidence/qwen3-0.6b-curve/2026-10-28T22-12-30"
+}

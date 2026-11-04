@@ -1,0 +1,448 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>28. Address translation and the DART - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-8-system-internals/28-dart-iommu.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="28-address-translation-and-the-dart"><a class="header" href="#28-address-translation-and-the-dart">28. Address translation and the DART</a></h1>
+<blockquote>
+<p>The engine reads and writes DRAM through its own IOMMU, the DART.
+It translates a device address into a physical page at a 16 KB granule across a 3.5 GiB aperture.
+A normal engine page is one 64-bit leaf word, the physical frame located unshifted with bit 63 set: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.07778em;">leaf</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">phys</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord">∣</span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">0x8000000000000000</span></span></span></span></span>.
+Program-create re-bases each host-mapped buffer into a firmware aperture with high half <code>0x1bc4</code>, a second translation with no constant offset.
+The fault-capture registers cannot be read on the M1, because every function on the fault path ends in a kernel panic.</p>
+</blockquote>
+<p>Chapter <a href="../part-6-silicon/21-memory-hierarchy.html">21</a> covered the on-chip working set: the pool the engine reads and writes once data is resident.
+The off-chip step that puts data there is the subject here.
+The engine reads its inputs and writes its outputs directly from DRAM through an input-output memory management unit, the DART, which translates a device-visible address into a physical DRAM page before any DMA engine touches memory.</p>
+<h2 id="dart-and-its-address-space"><a class="header" href="#dart-and-its-address-space">DART and its address space</a></h2>
+<p>The page granule, aperture base and size, and active stream set come straight off the live device tree (<a href="#tbl-c28-address-space">Table 28.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Property</th><th>Value</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>page granule</td><td><code>0x4000</code> = 16384 = 16 KB</td><td>the IOVA page; every buffer maps at this granularity</td></tr>
+<tr><td>aperture base</td><td><code>0x0</code></td><td>IOVA window starts at zero</td></tr>
+<tr><td>aperture size</td><td><code>0xE0000000</code> = 3.5 GiB</td><td>the managed IOVA span, <code>0x0</code> to <code>0xE0000000</code></td></tr>
+<tr><td>active streams</td><td><code>{0, 1, 2}</code></td><td>the engine streams sharing one translation-table base; client isolation is separate, per-client contexts <code>mapper-ane0-iso1</code> through <code>iso7</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-address-space"></a><strong>Table 28.1.</strong> The page granule, aperture base and size, and active stream set, read from the live device tree.</p>
+<p>A host tensor buffer never reaches the engine as a host virtual address.
+The DART maps it into the engine's own address space, the device virtual address or IOVA, and the DMA engines issue reads and writes against IOVAs.
+The DART contains the page tables that translate each IOVA back to a physical DRAM page, so a buffer physically scattered across DRAM appears IOVA-contiguous to the engine.
+The DART instance serving the engine on the M1 is a single controller bound to the engine stream set, and its managed address window and granule come from the live device tree.
+The controller is the device-tree node <code>dart-ane0</code> at physical base <code>0x85800000</code>, bound to the t6000-generation driver class, not the t8020 class.
+It has four 16 KB register windows at <code>0x85800000</code>, <code>0x85810000</code>, <code>0x85820000</code>, and <code>0x85804000</code>.
+<a href="#tbl-c28-dart-props">Table 28.2</a> gives the live <code>dart-ane0</code> device-tree properties read from the controller node.</p>
+<div class="table-wrapper"><table><thead><tr><th>Property</th><th>Raw</th><th>Decoded</th></tr></thead><tbody>
+<tr><td>compatible</td><td><code>dart,t6000</code></td><td>the t6000-generation controller</td></tr>
+<tr><td>page size</td><td><code>0x00004000</code></td><td>16 KB IOVA page</td></tr>
+<tr><td>stream-ID enable bitmap</td><td><code>0x0000a001</code></td><td>bits 0, 13, 15</td></tr>
+<tr><td>bypass bitmap</td><td><code>0x0000a000</code></td><td>bits 13, 15</td></tr>
+<tr><td>stream count</td><td><code>0x10</code></td><td>16 stream slots</td></tr>
+<tr><td>options</td><td><code>0x25</code></td><td>low byte of the live config word <code>0x80000025</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-dart-props"></a><strong>Table 28.2.</strong> The live <code>dart-ane0</code> device-tree properties read from the controller node.</p>
+<p>The host-side translation object is a three-level mapper chain: the controller driver owns a mapper nub, which owns the translation mapper the engine driver is handed.
+That mapper has the highest retain count of any mapper on the system, consistent with its role as the live tensor-mapping object.
+The page granule is 16 KB, not the 4 KB of the host page tables.
+The firmware validates the same value independently and rejects a wrong one with <code>MMU invalid page size: %x</code>, so the host maps and wires every engine DMA buffer at 16 KB granularity.
+A sub-page buffer still consumes a full 16 KB IOVA page.
+This 16 KB page is the coarsest of the three alignment scales on the M1: the 16-byte DMA-width granule of chapter <a href="../part-6-silicon/21-memory-hierarchy.html">21</a> is below a 256-byte segment alignment, which is below the 16 KB DART page.</p>
+<p>A two-level page-table walk, the L2 and L3 tables under the per-stream translation-table base, over the 16 KB page covers the 3.5 GiB span.
+The per-stream translation-table base is in the controller's translation-table base register, measured live at <code>0x90022320</code> for the active streams: bit 31 marks the base valid, and the remaining field shifts left by 12 to the physical table base <code>0x10022320000</code>.
+Streams 0, 1, and 2 share one table base, a single table for the active engine streams.
+That base is in the same DRAM band as the measured leaf physical frames, so it points at the controller's own page-table memory.</p>
+<p>Client isolation is separate from this engine-stream table.
+The DART gives each client its own isolation context, the eight address-translation mappers <code>mapper-ane0-iso1</code> through <code>iso7</code> plus a base in the live IORegistry, so each client's buffers map into its own translation domain.
+The secure exclave receives these contexts as the capabilities <code>ANEIsoID1</code> through <code>ID7</code>, confining each client's DMA to its own domain, the address-translation half of the exclave capability model in chapter <a href="32-security.html">32</a>.</p>
+<p>The controller register layout is recovered from its capture routine as byte offsets into a stream's 16 KB register window (<a href="#tbl-c28-reg-offsets">Table 28.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Register</th></tr></thead><tbody>
+<tr><td><code>+0x40</code></td><td>error status: fault flag at bit 31, plus stream id and fault code</td></tr>
+<tr><td><code>+0x50</code>, <code>+0x54</code></td><td>error address low and high, the faulting device address</td></tr>
+<tr><td><code>+0xfc</code></td><td>enabled-streams global bitmap</td></tr>
+<tr><td><code>+0x100</code> + 4·sid</td><td>per-stream translation-control array</td></tr>
+<tr><td><code>+0x200</code> + 4·idx</td><td>per-stream translation-table base array</td></tr>
+<tr><td><code>+0x1000</code>, <code>+0x100c</code></td><td>translation-buffer control and status</td></tr>
+<tr><td><code>+0x1020</code>, <code>+0x1028</code></td><td>translation-buffer error registers</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-reg-offsets"></a><strong>Table 28.3.</strong> The controller register-offset map, recovered from the register-capture routine.</p>
+<h2 id="leaf-page-table-entry"><a class="header" href="#leaf-page-table-entry">Leaf page-table entry</a></h2>
+<p>The leaf entry that the DART stores per page is one 64-bit word.
+For a normal engine data page it is the physical frame with the valid bit set, given by</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.07778em;">leaf</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">phys</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord">∣</span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">0x8000000000000000</span></span><span class="mord">.</span></span></span></span></span></p>
+<p>Its bit fields are in <a href="#tbl-c28-leaf-entry">Table 28.4</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>bits</th><th>field</th><th>value</th><th>note</th></tr></thead><tbody>
+<tr><td>63</td><td>valid / active</td><td><code>1</code> on map, <code>0</code> on unmap</td><td>the only flag set for an engine page</td></tr>
+<tr><td>62</td><td>aux protection class</td><td><code>0</code></td><td>set only when prot bit 3 is set; never reached on the engine path</td></tr>
+<tr><td>60</td><td>aux protection class</td><td><code>0</code></td><td>set only when prot bit 4 is set; never reached</td></tr>
+<tr><td>59</td><td>aux protection class</td><td><code>0</code></td><td>set only when prot bit 5 is set; never reached</td></tr>
+<tr><td>46:14</td><td>physical frame</td><td>full physical address, unshifted</td><td>low 14 bits zero at the 16 KB granule</td></tr>
+<tr><td>13:0</td><td>within-page offset</td><td><code>0</code></td><td>always zero at page granularity</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-leaf-entry"></a><strong>Table 28.4.</strong> The bit-field layout of the 64-bit leaf page-table entry the DART stores per page.</p>
+<p>The physical frame is the full 16 KB-aligned physical address located unshifted, so its low 14 bits are zero and the frame and the valid bit do not overlap.</p>
+<p>The word keeps the same shape for every live engine usage type.
+The mapping software names two software protection classes, read-write for inputs, weights, and intermediates, and a device-write class for outputs, yet both collapse to the identical leaf template of bit 63 alone.
+The DART encodes access permission in the per-stream translation-control configuration.
+Bits 62, 60, and 59 are aux-protection classes that the engine driver never sets, because its direction-to-protection mapper produces only the values <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">}</span></span></span></span>, whose bits 3, 4, and 5 are always zero.
+Across 26178 measured leaf-map events none of those three bits was ever set.</p>
+<p>The mapping path that produces this word stacks two translations.
+The host pins the physical pages, then fills the leaf table by accumulating per-page segments and flushing them through the page-protection-layer write.
+That write uses a 40-byte per-page segment structure, from which the leaf word is assembled per page (<a href="#lst-c28-ppl-seg">Listing 28.1</a>).</p>
+<pre><code class="language-c">struct ppl_iommu_seg {   /* 0x28 bytes, measured layout */
+    uint64_t iova;       /* +0x00  device virtual address      */
+    uint64_t phys;       /* +0x08  physical DRAM page           */
+    uint64_t size;       /* +0x10  0x4000 (16 KB granule)       */
+    uint64_t prot;       /* +0x18  3 = RW, 1 = device-write     */
+    uint64_t reserved;   /* +0x20  0                            */
+};
+/* assembled leaf word, per page i:  leaf[i] = seg[i].phys | template */
+/* template = 0x8000000000000000 (bit 63) on map, 0x0 on unmap        */
+</code></pre>
+<p><a id="lst-c28-ppl-seg"></a><strong>Listing 28.1.</strong> The per-page segment structure passed into the page-protection-layer write and how the leaf word is assembled from it.</p>
+<p>The leaf table itself is page-protection-layer memory.
+The word above is the value the kernel hands to that layer to store, captured at the store register on a live serialized dispatch, not a read-back of the stored page.</p>
+<p>The host maps each buffer under a usage code that names its role, held in the segment structure and recovered from the map call sites, with the codes and their protection classes in <a href="#tbl-c28-usage-codes">Table 28.5</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Code</th><th>Role</th><th>Protection class</th></tr></thead><tbody>
+<tr><td>1</td><td>client input tensor</td><td>read-write (3) on the M1</td></tr>
+<tr><td>2</td><td>client output tensor</td><td>device-write (1)</td></tr>
+<tr><td>7</td><td>intermediate buffer</td><td>read-write (3)</td></tr>
+<tr><td>8</td><td>kernel and weights</td><td>read-write (3)</td></tr>
+<tr><td>9</td><td>program text, task descriptors, working set</td><td>read-write (3)</td></tr>
+<tr><td>11</td><td>program constants and scratch</td><td>read-write (3)</td></tr>
+<tr><td><code>0x1019</code> = 4121</td><td>firmware power-on shared surface</td><td>firmware class</td></tr>
+<tr><td><code>0x101a</code> = 4122</td><td>firmware resident heap</td><td>firmware class</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-usage-codes"></a><strong>Table 28.5.</strong> The buffer-role usage codes and the protection class each maps under.</p>
+<p>A direction-to-protection mapper produces only the values 1, 2, and 3: a device-write output is class 1, a read-only input would be class 2, and read-write or no-direction is class 3.
+On the M1 a configuration bit in the controller collapses the would-be read-only class 2 into read-write 3, so the controller maps read-only inputs read-write and enforces input protection upstream of the leaf word.
+The high <code>0x1000</code> bit on the firmware codes flags the firmware-owned shared class, distinct from the per-program client and kernel buffers.</p>
+<h2 id="host-to-firmware-rebase-boundary"><a class="header" href="#host-to-firmware-rebase-boundary">Host-to-firmware rebase boundary</a></h2>
+<p>The host-side translation resolves to a physical address for every buffer.
+For a single matmul-with-activation load, every host-programmed buffer resolves to its named buffer role: input tensor, output tensor, weights, program text, constants, intermediate, working set, and two firmware shared surfaces.
+<a href="#tbl-c28-nine-buffers">Table 28.6</a> shows the nine buffers of that load, each with its usage code.</p>
+<div class="table-wrapper"><table><thead><tr><th>Named buffer</th><th>Usage</th></tr></thead><tbody>
+<tr><td>input tensor</td><td>1</td></tr>
+<tr><td>output tensor</td><td>2</td></tr>
+<tr><td>weights</td><td>8</td></tr>
+<tr><td>program text</td><td>9</td></tr>
+<tr><td>constants</td><td>11</td></tr>
+<tr><td>intermediate</td><td>7</td></tr>
+<tr><td>working set</td><td>9</td></tr>
+<tr><td>firmware shared surface</td><td>4121</td></tr>
+<tr><td>firmware resident heap</td><td>4122</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-nine-buffers"></a><strong>Table 28.6.</strong> The nine buffers of one matmul-with-activation load, each shown with its usage code.</p>
+<p>An in-place operation maps two distinct device addresses onto one physical page, a single shared memory descriptor that the runtime reads as input and overwrites as output.
+The physical pages are scattered across the DRAM band and are not physically contiguous: the page table is what makes each buffer appear contiguous to the engine.</p>
+<p>One further translation is past the host boundary.
+The values the engine reads from its instruction stream are not host IOVAs.
+At program-create the firmware re-bases each host-mapped buffer into its own resident aperture and patches that rebased address into the engine registers, so the engine-register operand values are in a firmware window with high half <code>0x1bc4</code>, shown in <a href="#lst-c28-rebase">Listing 28.2</a>.</p>
+<pre><code class="language-text">host IOVA band     --&gt;    firmware DRAM-tile aperture     (no constant host-side offset)
+</code></pre>
+<p><a id="lst-c28-rebase"></a><strong>Listing 28.2.</strong> The firmware rebase from the host device-address band into the resident firmware aperture.</p>
+<p>The host IOVA and the firmware-aperture address are unequal and have no constant offset between them, so the rebase is a second translation.
+The bridge that establishes it runs once at program-create and is cached.
+On the cached dispatch path the host never re-emits the host-to-firmware pair, so the firmware rebase is the only translation below the host boundary there.</p>
+<p>One load spans three address spaces, recovered from the loaded program text and the page-table fill and named in <a href="#tbl-c28-address-spaces">Table 28.7</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Space</th><th>Address space</th><th>What it holds</th></tr></thead><tbody>
+<tr><td>A</td><td>Host IOVA</td><td>host page table, fully resolved to physical</td></tr>
+<tr><td>B</td><td>Engine-register</td><td>where the firmware writes the DMA-engine bases</td></tr>
+<tr><td>C</td><td>DRAM-tile aperture</td><td>what streams: the weight and data tiles</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-address-spaces"></a><strong>Table 28.7.</strong> The three coexisting address spaces for one load: the host device addresses, engine-register aperture, and firmware DRAM-tile aperture.</p>
+<p>The program text is a list of 44-byte register-write records, each pairing an engine-register address in space B with two DRAM-tile operand values in space C.
+The engine-register address selects which data-movement engine to re-base: the weight-streaming sources, input-tile reader, and output-tile writer.
+The operand values are the high half <code>0x1bc4</code> of space C, the firmware-resident rebase of the host buffers, which is why a naive comparison of raw register addresses across loads fails: the aperture base moves with each program load.</p>
+<h3 id="firmware-rebase-arithmetic"><a class="header" href="#firmware-rebase-arithmetic">Firmware rebase arithmetic</a></h3>
+<p>The rebase that produces space C from a host IOVA is a pure linear translation recovered from the firmware itself.
+The firmware validated-translate routine reads the descriptor IOVA, range-checks it against the mapped region, then computes the runtime address as</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6679em;"></span><span class="mord"><span class="mord mathrm">runtime</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">mappedBase</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathrm">IOVA</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">dvaBase</span></span><span class="mclose">)</span><span class="mord">.</span></span></span></span></span></p>
+<p>There is one subtract of the IOVA-region base and one add of the firmware aperture base.
+There is no shift, no mask, and no page rounding, which is why the host IOVA and the firmware-aperture address have no constant offset: the offset is the difference of two independent region bases that each move per load.</p>
+<p>The three runtime quantities the formula needs are fields of the firmware aperture-config object at <code>engine+0xa000</code> (<a href="#tbl-c28-aperture-config">Table 28.8</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>+0xb98</code></td><td><code>dvaBase</code></td><td>host / DART IOVA region base</td></tr>
+<tr><td><code>+0xba0</code></td><td><code>regionSize</code></td><td>mapped region size</td></tr>
+<tr><td><code>+0xba8</code></td><td><code>mappedBase</code></td><td>firmware runtime aperture base, the rebase target base</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-aperture-config"></a><strong>Table 28.8.</strong> The firmware aperture-config fields at <code>engine+0xa000</code> that drive the rebase, populated at buffer-map time and absent from the firmware image.</p>
+<p>These three are firmware-runtime state set at buffer-map time; the image has only the arithmetic and the field offsets.
+The firmware then writes the rebased value into the engine DMA bar registers at <code>0x285c25020 + engine*0x148 + barId*4</code>, where <code>engine*0x148</code> is the per-engine MMIO stride and <code>barId*4</code> selects the word-indexed bar register.
+Only the low 32 bits of the rebased address reach this MMIO path; a per-bar config flag gates wider bars onto a separate software descriptor table.
+Both the rebase tail and the register-target prologue were emulated under unicorn and reproduced the formula and the <code>0x285c25020 + engine*0x148</code> register address exactly.</p>
+<p>The firmware also clamps every address it programs into the DMA engines to a 32-bit ceiling, below the 3.5 GiB aperture.
+Each device address the engine touches, text, weights, descriptors, intermediate, output, and chained buffers, must satisfy <code>addr &gt;&gt; 32 == 0</code>, asserted per buffer in the firmware.
+The host allocator thus hands out only sub-4-GiB IOVAs, and the engine operates in the bottom 3.5 GiB of its address space.</p>
+<p>An engine buffer is governed by three distinct alignment scales, each coarser than the last, collected in <a href="#tbl-c28-alignment">Table 28.9</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Scale</th><th>Value</th><th>What it governs</th></tr></thead><tbody>
+<tr><td>DMA width granule</td><td>16 B</td><td>the data-movement quantum</td></tr>
+<tr><td>segment alignment</td><td>256 B</td><td>program-text and segment packing</td></tr>
+<tr><td>page granule</td><td>16 KB</td><td>the device-address page, allocation and wiring unit</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-alignment"></a><strong>Table 28.9.</strong> The three alignment scales on the M1, from the finest DMA width granule to the coarsest page granule.</p>
+<p>The host may pre-map a buffer before the inference that uses it, through a pre-map command that establishes its device-address mapping ahead of the hot path.
+The firmware keeps explicit buffer pools, tagging each mapped buffer with a pool identifier, and runs a buffer-recycle state machine that reuses output buffers across chained calls.
+A per-process pool tracks outstanding requests with an in-flight count capped at 127 per request.</p>
+<p>Under device-address pressure the kernel applies a least-recently-used eviction policy over its mappings, scoring each with <code>getDartBufferFreeUpScore</code> and freeing through the <code>FreeUpDart*</code> family.
+A long-running process that maps more than the address window has room for thus loses its coldest mappings; its maps do not fail.</p>
+<h2 id="fault-capture-registers"><a class="header" href="#fault-capture-registers">Fault-capture registers</a></h2>
+<p>The DART captures a translation or protection fault into a single-shot register block: an error-status word, the faulting device address split low and high, and a translation-buffer status word (<a href="#tbl-c28-fault-registers">Table 28.10</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>register</th><th>device offset</th><th>field</th></tr></thead><tbody>
+<tr><td>error / status</td><td><code>+0x40</code></td><td>fault flag at bit 31, plus stream id and fault code</td></tr>
+<tr><td>error address low</td><td><code>+0x50</code></td><td>faulting device address, low half</td></tr>
+<tr><td>error address high</td><td><code>+0x54</code></td><td>faulting device address, high half</td></tr>
+<tr><td>translation-buffer status</td><td><code>+0x100c</code></td><td>busy / error status</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-fault-registers"></a><strong>Table 28.10.</strong> The DART fault-capture register block, giving each register device offset and the field it holds.</p>
+<p>These registers cannot be read safely on the M1.
+The capture routine writes the block into a DRAM snapshot only on the fault path, and on this controller that path is unconditionally a kernel panic.
+Every function on the fault path ends in a direct call to the kernel panic routine, and control flow reaches it: the driver implements a DART fault as a <code>REQUIRE(...)</code> assertion, which panics the machine rather than returning the captured registers.
+A read-only probe that reads the snapshot at the function boundary is built and validated against the disassembly, but it cannot fire without a fault, and any fault panics the box.
+The faulting-address and status values are thus stated here as the structure of the block, not as measured values, since obtaining them on this hardware would require panicking the machine.
+The register layout above is recovered from the capture routine; the field decode of the words a contained fault would return follows the published controller field layout.</p>
+<h3 id="iodarterrorinfo-fault-descriptor"><a class="header" href="#iodarterrorinfo-fault-descriptor"><code>IODARTErrorInfo</code> fault descriptor</a></h3>
+<p>Above the hardware DART-side capture is a software fault descriptor, <code>IODARTErrorInfo</code>, that the kernel <code>t6000dart</code> core constructs from the DART fault MMIO and hands to each registered consumer.
+This descriptor is the structure the driver fault callback reads and logs, and it is a kernel-wide ABI: the sibling DART consumers <code>AppleAVD</code> and <code>AVE_DART</code> read the identical layout at the identical offsets, which confirms it is not an engine-private struct.
+Most fields are object pointers whose stringifier the callback invokes; <a href="#tbl-c28-errorinfo">Table 28.11</a> gives the byte offsets into the descriptor.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Type</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>+0x00</code></td><td><code>Type</code></td><td>string</td><td>fault type, also the event-id header</td></tr>
+<tr><td><code>+0x08</code></td><td><code>HwClass</code></td><td>string</td><td>hardware fault class</td></tr>
+<tr><td><code>+0x10</code></td><td><code>HwError</code></td><td>string</td><td>hardware error code</td></tr>
+<tr><td><code>+0x18</code></td><td><code>HwStatus</code></td><td><code>u32</code></td><td>raw DART fault-status word</td></tr>
+<tr><td><code>+0x20</code></td><td><code>IsWrite</code></td><td>bool</td><td><code>0</code> read fault, <code>1</code> write fault</td></tr>
+<tr><td><code>+0x28</code></td><td><code>SID</code></td><td><code>u32</code></td><td>DART stream id of the faulting agent</td></tr>
+<tr><td><code>+0x30</code></td><td><code>Address</code></td><td><code>u32</code></td><td>faulting IOVA</td></tr>
+<tr><td><code>+0x40</code></td><td><code>TTBRIndex</code></td><td><code>u32</code></td><td>translation-table base index</td></tr>
+<tr><td><code>+0x50</code></td><td><code>L2Index</code></td><td><code>u32</code></td><td>page-table walk L2 index</td></tr>
+<tr><td><code>+0x58</code></td><td><code>L3Index</code></td><td><code>u32</code></td><td>page-table walk L3 index</td></tr>
+<tr><td><code>+0x90</code></td><td><code>AXI_ID[0..3]</code></td><td>4 × 8-byte slot</td><td>AXI master / transaction ids, each printed as a 32-bit value</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c28-errorinfo"></a><strong>Table 28.11.</strong> The <code>IODARTErrorInfo</code> software fault descriptor, the shared kernel ABI the <code>t6000dart</code> core hands to its registered fault consumers.</p>
+<p>The four slots at <code>+0x90</code> are the <code>AXI_ID[0..3]</code> array, the four fault descriptors a prior decode reported.
+What localizes a fault is the walk-index triple, <code>TTBRIndex</code>, <code>L2Index</code>, and <code>L3Index</code>, which names the failing page-table entry; the remaining scalars are the taxonomy, the faulting page and stream, and the read-write bit.</p>
+<p>One register the callback reads is not part of the descriptor: it reads an engine status word directly off its own device object at <code>[engine+0xe028]</code>.
+The callback treats the fault as benign and returns early when <code>(status | 0x80) == 0xa0</code>, that is when the low seven bits equal <code>0x20</code> and bit 7 is a don't-care.
+Any other value is a real fault.
+The same word gates the engine clock elsewhere in the driver, where <code>0xa0</code> is the powered-idle state.</p>
+<p>The ANE kext does not raise the panic.
+The kext fault path returns and, on a real fault, sets a sticky latch, dumps the shared-memory allocation table and firmware debug state, then parks for 250 ms awaiting external recovery.
+The machine-halting panic is in the kernel <code>t6000dart</code> core, where the mapping and page-table-walk fault detection is a <code>REQUIRE</code> assertion that calls <code>panic()</code> directly.
+That substrate panic fires before, or instead of, the kext recovery park.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-8-system-internals/27-kernel-driver.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-8-system-internals/29-firmware.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-8-system-internals/27-kernel-driver.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-8-system-internals/29-firmware.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

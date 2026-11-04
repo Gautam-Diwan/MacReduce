@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>30. Host-to-firmware command protocol - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-8-system-internals/30-csne-protocol.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="30-host-to-firmware-command-protocol"><a class="header" href="#30-host-to-firmware-command-protocol">30. Host-to-firmware command protocol</a></h1>
+<blockquote>
+<p>The host drives the engine with one message protocol over a shared mailbox.
+A fixed <code>sCSneControllerCmdHdr</code> header names a program, process, and procedure, and a command body follows.
+The dispatched command space on the M1 is 93 identifiers, <code>0x00</code> through <code>0x5c</code>, indexed by <code>eCSneCmdId</code>, with <code>0xFFFFFFFF</code> reserved as the invalid sentinel.
+A submission posts to a bound ring endpoint.
+The controller validates it, queues it by priority, runs it, and returns completion as a firmware-to-host notification in the same identifier space.</p>
+</blockquote>
+<p>The in-package controller is a real-time-kernel firmware image, and the host communicates with it through a ring-buffer endpoint with a single command vocabulary, <code>CSNE_CMD_*</code>, the controller-side neural-engine command set.
+This chapter covers the wire protocol between the host-side execution model of chapter <a href="../part-1-machine/02-execution-model.html">2</a> and the program file layers of chapter <a href="../part-7-toolchain/23-program-format.html">23</a>.</p>
+<h2 id="command-header"><a class="header" href="#command-header">Command header</a></h2>
+<p><code>sCSneControllerCmdHdr</code> prefixes every ring message with six fields that name the command and bind it to a loaded program (<a href="#tbl-c30-cmd-header">Table 30.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>Offset</th><th>Width</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>id</code></td><td><code>0x00</code></td><td><code>u32</code></td><td>the <code>eCSneCmdId</code> selector, logged as <code>%#04x</code></td></tr>
+<tr><td><code>size</code></td><td><code>0x04</code></td><td><code>u32</code></td><td>byte length of the command body that follows</td></tr>
+<tr><td><code>priority</code></td><td><code>0x08</code></td><td><code>u32</code></td><td>scheduling band, <code>0..7</code></td></tr>
+<tr><td><code>programId</code></td><td><code>0x0c</code></td><td><code>i32</code></td><td>loaded-program slot, <code>-1</code> when invalid</td></tr>
+<tr><td><code>processId</code></td><td><code>0x10</code></td><td><code>i32</code></td><td>per-program process instance, <code>-1</code> when none</td></tr>
+<tr><td><code>procedureId</code></td><td><code>0x14</code></td><td><code>u32</code></td><td>index into the program's procedure table</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c30-cmd-header"></a><strong>Table 30.1.</strong> The six fields of the command header.</p>
+<p>The dispatcher validates the full message length before reading the body: <code>maxCmdBufSize &gt;= sizeof(*pMsg) + pCmdHdr-&gt;size</code>.
+The byte offsets follow the field order under a packed 32-bit layout, and the field presence and widths are read from the firmware's assert and log format strings.
+The <code>priority</code> field has two scheduling classes: values <code>0</code> and <code>1</code> are the privileged realtime band and values <code>2</code> through <code>7</code> are the normal queue.
+These are encoded by the firmware checks <code>(priority &gt;= 0 &amp;&amp; priority &lt;= 1) || (priority &gt;= 2 &amp;&amp; priority &lt;= 7)</code> and the normal-only <code>(priority &gt;= 2 &amp;&amp; priority &lt;= 7)</code>, under the full-range bound <code>fwPriority &lt; 8</code>.
+The signed <code>programId</code> and <code>processId</code> use <code>-1</code>, which reads as <code>0xFFFFFFFF</code>, as the unbound-slot marker.
+The firmware resolves the pair against <code>progProcInfo[builtinProgramId]</code> with the fields <code>.valid</code>, <code>.progId</code>, and <code>.procId</code>, under <code>builtinProgramId &lt; maxProgramServerSupported</code> and <code>id &lt; CAneBuiltInNetworkId::ANE_NET_TOT</code>.
+The resident cache-request commands prepend one further field, an opaque 64-bit <code>cacheHandler</code> logged as <code>cacheHandler: 0x%llx</code>, naming a long-lived request object.</p>
+<p>The scheduler maps the eight priority levels onto two admitted classes (<a href="#tbl-c30-priority">Table 30.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Level</th><th>Class</th><th>Firmware gate</th></tr></thead><tbody>
+<tr><td><code>0</code>, <code>1</code></td><td>high, realtime</td><td><code>(priority &gt;= 0 &amp;&amp; priority &lt;= 1)</code>, separately admitted</td></tr>
+<tr><td><code>2</code> through <code>7</code></td><td>normal queue</td><td><code>(priority &gt;= 2 &amp;&amp; priority &lt;= 7)</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c30-priority"></a><strong>Table 30.2.</strong> The eight priority levels and the two scheduling classes they map onto.</p>
+<p>The full-range bound is <code>fwPriority &lt; 8</code>, with <code>maxPriorityNbr &lt;= 8</code>, and a submission is queued under the scheduler key <code>(userId, jobId, fwPriority, hwqId, tqId, queueId)</code>, where <code>queueId &lt; priorityQCount</code> selects the schedule-info slot.</p>
+<h2 id="command-set"><a class="header" href="#command-set">Command set</a></h2>
+<p>The dispatched space is 93 entries, identifiers <code>0x00</code> through <code>0x5c</code>.
+The firmware enumerates them in one contiguous, ordered string table, <code>CAneControllerStringsH11</code>, which begins at firmware file offset <code>0xa83b4</code> and runs sequentially.
+The command logger indexes that table by identifier to render each <code>CMD = %#04x [%s]</code> log line.
+The dispatched identifiers group into subsystems.
+Lifecycle and power bring the controller and engine up and down, property reads and writes config and registers, and stats drives printing, profiling, and tracing.
+The rest bind and feed the engine: ipc binds endpoints, buffer configures and recycles the channel pool, and the program, execution, cache, and secure families carry the inference path itself.
+The complete set in numeric-identifier order, with each command's direction, subsystem, and recovered request struct, is in <a href="../appendices/c-decoded-tables.html#tbl-apc-command-table">Table C.15</a>.</p>
+<p>Most identifiers are host-to-firmware requests; fourteen in the same space are firmware-to-host notifications, and one, <code>BACK_CHANNEL_RPC</code> at <code>0x5b</code>, flows in both directions.
+The sentinel <code>ECSneCmdId_Invalid</code>, value <code>0xFFFFFFFF</code>, is the no-command marker and has no table entry.
+Two further strings the firmware contains are not dispatched identifiers: <code>CSNE_CMD_START</code> is a standalone log string with no table slot, and <code>CSNE_CMD_IPC_ENDPOINT_TYPE_DATA_CHAINING</code> is an endpoint-type enum value rather than a command.</p>
+<h2 id="command-lifecycle"><a class="header" href="#command-lifecycle">Command lifecycle</a></h2>
+<p>A submission moves through four stages: the host posts, the controller picks it up, executes it, and notifies completion (<a href="#fig-c30-lifecycle">Figure 30.1</a>).</p>
+<figure id="fig-c30-lifecycle">
+<pre class="mermaid">
+sequenceDiagram
+    participant H as Host
+    participant C as Engine controller
+    participant S as Engine
+    H->>C: post command<br/>(program plus operands),<br/>ring the doorbell
+    C->>S: walk the task-descriptor graph
+    S-->>C: segments complete
+    C-->>H: completion notification
+</pre>
+<figcaption><strong>Figure 30.1.</strong> A submission moving between the host, controller, and engine.</figcaption>
+</figure>
+<p>The host posts by writing the header and body into the ring-buffer slot of a bound endpoint and signalling the controller.
+The host must bind the endpoint first with <code>CSNE_CMD_IPC_ENDPOINT_SET</code>, and the execution-loop endpoint is required to be the data-chaining type: the firmware asserts <code>endPointId == CSNE_CMD_IPC_ENDPOINT_TYPE_DATA_CHAINING</code>.
+The flag <code>ipcEndpointSetDone</code> guards endpoint state, false before the bind and true after, so the firmware rejects a submission on an unbound endpoint before any work begins.</p>
+<p>The controller picks the message off the ring and dispatches on <code>id</code>.
+For a procedure call it validates the named procedure against the loaded program, <code>procedureId &lt; pProg-&gt;pProgram-&gt;procNbr</code>, and resolves the content type through <code>getProcedureCallType(programId, procedureId)</code>, which must fall in the admitted set or the firmware rejects the call with <code>getProcedureCallType(): invalid procedureId=%d, tot=%d</code>.
+The validated call enters the priority queue keyed by <code>(userId, jobId, fwPriority, hwqId, tqId, queueId)</code>, and a full queue is reported by <code>[isHWReady] priority queue is full!</code>.
+The controller drops a submission whose target program is not running, logged for the inference path as <code>CSNE_CMD_INFERENCE_CALL dropped. prog %d process %d not running.</code></p>
+<p>Completion and asynchronous status return as firmware-to-host notifications that reuse the command identifier space: a per-program event as <code>CSNE_CMD_PROGRAM_EVENT</code>, a data-chaining stage completion as <code>CSNE_CMD_DATA_CHAINING_EVENT</code>, a prefetch completion as <code>CSNE_CMD_PREFETCH_DSID_EVENT</code> logged <code>Dsid (%d) Event (0x%x)</code>, and an error as <code>CSNE_CMD_CH_ERROR_NOTIFICATION</code>.
+Performance signposts captured during a run originate in the firmware as <code>CSNE_CMD_CH_SIGNPOST*</code> notifications, not as a host-side instrumentation artifact.</p>
+<h2 id="procedure-call-body"><a class="header" href="#procedure-call-body">Procedure-call body</a></h2>
+<p>The body of a procedure call is <code>sCSneCmdProcedureCall</code>, a shared container whose trailing variable-length arrays spill into an over-allocated <code>sCSneCmdProcedureCallCopyContainer</code>.
+The counted fields after the header describe the call's shape, each bounded by a firmware assert (<a href="#tbl-c30-proccall-body">Table 30.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>Type</th><th>Bound</th></tr></thead><tbody>
+<tr><td><code>nbrOfOutputBufferSets</code></td><td><code>u32</code></td><td><code>== 1</code> on the M1 generation</td></tr>
+<tr><td><code>nbrOfWaitEvents</code></td><td><code>u32</code></td><td><code>nbrOfWaitEvents + nbrOfSignalEvents &gt; 0</code></td></tr>
+<tr><td><code>nbrOfSignalEvents</code></td><td><code>u32</code></td><td><code>&lt;= 16</code></td></tr>
+<tr><td><code>nbrOfCustomBars</code></td><td><code>u32</code></td><td><code>&lt;= 32</code> on the wire</td></tr>
+<tr><td><code>stats.buffer</code></td><td><code>u64</code></td><td><code>&gt;= pProc-&gt;pStatArrayBaseOrig</code></td></tr>
+<tr><td><code>stats.size</code></td><td><code>u64</code></td><td>covers the three stats records</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c30-proccall-body"></a><strong>Table 30.3.</strong> The counted fields of the procedure-call body.</p>
+<p>The firmware logs the decoded shape on one line: <code>Bufs = %d Priority = %d CustomBars = %d WaitEvents = %d SignalEvents = %d</code>.
+A wait or signal event is a fixed 24-byte record, <code>{ uint32 type; uint32 targetMask; uint64 id; uint64 value; }</code>, recovered from the event log strings <code>waitEvent[%d]: type=%d mask=%x id=%lld value=%lld</code> and the matching signal line.</p>
+<p>The procedure-call type gate admits only certain content types: <code>getProcedureCallType(programId, procedureId)</code> must return <code>ContentType_0</code>, <code>_3</code>, or <code>_4</code> for a plain <code>PROCEDURE_CALL</code>, and <code>_0</code> or <code>_3</code> on the cache-request path, under <code>procedureId &lt; pProg-&gt;pProgram-&gt;procNbr</code>.
+The <code>WITH_CUSTOM_BARS</code> variant adds a trailing custom execute-order array, whose offset and length are bounded by <code>callSize &lt;= customExecuteOrderArrayOffset</code>, <code>0 &lt; nbrOfCustomExecuteOrder</code>, <code>nbrOfCustomExecuteOrder &lt;= 128</code>, and <code>(customExecuteOrderArrayOffset + nbrOfCustomExecuteOrder * sizeof(uint32_t)) &lt;= sizeof(sCSneCmdProcedureCallCopyContainer)</code>.
+Each custom bar has <code>type == ANE_CUSTOM_BAR_GENERIC</code> and <code>config == ANE_CUSTOM_BAR_HW_32BIT</code>, the on-wire count is bounded <code>nbrOfCustomBars &lt;= 32</code>, and a blob in the compiled program may store up to 128.
+The <code>WITH_SIGNAL_EVENTS</code> variant adds the <code>procCallWithSignalEvents</code> sub-struct, bounded by <code>nbrOfSignalEvents &gt; 0 &amp;&amp; nbrOfSignalEvents &lt;= 16</code>, with the sub-network custom execute-order disallowed (<code>0 == bSubNetworkCustomExecuteOrder</code>).</p>
+<p><a href="#tbl-c30-percall-limits">Table 30.4</a> collects the per-call and per-request numeric limits so a host can size a submission ahead of dispatch.</p>
+<div class="table-wrapper"><table><thead><tr><th>Quantity</th><th>Limit</th><th>Firmware gate</th></tr></thead><tbody>
+<tr><td>trigger input buffers</td><td>16</td><td><code>nbrOfInputBuffers &lt;= (16)</code></td></tr>
+<tr><td>active shared events</td><td>fewer than 2</td><td><code>sharedEventsActiveNbr &lt; 2</code></td></tr>
+<tr><td>task-descriptor partitions on the M1 single path</td><td>1</td><td><code>1 == nbrOfTdPartition</code></td></tr>
+<tr><td>ANE requests in list on the M1 single path</td><td>1</td><td><code>1 == pCacheReq-&gt;nbrOfAneRequestInList</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c30-percall-limits"></a><strong>Table 30.4.</strong> The per-call and per-request numeric limits on the M1 generation.</p>
+<p>The resident cache-request family is what keeps a buffer set on the engine across calls.
+An install command at <code>0x45</code> returns the 64-bit <code>cacheHandler</code> and creates a long-lived request indexed internally by <code>cacheReqIdx</code> in the range <code>0 &lt;= cacheReqIdx &lt; maxCacheRequest</code>, allocated from a <code>CIndexPool</code>.
+A trigger command at <code>0x46</code> names that handle and fires it, holding an <code>execTimestamp</code> that must be strictly monotone against <code>pCacheReq-&gt;lastTriggerExecTimestamp</code>, and checking that the handle is live first.
+The firmware drops a trigger on a handle not in the <code>ANE_DATA_CHAINING_CACHE_REQUEST_IN_USE</code> state with <code>cacheHandler (0x%llx) in wrong state (%d) for trigger. trigger dropped</code>.
+The recycle command at <code>0x47</code> returns a consumed output buffer to a resident request, the invalidate command at <code>0x48</code> tears it down, and the group select at <code>0x4f</code> picks the active member of a buffer-sharing group.
+The force-disable at <code>0x4d</code> is the global disable, which the firmware admits only when set true.
+The firmware constrains chained buffers to the low address window: a data-chaining buffer descriptor must have <code>buffer.type == eCSneBufferDescriptorType_OutputBuffer</code>, <code>outputBufferSetId &lt; nbrOfOutputBufferSets</code>, and a device address whose high 32 bits are zero (<code>(buffer &gt;&gt; 32) == 0</code>).</p>
+<p>The inference call at <code>0x5a</code> is the higher-level submission path, which the firmware expands into one or more <code>CANE_SUB_PACKET_CMD_PROCEDURE_CALL</code> sub-packets, holding a pre-mapped property buffer and validating the buffer count against the program descriptor: <code>pMsg-&gt;bufNbr == 1 + pAneProgramDesc2-&gt;procedures[procedureId].numIoBuffers</code>.
+The <code>PREMAP_BUFFER</code> command at <code>0x4a</code> pre-maps that property buffer, hard-validated for exactly one operation and exactly one buffer (<code>pPreMapOp-&gt;nbrOfBuffers == 1</code>) with nonzero address and size.
+The procedure call at <code>0x41</code> is the lower-level direct form addressing the program, process, and procedure triple; both share the <code>sCSneCmdProcedureCall</code> body and the same priority scheduler.</p>
+<p>The property channel exposes a register-poke surface that the host uses to read and write firmware registers directly.
+The read command at <code>0x1f</code> and the write command at <code>0x1e</code> each contain a two-field body, recovered from the <code>IPC Writer regAddr 0x%lx regValue 0x%x</code> log line as <code>{ uintptr regAddr; uint32 regValue; }</code>, and a write checks <code>regValue != 0</code>.
+The back-channel RPC at <code>0x5b</code> is a firmware-initiated call into the host driver: the firmware client posts directly into the direct-proc-call event pool, gated on <code>GetDirectProcCallEventPoolAvailNum() &gt;= 2</code>, tracks outstanding calls in <code>RPCEventMap[%d]</code>, and reports a stuck slot with <code>RPCEventMap[%d] is dirty. (No ack from driver)</code>.</p>
+<h2 id="recovered-command-id-enum"><a class="header" href="#recovered-command-id-enum">Recovered command-id enum</a></h2>
+<p>The dispatched table above is the contiguous logger ordering, but the firmware also keeps the canonical protocol enum as a packed <code>{char* name; u64 id}</code> array at vaddr <code>0xf5ba8</code> (file offset <code>0xf9ba8</code>, in <code>__DATA.__const</code>).
+This is the <code>ECSneCmdId</code> enum, 94 named entries plus a trailing zero-id terminator, and the id is the literal 16-bit value held on the wire at message <code>+0x4</code>.
+The array is reached through a fixed-up pointer with no <code>adrp</code>+<code>add</code> cross-reference, consistent with a shared name-lookup helper.
+The protocol enum and the dispatched logger ordering are not the same numbering in the <code>0x2xx</code> region, so this enum is the wire vocabulary while the table in the preceding section is the firmware's own logger index.</p>
+<p>The named ids partition by high byte into families, each a contiguous range (<a href="#tbl-c30-id-families">Table 30.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Family range</th><th>Count</th><th>Subsystem</th><th>What the family covers</th></tr></thead><tbody>
+<tr><td><code>0x01</code>–<code>0x34</code></td><td>52</td><td>control, config, power, debug</td><td><code>START</code>, <code>STOP</code>, <code>RESET</code>, <code>CONFIG_GET</code>/<code>CONFIG_GET_EXT</code>, <code>PRINT_ENABLE</code>, <code>BUILDINFO</code>, <code>BOOT</code>, <code>PING</code>, the <code>TIMEPROFILE_*</code> trio, <code>POWER_DOWN</code>, <code>POWER_DEVICE_ON</code>/<code>OFF</code>, the PMU-base and dynamic-powergate setters, <code>IPC_ENDPOINT_*</code>, the <code>CH_BUFFER_*</code> pool and recycle set, <code>CH_PROPERTY_READ</code>/<code>WRITE</code>, <code>TRACE_ENABLE</code>, <code>RESOURCE_INFO_GET</code>, <code>STATS_BUFFER_SIZE_GET</code>, <code>SUSPEND</code>, <code>DSID_SET</code>, <code>MCACHE_SIZE_GET</code>, <code>SECURE_MODE_START</code>/<code>STOP</code>, <code>EXCLAVE_MODE_START</code>/<code>STOP</code>, <code>QUIESCE_STATE</code>, <code>CPU_LOAD_GET</code></td></tr>
+<tr><td><code>0x100</code>–<code>0x108</code></td><td>9</td><td>channel notifications</td><td>firmware-to-host async messages: <code>CH_ERROR_NOTIFICATION</code>, <code>CH_POWER_CONTROL</code>, the <code>CH_SIGNPOST*</code> and <code>CH_SIGNPOST64*</code> single and grouped variants, <code>CH_RESET_NOTIFICATION</code>, <code>CPU_LOAD_NOTIFICATION</code>, and the secure-mode resume transition</td></tr>
+<tr><td><code>0x200</code>–<code>0x212</code></td><td>19</td><td>program, process, procedure call</td><td>the inference path: <code>LOAD_PROGRAM</code>/<code>UNLOAD_PROGRAM</code>, <code>CREATE_PROCESS</code>/<code>TERMINATE_PROCESS</code>, <code>PROCEDURE_CALL</code>, <code>LOAD_AFPP</code>/<code>UNLOAD_AFPP</code>, <code>PROGRAM_INTERFACE_VERSION_CHECK</code>, the <code>PROCEDURE_CALL_*</code> cache-request and custom-bar and signal-event variants, <code>PREMAP_BUFFER</code>, <code>FORCE_DISABLE_CACHE_REQUESTS</code>, and the time-management sync error</td></tr>
+<tr><td><code>0x300</code>–<code>0x305</code></td><td>6</td><td>events</td><td><code>SET_ACTIVE_CACHE_REQUEST_IN_GROUP</code>, <code>PROGRAM_EVENT</code>, <code>USER_EVENT</code>, <code>DBG_EVENT</code>, <code>DATA_CHAINING_EVENT</code>, <code>PREFETCH_DSID_EVENT</code></td></tr>
+<tr><td><code>0x400</code>–<code>0x404</code></td><td>5</td><td>id handshakes</td><td><code>SECURE_MODE_EVENT</code>, the <code>REQUEST_PROGRAM_ID</code>/<code>RETURN_PROGRAM_ID</code> and <code>REQUEST_PROCESS_ID</code>/<code>RETURN_PROCESS_ID</code> allocate-and-free handshakes</td></tr>
+<tr><td><code>0x7000</code>, <code>0xff00</code>, <code>0x0000</code></td><td>3</td><td>outliers</td><td><code>INFERENCE_CALL</code> at <code>0x7000</code>, <code>BACK_CHANNEL_RPC</code> at <code>0xff00</code>, and <code>DEBUG_COMMAND_DATA_CHECK</code> at <code>0x0000</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c30-id-families"></a><strong>Table 30.5.</strong> The six command-id families of the <code>ECSneCmdId</code> enum at <code>0xf5ba8</code>.</p>
+<h2 id="firmware-fast-path"><a class="header" href="#firmware-fast-path">Firmware fast path</a></h2>
+<p>The live on-chip dispatcher is <code>CAneEngineExeLoop::dispatch</code> at vaddr <code>0x4a42c</code>, which reads the 16-bit id with <code>ldrh w8,[x21,#4]</code> and decodes it through a compare tree.
+The tree implements only about ten ids, all on the procedure-call and inference fast path, and every other id falls through to a default arm at <code>0x4aa4c</code> that logs <code>Cmd 0x%x is not supported through ExeLoop cmd channel</code> and then asserts, panicking the firmware.
+Sending a non-fast-path id on this channel is thus a hard fault on the live device, consistent with the unrecoverable behavior of a DART or fence fault.</p>
+<p>The implemented arm of the compare tree dispatches each id to a PAC-signed virtual method on the engine object, reached through the <code>ldr</code>/<code>autda</code>/<code>blraa</code> pattern at a fixed vtable offset.
+Each such slot is an arm64e auth-rebase chained pointer in <code>__DATA.__const</code> whose low thirty-two bits give the raw target address, matched to its call site by the <code>movk</code> discriminator, so the seventy-six-slot table resolves statically.
+The procedure-call slot at <code>+0x200</code> targets <code>0x7374c</code> and the inference slot at <code>+0x190</code> targets <code>0x74510</code>.
+<a href="#tbl-c30-exeloop-ids">Table 30.6</a> gives the ids the ExeLoop dispatcher implements, with each id's vtable offset and behavior.</p>
+<div class="table-wrapper"><table><thead><tr><th>ExeLoop id</th><th>Meaning</th><th>Vtable offset</th><th>Behavior</th></tr></thead><tbody>
+<tr><td><code>0x2d</code></td><td><code>CH_DATA_FILE_LOAD2</code></td><td><code>+0x250</code></td><td>guarded by the engine flag at <code>[x19,#0x2bb]</code></td></tr>
+<tr><td><code>0x204</code></td><td>procedure call</td><td><code>+0x200</code></td><td>validate <code>(programId, procId)</code> then dispatch, the inference trigger</td></tr>
+<tr><td><code>0x209</code></td><td>cache-request trigger</td><td><code>+0x218</code></td><td>logs <code>cacheHandler 0x%llx</code></td></tr>
+<tr><td><code>0x20a</code></td><td>cache-request submit</td><td>cache path</td><td>cache-request submission</td></tr>
+<tr><td><code>0x20c</code></td><td>procedure call with bars</td><td><code>+0x208</code> region</td><td>custom buffer-address-register call</td></tr>
+<tr><td><code>0x211</code></td><td>procedure call with events</td><td>events path</td><td>event-signalled call, force-disable-cache arm</td></tr>
+<tr><td><code>0x212</code></td><td>procedure-call variant</td><td><code>+0x210</code></td><td>shared reply and verify path</td></tr>
+<tr><td><code>0x404</code></td><td><code>RETURN_PROCESS_ID</code></td><td><code>+0x190</code></td><td>process-id handshake reply</td></tr>
+<tr><td><code>0xff00</code></td><td><code>BACK_CHANNEL_RPC</code></td><td>func <code>0x47818</code></td><td>length-and-magic guarded host-to-firmware payload</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c30-exeloop-ids"></a><strong>Table 30.6.</strong> The ids the ExeLoop dispatcher implements.</p>
+<p>The procedure-call arm at id <code>0x204</code> decodes a fixed message layout, recovered from the debug line <code>[EXELOOP] CMD=%#04x [PROC CALL] at %lld : ProgId=%d ProcId=%d Proc=%d Pri=%d</code>: a <code>u16</code> id at <code>+0x04</code>, then <code>u32</code> <code>programId</code>, <code>procId</code>, <code>proc</code>, and <code>priority</code> at <code>+0x08</code> through <code>+0x14</code>.
+Its argument validator at <code>0x48644</code> rejects a <code>programId</code> of <code>144</code> or more and a <code>procId</code> of <code>288</code> or more, then indexes a per-program validity byte at <code>engine + programId * 0x20 + 0x9948</code>, so a 144-entry program-slot table of stride <code>0x20</code> is at engine offset <code>0x9948</code>.
+The back-channel RPC handler at <code>0x47818</code> caps its payload length at <code>0x800000</code> and requires the magic <code>0x55aa55aa</code> before processing, the same back-channel surface as id <code>0x5b</code> in the dispatched table.</p>
+<p>The <code>0x00xx</code> config, power, trace, and profile commands are present in this image only as enum names and as the per-command struct and assert strings, for example <code>sCSneCmdReset</code>, <code>sCSneCmdConfigGet</code>, <code>sCSneCmdTraceEnable</code>, and <code>sCSneCmdPowerSupplyControl</code>.
+Exhaustive <code>adrp</code>+<code>add</code> and constant-pointer scans find zero references to any of those handler strings anywhere in <code>__text</code> or <code>__DATA.__const</code>, so the strings are linked in from a shared protocol header while the handlers are not compiled into this M1 and H13 build.
+<code>AppleH11ANEInterface</code> and <code>AppleANELoadBalancer</code>, the kext that owns power, IPC-endpoint, and buffer management, service those config-command handlers host-side, so their status is opaque by absence rather than undecoded.
+The <code>0x01xx</code> notification family is firmware-to-host output emitted on the channel, so it is not dispatcher input and does not appear in the ExeLoop compare tree either.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-8-system-internals/29-firmware.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-8-system-internals/31-power-thermal.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-8-system-internals/29-firmware.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-8-system-internals/31-power-thermal.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

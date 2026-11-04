@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>25. Compression internals - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-7-toolchain/25-compression-internals.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="25-compression-internals"><a class="header" href="#25-compression-internals">25. Compression internals</a></h1>
+<blockquote>
+<p>Every weight blob has a format enum, an integer 1 through 31, keying five parallel helper tables that control all packing.
+The palette range is 7 through 27; the unity range is 28 through 30.
+The engine reconstructs four compression forms: per-tensor and per-channel int8 affine, int4 lookup-table, structured sparsity, and blockwise affine.
+Each is a distinct dequantization chain the converter decodes into a kernel format.
+Two gates decide whether a compressed weight streams or folds to a dense half-precision constant.
+They are the kernel-streaming master at offset <code>0x48f</code> and the per-format palette and affine cluster at <code>0x520</code> through <code>0x539</code>.
+On the M1 only the int4 lookup-table and structured-sparsity forms stream; int8 and blockwise fold to dense through the dequantize-to-dense path.</p>
+</blockquote>
+<p>Chapter <a href="../part-2-reaching/07-weights-and-compression.html">7</a> stated which compressed weight forms reach the engine and which save bandwidth.
+The mechanism beneath that account follows: how a weight tensor becomes the compiled weight blob, and how the compiler decides whether the compressed bytes stream to the engine or fold to a dense half-precision constant first.
+The path runs from a high-level dequantization operation chain down to the per-output-channel-group records the firmware re-bases into on every dispatch.
+Bit-layout and address detail are M1/H13, table-descriptor codegen version five (family two, A13), unless another version or family is named.</p>
+<h2 id="kernel-format-enum-and-its-tables"><a class="header" href="#kernel-format-enum-and-its-tables">Kernel-format enum and its tables</a></h2>
+<p>Every weight blob has a format enum that names its storage encoding, an integer in the range 1 through 31.
+All packing is controlled by five parallel tables keyed on that enum (<a href="#tbl-c25-helpers">Table 25.1</a>), and two structural ranges fall out of their guards and recur throughout the pipeline.</p>
+<div class="table-wrapper"><table><thead><tr><th>helper</th><th>returns</th></tr></thead><tbody>
+<tr><td><code>_ZinKernelFormatGetBitDepth(f)</code></td><td>the index bit-width per element</td></tr>
+<tr><td><code>_ZinKernelFormatGetPaletteFormat(f)</code></td><td>the palette sub-format, valid for <code>f</code> in 7 through 27</td></tr>
+<tr><td><code>_ZinKernelFormatGetUnderlyingType(f)</code></td><td>the underlying scalar type, int8, uint8, e4m3, or half</td></tr>
+<tr><td><code>_ZinKernelGetPaletteLUTSize(f, n)</code></td><td>the per-codebook byte stride times the codebook count</td></tr>
+<tr><td><code>ZinKernelFormatGetTypeno(f)</code></td><td>the type number written into the descriptor</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c25-helpers"></a><strong>Table 25.1.</strong> The kernel-format helper functions keyed on the format enum and what each one returns.</p>
+<p>The palette formats are the enum range 7 through 27, selected by the guard <code>f - 7 &lt; 0x15</code>.
+The unity formats, the identity and scale-only weights that skip the multiply array, are the enum range 28 through 30, selected by <code>f - 0x1c &lt; 3</code>.</p>
+<p>A compiled weight unit is a fixed set of sections, and the descriptor that names them is the authoritative field list.
+The descriptor stores an activation lookup table, palette lookup table, output-channel-group table, per-output-channel scale vector, per-output-channel bias vector, and the packed weight or index blob (<a href="#lst-c25-kernel-unit">listing 25.1</a>).</p>
+<pre><code class="language-text">t%u = s%lu
+  lut:     ; activation LUT     (typeno, bitdepth, lut_bytes)
+  pal:     ; palette LUT        (palette_format, bitdepth, num_luts, lut_bytes)
+  ocgs:    ; output-channel-group table  (the per-OCG records)
+  scale:   ; per-output-channel scale    (half or single precision)
+  bias:    ; per-output-channel bias
+  weights: ; the packed weight or index blob
+</code></pre>
+<p><a id="lst-c25-kernel-unit"></a><strong>Listing 25.1.</strong> The per-output-channel-group kernel-unit descriptor, the authoritative six-section field list emitted into the compiled weight section.</p>
+<p>The palette table tuple gives the palette format, index bit-depth, codebook count, and codebook byte size; a codebook count above one marks the vector-palettized case.
+The activation table and the palette table are peers in one descriptor.</p>
+<p>The element types the descriptor writes for a weight section are a subset of the 24-entry catalog.
+They are int8 as type 2, uint8 as type 3, half-precision as type 5, the lookup-table tag as type 8, 4-bit unsigned as type 9, the 8-bit floating form as type 16, and 4-bit signed as type 23.
+The half-precision type stores the codebook entries, scale, and bias, so a palette codebook supplies the multiply array with no further conversion.</p>
+<h2 id="four-codecs"><a class="header" href="#four-codecs">Four codecs</a></h2>
+<p>Each of the four codecs has its own dequantization relation, on-device representation, native-stream family, and selecting compiler gate (<a href="#tbl-c25-codecs">Table 25.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>form</th><th>dequant relation</th><th>representation</th><th>streams natively on</th><th>gate</th></tr></thead><tbody>
+<tr><td>int8 per-tensor / per-channel affine</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> on M1</td><td>int8 byte stream plus per-channel half-precision scale</td><td>A14 and later</td><td>folds on M1 via the dequantize-to-dense path</td></tr>
+<tr><td>int4 lookup-table</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">LUT</span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span></span></span></span></td><td>four-bit index stream plus sixteen-entry half-precision codebook</td><td>M1/H13 and later</td><td>streaming master plus the kernel-stride enable</td></tr>
+<tr><td>structured sparsity</td><td>scatter of packed values into the mask</td><td>one-bit mask plus packed half-precision nonzeros</td><td>M1/H13 and later</td><td>streaming master, as a separate mask-and-values operand</td></tr>
+<tr><td>blockwise affine</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span> per block</td><td>int8 byte stream plus per-block half-precision scale</td><td>A15 and later</td><td>folds on M1 and M2 via the dequantize-to-dense path</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c25-codecs"></a><strong>Table 25.2.</strong> The four weight-compression codecs, each with its dequantization relation, native-stream family, and selecting compiler gate.</p>
+<p>Per-tensor and per-channel int8 use the affine form.
+The stored byte is dequantized as</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span></p>
+<p>with quantized byte <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>, half-precision scale <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span>, and zero point <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span>, the encode being <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">round</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span>.
+The scale is scalar or one value per output channel.
+The M1 forces the zero point to zero, so the form is symmetric and reduces to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>: the asymmetric setter hard-asserts on the version-five table descriptor, and the firmware invariant requires the asymmetric-quantization configuration bit clear.</p>
+<p>The per-output-channel scale and bias do not cost a runtime operation: the compiler folds them into the weight coefficients at compile time and keeps them in the descriptor's scale and bias arrays as per-output-channel vectors.
+The engine applies them at the gain-offset-control stage as <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0516em;vertical-align:-0.2997em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">out</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1864em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-2.4169em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">out</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> where the coefficient already absorbs the dequantization scale.
+This is why a symmetric quantized convolution on the M1 costs nothing extra for the affine: the compiler folds the scale and the zero point into the stored weights and the per-output-channel arrays before the dispatch.</p>
+<p>The int4 lookup-table form stores a 4-bit index per element into a 16-entry half-precision codebook.
+Reconstruction is a table lookup with no arithmetic, since the codebook entries are already half-precision and supply the multiply array directly.
+The reconstructed weight is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2em;vertical-align:-0.35em;"></span><span class="mord"><span class="mord mathrm">LUT</span></span><span class="mord"><span class="delimsizing size1">[</span></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord"><span class="delimsizing size1">]</span></span><span class="mord"><span class="delimsizing size1">[</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="delimsizing size1">]</span></span><span class="mord"><span class="delimsizing size1">[</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.2em;vertical-align:-0.35em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="delimsizing size1">]</span></span></span></span></span></span></p>
+<p>with output-channel-group index <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span>, palette vector size <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>, the four-bit index <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> for the element, and channel position <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>.
+For the common per-tensor case the vector size is one and a single codebook has all 16 entries, so the relation flattens to one table lookup.
+A 4-bit weight has no affine path at all: there is no 4-bit underlying scalar type in the type table, so it can only be a palette index.
+That is why the lookup-table form is structurally a palette and is the one form that streams on the M1.</p>
+<p>The palette index width is 2, 4, 6, or 8 bits, but the M1-practical widths are 4-bit, a 16-entry codebook, and 8-bit, a 256-entry codebook.
+The 1-bit and 2-bit widths are rejected on the general path, and the 3-bit and 6-bit widths are version-gated to a later table descriptor, while the quantized-palette combination is capped below 256 entries.
+A legality mask constrains the vector size, the count of consecutive output channels that share one codebook, to the set <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mclose">}</span></span></span></span>.
+The format selector tests <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span></span></span></span></span></span></span></span></span></span></span></span> against the value <code>0x36</code>, which is <code>0b110110</code>, so vector sizes 0, 3, and any value of 6 or more are illegal.
+A 4-bit codebook is 32 bytes and an 8-bit codebook is 512 bytes per lookup table, and the palette lookup table and the activation lookup table share one on-chip-memory budget bounded by the per-target palette-lookup-table size field.</p>
+<p>Structured sparsity stores a one-bit nonzero mask plus the packed half-precision values of the surviving nonzeros.
+The mask costs one bit per element and the values cost two bytes per survivor, so a weight that is half zeros or more stores well below its dense size.
+Reconstruction walks the mask, consuming one packed value for each set bit and emitting a zero for each clear bit, exact apart from the half-precision rounding of the kept values (<a href="#lst-c25-recon">Listing 25.2</a>).
+Blockwise affine assigns a separate scale to each contiguous block of elements, finer than a per-channel scale and so lower in quantization error.</p>
+<pre><code class="language-python"># int8 / uint8 affine dequant (constexpr_affine_dequantize)
+def dequant_affine(q, scale, zero_point):     # zero_point forced to 0 on the M1
+    return scale * (q - zero_point)           # symmetric M1 form: scale * q
+
+# int4 lookup-table reconstruction (constexpr_lut_to_dense)
+def dequant_lut(index, codebook, g, vector_size):
+    return codebook[g // vector_size][index][g % vector_size]   # already fp16, no arithmetic
+    # per-tensor case: vector_size == 1, one 16-entry codebook -&gt; codebook[0][index][0]
+
+# structured-sparsity scatter (constexpr_sparse_to_dense): 1-bit mask + packed fp16 nonzeros
+def densify_sparse(mask_bits, nonzeros, n):
+    out = [0.0] * n                           # mask bit 1 = keep (nonzero)
+    j = 0
+    for i in range(n):
+        if mask_bits[i]:                      # LSB-first packed, one bit per element
+            out[i] = nonzeros[j]              # consume the next packed fp16 value
+            j += 1
+    return out
+</code></pre>
+<p><a id="lst-c25-recon"></a><strong>Listing 25.2.</strong> The three reconstruction codecs in pseudocode, the affine dequantization, lookup-table reconstruction, and structured-sparsity scatter.</p>
+<p>The sparse layout on the wire is the bitmask blob followed by the packed values blob (<a href="#lst-c25-sparse-layout">listing 25.3</a>).</p>
+<pre><code class="language-python">constexpr_sparse_to_dense operand layout
+  mask     : ceil(n / 8) bytes   # 1 bit per element, LSB-first, dtype code UINT1 (9)
+  nonzeros : 2 * popcount(mask) bytes   # fp16 survivors in scan order, dtype code FP16 (1)
+  # streamed size ~ (1/16 + density) x the dense fp16 size
+</code></pre>
+<p><a id="lst-c25-sparse-layout"></a><strong>Listing 25.3.</strong> The on-the-wire operand layout of the structured-sparsity form, the bitmask blob followed by the packed half-precision nonzeros.</p>
+<h2 id="stream-versus-fold-decision"><a class="header" href="#stream-versus-fold-decision">Stream-versus-fold decision</a></h2>
+<p>Two cooperating gates decide whether a compressed weight reaches the engine in its compressed bytes or is materialized to a dense half-precision constant before the dispatch.
+The master gate is the kernel-streaming check.
+It returns false unless the hardware-abstraction-layer streaming master bit at offset <code>0x48f</code> is set, which holds from the A13 generation onward.
+It then requires the format be primary or convertible to half-precision by the direct-memory-access engine, plus unit stride on all axes, no dilation, no tile overlap, and an immutable weight: a mutable weight, a trained-in-place parameter, cannot stream.</p>
+<p>A second gate guards the palette path.
+The native lookup-table form streams only when the weight is vector-palettized and the per-format kernel-stride-enable bit at offset <code>0x529</code> is set.
+When both hold, the compiler sets the palette-enable and stream flags and zeroes the fold sub-fields.
+On the M1 the offset <code>0x529</code> bit is set, so the palette stream is live while the other formats fold.</p>
+<p>Structured sparsity reaches the engine through the master gate as a separate operand.
+The sparse weight lowers to a mask producer and a nonzero-values producer held as their own blobs.
+Those stream under the master at offset <code>0x48f</code>, which is set on the M1, not under the per-format palette and affine cluster at offsets <code>0x520</code> through <code>0x539</code>, which is clear on the M1.
+A live byte comparison confirms the form: the sparse weight blob stores the one-bit mask and the half-precision nonzeros at about 0.43 times the dense size, with no dense half-precision constant present, whereas a fold would show a single full-width half-precision blob.</p>
+<p>The int8 and blockwise forms have no streamed encoding on the M1.
+The converter builds the native quantized kernel, but the lowering routes it through the dequantize-to-dense path, which reconstructs the weight to a dense half-precision constant before the direct-memory-access transfer.
+The stored bytes are then plain half-precision and move at full width, so a weight-streaming-bound layer gets no bandwidth gain from these forms on the M1.</p>
+<p>A budget relaxation accompanies the stream decision.
+A streamed weight is sized against the relaxed on-chip-memory cap at offset <code>0x210</code>, while a folded or dense weight is sized against the dense cap at offset <code>0x200</code>, which is sixty-four kilobytes on the M1.
+The compressed path thus has far more weight per layer.</p>
+<h2 id="per-output-channel-group-packing"><a class="header" href="#per-output-channel-group-packing">Per-output-channel-group packing</a></h2>
+<p>The weight section is a sequence of per-output-channel-group records, each a fixed 14-word block holding a computed offset and size and ten unrelocated address slots (<a href="#tbl-c25-ocg-record">Table 25.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Word</th><th>Field</th><th>Initial value</th></tr></thead><tbody>
+<tr><td><code>[0]</code></td><td>output-channel-group byte offset into the section</td><td>computed</td></tr>
+<tr><td><code>[1]</code></td><td>output-channel-group size, the channel count for this engine</td><td>computed</td></tr>
+<tr><td><code>[2]</code> through <code>[0xb]</code></td><td>ten address relocation slots</td><td><code>-1</code></td></tr>
+<tr><td><code>[0xc]</code>, <code>[0xd]</code></td><td>reserved flags</td><td>0</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c25-ocg-record"></a><strong>Table 25.3.</strong> The per-output-channel-group record, the 14-word block with its computed offset and size and its ten unrelocated address slots.</p>
+<p>The ten slots left at <code>-1</code> are the per-record device addresses the loader patches in: the input and output tile bases, per-buffer coefficient sub-buffer bases, and four coefficient-stream bases for bias, post-scale, palette lookup, and activation lookup.
+Those four streams map one-to-one to four kernel direct-memory-access sub-channels in the kernel-and-common register group, each with the enable, base-offset, and relocation register in <a href="#tbl-c25-dma-streams">Table 25.4</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Descriptor slot</th><th>Enable register</th><th>Base-offset register</th><th>Relocation register</th></tr></thead><tbody>
+<tr><td>bias</td><td><code>0x5548</code></td><td><code>0x554c</code></td><td><code>0x1554</code></td></tr>
+<tr><td>post-scale</td><td><code>0x5558</code></td><td><code>0x555c</code></td><td><code>0x1558</code></td></tr>
+<tr><td>palette lookup</td><td><code>0x5568</code></td><td><code>0x556c</code></td><td><code>0x155c</code></td></tr>
+<tr><td>activation lookup</td><td><code>0x5578</code></td><td><code>0x557c</code></td><td><code>0x1560</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c25-dma-streams"></a><strong>Table 25.4.</strong> The four kernel direct-memory-access coefficient streams, each with its enable, base-offset, and relocation register.</p>
+<p>There is no zero-point stream, since the M1 symmetric form folds the zero point to zero; the per-output-channel scale and bias streams supply the dequantization scale instead.
+The M1 replicates the kernel coefficients per engine core, one copy per core, because it lowers to the per-core layout where the A14 generation and later use a shared kernel-memory layout.
+A four-core M1 thus has four per-core records each with its own output-channel-group vector.</p>
+<p>The activation lookup table shares the descriptor with the palette lookup table.
+It is a 43-entry half-precision record: two input-clamp values, a mode flag, a scale, the 33 knot values uniform in the input domain, four tail extrapolation coefficients, and a packed mode word.
+At runtime the input maps affinely onto the 32 segments between the 33 knots, the integer part selects a segment, and the fraction controls a half-precision linear interpolation, with the output clamping to the end-knot beyond the input-clamp domain.
+The activation lookup table and the palette lookup table are co-located in the weight section and located by one offset cursor, which is why they draw on one shared budget.</p>
+<h2 id="sparsity-datapath"><a class="header" href="#sparsity-datapath">Sparsity datapath</a></h2>
+<p>The engine has two independent sparsity mechanisms.
+The first is compute-time zero-skip.
+The table descriptor has a detect-zeros bit that is implemented on the M1, and when it is set the multiply array skips a multiply-accumulate whose weight is zero.
+The cost model scans the weight values for their zero density once, caches the ratio, and reduces the convolution cycle estimate by it, adding the implicit zeros that strided and padded convolutions contribute.
+This mechanism is format-independent: it fires on any kernel with zeros regardless of storage encoding, including weights that fold to dense for storage.
+On a bandwidth-bound stack the zero-skip alone moves the limit by about one percent, because skipping multiply-accumulates in the array does not help a layer whose limit is the weight stream.</p>
+<p>The second is the sparse-binary store with on-chip decompress, which is the source of the bandwidth gain.
+The mask and the packed nonzeros cross the direct-memory-access stream, and the engine decompresses them on chip into the dense tile.
+The on-device kernel-configuration register has a single packed sparse-format field beside the palette-enable and palette-bits fields in the same word.
+A six-by convolution stack at sixty-three percent zeros streams the sparse form at about 0.43 times the dense weight bytes and runs 1.55 to 1.64 times faster than the same weights stored dense.
+Effective bandwidth rises from about 29 to about 48 gigabytes per second, which is the M1 weight-stream ceiling.
+The compiled program is byte-identical between the dense and sparse bundles at 2416 bytes, so the difference is entirely in the streamed weight payload and its descriptor, which is the signature of a native stream rather than a fold or a changed program.</p>
+<p>The version-five table descriptor asserts that sparse-binary mode is not supported, and this assert reconciles with the live stream because it governs a different path.
+That assert bounds the sparse packing of the palette-index plane inside the compiled weight blob, reachable only through the vector-palette flag, so a non-palettized weight never reaches it.
+The streamed sparse weight is the separate mask-and-values operand described above, which does not pass through that table-descriptor bit.</p>
+<h2 id="fp8-datapath"><a class="header" href="#fp8-datapath">fp8 datapath</a></h2>
+<p>The compiler has a complete fp8 datapath that no M1 generation can reach.
+The 8-bit floating form is two distinct things in the binary: the E4M3 form, a gated hardware weight and activation format with element code <code>0xc</code>, and the E5M2 form, a conversion format with element code <code>0xd</code>.
+E4M3 is the gated one: its kernel-format validity admits it as a native weight element type, but the encoder that writes its element code exists only from the A17 generation.
+The runtime capability byte at <code>0x52d</code> that enables the format is set on the A18 generation alone.
+On the M1 the format register is two bits wide with no E4M3 codepoint at all, so the format never reaches a runtime refusal; it triggers a compile-time assert.
+The accumulator stays at the wide half-precision-class width on every family, so the 8-bit form is an input and storage width supplying the same multiply array, not an accumulate width.
+Its throughput runs on the same double-multiply path the int8 form uses.
+The full fp8 datapath, format-register delta, E5M2-to-half fold asymmetry, and conversion functions are decoded in chapter <a href="../part-9-cross-silicon/36-upper-tier.html">36</a>.</p>
+<h2 id="codegen-version-matrix"><a class="header" href="#codegen-version-matrix">Codegen version matrix</a></h2>
+<p>The same kernel format produces different weight bytes per table-descriptor version, which is why the M1 and the M5 differ at the bit level, as <a href="#tbl-c25-version-matrix">Table 25.5</a> records capability by capability.</p>
+<div class="table-wrapper"><table><thead><tr><th>Capability</th><th>M1 version-five descriptor</th><th>Later descriptor</th></tr></thead><tbody>
+<tr><td>sparse-binary index packing</td><td>asserts unsupported</td><td>a packed flag at descriptor offset <code>0x424</code></td></tr>
+<tr><td>multi-codebook palette</td><td>asserts unsupported</td><td>implemented</td></tr>
+<tr><td>asymmetric quantization</td><td>asserts unsupported</td><td>implemented</td></tr>
+<tr><td>zero-skip detect</td><td>implemented</td><td>implemented</td></tr>
+<tr><td>palette enable and bit width</td><td>implemented, 4 and 8 bit</td><td>implemented, plus 3 and 6 bit</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c25-version-matrix"></a><strong>Table 25.5.</strong> Codegen capability per table-descriptor version: the M1 version-five descriptor lacks the sparse-binary, multi-codebook, and asymmetric encoders.</p>
+<p>The M1 legal kernel-format space is thus the intersection of the format enumeration and the version-five descriptor: dense half-precision, palettized 4-bit and 8-bit including the single-codebook vector form, symmetric int8 that folds to half-precision, and the unity forms.
+The sparse-binary index packing, multi-codebook palette, asymmetric quantization, fp8 form, and 3-bit and 6-bit palette widths are absent from the version-five codegen entirely, a missing encoder rather than a runtime refusal.</p>
+<h2 id="winograd-and-the-compressed-weight-interaction"><a class="header" href="#winograd-and-the-compressed-weight-interaction">Winograd and the compressed-weight interaction</a></h2>
+<p>The full Winograd eligibility gate is derived in chapter <a href="../part-6-silicon/20-datapath-mac.html">20</a>: the enable bit, kernel-axis and tile-size conditions, and the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">OCG</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> work threshold against its non-float, float, and packed floors.
+The compression-relevant point is the weight-format interaction: eligibility requires a non-unity, non-sparse weight, so a sparse or unity-format weight is excluded from the Winograd path and keeps its own datapath.
+The transform matrices <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span></span></span></span>, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span></span></span></span> are resident in the array and appear in no shippable weight blob, so no codec contains them.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-7-toolchain/24-hal-gates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-7-toolchain/26-hidden-layers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-7-toolchain/24-hal-gates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-7-toolchain/26-hidden-layers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

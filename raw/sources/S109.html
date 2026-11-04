@@ -1,0 +1,385 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>21. Memory hierarchy - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-6-silicon/21-memory-hierarchy.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="21-memory-hierarchy"><a class="header" href="#21-memory-hierarchy">21. Memory hierarchy</a></h1>
+<blockquote>
+<p>The engine keeps its working data in one on-chip pool.
+Its 2 MB size, at hardware-abstraction-table field <code>0x1b8</code> on the M1, is the dominant size limit.
+A layer whose largest single operand fits stays on-chip; one that exceeds it is tiled and streamed from DRAM.
+The pool is interleaved across 64 banks at a 16-byte granule, with the bank index <code>floor(addr / 16) mod 64</code>.
+A compile-time stride optimizer spreads accesses to avoid conflicts.
+The pool is a compiler-managed scratchpad, not a demand-filled cache.
+Residency and stride are decided at compile time, so re-reference order does not change which operands are resident.</p>
+</blockquote>
+<p>The numbers below come from the engine's hardware-abstraction table, indexed by field offset (for example <code>0x1b8</code>); quoted values are the M1/H13 entries.</p>
+<h2 id="2-mb-working-set-threshold"><a class="header" href="#2-mb-working-set-threshold">2 MB working-set threshold</a></h2>
+<p>The bound shows up first in the matmul lowering, which rejects a resident right-hand operand and streams a tiled copy instead (<a href="#lst-c21-matmul-lower">listing 21.1</a>).</p>
+<pre><code class="language-c">/* ZinMirMatMul::LowerNEMatMulToNEConv */
+if (GetTensorSizeInBytes(rhs) &gt;= HAL[0x1b8]) {  /* HAL[0x1b8] = 2 MB on M1 */
+    /* reject resident copy-cast; tile and stream the RHS from DRAM */
+}
+</code></pre>
+<p><a id="lst-c21-matmul-lower"></a><strong>Listing 21.1.</strong> Matmul lowering: reject the resident RHS and stream a tiled copy once the operand reaches the working-set bound.</p>
+<p>The largest single operand that stays in on-chip SRAM on the M1 is 2 MB, the value at field <code>0x1b8</code>, the maximum operand bytes for the SRAM working set.
+The same field is 1 MB on the efficiency-class engine of the M9 part: the value is per-chip.
+The compiler names this field <code>MemCacheSize</code>, also <code>L2Size</code>, and exposes overrides for it through <code>fl2-size</code> and the related cache-mode and allocator options.</p>
+<p>A layer runs entirely from the on-chip pool when its largest single operand, the larger of the input activation, weight, or output, fits within this bound.
+For a half-precision tensor the operand byte count is the element count times two.
+A <code>[1, 512, 32, 32]</code> activation is exactly 1 MB and stays resident.
+A <code>[1, 512, 64, 64]</code> activation is 4 MB and a <code>[4096, 4096]</code> linear weight is 32 MB, and both exceed the bound.</p>
+<p>When the largest operand exceeds <code>0x1b8</code>, the compiler tiles it and streams the pieces from DRAM.
+Only one tensor's size enters the comparison; the operands are not summed.
+Past the bound, the streamed tile traffic adds DMA bytes that did not exist below it, so the arithmetic intensity of the layer, the ratio of multiply-accumulate work to bytes moved, falls.
+The design rule that follows is to keep the largest per-layer operand at or under 2 MB by tiling the batch or the spatial extent or by shrinking the channel count, so the layer stays on-chip.</p>
+<p>The M5 softens this threshold.
+Its compiler tiles over the batch and the output dimensions together, so neither operand need be fully resident and the crossing is a smooth throughput ramp where the M1 shows a sharp step.
+The working-set cost then appears in DRAM energy per operation, which bottoms near a 2 MB operand and rises beyond about 4 to 5 MB, around the M5 bound of 4.72 MB.</p>
+<p>The measured throughput threshold is slightly above the table value, near 2.28 to 2.34 MB, because the tiler uses roughly 0.3 MB of double-buffer and alignment margin before it splits the weight.
+Sweeping a batched matrix multiply whose weight grows from 1.25 to 3.1 MB resolves the threshold directly, with a smooth plateau below the bound and a sharp step just above it (<a href="#tbl-c21-threshold-sweep">table 21.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>weight size</th><th>throughput, GFLOP/s</th></tr></thead><tbody>
+<tr><td>1.25 to 2.25 MB</td><td>smooth plateau, 700 to 850, gently rising</td></tr>
+<tr><td>2.28 MB</td><td>992, the first step up</td></tr>
+<tr><td>2.34 MB</td><td>1038, a sharp threshold, 185 higher in one 0.03 MB step</td></tr>
+<tr><td>2.50 MB</td><td>1120</td></tr>
+<tr><td>2.75 MB</td><td>1180</td></tr>
+<tr><td>3.00 MB</td><td>1226</td></tr>
+<tr><td>3.06 MB</td><td>1368</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c21-threshold-sweep"></a><strong>Table 21.1.</strong> Measured throughput of a batched matrix multiply as the weight crosses the 2 MB operand bound.</p>
+<p>Throughput is higher above the threshold than below it.
+Below the bound the whole weight is one resident operand that must fill before compute starts, a serialized stream into the array.
+Above the bound the weight is tiled and double-buffered, so the fill of tile <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> overlaps compute on tile <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> and throughput climbs.
+The threshold is at the same 2.31 MB sweeping the grid up or down, so the boundary has no memory state.</p>
+<h2 id="64-bank-pool-and-bank-function"><a class="header" href="#64-bank-pool-and-bank-function">64-bank pool and bank function</a></h2>
+<p>The engine interleaves the on-chip pool across 64 banks at a 16-byte granule.
+The bank count is field <code>0x1c8</code> and equals 64; the interleave granule is field <code>0x1c0</code> and equals 16 bytes.
+An address maps to a bank by</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathrm">bank</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">⌊</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">16</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">addr</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">⌋</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64.</span></span></span></span></span></p>
+<p>In compiler terms the two operands are the two table fields directly (<a href="#lst-c21-bank-index">listing 21.2</a>).</p>
+<pre><code class="language-c">/* SRAM/L2 bank index from a byte address */
+unsigned bank(unsigned long addr) {
+    return (addr / HAL[0x1c0]) % HAL[0x1c8];   /* (addr / 16) mod 64 */
+}
+</code></pre>
+<p><a id="lst-c21-bank-index"></a><strong>Listing 21.2.</strong> The on-chip bank index computed from a byte address using the interleave granule and the bank count read straight from the table.</p>
+<p>The map is direct and modular: there is no second-level grouping above the 64 banks.
+The bank-conflict optimizer reads the same two table fields and chooses a row stride that spreads accesses across banks.
+Over candidate strides bounded by the maximum stride field <code>0x1f8</code>, it selects the stride whose per-bank cost is least (<a href="#lst-c21-bank-optimizer">listing 21.3</a>).</p>
+<pre><code class="language-c">/* ZinMirBankConflictOptimizer::OptimizeL2StrideMinCost */
+uVar1 = HAL[0x1c0];                       /* granule    = 16   */
+uVar2 = HAL[0x1c8];                       /* bank count = 64   */
+uVar4 = param_1 / uVar1;                  /* stride in 16-byte granules */
+/* loop over candidate strides, bounded by HAL[0x1f8] (= 2 MB) */
+    uVar5 = (uVar4 + uVar9) / uVar2;            /* granules / 64 */
+    index = (uVar4 + uVar9) - uVar5 * uVar2;    /* granules mod 64 = bank index */
+    fVar10 = cost_vector[index];                /* per-bank conflict cost */
+    if (fVar10 &lt; best) { best = fVar10; chosen = uVar8; }
+</code></pre>
+<p><a id="lst-c21-bank-optimizer"></a><strong>Listing 21.3.</strong> The bank-conflict optimizer searching candidate row strides and selecting the one with the least per-bank cost.</p>
+<p>The cost vector has exactly 64 float entries, one per bank, which fixes the modulus at 64.
+The modelled conflict depth for a row stride <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> over the 64 banks is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">requests</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">⌈</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">64/</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">rows</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">⌉</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mop"><span style="margin-right:0.01389em;">g</span>cd</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">16</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">64</span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">.</span></span></span></span></span></p>
+<p>The conflict is worst when the granule stride is a high power of two, which drives <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> up, and is conflict-free when <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>, which gives one request per bank.
+Every accepted stride is a multiple of the 16-byte granule, and the search never proposes a stride above the 2 MB ceiling in field <code>0x1f8</code>.
+The on-device throughput period that this structure produces is 64 bytes, which is 32 half-precision elements and four 16-byte granules; that period is the granule-quantized echo of the 64-bank interleave after the optimizer has set the stride.</p>
+<p>There is no runtime replacement policy on the operand path.
+The compiler decides residency and stride at compile time and writes them into the program, which is why the order in which weights are re-referenced does not change which ones are resident.</p>
+<h2 id="resident-vs-shared-output-buffers"><a class="header" href="#resident-vs-shared-output-buffers">Resident vs shared output buffers</a></h2>
+<p>Whether a convolution gets a dedicated resident buffer or the shared default turns on the residency-threshold field (<a href="#lst-c21-resident-buffer">listing 21.4</a>).</p>
+<pre><code class="language-c">/* ZinIrLocalRegAlloc::AllocateOutputDMADefaultBuffer */
+if (HAL[0x491] == 1 &amp;&amp;
+    (footprint = HAL[0x1c0] * dst_buf_count,        /* 16 * count, in bytes */
+     HAL[0x1f0] &lt;= footprint &amp;&amp; footprint != HAL[0x1f0])) {
+    use_default_buffer;                  /* no dedicated conv_res_l2_buf */
+} else {
+    allocate "&lt;layer&gt;/conv_res_l2_buf";  /* dedicated resident buffer */
+}
+</code></pre>
+<p><a id="lst-c21-resident-buffer"></a><strong>Listing 21.4.</strong> The output-buffer allocator deciding between a dedicated resident buffer and the shared default, gated by the residency threshold.</p>
+<p>A convolution can be given a dedicated on-chip buffer that keeps its output residency across the convolution so the result is not re-streamed.
+Field <code>0x1f0</code>, the resident-buffer threshold, decides whether that buffer is allocated by comparison against the convolution's output DMA footprint.
+On the M1 the field is 0, and the allocator skips the dedicated buffer when the footprint is strictly greater than the threshold.</p>
+<p>With <code>0x1f0</code> equal to 0 on the M1, any buffer of at least one destination slot has a footprint greater than 0, so the condition is always true and the M1 always takes the default-buffer branch.
+The dedicated residency buffer is thus never allocated on this chip.
+On the A16-class and M5 parts the same field is 262144, which is 256 KB, so only a convolution whose output DMA footprint exceeds 256 KB receives the dedicated buffer; on the A15 part it is 32768, which is 32 KB.
+The field rises with the larger on-chip pools of the newer parts.</p>
+<p>The dedicated convolution buffer lives in the one on-chip pool.
+It is carved from the same memory as the 2 MB operand working set and the other DMA buffers, aligned to the same 16-byte granule, and its stride runs through the same 64-bank optimizer.
+Field <code>0x1f0</code> decides only whether a convolution's output residency gets its own named sub-allocation in that one pool.
+The kernel-coefficient store is a distinct on-chip budget: 64 KB on the M1, separate from the 2 MB operand working set.</p>
+<p>The on-chip granules are finer than the page granule at which buffers are mapped into the engine's address space.
+Three alignment scales coexist on the M1: the 16-byte DMA-width granule of field <code>0x1c0</code>, a 256-byte segment alignment, and the 16 KB page at which buffers map to the engine.</p>
+<h2 id="two-stage-address-translation"><a class="header" href="#two-stage-address-translation">Two-stage address translation</a></h2>
+<p>A host buffer reaches the array through two stacked translations: the kernel driver pins the pages to physical memory, then maps them through a device input-output memory-management unit to a device virtual address the engine's DMA engines read.
+The translation unit that serves the engine is the t6000-generation controller bound to the device node <code>dart-ane0</code>.
+<a href="#tbl-c21-translation">Table 21.2</a> gives the page size, aperture base, and aperture size.</p>
+<div class="table-wrapper"><table><thead><tr><th>property</th><th>value</th><th>meaning</th></tr></thead><tbody>
+<tr><td>page size</td><td><code>0x4000</code> = 16 KB</td><td>the device virtual page; sub-page buffers still consume a full 16 KB page</td></tr>
+<tr><td>aperture base</td><td><code>0x0</code></td><td>the device-virtual window starts at zero</td></tr>
+<tr><td>aperture size</td><td><code>0xE0000000</code> = 3.5 GiB</td><td>the managed device-virtual window</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c21-translation"></a><strong>Table 21.2.</strong> The device-translation parameters for the engine, read from the live device node.</p>
+<p>The aperture is 3.5 GiB, but the firmware clamps every address it programs into a DMA engine to the bottom 4 GiB by asserting that the high 32 bits of every buffer address are zero, so the engine is confined to the bottom of its device-virtual space.
+Each page maps to physical memory through a single 64-bit leaf descriptor: for every live engine data page the descriptor is the physical frame address with bit 63 set, the valid bit, and no other field.
+The descriptor reads <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">phys</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord">∣</span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">0x8000000000000000</span></span></span></span></span> for an input, weight, intermediate, or output page alike, since the physical frames are 16 KB-aligned and leave the high bits free; unmap clears the descriptor to zero, dropping the valid bit.
+Read-only protection of the inputs is outside the leaf descriptor on the M1: a configuration bit collapses the would-be read-only class into read-write at the translation unit, so input protection is enforced upstream.</p>
+<p>Each mapped buffer has a usage code that records its role (<a href="#tbl-c21-usage-codes">table 21.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>usage code</th><th>role</th></tr></thead><tbody>
+<tr><td>1</td><td>client input tensor</td></tr>
+<tr><td>2</td><td>client output tensor</td></tr>
+<tr><td>7</td><td>intermediate buffer</td></tr>
+<tr><td>8</td><td>kernel and weights</td></tr>
+<tr><td>9</td><td>program text, task descriptor, and working set</td></tr>
+<tr><td>11</td><td>program constant and scratch</td></tr>
+<tr><td><code>0x1019</code>, <code>0x101a</code></td><td>firmware shared surface and resident heap</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c21-usage-codes"></a><strong>Table 21.3.</strong> The buffer-role usage code each mapped buffer holds, recovered from the mapping call sites.</p>
+<p>The address-translation registers and the full fault path are the subject of chapter <a href="../part-8-system-internals/28-dart-iommu.html">28</a>.</p>
+<h2 id="hierarchy-on-the-m1"><a class="header" href="#hierarchy-on-the-m1">Hierarchy on the M1</a></h2>
+<p>The on-chip levels and their M1/H13 values are gathered in <a href="#tbl-c21-hierarchy">table 21.4</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Level</th><th>M1/H13 value</th><th>Table field</th><th>Role</th></tr></thead><tbody>
+<tr><td>SRAM operand working set</td><td>2 MB</td><td><code>0x1b8</code></td><td>largest single operand that stays on-chip; over this, tile and stream</td></tr>
+<tr><td>Operand threshold (measured)</td><td>2.28 to 2.34 MB</td><td>derived from <code>0x1b8</code></td><td>observed throughput threshold, 2 MB plus tiler double-buffer margin</td></tr>
+<tr><td>Bank count</td><td>64</td><td><code>0x1c8</code></td><td>banks the pool is interleaved across</td></tr>
+<tr><td>Interleave granule</td><td>16 B</td><td><code>0x1c0</code></td><td>DMA-width granule and bank-stride unit</td></tr>
+<tr><td>Maximum L2 destination stride</td><td>2 MB</td><td><code>0x1f8</code></td><td>upper bound of the bank-conflict stride search</td></tr>
+<tr><td>Residency-buffer threshold</td><td>0</td><td><code>0x1f0</code></td><td>over this footprint, skip the dedicated buffer; 0 means M1 never allocates one</td></tr>
+<tr><td>Kernel-coefficient store</td><td>64 KB</td><td><code>0x200</code></td><td>on-chip weight-coefficient budget at <code>0x200</code>/<code>0x210</code>, with the 64 KB-or-16 MB mode select at <code>0x288</code>, distinct from the operand working set</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c21-hierarchy"></a><strong>Table 21.4.</strong> The on-chip memory levels on the M1, each with its value, hardware-abstraction-table field, and role.</p>
+<p>The residency-buffer threshold is the field that varies most across parts (<a href="#tbl-c21-residency-gens">table 21.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Part</th><th><code>0x1f0</code> value</th><th>Effect</th></tr></thead><tbody>
+<tr><td>M1/H13</td><td>0</td><td>dedicated residency buffer never allocated</td></tr>
+<tr><td>A15-class</td><td>32 KB</td><td>dedicated buffer when convolution output footprint exceeds 32 KB</td></tr>
+<tr><td>A16-class and M5</td><td>256 KB</td><td>dedicated buffer when convolution output footprint exceeds 256 KB</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c21-residency-gens"></a><strong>Table 21.5.</strong> The residency-buffer threshold across generations and its effect on whether a dedicated convolution output buffer is allocated.</p>
+<p>The levels stack from unified DRAM at the bottom, up through the on-chip working set and its 64 banks, into the multiply-accumulate array, as <a href="#fig-c21-hierarchy">figure 21.1</a> draws them.</p>
+<figure id="fig-c21-hierarchy">
+<pre class="mermaid">
+flowchart BT
+  DRAM["Unified DRAM, operands over 2 MB tiled and streamed"] --> SRAM
+  subgraph SRAM["On-chip SRAM working set, field 0x1b8 = 2 MB threshold"]
+    direction LR
+    B0["Bank 0"] ~~~ B1["Bank 1"] ~~~ Bdots["..."] ~~~ B63["Bank 63"]
+  end
+  SRAM -->|"bank = floor(addr / 16) mod 64"| MAC["Multiply-accumulate array"]
+</pre>
+<figcaption><strong>Figure 21.1.</strong> The memory hierarchy, with unified DRAM at the bottom, the on-chip SRAM working set and its 2 MB threshold, and the 64-bank interleave feeding the multiply-accumulate array.</figcaption>
+</figure>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-6-silicon/20-datapath-mac.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-7-toolchain/22-compiler.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-6-silicon/20-datapath-mac.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-7-toolchain/22-compiler.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

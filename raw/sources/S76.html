@@ -1,0 +1,2555 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../aneforge-api/">
+      
+      
+        <link rel="next" href="../mil-primer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Training on the ANE - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/training/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#training-on-the-ane" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Training on the ANE
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-model-tiny-reverse-mode-autograd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The model: tiny reverse-mode autograd
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The model: tiny reverse-mode autograd">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trainable-weights-are-graph-inputs-not-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trainable weights are graph inputs, not constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-vjp-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The VJP registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-builds-an-on-ane-backward-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backward builds an on-ANE backward graph
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Trainer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Trainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device_optimizertrue-the-update-on-the-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        device_optimizer=True: the update on the engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resident_statetrue-optimizer-state-stays-on-the-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resident_state=True: optimizer state stays on the engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loss-scaling-and-fp16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loss scaling and fp16
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measured-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measured results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measured results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mnist-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MNIST MLP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-chip-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip parity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versus-the-gpu-and-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Versus the GPU and CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-free-multi-step-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host-free multi-step dispatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depth-without-a-compile-size-wall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Depth without a compile-size wall
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Honest limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradient-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mulreduce_output-00-compile-wall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The mul(reduce_output, 0.0) compile wall
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../op-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/numerics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/capabilities-and-targets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-model-tiny-reverse-mode-autograd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The model: tiny reverse-mode autograd
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The model: tiny reverse-mode autograd">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trainable-weights-are-graph-inputs-not-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trainable weights are graph inputs, not constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-vjp-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The VJP registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-builds-an-on-ane-backward-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backward builds an on-ANE backward graph
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Trainer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Trainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device_optimizertrue-the-update-on-the-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        device_optimizer=True: the update on the engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resident_statetrue-optimizer-state-stays-on-the-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resident_state=True: optimizer state stays on the engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loss-scaling-and-fp16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loss scaling and fp16
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measured-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measured results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measured results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mnist-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MNIST MLP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-chip-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip parity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versus-the-gpu-and-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Versus the GPU and CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-free-multi-step-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host-free multi-step dispatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depth-without-a-compile-size-wall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Depth without a compile-size wall
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Honest limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradient-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mulreduce_output-00-compile-wall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The mul(reduce_output, 0.0) compile wall
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="training-on-the-ane">Training on the ANE<a class="headerlink" href="#training-on-the-ane" title="Permanent link">&para;</a></h1>
+<p>ANEForge is not inference-only. <code>aneforge/autograd.py</code> is a small reverse-mode
+autograd in which both the forward and the backward pass compile to, and run on,
+the Apple Neural Engine through the e5rt path. A model's weights, gradients, and
+the optimizer update all live as ANE graph ops; the host computes only a scalar
+learning rate, samples minibatches, and reads results at checkpoints.</p>
+<p>Training runs on the same e5rt dispatch backend as the rest of ANEForge - no
+CoreML, no entitlement.</p>
+<p>The import alias throughout is <code>import aneforge as af</code>.</p>
+<h2 id="the-model-tiny-reverse-mode-autograd">The model: tiny reverse-mode autograd<a class="headerlink" href="#the-model-tiny-reverse-mode-autograd" title="Permanent link">&para;</a></h2>
+<h3 id="trainable-weights-are-graph-inputs-not-constants">Trainable weights are graph inputs, not constants<a class="headerlink" href="#trainable-weights-are-graph-inputs-not-constants" title="Permanent link">&para;</a></h3>
+<p>A native ANE program bakes its weights into the compiled blob. That is fine for
+inference but useless for training, because every weight update would force a
+recompile. ANEForge sidesteps this with <code>af.parameter</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">W</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">parameter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+</code></pre></div>
+<p><code>af.parameter(init)</code> creates a graph input tagged trainable. It carries an
+fp32 master value in <code>attrs["value"]</code>, is used in the graph like any other
+input, and is fed its current value on each evaluation. Updating a weight is
+then just writing a new value into the master array and feeding it on the
+next step - no recompile per step. This mutable-weight mechanism underlies the
+whole training stack.</p>
+<h3 id="the-vjp-registry">The VJP registry<a class="headerlink" href="#the-vjp-registry" title="Permanent link">&para;</a></h3>
+<p><code>backward</code> walks the forward graph in reverse, and for each op it looks up a
+vector-Jacobian-product rule in a registry:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@af</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="s2">"mul"</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">_vjp_mul</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">srcs</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">_unbroadcast</span><span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">_unbroadcast</span><span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span>
+</code></pre></div>
+<p>Each rule takes the node and its incoming cotangent <code>g</code> and returns one gradient
+per source. The gradients are ordinary ANEForge tensor ops, so the backward pass
+is a graph that compiles and runs on the engine like the forward pass.</p>
+<h3 id="backward-builds-an-on-ane-backward-graph"><code>backward</code> builds an on-ANE backward graph<a class="headerlink" href="#backward-builds-an-on-ane-backward-graph" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">grads</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">loss_scale</span><span class="o">=</span><span class="mf">1024.0</span><span class="p">)</span>   <span class="c1"># {param: grad Tensor}</span>
+</code></pre></div>
+<p><code>af.backward(loss, params, loss_scale)</code> returns, for each parameter, a gradient
+Tensor expressed entirely in ANE ops. The seed <code>dL/dloss = loss_scale</code> is folded
+into an additive constant rather than emitted as a multiply, which sidesteps the
+<code>mul(reduce_output, 0.0)</code> compile wall described below. A companion
+<code>af.backward_from(grad_root, root, params)</code> seeds from an explicit gradient at an
+intermediate tensor (for example the logits) instead of from a scalar loss.</p>
+<p>Both functions accept a <code>stop</code> stop-gradient frontier (default <code>params</code>).
+For ordinary leaf weights this is a no-op, but it is what makes multi-step
+unrolling possible: when one step's updated-weight tensors thread into the next
+step's forward, each step's gradient must treat the current weights as leaves
+(plain SGD/Adam) rather than differentiate through the previous update.</p>
+<h2 id="the-trainer">The Trainer<a class="headerlink" href="#the-trainer" title="Permanent link">&para;</a></h2>
+<p><code>af.Trainer</code> compiles a forward program once and one backward program per
+parameter, then runs the training loop. It accepts either a scalar <code>loss</code> Tensor
+(regression) or a <code>CEHandle</code> from <code>af.softmax_cross_entropy(logits, target)</code>
+(classification). For classification the cross-entropy gradient at the logits is
+the analytic, fp16-stable form <code>(softmax(logits) - target) / N</code> - no <code>log</code>
+appears in the backward path, which would otherwise overflow fp16.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                                   <span class="c1"># an ANEForge graph</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">softmax_cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">tr</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">loss_scale</span><span class="o">=</span><span class="mf">1024.0</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s2">"adam"</span><span class="p">)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">tr</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">X_full</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">Y_onehot</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">tr</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</code></pre></div>
+<p>By default the host runs an fp32 SGD or Adam update over the parameters' master
+values (<code>af.SGD</code> / <code>af.Adam</code>), which is the byte-for-byte baseline path.</p>
+<h3 id="device_optimizertrue-the-update-on-the-engine"><code>device_optimizer=True</code>: the update on the engine<a class="headerlink" href="#device_optimizertrue-the-update-on-the-engine" title="Permanent link">&para;</a></h3>
+<p>With <code>device_optimizer=True</code> the optimizer arithmetic compiles to ANE graph
+ops too. Alongside the per-parameter backward programs, a per-parameter
+update program computes the new state on the engine, so no training tensor math
+runs on the host. The host only computes the scalar <code>lr_t</code>, shuttles state and
+gradients in and out, samples the minibatch, and prints.</p>
+<p>One subtlety is load-bearing. The learning rate <code>lr_t</code> fed to the on-engine
+Adam update must not divide by <code>loss_scale</code>. Adam's step is the ratio
+<code>m / sqrt(v)</code>; with a scaled gradient <code>g' = S*g</code> the moments scale as <code>m' = S*m</code>
+and <code>v' = S^2*v</code>, so the ratio is scale-invariant and the loss-scale cancels.
+Dividing <code>lr_t</code> by <code>S</code> (as a naive SGD-style unscale would) double-unscales and
+collapses the step. SGD is linear, so its <code>lr_t = lr / loss_scale</code> is correct;
+Adam's is not. The on-engine Adam moments <code>m</code> and <code>v</code> are held as fp16 arrays,
+fed each step and read back.</p>
+<h3 id="resident_statetrue-optimizer-state-stays-on-the-engine"><code>resident_state=True</code>: optimizer state stays on the engine<a class="headerlink" href="#resident_statetrue-optimizer-state-stays-on-the-engine" title="Permanent link">&para;</a></h3>
+<p><code>resident_state=True</code> assembles the whole step - forward, backward, and the
+per-parameter update - as one fused multi-output program and keeps the optimizer
+state resident on-device across steps. Each updated-state output is aliased back
+onto its own input port with <code>Program.share_buffer</code> (via <code>compile_multi</code> /
+<code>MultiModel</code>), the shared buffers seeded once. The host then feeds only
+the minibatch and <code>lr_t</code> each step, and reads the weights off the device only at
+checkpoints; nothing is shuttled in and out.</p>
+<p>Full MNIST (a 784-256-10 GELU MLP, Adam) trains to 97.79% test accuracy with
+all twelve state tensors (four parameters times weight/<code>m</code>/<code>v</code>) resident across
+roughly 2,340 steps, in about 1.0 s - faster than the host round-trip path
+(~4 s) because there is no per-step shuttle, and with no compile wall.
+(The resident-state mechanism is verified bit-for-bit against the host-shuttle path in
+<code>tests/test_autograd.py</code>.)</p>
+<h2 id="loss-scaling-and-fp16">Loss scaling and fp16<a class="headerlink" href="#loss-scaling-and-fp16" title="Permanent link">&para;</a></h2>
+<p>Gradients are computed in fp16. A loss scale (commonly 1024) lifts small
+gradients out of fp16 underflow before the backward pass and is divided back out
+before the optimizer step (or, for Adam, cancels in the ratio as above). The
+optimizer state is fine in fp16: the Adam moments stay O(1-20) and do not
+overflow, so fp16 optimizer state suffices and paired-fp16 is not needed
+for the models trained here.</p>
+<p>One chip-specific caveat. On the A13-class ANE (M1), the trainable
+conv's width-offset im2col slices route through a fixed-point crop-DMA that
+saturates any value past 4094 (= 65504/16) to infinity, so an extreme
+<code>loss_scale</code> times a large backward activation could corrupt a conv
+weight-gradient. ANEForge warns in that case and never caps
+<code>loss_scale</code>. The auto-cap was refuted end-to-end on M1: a real normalized CNN
+trains identically at loss_scale 128, 1024, and 65536 - only a synthetic
+<code>0.5*sum(y^2)</code> repro with random inputs ever reaches the threshold. The warning
+fires solely on A13 targets that train a conv weight with <code>kW &gt; 1</code>; M5 / A16 has
+no such route.</p>
+<h2 id="measured-results">Measured results<a class="headerlink" href="#measured-results" title="Permanent link">&para;</a></h2>
+<h3 id="mnist-mlp">MNIST MLP<a class="headerlink" href="#mnist-mlp" title="Permanent link">&para;</a></h3>
+<p>A 784-256-10 GELU MLP trains on full MNIST to 97.57% test accuracy with the
+forward, backward, and Adam update all on the ANE - about 0.5 point under the
+host-fp32-Adam baseline of 98.05% on the same model. With resident state the
+same model reaches 97.79% in ~1.0 s (above).</p>
+<h3 id="cross-chip-parity">Cross-chip parity<a class="headerlink" href="#cross-chip-parity" title="Permanent link">&para;</a></h3>
+<p>The identical seeded MNIST CNN (<code>examples/train_mnist_cnn.py</code>, fixed
+<code>np.random.default_rng(0)</code>, deterministic data order, default <code>loss_scale=1024</code>)
+trains to 0.9080 on M1 (h13/A13), 0.9080 on M2 Pro (h14g/A14, deterministic
+x3), and 0.9070 on M5 (h17/A16-class) over 300 steps. Every run is internally
+deterministic across repeats. A14 lands exactly on M1's number, so the one-sample gap
+(1 in 1000, 0.1%) appears only at the A16 generation - the end-to-end signature of the
+ANE's &lt;=1-ULP-per-op cross-chip fp16 difference accumulating over 300 steps, with the
+drift boundary at A15/A16 rather than per-chip noise: real, but far too small to
+matter. Training is chip-portable across all three measured generations. See
+<a href="../cross-chip/">cross-chip.md</a>.</p>
+<h3 id="versus-the-gpu-and-cpu">Versus the GPU and CPU<a class="headerlink" href="#versus-the-gpu-and-cpu" title="Permanent link">&para;</a></h3>
+<p>For a small MLP, training on the ANE ties the fastest Apple GPU path
+and both beat the CPU. On the same 784-256-10 GELU MLP (Adam, B=128, 5 epochs =
+2,340 steps on full MNIST), all reaching ~97.5% accuracy:</p>
+<table>
+<thead>
+<tr>
+<th>device / framework</th>
+<th>train time</th>
+<th>vs fastest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU Metal (MLX, fp32)</td>
+<td>0.87 s</td>
+<td>1.00x</td>
+</tr>
+<tr>
+<td>ANE (ANEForge fp16, resident)</td>
+<td>0.93 s</td>
+<td>1.08x</td>
+</tr>
+<tr>
+<td>CPU (PyTorch fp32)</td>
+<td>1.40 s</td>
+<td>1.62x</td>
+</tr>
+<tr>
+<td>CPU (MLX fp32)</td>
+<td>1.77 s</td>
+<td>2.05x</td>
+</tr>
+<tr>
+<td>GPU Metal (PyTorch MPS, fp32)</td>
+<td>1.87 s</td>
+<td>2.16x</td>
+</tr>
+</tbody>
+</table>
+<p>This is the dispatch-bound, tiny-model regime (~0.4 ms/step, ~200K parameters),
+so the ANE matching the GPU is about per-step overhead, not peak FLOPS; for
+larger compute-bound models the GPU's raw throughput is expected to pull ahead.
+ANE training is a capability and efficiency story, not a peak-speed claim.</p>
+<h2 id="host-free-multi-step-dispatch">Host-free multi-step dispatch<a class="headerlink" href="#host-free-multi-step-dispatch" title="Permanent link">&para;</a></h2>
+<p>A fixed number of training steps has no data-dependent control flow, so the whole
+forward -&gt; backward -&gt; optimizer-update recurrence unrolls into a single graph,
+the same trick the iterative solvers in <code>aneforge.linalg</code> use. <code>af.UnrolledTrainer</code>
+builds it: each <code>step()</code> runs K steps in one dispatch on the engine, with the
+host feeding K minibatches plus the per-step learning rates (an array move, no
+per-step host round-trip inside the block). With <code>resident=True</code> (the default)
+the optimizer state is <code>share_buffer</code>-aliased across dispatches, so the host
+feeds only the K minibatches and per-step lr, reading weights at checkpoints.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">af</span><span class="o">.</span><span class="n">input</span><span class="p">((</span><span class="n">B</span><span class="p">,</span> <span class="n">DIN</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">af</span><span class="o">.</span><span class="n">input</span><span class="p">((</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">tr</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">UnrolledTrainer</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="s2">"ce"</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">onehot</span><span class="p">),</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>                        <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">loss_scale</span><span class="o">=</span><span class="mf">1024.0</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">tr</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>                 <span class="c1"># ONE dispatch = K on-engine steps</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xte</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">yte</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</code></pre></div>
+<p>One <code>execute_multi</code> drives K on-engine steps with no Path B and no
+entitlement. This is performance-neutral: on the resident-buffer path the per-step
+host dispatch was never the bottleneck, so collapsing the per-step <code>execute()</code>
+calls into one buys nothing measurable. The bounded multi-step path is reachable
+without an entitlement, and by this measurement the entitlement-gated
+fully-autonomous loop would not run these workloads any faster.</p>
+<p>For a full-batch task the data and learning rate can also be seeded once, after
+which the training loop is literally <code>prog.execute()</code> and the host feeds nothing
+per dispatch; <code>examples/train_transformer.py</code> trains an attention block this way.</p>
+<h2 id="worked-examples">Worked examples<a class="headerlink" href="#worked-examples" title="Permanent link">&para;</a></h2>
+<p>The committed demos train a 1000-sample MNIST subset (<code>examples/data/mnist_subset.npz</code>)
+end to end on the engine:</p>
+<ul>
+<li><code>examples/train_mnist_mlp.py</code> - a GELU MLP, K steps unrolled per dispatch.</li>
+<li><code>examples/train_mnist_cnn.py</code> - conv -&gt; relu -&gt; avg_pool -&gt; fc, with a
+  trainable conv. The native ANE conv needs a baked weight, so
+  <code>af.conv_param</code> / <code>af.conv2d</code> build the conv from primitives (static im2col plus
+  a batched matmul) for a weight gradient that runs on the engine; the
+  <code>conv_shape</code> is carried across each in-graph optimizer update automatically.</li>
+<li><code>examples/train_transformer.py</code> - a multi-head self-attention block trained
+  fully host-free with <code>af.adam_step</code> and resident state.</li>
+<li><code>examples/train_transformer_prenorm.py</code> - a pre-norm transformer block
+  (<code>layer_norm</code> before attention and before the MLP). The gradient flows through
+  LayerNorm to the trainable projections and MLP; the block converges.</li>
+<li><code>examples/train_llama_block.py</code> - a LLaMA-style block (<code>rms_norm</code>
+  pre-normalization + a SwiGLU feed-forward built on <code>silu</code>). Exercises the
+  RMSNorm and SiLU gradients end to end. The char-LM examples apply causal
+  attention as an additive mask before a decomposed softmax; for a forward decoder
+  block, causal attention is also available on the native fused-attention layer via
+  <code>af.sdpa(q, k, v, is_causal=True)</code> (see <code>examples/llama_block_causal.py</code>).</li>
+<li><code>examples/train_charlm.py</code> - training at scale: a 4-layer causal LLaMA-style
+  character language model (token + positional embeddings, RMSNorm + SwiGLU blocks,
+  output projection, next-token cross-entropy), forward + backward + optimizer all
+  on the engine. Cross-entropy falls to near zero, next-char accuracy reaches 100%,
+  and it reconstructs its training text from a seed. Token embedding is a one-hot
+  matmul (<code>onehot @ W_emb</code>) rather than a <code>gather</code> (which has no VJP), so the
+  embedding gradient is an ordinary matmul gradient; causal masking is an additive
+  upper-triangular bias before softmax. The fused forward + backward +
+  optimizer program converges through eight layers; compile time, not correctness,
+  is the practical ceiling on depth.</li>
+<li><code>examples/train_charlm_corpus.py</code> - the data-scale companion: the same model trains
+  on random windows from a structured corpus's training split and is evaluated on a
+  disjoint validation split it never trains on. Held-out next-char accuracy reaches
+  about 65% against a roughly 20% unigram baseline, so the model learned transferable
+  structure rather than memorizing a single sequence. Each window is re-based to
+  absolute positions 0..S-1 so the learned positional embeddings apply to every
+  sampled window.</li>
+<li><code>examples/train_charlm_deep.py</code> - a 16-layer char-LM trained with a
+  layer-streamed compile (<code>aneforge.streaming.CheckpointedStack</code>). When the layers
+  are identical, the per-layer forward and per-layer backward each depend only on one
+  layer's shape, so each is compiled once and reused for every layer; the six programs
+  (embed, layer, head, each with a forward and a backward) compile in about half a
+  second regardless of depth, where the monolithic eight-layer compile alone took
+  about 162 seconds. Cross-entropy falls from about 3.0 to 0.03, removing compile
+  size as the ceiling on training depth.</li>
+</ul>
+<h2 id="depth-without-a-compile-size-wall">Depth without a compile-size wall<a class="headerlink" href="#depth-without-a-compile-size-wall" title="Permanent link">&para;</a></h2>
+<p>A monolithic compile fuses a model's whole forward, backward, and optimizer step into
+one program, so compile time grows superlinearly with depth and caps how deep a model
+can train. <code>aneforge.streaming.CheckpointedStack</code> removes that ceiling for a stack of
+identical layers. The per-layer forward and backward are each compiled
+once and reused for every layer, fed that layer's parameters and its checkpointed
+input activation, so compile work is independent of layer count. The backward is
+standard gradient checkpointing: each layer's input is stored, the layer's forward is
+recomputed inside the reused backward program, and that program returns the parameter
+gradients plus the gradient with respect to the input (the upstream gradient
+for the layer below). The streamed gradients are bit-exact against a monolithic
+backward. The caller drives the embedding and output stages (each compiled once) and a
+host-side optimizer over the streamed gradients, with all forward and backward compute
+on the engine.</p>
+<p>The two normalization layers in those blocks show that a real
+norm-bearing architecture trains on the engine, affine included. The norm methods
+are polymorphic in their affine arguments: a numpy <code>gamma</code> / <code>beta</code> bakes a fixed
+affine (the native lowering, gradient flows through the input only), while a
+parameter <code>Tensor</code> for <code>gamma</code> / <code>beta</code> composes the unit-affine normalize op
+with an explicit learnable scale and shift, so the affine trains alongside the
+rest of the model (its gradient flows through the broadcast-aware <code>mul</code> / <code>add</code>
+VJPs). Pass <code>gamma</code> / <code>beta</code> shaped to broadcast over the normalized axis
+(<code>[1, D]</code> for <code>layer_norm</code> / <code>rms_norm</code>, <code>[1, C, 1, 1]</code> for <code>group_norm</code>). Models
+using <code>prelu</code> are likewise trainable through the <code>Trainer</code>.</p>
+<h2 id="honest-limits">Honest limits<a class="headerlink" href="#honest-limits" title="Permanent link">&para;</a></h2>
+<h3 id="gradient-vocabulary">Gradient vocabulary<a class="headerlink" href="#gradient-vocabulary" title="Permanent link">&para;</a></h3>
+<p>The registered VJPs are all numerically correct - every one matches its
+closed-form derivative (verified to cos ~1.0 against finite differences on M1).
+The differentiable vocabulary covers the structural and linear-algebra ops, the
+common activations, and the three normalization layers:</p>
+<ul>
+<li>structure / linalg: <code>matmul</code>, <code>bmm</code>, <code>conv</code>, <code>avg_pool</code>, <code>max_pool</code>,
+  <code>reduce_sum</code>, <code>reduce_mean</code>, <code>transpose</code>, <code>reshape</code>, <code>flatten2d</code>,
+  <code>slice_by_size</code>, <code>concat</code>, <code>add</code>, <code>sub</code>, <code>mul</code>, <code>muls</code>, <code>adds</code>, <code>square</code></li>
+<li>activations: <code>relu</code>, <code>relu6</code>, <code>leaky_relu</code>, <code>elu</code>, <code>gelu</code>, <code>silu</code>,
+  <code>sigmoid</code>, <code>sigmoid_hard</code>, <code>tanh</code>, <code>scaled_tanh</code>, <code>softmax</code>, <code>clip</code></li>
+<li>math: <code>exp</code>, <code>log</code>, <code>sqrt</code>, <code>rsqrt</code>, <code>inverse</code>, <code>erf</code>, <code>cos</code>, <code>abs</code></li>
+<li>normalization: <code>layer_norm</code>, <code>rms_norm</code>, <code>group_norm</code>, <code>l2_norm</code></li>
+</ul>
+<p>This trains transformer and LLaMA-style blocks, diffusion-UNet and GroupNorm
+CNNs, plain CNNs, and MLPs end to end on the engine. The normalization VJPs use
+the exact closed-form input gradient; because ANEForge has no constant-tensor op,
+the backward graph re-injects <code>gamma</code> as a fed value-input.</p>
+<p>A forward op with no registered VJP compiles and runs its forward
+pass, then fails at <code>backward</code> with <code>no vjp for op '&lt;name&gt;'</code>. The norms and <code>silu</code> are
+covered (they appear in nearly every modern architecture). The remaining gaps are
+low-value and do not block mainstream training: the reduction-routing ops <code>amax</code> / <code>amin</code>
+/ <code>cumsum</code>, and a few parametric activations (<code>atan</code>, <code>softplus</code>, clamped variants).</p>
+<p>Two pre-existing test caveats are unrelated to gradient coverage and predate this
+work: <code>test_conv2d_trainable_grads</code> fails with NaN (the conv weight-gradient
+slice-saturation that is root-caused separately - it fails identically with the
+op removed), and <code>test_cnn_trains_on_subset</code> can hang late in a full suite run
+under many rapid compiles, which the compile backoff in <code>aneforge/_circuit.py</code>
+paces as a defensive backstop.</p>
+<h3 id="the-mulreduce_output-00-compile-wall">The <code>mul(reduce_output, 0.0)</code> compile wall<a class="headerlink" href="#the-mulreduce_output-00-compile-wall" title="Permanent link">&para;</a></h3>
+<p>Multiplying a <code>reduce_sum</code> / <code>reduce_mean</code> result by zero trips an ANECCompile
+fusion wall (<code>reduce * nonzero</code> compiles, and a bare mul-by-zero compiles; only
+the combination fails). The autograd builds constant tensors with
+<code>_const_like(t, c) = (t - t).adds(c)</code> - an exact-zero subtract rather than a
+multiply by zero - which sidesteps the wall for any finite tensor, and the
+backward seed folds the loss scale into an additive constant for the same reason.
+Handled internally; it matters only if you author backward graphs by hand.</p>
+<h3 id="throughput">Throughput<a class="headerlink" href="#throughput" title="Permanent link">&para;</a></h3>
+<p>End-to-end training throughput is dispatch- and round-trip-bound like the rest of
+the ANE surface at this model scale. On-engine training is a capability (train
+on-device, low power, chip-portable), not a peak-speed claim against the GPU on
+large compute-bound models.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../aneforge-api/"><code>aneforge-api.md</code></a> - the full frontend reference.</li>
+<li><a href="../capabilities/"><code>capabilities.md</code></a> - the hardware op surface and dtype limits.</li>
+<li><a href="../getting-started/"><code>getting-started.md</code></a> - building the e5rt dispatch dylib.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

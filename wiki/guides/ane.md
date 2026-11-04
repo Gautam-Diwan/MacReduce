@@ -2,21 +2,25 @@
 title: "Integrate ANE training through falsifiable gates"
 type: implementation
 status: proposed
-updated: 2026-10-27
-sources: ["S10", "S11", "S12", "S16"]
+updated: 2026-10-29
+sources: ["S10", "S11", "S12", "S16", "S37"]
 ---
 
 # Integrate ANE training through falsifiable gates
 
-**Scope note 2026-10-27:** The 10-805 project treats the Neural Engine as a federated client, either combined with the GPU or separate from it. ANEForge, Orion, and maderix are the private stacks. `macreduce federate` records which import. None of the three stacks is pinned, and an import would not by itself show residency. The gates below still apply before a number is kept.
+**Scope note 2026-10-28:** [S37](../sources/S37.md) is Bryngelson's ANE reference, read in the scope on that card. It says the engine has no native backward op and that a host-built backward graph still trains, including transformers whose ops are in the registered set. The silicon numbers in the chapters that were read are M1 and M5. They are not a measurement of Qwen3 QLoRA on this M4.
+
+**Scope note 2026-10-27:** The 10-805 project treats the Neural Engine as a federated client, either combined with the GPU or separate from it. ANEForge 0.4.0 is installed. Orion and maderix are not pinned. `macreduce federate` records which import. An import does not by itself show residency. The gates below still apply before a number is kept.
 
 **Scope note 2026-10-26:** [Decision 0003](../decisions/0003-build-target.md) allows a private-API ANE training stack when it addresses a gap ANEForge, Orion, or maderix leave open. The inference option remains: a Core ML draft model whose placement is verified by power or compute plan and whose outputs pass a parity gate ([S25](../sources/S25.md), [S29](../sources/S29.md), [S36](../sources/S36.md)). A later probe converted a small convolution, not that draft, and read a compute plan ([probe](../../evidence/ane-probe/README.md)). A decoder block and a 28-layer Qwen3-0.6B-shaped forward were then timed ([decoder](../../evidence/ane-decoder/README.md), [infer](../../evidence/infer-qwen3/README.md)). The saved decoder ranking omitted the Neural Engine on a two-sample bandwidth trace, and the full package did not fit on disk. The gates below remain the right shape for the Qwen draft check.
 
-ANE training is not implemented in MacReduce. Investigate it as a bounded backend project after the GPU and physical network baselines work. Public inference support is not a public general training API. The candidate runtimes below use experimental paths and must be pinned and validated on the actual macOS build.
+Before a new `aneforge` call, search [ANEForge lookup](../queries/aneforge.md). The call rules are in [Write an ANEForge program](aneforge.md).
+
+One Qwen3 decoder block, frozen base plus LoRA, compiles for the Neural Engine and is the GPU+ANE training suffix. The other blocks stay 4-bit QLoRA on the GPU. The fp16 backward scales the cotangent to peak 1 and backs off if that overflows. On this M4 that backward matched float32 at peak 1, and an isolated rms_norm backward did not overflow. The three-epoch curve has not finished. ANEForge 0.4.0 has also run a linear Adam step and a matmul on device mask 0x4, recorded in [evidence/ane-forge](../../evidence/ane-forge/README.md). Public inference support is not a public general training API. Orion and maderix still have to be pinned and validated on this macOS build.
 
 ## Candidate selection
 
-[ANEForge](../sources/S10.md) offers a Python-oriented training interface with different optimizer/residency modes. [maderix ANE](../sources/S11.md) supplies native training examples including a dynamic-weight path. [Orion](../sources/S12.md) is another reported training system. Their results are external claims; none has been executed by MacReduce. Choose one integration first and document why its model, precision, and API fit the reference workload.
+[ANEForge](../sources/S10.md) offers a Python-oriented training interface with different optimizer/residency modes. [maderix ANE](../sources/S11.md) supplies native training examples including a dynamic-weight path. [Orion](../sources/S12.md) is another reported training system. Their published results are external claims. MacReduce has executed the installed ANEForge linear step, not the upstream training examples and not Orion or maderix. The model, precision, and API still have to fit the Qwen3 adapter before an engine client can share a delta with the GPU.
 
 ## Gate A availability and simple execution
 

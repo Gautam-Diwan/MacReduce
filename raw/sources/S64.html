@@ -1,0 +1,2401 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../mil-primer/">
+      
+      
+        <link rel="next" href="../cross-chip/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>FAQ - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/faq/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#faq" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FAQ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#will-this-work-on-my-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Will this work on my machine?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-compile-for-a-different-chip-than-the-one-im-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I compile for a different chip than the one I'm on?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-did-a-compile-suddenly-pause-for-15-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why did a compile suddenly pause for ~15 seconds?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-feed-raw-camera-video-bytes-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I feed raw camera / video bytes directly?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-train-on-the-ane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I train on the ANE?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-just-use-coreml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why not just use CoreML?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-use-this-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I use this in production?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-fp16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why fp16?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-about-nan-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What about NaN handling?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-my-first-call-slow-and-how-do-i-run-a-single-op" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why is my first call slow, and how do I run a single op?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-macos-versions-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What macOS versions are supported?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-if-apple-changes-the-private-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What if Apple changes the private API?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-isnt-this-in-tinygrad-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why isn't this in tinygrad / pytorch?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-this-compare-to-ane-lm-johnmai-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "How does this compare to ANE-LM / johnmai-dev?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-the-validators-scale-is-expected-to-be-constant-a-single-bit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why is the validator's 'Scale is expected to be constant' a single bit?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-does-compiling-take-750-ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why does compiling take 750 ms?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-this-work-in-a-docker-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Does this work in a Docker container?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-distribute-compiled-bundles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I distribute compiled bundles?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-the-licensing-situation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What's the licensing situation?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../op-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/numerics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/capabilities-and-targets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#will-this-work-on-my-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Will this work on my machine?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-compile-for-a-different-chip-than-the-one-im-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I compile for a different chip than the one I'm on?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-did-a-compile-suddenly-pause-for-15-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why did a compile suddenly pause for ~15 seconds?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-feed-raw-camera-video-bytes-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I feed raw camera / video bytes directly?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-train-on-the-ane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I train on the ANE?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-just-use-coreml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why not just use CoreML?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-use-this-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I use this in production?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-fp16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why fp16?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-about-nan-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What about NaN handling?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-my-first-call-slow-and-how-do-i-run-a-single-op" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why is my first call slow, and how do I run a single op?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-macos-versions-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What macOS versions are supported?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-if-apple-changes-the-private-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What if Apple changes the private API?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-isnt-this-in-tinygrad-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why isn't this in tinygrad / pytorch?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-this-compare-to-ane-lm-johnmai-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "How does this compare to ANE-LM / johnmai-dev?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-the-validators-scale-is-expected-to-be-constant-a-single-bit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why is the validator's 'Scale is expected to be constant' a single bit?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-does-compiling-take-750-ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Why does compiling take 750 ms?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-this-work-in-a-docker-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Does this work in a Docker container?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-distribute-compiled-bundles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Can I distribute compiled bundles?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-the-licensing-situation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "What's the licensing situation?"
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h1>
+<h2 id="will-this-work-on-my-machine">"Will this work on my machine?"<a class="headerlink" href="#will-this-work-on-my-machine" title="Permanent link">&para;</a></h2>
+<p>Verified on M5 Pro and M1 Max (macOS 26.5). Should work on any Apple Silicon
+Mac (M1, M2, M3, M4, M5 - all variants) running macOS 14+. ANEForge
+maps each M-generation to a compiler family <code>M(n) = H(n+12)</code> (M1 = H13,
+M5 = H17), and the three silicon-measured chips (M1, M2, M5) carry these ANE core counts:</p>
+<table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>Family</th>
+<th>ANE cores</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1 (incl. Max)</td>
+<td>H13</td>
+<td>4</td>
+<td>Silicon-measured anchor</td>
+</tr>
+<tr>
+<td>M2 / M3 / M4</td>
+<td>H14 / H15 / H16</td>
+<td>-</td>
+<td>Ground-truth capability families</td>
+</tr>
+<tr>
+<td>M5 (incl. Pro)</td>
+<td>H17</td>
+<td>16</td>
+<td>Silicon-measured anchor; verified host</td>
+</tr>
+</tbody>
+</table>
+<p>Op capability is per family, not per rail: Pro / Max / Ultra variants of a
+generation differ in core count and clock, not in which ops compile.
+<code>detect_family()</code> (in <code>aneforge._targets</code>) reports the host family, and
+<code>ANEFORGE_TARGET</code> overrides it. <code>af.project_peak(arch)</code>
+gives the per-chip fp16 peak projection; <code>af.estimate(out, target='hXX')</code> a
+measurement-free latency estimate.</p>
+<p>ANEForge always compiles in-process, so compiled-bundle portability across
+chip generations only matters if you copy build artifacts between machines. To
+compile a graph for another family from one host, see
+<a href="../cross-chip/"><code>cross-chip.md</code></a>.</p>
+<h2 id="can-i-compile-for-a-different-chip-than-the-one-im-on">"Can I compile for a different chip than the one I'm on?"<a class="headerlink" href="#can-i-compile-for-a-different-chip-than-the-one-im-on" title="Permanent link">&para;</a></h2>
+<p>Yes. <code>af.compile(out, target='h16s')</code> gates a graph's ops and shapes for another ANE
+family before lowering, and <code>cross_compile_check(out, target)</code> (in <code>aneforge._compile</code>)
+checks from this host whether the graph compiles for that family's <code>TargetArchitecture</code>.
+There are 28 compiler targets spanning M1 through M5. This is compile-level validation;
+numeric correctness still requires the real silicon. <code>detect_family()</code> reports the
+host's family, and <code>ANEFORGE_TARGET</code> overrides detection. See
+<a href="../cross-chip/">cross-chip.md</a>.</p>
+<h2 id="why-did-a-compile-suddenly-pause-for-15-seconds">"Why did a compile suddenly pause for ~15 seconds?"<a class="headerlink" href="#why-did-a-compile-suddenly-pause-for-15-seconds" title="Permanent link">&para;</a></h2>
+<p>ANEForge paces a compile when a recent compile failed, a backstop for the
+autotuner's burst of variant compiles that keeps consecutive failures a
+short interval apart. It is tunable: <code>ANEFORGE_COMPILE_BACKOFF</code>
+(seconds, default <code>15.0</code>; <code>0</code> disables pacing), <code>ANEFORGE_COMPILE_BREAKER_STRICT=1</code>
+(raise <code>af.CompileBackoffError</code> instead of sleeping), <code>ANEFORGE_DISABLE_COMPILE_BREAKER=1</code>
+(off). A successful compile clears it; <code>af.reset_compile_breaker()</code> clears it manually.</p>
+<h2 id="can-i-feed-raw-camera-video-bytes-directly">"Can I feed raw camera / video bytes directly?"<a class="headerlink" href="#can-i-feed-raw-camera-video-bytes-directly" title="Permanent link">&para;</a></h2>
+<p>Yes. <code>af.image_input(shape, scale=1/255, bias=0.0)</code> declares a uint8 input port and
+runs the <code>cast -&gt; scale -&gt; bias</code> dequantisation on the engine, so the host skips the
+float-convert + repack. It is byte-identical to converting on the host.</p>
+<h2 id="can-i-train-on-the-ane">"Can I train on the ANE?"<a class="headerlink" href="#can-i-train-on-the-ane" title="Permanent link">&para;</a></h2>
+<p>Yes, for small models. ANEForge has a reverse-mode autograd that runs the forward
+and backward passes on the engine, with an optional on-engine optimizer step
+(<code>Trainer(device_optimizer=True)</code>) and resident on-engine optimizer state
+(<code>Trainer(resident_state=True)</code>). See <a href="../training/">training.md</a>.</p>
+<h2 id="why-not-just-use-coreml">"Why not just use CoreML?"<a class="headerlink" href="#why-not-just-use-coreml" title="Permanent link">&para;</a></h2>
+<p>CoreML is the public, sanctioned route. Use it if:</p>
+<ul>
+<li>You want broad device compatibility (intel Macs, iOS, etc.)</li>
+<li>Your model is large enough that Apple's routing heuristic puts it
+  on ANE (conv3x3 above <code>[1, 256, 32, 32]</code>; otherwise CPU)</li>
+<li>You don't need &lt; 1 ms latency per call</li>
+<li>You're okay with the multi-second compile and <code>.mlmodelc</code> packaging</li>
+</ul>
+<p>ANEForge makes sense if:</p>
+<ul>
+<li>You want sub-millisecond per-call latency</li>
+<li>You need fine-grained control of dispatch (per-op shape, async pipeline)</li>
+<li>Your shapes are smaller than CoreML's ANE-routing threshold and you
+  want them on ANE anyway</li>
+<li>You're doing research on the ANE itself</li>
+</ul>
+<p>The two are complementary. ANEForge uses <code>MLComputePlan</code> (a CoreML API) as
+an audit oracle even though it doesn't use CoreML for dispatch.</p>
+<h2 id="can-i-use-this-in-production">"Can I use this in production?"<a class="headerlink" href="#can-i-use-this-in-production" title="Permanent link">&para;</a></h2>
+<p>Probably not yet, with caveats:</p>
+<ul>
+<li>The codebase is research. The Python API is unstable; method signatures
+  may change.</li>
+<li>Private framework symbols can change with any macOS update. We test on
+  the current macOS; older versions may need adjustments.</li>
+<li>Error handling is partial; many failure modes surface as opaque errors
+  from <code>aned</code>.</li>
+<li>No threadsafety guarantees. e5rt's <code>Program</code> is single-threaded.</li>
+</ul>
+<p>For research, prototyping, and exploratory ML work, yes, it's used. The
+streaming demos run reliably, and the validator catches most invalid programs
+before the slow XPC compile. For a production system, prefer CoreML for now.</p>
+<h2 id="why-fp16">"Why fp16?"<a class="headerlink" href="#why-fp16" title="Permanent link">&para;</a></h2>
+<p>The ANE's dataplane is fp16-native - that's the hardware. fp16 is:</p>
+<ul>
+<li>Half the memory bandwidth of fp32 (matters for ANE's TFLOPS targets)</li>
+<li>Sufficient precision for most ML inference (after careful training)</li>
+<li>The same dtype Apple's CoreML uses for ANE-bound models</li>
+</ul>
+<p>ANEForge accepts int8 / uint8 / int16 / uint16 as I/O dtypes (for
+quantized weights, indices, pixel data), but computation is always fp16.
+fp32 is allowed as an intermediate via <code>cast(x,
+dtype="fp32") -&gt; compute -&gt; cast(result, dtype="fp16")</code>.</p>
+<p>There's no bf16. There's no fp32 dataplane. ANE is fp16-only.</p>
+<p>Weights can still be stored compressed and dequantised during the tile DMA:
+<code>compile(out, compress=...)</code> supports per-channel int8, 4-bit LUT (<code>int4</code>),
+unstructured <code>sparse</code>, <code>blockwise</code> int8, and a family-aware <code>auto</code>. See
+<a href="../aneforge-api/#weight-compression">weight compression</a>.</p>
+<h2 id="what-about-nan-handling">"What about NaN handling?"<a class="headerlink" href="#what-about-nan-handling" title="Permanent link">&para;</a></h2>
+<p>ANE's fp16 hardware doesn't propagate NaN correctly. For 23 probed ops,
+ANE returns <code>+inf</code>, <code>0</code>, or other op-specific finite values instead of
+NaN. Some specific cases:</p>
+<ul>
+<li><code>log(+inf) -&gt; 0</code></li>
+<li><code>softplus(+inf) -&gt; 0</code></li>
+<li><code>mul(+inf, x) -&gt; -52416</code> (overflow wraps to a representable negative)</li>
+<li><code>cos(+inf) -&gt; 0</code></li>
+<li><code>gelu(0.0) -&gt; -0.000754</code> (polynomial bias leak)</li>
+</ul>
+<p>If your model produces NaN through any op, the result is not IEEE-754
+compliant. Train without producing inf/NaN intermediates. Detect overflow
+on CPU before dispatching if you must.</p>
+<p>Full details in <a href="../capabilities/#datatypes">capabilities.md</a>.</p>
+<h2 id="why-is-my-first-call-slow-and-how-do-i-run-a-single-op">"Why is my first call slow, and how do I run a single op?"<a class="headerlink" href="#why-is-my-first-call-slow-and-how-do-i-run-a-single-op" title="Permanent link">&para;</a></h2>
+<p>Most of the cost in a one-shot call is the one-time compile, not the eval. The
+ANE eval is ~80-110 us once the program is resident. Compile once and
+reuse the returned <code>net</code> across calls:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">aneforge</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">af</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">x</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">input</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">relu</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">net</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>            <span class="c1"># one-time compile (~750 ms)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">out</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>   <span class="c1"># ~80 us per call thereafter</span>
+</code></pre></div>
+<p>A single op is just a one-op graph. The mistake that makes every call slow is
+recompiling per call: hoist <code>af.compile</code> out of your hot loop, keep the <code>net</code>
+handle, and feed it new inputs. Call <code>net.release()</code> when done. For the
+per-call cost breakdown and dispatch paths, see <a href="../dispatch/">dispatch.md</a>.</p>
+<h2 id="what-macos-versions-are-supported">"What macOS versions are supported?"<a class="headerlink" href="#what-macos-versions-are-supported" title="Permanent link">&para;</a></h2>
+<p>Verified on macOS 26.5 (M5 Pro). Likely works on macOS 14+ but exact API
+shapes change between versions:</p>
+<ul>
+<li>Pre-14: <code>MLComputePlan</code> doesn't exist, so the routing-truth audit
+  oracle won't work, but other features should.</li>
+<li>macOS 26: new <code>e5rt_execution_stream_submit_async</code> symbol (old
+  <code>_async_submit</code> deprecated). The wrapper handles both.</li>
+</ul>
+<p>Bug reports with <code>sw_vers</code> output appreciated.</p>
+<h2 id="what-if-apple-changes-the-private-api">"What if Apple changes the private API?"<a class="headerlink" href="#what-if-apple-changes-the-private-api" title="Permanent link">&para;</a></h2>
+<p>The framework symbols ANEForge calls are private and can be
+renamed or reordered across macOS releases (the ABI usually stays the
+same). When something breaks:</p>
+<ol>
+<li>Run the test suite (<code>docs/development.md</code>). The probes hard-fail on
+   missing symbols.</li>
+<li>Check <code>nm /System/Library/PrivateFrameworks/&lt;framework&gt;/&lt;binary&gt; |
+   grep &lt;symbol&gt;</code> to see if the symbol was renamed.</li>
+<li>Run <code>otool -tV</code> on the new symbol to confirm the same intent.</li>
+<li>Open an issue documenting the API change.</li>
+</ol>
+<p>The project has no SLA for tracking Apple's changes. Pull requests
+welcome.</p>
+<h2 id="why-isnt-this-in-tinygrad-pytorch">"Why isn't this in tinygrad / pytorch?"<a class="headerlink" href="#why-isnt-this-in-tinygrad-pytorch" title="Permanent link">&para;</a></h2>
+<p>The ANE is a private accelerator. tinygrad's <code>extra/accel/ane</code> is the
+precedent that ANEForge picks up from. Generic ML frameworks
+hesitate to depend on private APIs that can change without notice.</p>
+<p>To use ANEForge from a higher-level framework, the <code>import
+aneforge as af</code> API (build a graph, <code>af.compile</code>, call the returned <code>net</code>) is
+small and self-contained - easy to integrate as a custom backend.</p>
+<h2 id="how-does-this-compare-to-ane-lm-johnmai-dev">"How does this compare to ANE-LM / johnmai-dev?"<a class="headerlink" href="#how-does-this-compare-to-ane-lm-johnmai-dev" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/johnmai-dev/ANE-LM"><code>johnmai-dev/ANE-LM</code></a> is the
+closest precedent - a small LLM runtime over <code>AppleNeuralEngine.framework</code>,
+using the same <code>_ANEInMemoryModel</code> path A as ANEForge.</p>
+<p>Differences:</p>
+<ul>
+<li>ANEForge has the e5rt backend (~80 us/call vs ANE-LM's ms-scale dispatch).</li>
+<li>ANEForge has a validator that catches invalid shapes before the compile.</li>
+<li>ANE-LM is focused on LLM inference; ANEForge is more general-purpose.</li>
+</ul>
+<p>Both projects are research code; treat them as exploration aids, not
+production stacks.</p>
+<h2 id="why-is-the-validators-scale-is-expected-to-be-constant-a-single-bit">"Why is the validator's 'Scale is expected to be constant' a single bit?"<a class="headerlink" href="#why-is-the-validators-scale-is-expected-to-be-constant-a-single-bit" title="Permanent link">&para;</a></h2>
+<p>Because Apple's compile pipeline tracks tensor provenance internally. The
+<code>is_constant</code> bit on <code>ANECTensorDesc</code> flags tensors produced
+by a <code>const(...)</code> op (or <code>constexpr_*</code> chain). The SDPA validator
+checks this flag rather than re-deriving constness from
+the producer chain.</p>
+<p>So from user-space, you set the flag manually on the
+descriptor before calling the validator. The compiler trusts you. (The
+kernel-side signature check on HWX still enforces signing, so this
+trust isn't a security boundary.)</p>
+<h2 id="why-does-compiling-take-750-ms">"Why does compiling take 750 ms?"<a class="headerlink" href="#why-does-compiling-take-750-ms" title="Permanent link">&para;</a></h2>
+<p>That's <code>aned</code> running the full MIL -&gt; MLIR -&gt; LLIR -&gt; ANECIR -&gt; HWX pipeline,
+plus weight encoding and the kernel signature pass. It's a one-time cost
+per shape - the compiled program then runs at ~80 us per call.</p>
+<p>For shapes you'll use many times, compile once at startup and reuse.
+For shapes that change per call (dynamic batch, variable sequence
+length), you pay the compile cost each time. The <code>e5rt_execution_stream_operation_reshape_operation</code>
+symbol exists but ANEForge doesn't yet expose it; an open follow-up.</p>
+<h2 id="does-this-work-in-a-docker-container">"Does this work in a Docker container?"<a class="headerlink" href="#does-this-work-in-a-docker-container" title="Permanent link">&para;</a></h2>
+<p>No. Containers don't have access to <code>aned</code> or the kernel ANE driver;
+ANEForge runs on the macOS host directly.</p>
+<p>For Linux + Apple silicon (Asahi), ANEForge does not run: it dispatches
+through macOS <code>aned</code>, which Asahi lacks. The ANE itself is reachable
+on Asahi through the open kernel driver (<a href="https://github.com/eiln/ane">eiln/ane</a>)
+and pure register programming with no CoreML or <code>aned</code>
+(<a href="https://github.com/allbilly/ane">allbilly/ane</a>).</p>
+<h2 id="can-i-distribute-compiled-bundles">"Can I distribute compiled bundles?"<a class="headerlink" href="#can-i-distribute-compiled-bundles" title="Permanent link">&para;</a></h2>
+<p>You can copy the on-disk compile artifacts, but they won't load in a
+different process. <code>aned</code> keys its HWX cache by PID; a fresh process
+sees only <code>model.anehash</code> (a content hash) on disk and refuses to
+load the cached HWX. Either re-compile in the new process or use
+shared-process semantics (open question).</p>
+<h2 id="whats-the-licensing-situation">"What's the licensing situation?"<a class="headerlink" href="#whats-the-licensing-situation" title="Permanent link">&para;</a></h2>
+<p>The code in this repository is yours to use. The Apple Neural Engine is
+Apple's private hardware; the framework symbols ANEForge calls are
+private, undocumented, and may change at any time. Nothing here
+constitutes an API contract from Apple.</p>
+<p>If you ship something built on ANEForge and Apple changes the underlying
+API in a future macOS, your software will break. Plan accordingly.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

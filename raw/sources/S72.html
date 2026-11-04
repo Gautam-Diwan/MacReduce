@@ -1,0 +1,3971 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../capabilities/">
+      
+      
+        <link rel="next" href="../onnx/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Op catalog - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/op-catalog/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ane-op-catalog-every-native-mil-op-x-device-m1-m5" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Op catalog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#activations-incl-lut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activations (incl. LUT)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-logical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison / logical
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conv-matmul-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conv / MatMul / Pooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection / sampling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elementwise-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elementwise arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-resize-texture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image / resize / texture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normalization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantization-dtype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantization / dtype
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recurrent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurrent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reductions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reductions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Special / math
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stateful-state-buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful (state / buffers)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural / shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/numerics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/capabilities-and-targets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#activations-incl-lut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activations (incl. LUT)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-logical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison / logical
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conv-matmul-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conv / MatMul / Pooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection / sampling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elementwise-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elementwise arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-resize-texture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image / resize / texture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normalization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantization-dtype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantization / dtype
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recurrent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurrent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reductions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reductions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Special / math
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stateful-state-buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful (state / buffers)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural / shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ane-op-catalog-every-native-mil-op-x-device-m1-m5">ANE op catalog: every native MIL op x device (M1-M5)<a class="headerlink" href="#ane-op-catalog-every-native-mil-op-x-device-m1-m5" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Generated from <code>aneforge/_op_catalog.py</code> in the ANEForge repository (<code>python docs/gen_op_catalog.py</code>); do not hand-edit. Query the same data at runtime via <code>af.op_info</code>, <code>af.is_native(op, chip)</code>, <code>af.ops_on(chip)</code>, <code>af.min_native_family(op)</code>, <code>af.walled_everywhere()</code>.</p>
+</blockquote>
+<p>187 native MIL ops. Device ladder: m1=A13, m2=A14, m3=A15, m4_m5=A16/A17. Cells: Y native, ~ bridge/decompose, N walled. aneforge's higher-level ops (rms_norm/group_norm/mha/sdpa/fft/linalg/...) are composites that lower to these.</p>
+<h2 id="activations-incl-lut">Activations (incl. LUT)<a class="headerlink" href="#activations-incl-lut" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ceil</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT (probed native M1)</td>
+</tr>
+<tr>
+<td><code>clamped_relu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ClampedRelu</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>clip</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>user-facing <code>clamp</code>; LUT</td>
+</tr>
+<tr>
+<td><code>elu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Elu</td>
+<td>LUT (effectively F2 -&gt; A13+)</td>
+</tr>
+<tr>
+<td><code>erf</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SimpleActivation</td>
+<td>F2 LUT</td>
+</tr>
+<tr>
+<td><code>exp</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>exp2</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT</td>
+</tr>
+<tr>
+<td><code>floor</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT (probed native M1)</td>
+</tr>
+<tr>
+<td><code>gelu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Gelu</td>
+<td>LUT (M1 probe: ~0.08 rel err vs exact - LUT approximation, still native)</td>
+</tr>
+<tr>
+<td><code>leaky_relu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>LeakyRelu</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>log</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>LUT (ln2 immediate)</td>
+</tr>
+<tr>
+<td><code>prelu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>PRelu</td>
+<td>per-channel alpha (LUT); native at rank &gt;=3 (M1-confirmed)</td>
+</tr>
+<tr>
+<td><code>relu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SimpleActivation</td>
+<td>F0 SimpleActivation</td>
+</tr>
+<tr>
+<td><code>relu6</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td></td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>round</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT round-nearest (probed native M1)</td>
+</tr>
+<tr>
+<td><code>scaled_tanh</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ScaledTanh</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>sigmoid</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SimpleActivation</td>
+<td>F0/LUT (incl. hard variant)</td>
+</tr>
+<tr>
+<td><code>sigmoid_hard</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SigmoidHard</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>sign</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT (probed native M1)</td>
+</tr>
+<tr>
+<td><code>silu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SimpleActivation</td>
+<td>a.k.a. swish; LUT</td>
+</tr>
+<tr>
+<td><code>softmax</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Softmax</td>
+<td>F2 LUT (log2e immediate)</td>
+</tr>
+<tr>
+<td><code>softplus</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Softplus</td>
+<td>LUT (+ parametric)</td>
+</tr>
+<tr>
+<td><code>softplus_parametric</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Softplus</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>softsign</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Softsign</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>tanh</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>threshold</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>LUT</td>
+</tr>
+<tr>
+<td><code>thresholded_relu</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ThresholdedRelu</td>
+<td>LUT</td>
+</tr>
+</tbody>
+</table>
+<h2 id="comparison-logical">Comparison / logical<a class="headerlink" href="#comparison-logical" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>equal</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 compare -&gt; bool (probed native M1)</td>
+</tr>
+<tr>
+<td><code>greater</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 compare</td>
+</tr>
+<tr>
+<td><code>greater_equal</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 compare (probed native M1)</td>
+</tr>
+<tr>
+<td><code>less</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 compare (probed native M1)</td>
+</tr>
+<tr>
+<td><code>less_equal</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 compare (probed native M1)</td>
+</tr>
+<tr>
+<td><code>logical_and</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose via <code>min</code>/<code>mul</code> on host</td>
+</tr>
+<tr>
+<td><code>logical_not</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 (probed native M1)</td>
+</tr>
+<tr>
+<td><code>logical_or</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose via <code>max</code> on host</td>
+</tr>
+<tr>
+<td><code>logical_xor</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose via <code>!=</code> on host</td>
+</tr>
+<tr>
+<td><code>not_equal</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 compare (probed native M1)</td>
+</tr>
+<tr>
+<td><code>select</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Select</td>
+<td>user-facing <code>where</code>; template_text backend</td>
+</tr>
+</tbody>
+</table>
+<h2 id="control-flow">Control flow<a class="headerlink" href="#control-flow" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>call</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>Call</td>
+<td>function call; <code>mapped_no_current_hwx_case</code> (inlined)</td>
+</tr>
+<tr>
+<td><code>cond</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td></td>
+<td><code>mapped_no_current_hwx_case</code> + <code>Unsupported</code> converter - no standalone ANE codegen; flatten on host</td>
+</tr>
+<tr>
+<td><code>while_loop</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td></td>
+<td><code>mapped_no_current_hwx_case</code> + <code>Unsupported</code>/<code>WhileLoop</code> - unroll on host</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conv-matmul-pooling">Conv / MatMul / Pooling<a class="headerlink" href="#conv-matmul-pooling" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>avg_pool</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Pool</td>
+<td>F0; window &lt;=29 (M1) / 31 (A14+); 3D window A13+</td>
+</tr>
+<tr>
+<td><code>conv</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Conv</td>
+<td>F0; M1 kernels &lt;=29x29 (13x13 fp16), 3D depth native A13+; M5 &lt;=32x32</td>
+</tr>
+<tr>
+<td><code>conv_transpose</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Conv</td>
+<td>F0 deconv; strided axes use small-kernel caps</td>
+</tr>
+<tr>
+<td><code>einsum</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Einsum</td>
+<td>lowers to matmul/transpose chain</td>
+</tr>
+<tr>
+<td><code>l2_pool</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Pool</td>
+<td>special LUT pool (1024-entry fp16)</td>
+</tr>
+<tr>
+<td><code>linear</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Linear</td>
+<td>folds to conv when RHS &lt;=2 MB SRAM working set</td>
+</tr>
+<tr>
+<td><code>linear_activation</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>LinearActivation</td>
+<td>fused linear+activation</td>
+</tr>
+<tr>
+<td><code>matmul</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Matmul</td>
+<td>NE lane / conv-fold; same tensor caps as conv</td>
+</tr>
+<tr>
+<td><code>max_pool</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Pool</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>ne_bypass</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>NEBypass</td>
+<td>private NEBypass unit; <code>mapped_no_current_hwx_case</code></td>
+</tr>
+<tr>
+<td><code>ne_conv</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>NEConv</td>
+<td>private NEConv unit (fill=0x44/mir=0x5d)</td>
+</tr>
+<tr>
+<td><code>ne_matmul</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>NEMatMul</td>
+<td>private NEMatMul unit</td>
+</tr>
+<tr>
+<td><code>ne_pool</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>NEPool</td>
+<td>private NEPool unit (probe-pending codegen, treated reachable)</td>
+</tr>
+<tr>
+<td><code>pe_elementwise</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>PEElementWise</td>
+<td>private PEElementWise unit (fill=0x49/mir=0x59)</td>
+</tr>
+<tr>
+<td><code>pe_goc</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>PEGOC</td>
+<td>private PEGOC unit; <code>mapped_no_current_hwx_case</code> (compiler-internal)</td>
+</tr>
+<tr>
+<td><code>pe_pool</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>PEPool</td>
+<td>private PEPool unit</td>
+</tr>
+<tr>
+<td><code>scaled_dot_product_attention</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SDPA</td>
+<td>F2; rides matmul+softmax (NOT texture-gated) - native on M1. user-facing <code>sdpa</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="detection-sampling">Detection / sampling<a class="headerlink" href="#detection-sampling" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>argsort</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Sort</td>
+<td><strong>Sort family, A14+</strong>; codegen-rejected on M1 (= <code>sort</code> floor)</td>
+</tr>
+<tr>
+<td><code>list_gather</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td>TensorList op - <code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>list_length</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>list_read</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>list_scatter</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>list_write</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>make_list</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>non_maximum_suppression</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>NonMaximumSuppression</td>
+<td>template_text NMS backend</td>
+</tr>
+<tr>
+<td><code>random_bernoulli</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - host RNG</td>
+</tr>
+<tr>
+<td><code>random_categorical</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - host RNG</td>
+</tr>
+<tr>
+<td><code>random_normal</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - host RNG</td>
+</tr>
+<tr>
+<td><code>random_uniform</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>RandomUniform</td>
+<td><strong>RNG, A15+</strong> (HAL 0x4a9=0 on M1/M2); aneforge uses host RNG below A15 (<code>dropout</code>/<code>random</code> decomposable)</td>
+</tr>
+<tr>
+<td><code>topk</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>TopK</td>
+<td><strong>rank/sort bridge, A14+</strong> (<code>_OP_FLOOR</code>); bridge validator callable on M1 but <strong>codegen-rejected</strong> (measured)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="elementwise-arithmetic">Elementwise arithmetic<a class="headerlink" href="#elementwise-arithmetic" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>abs</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>PEElementWise (F0)</td>
+</tr>
+<tr>
+<td><code>add</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>const + tensor forms; text-immediate fused const</td>
+</tr>
+<tr>
+<td><code>cumsum</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>CumSum</td>
+<td>runs ON the ANE as a single op (verified M1 2026-06-09: cos 1.0) - NOT host-decomposed. The standard MIL <code>cumsum</code> op is unimplemented, so it is reached via the curated e5rt path (see _capabilities).</td>
+</tr>
+<tr>
+<td><code>floor_div</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>LUT-assisted (actlut:2)</td>
+</tr>
+<tr>
+<td><code>inverse</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>reciprocal LUT</td>
+</tr>
+<tr>
+<td><code>maximum</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>const + tensor (LUT)</td>
+</tr>
+<tr>
+<td><code>minimum</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>const + tensor (LUT)</td>
+</tr>
+<tr>
+<td><code>mod</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose on host</td>
+</tr>
+<tr>
+<td><code>mul</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>const + tensor forms</td>
+</tr>
+<tr>
+<td><code>pow</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td><code>pow_const</code>; user-facing <code>x ** y</code> (probed native M1)</td>
+</tr>
+<tr>
+<td><code>real_div</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>general divide; A11/A12 = const-fp16 reciprocal only. user-facing <code>truediv</code>/<code>div</code></td>
+</tr>
+<tr>
+<td><code>rsqrt</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT</td>
+</tr>
+<tr>
+<td><code>sqrt</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT activation (native A13+, decomposed on A11/A12)</td>
+</tr>
+<tr>
+<td><code>square</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F0 PEElementWise</td>
+</tr>
+<tr>
+<td><code>sub</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>lowered to add-of-negated-const</td>
+</tr>
+</tbody>
+</table>
+<h2 id="image-resize-texture">Image / resize / texture<a class="headerlink" href="#image-resize-texture" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>affine</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Affine</td>
+<td><strong>texture-engine only (A14+)</strong>; "affine transform is not supported on this architecture" on M1</td>
+</tr>
+<tr>
+<td><code>crop_resize</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>CropResize</td>
+<td><strong>texture-engine only (A14+, HAL 0x81d)</strong> - <code>_OP_FLOOR</code>; unavailable on M1, no host substitution wired</td>
+</tr>
+<tr>
+<td><code>degamma</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>DeGamma</td>
+<td>ISP/image op; <code>mapped_no_current_hwx_case</code></td>
+</tr>
+<tr>
+<td><code>gamma</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>Gamma</td>
+<td>ISP/image op; <code>mapped_no_current_hwx_case</code></td>
+</tr>
+<tr>
+<td><code>pixel_buffer_to_tensor</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>PixelBufferToTensor</td>
+<td>4CC image input; <code>mapped_no_current_hwx_case</code>. Does not lower on the unentitled direct path (entitlement gate, not chip gate); use <code>af.image_input</code>.</td>
+</tr>
+<tr>
+<td><code>resample</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Resample</td>
+<td><strong>texture-engine only (A14+)</strong>; warp depth=1, channel in {1,2}. Walled on M1</td>
+</tr>
+<tr>
+<td><code>resize</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Resize</td>
+<td>F2 but <strong>texture-gated</strong>: M1 = software deconv/transpose fallback (different rounding; some modes hard-abort); native A14+</td>
+</tr>
+<tr>
+<td><code>resize_bilinear</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ResizeBilinear</td>
+<td>NE lane; sw-fallback on M1</td>
+</tr>
+<tr>
+<td><code>resize_nearest_neighbor</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ResizeNearestNeighbor</td>
+<td>NE lane; sw-fallback on M1 (1x1-source fast path exists)</td>
+</tr>
+<tr>
+<td><code>tensor_to_pixel_buffer</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>TensorToPixelBuffer</td>
+<td><code>mapped_no_current_hwx_case</code> (compiler-internal)</td>
+</tr>
+<tr>
+<td><code>upsample_bilinear</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>UpsampleBilinear</td>
+<td>NE lane; sw-fallback on M1</td>
+</tr>
+<tr>
+<td><code>upsample_nearest_neighbor</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>UpsampleNearestNeighbor</td>
+<td>NE lane; sw-fallback on M1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="normalization">Normalization<a class="headerlink" href="#normalization" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>batch_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>BatchNorm</td>
+<td>inference fold-to-affine runs everywhere (incl. A11/A12); native stats form is A13+</td>
+</tr>
+<tr>
+<td><code>instance_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>InstanceNorm</td>
+<td>F2</td>
+</tr>
+<tr>
+<td><code>l2_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td></td>
+<td>F2</td>
+</tr>
+<tr>
+<td><code>layer_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>LayerNorm</td>
+<td>F2 (native A13+)</td>
+</tr>
+<tr>
+<td><code>local_response_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>LRNorm</td>
+<td>LRN bridge (measured Y on M1)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="quantization-dtype">Quantization / dtype<a class="headerlink" href="#quantization-dtype" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cast</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Cast</td>
+<td>F0 format primitive. <strong>fp16&lt;-&gt;fp32/bool native on M1</strong>; <code>cast(-&gt;int32)</code> is <strong>walled on M1</strong> (empirically confirmed) - keep dtype fp on h13</td>
+</tr>
+<tr>
+<td><code>const</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>ConstOps</td>
+<td><code>mapped_no_current_hwx_case</code> - folded at compile, not a standalone codegen op</td>
+</tr>
+<tr>
+<td><code>constexpr_affine_dequantize</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>ConstOps</td>
+<td>weight-compression const; folded. <strong>int4-LUT streams natively from M1; int8/affine fold to fp16 below A15</strong> (HAL +0x520-0x539).</td>
+</tr>
+<tr>
+<td><code>constexpr_blockwise_shift_scale</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ConstOps</td>
+<td>blockwise stream gate A15+; folds to fp16 on M1/M2</td>
+</tr>
+<tr>
+<td><code>constexpr_cast</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>constexpr_lut_to_dense</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ConstOps</td>
+<td>palette/LUT stream gate (+0x529) is <strong>A13-on</strong> -&gt; int4-LUT streams natively from M1 (*the one compressed format that wins on M1)</td>
+</tr>
+<tr>
+<td><code>constexpr_lut_to_sparse</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>ConstOps</td>
+<td>folded const; sparse stream A15+</td>
+</tr>
+<tr>
+<td><code>constexpr_sparse_blockwise_shift_scale</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ConstOps</td>
+<td>sparse+blockwise stream A15+</td>
+</tr>
+<tr>
+<td><code>constexpr_sparse_to_dense</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ConstOps</td>
+<td>sparse stream A15+</td>
+</tr>
+<tr>
+<td><code>dequantize</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Dequantize</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>quantize</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Quantize</td>
+<td>F0 (not texture-gated)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recurrent">Recurrent<a class="headerlink" href="#recurrent" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gru</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - unroll to conv/matmul+activation on host</td>
+</tr>
+<tr>
+<td><code>lstm</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - unroll on host</td>
+</tr>
+<tr>
+<td><code>rnn</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - unroll on host</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reductions">Reductions<a class="headerlink" href="#reductions" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reduce_argmax</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ReduceArg</td>
+<td>per-axis ArgMax - F0, all chips (bridge <code>ArgMax</code> measured Y on M1)</td>
+</tr>
+<tr>
+<td><code>reduce_argmin</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ReduceArg</td>
+<td>per-axis argmin; <strong>M1/M2 walled on the MIL route</strong> (HAL 0x4f2, A15+), bridge mirrors argmax. user-facing <code>argmin</code></td>
+</tr>
+<tr>
+<td><code>reduce_l1_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2 Reduce</td>
+</tr>
+<tr>
+<td><code>reduce_l2_norm</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2 Reduce</td>
+</tr>
+<tr>
+<td><code>reduce_log_sum</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>LUT-assisted Reduce (ln2 immediate)</td>
+</tr>
+<tr>
+<td><code>reduce_log_sum_exp</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>LUT Reduce; aneforge wires its vjp (probed native M1)</td>
+</tr>
+<tr>
+<td><code>reduce_max</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2</td>
+</tr>
+<tr>
+<td><code>reduce_mean</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2</td>
+</tr>
+<tr>
+<td><code>reduce_min</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2</td>
+</tr>
+<tr>
+<td><code>reduce_prod</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose (log-sum-exp / scan) on host</td>
+</tr>
+<tr>
+<td><code>reduce_sum</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2 (native A13+; decomposed on A11/A12). reduced-axis &gt;=192 -&gt; transpose route (&gt;=384 on A15+)</td>
+</tr>
+<tr>
+<td><code>reduce_sum_square</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reduce</td>
+<td>F2; the 0x494 <code>reduce-&gt;square</code> fusion is M2+ only - M1 emits an extra fp16 round (&lt;=1-round numeric, not a wall)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="special-math">Special / math<a class="headerlink" href="#special-math" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>acos</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>acosh</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>asin</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - host decomposition</td>
+</tr>
+<tr>
+<td><code>asinh</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>atan</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td>F2 LUT - <strong>native on M1</strong> (probe: WORKS; the one trig in vocab on h13)</td>
+</tr>
+<tr>
+<td><code>atanh</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>cos</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td><strong>F4 trig, native A15+ only</strong> (REJECTED on M1/A14); M1/M2 Horner</td>
+</tr>
+<tr>
+<td><code>cosh</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere (REJECTED M1 probe)</td>
+</tr>
+<tr>
+<td><code>cost_volume</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>CostVolume</td>
+<td>bridge <code>CostVolume</code> (measured Y on M1); <code>mapped_no_current_hwx_case</code></td>
+</tr>
+<tr>
+<td><code>cross_product</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>CrossProduct</td>
+<td>bridge <code>CrossProduct</code> (measured Y on M1) but <code>mapped_no_current_hwx_case</code> in MIL map - reachable via bridge</td>
+</tr>
+<tr>
+<td><code>matrix_decomposition</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>MatrixDecomposition</td>
+<td><code>mapped_no_current_hwx_case</code> - no observed codegen</td>
+</tr>
+<tr>
+<td><code>sin</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ElementWise</td>
+<td><strong>F4 trig, native A15+ only</strong> (REJECTED on M1/A14 - silicon-measured); M1/M2 use <code>special.py</code> Horner</td>
+</tr>
+<tr>
+<td><code>sinh</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere (REJECTED M1 probe) - <code>(exp(x)-exp(-x))/2</code> on host</td>
+</tr>
+<tr>
+<td><code>tan</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere (REJECTED M1 probe) - <code>sin/cos</code> Horner identity on host</td>
+</tr>
+</tbody>
+</table>
+<h2 id="stateful-state-buffers">Stateful (state / buffers)<a class="headerlink" href="#stateful-state-buffers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>circular_buffer_to_tensor</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>CircularBufferToTensor</td>
+<td><code>mapped_no_current_hwx_case</code>; ring-buffer reader</td>
+</tr>
+<tr>
+<td><code>read_state</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ReadState</td>
+<td>F2 stateful; reachable on M1 but needs the e5rt inout-tensor-desc plumbing for KV-cache.</td>
+</tr>
+<tr>
+<td><code>tensor_buffer_to_tensor</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>TensorBufferToTensor</td>
+<td><code>mapped_no_current_hwx_case</code>; F2 ring/streaming buffer mover (A13+, reachable inside stateful graph)</td>
+</tr>
+<tr>
+<td><code>tensor_to_circular_buffer</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>TensorToCircularBuffer</td>
+<td><code>mapped_no_current_hwx_case</code>; ring-buffer writer</td>
+</tr>
+<tr>
+<td><code>tensor_to_tensor_buffer</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>TensorToTensorBuffer</td>
+<td><code>mapped_no_current_hwx_case</code></td>
+</tr>
+<tr>
+<td><code>write_state</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>WriteState</td>
+<td>F2 stateful</td>
+</tr>
+</tbody>
+</table>
+<h2 id="structural-shape">Structural / shape<a class="headerlink" href="#structural-shape" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th style="text-align: center;">M1</th>
+<th style="text-align: center;">M2</th>
+<th style="text-align: center;">M3</th>
+<th style="text-align: center;">M4/M5</th>
+<th>kernel</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>band_part</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere (mask via host)</td>
+</tr>
+<tr>
+<td><code>batch_to_space</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>BatchToSpace</td>
+<td>inverse of above</td>
+</tr>
+<tr>
+<td><code>concat</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Concat</td>
+<td>F0 DMA</td>
+</tr>
+<tr>
+<td><code>crop</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Crop</td>
+<td>F0 slice/crop (distinct from texture <code>crop_resize</code>)</td>
+</tr>
+<tr>
+<td><code>depth_to_space</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>DepthToSpace</td>
+<td>F2 NE lane; user-facing <code>pixel_shuffle</code></td>
+</tr>
+<tr>
+<td><code>expand_dims</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ExpandDims</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>fill</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Fill</td>
+<td>const tensor producer</td>
+</tr>
+<tr>
+<td><code>fill_like</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>FillLike</td>
+<td>const tensor producer</td>
+</tr>
+<tr>
+<td><code>flatten2d</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td></td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>gather</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Gather</td>
+<td>software gather on M1 in narrow envelope (batch=1,depth=1); <strong>hw <code>gather_hw</code> path is A14+</strong> (<code>_OP_FLOOR</code>)</td>
+</tr>
+<tr>
+<td><code>gather_along_axis</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>GatherAlongAxis</td>
+<td>template_text; same M1 envelope caveat</td>
+</tr>
+<tr>
+<td><code>gather_nd</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>GatherND</td>
+<td>M1 = sw-envelope only (<code>IsValidForH13</code>: batch=1,depth=1,idx-ch=3); outside it <strong>rejected</strong>. Native (texture) A14+</td>
+</tr>
+<tr>
+<td><code>identity</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Cast</td>
+<td>aliases Cast/no-op</td>
+</tr>
+<tr>
+<td><code>non_zero</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere (data-dependent shape)</td>
+</tr>
+<tr>
+<td><code>one_hot</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose (eye-gather) on host</td>
+</tr>
+<tr>
+<td><code>pad</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Pad</td>
+<td>const pad F0 (NE lane). <strong>symmetric/reflect pad is texture-gated -&gt; ~/sw on M1</strong>, native A14+</td>
+</tr>
+<tr>
+<td><code>pixel_shuffle</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>PixelShuffle</td>
+<td>F2 NE lane</td>
+</tr>
+<tr>
+<td><code>pixel_unshuffle</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>PixelUnshuffle</td>
+<td>template_text</td>
+</tr>
+<tr>
+<td><code>range_1d</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td></td>
+<td>template_text; <strong>M1 raw-MIL probe: walled</strong> (positional-encoding range rejects on h13 codegen) - host-precompute the const</td>
+</tr>
+<tr>
+<td><code>reshape</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reshape</td>
+<td>F0 metadata (A11/A12 = fp16-only/Flatten-or-abort)</td>
+</tr>
+<tr>
+<td><code>reshape_like</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>ReshapeLike</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Reverse</td>
+<td>NE lane (probed native M1; aneforge wires vjp)</td>
+</tr>
+<tr>
+<td><code>reverse_sequence</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose on host</td>
+</tr>
+<tr>
+<td><code>scatter</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere - decompose on host</td>
+</tr>
+<tr>
+<td><code>scatter_along_axis</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>scatter_nd</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere</td>
+</tr>
+<tr>
+<td><code>shape</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>Unsupported</td>
+<td><code>Unsupported</code> everywhere (static-shape graphs only)</td>
+</tr>
+<tr>
+<td><code>slice_by_index</code></td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">~</td>
+<td>SliceByIndex</td>
+<td><code>mapped_no_current_hwx_case</code>; static-offset slice folds into descriptor (reachable inside graph)</td>
+</tr>
+<tr>
+<td><code>slice_by_size</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SliceBySize</td>
+<td>F0; <strong>pre-A16 width-offset quirk</strong> (Q.4 x16 crop-DMA): CONCATenating multiple nonzero last-axis (width) slices returns WRONG ELEMENTS on A14 (the gather-axis-1 bug; a SINGLE width slice is exact on A14 - linalg column/element extraction is green on M2); on A13 a width slice also saturates</td>
+</tr>
+<tr>
+<td><code>slice_update</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SliceUpdate</td>
+<td>template_text backend</td>
+</tr>
+<tr>
+<td><code>sliding_windows</code></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">N</td>
+<td>NotImplemented</td>
+<td><code>NotImplemented</code> on any backend - decompose on host</td>
+</tr>
+<tr>
+<td><code>space_to_batch</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SpaceToBatch</td>
+<td>factor in {2,3,4,8}; batch cap 4096 (older)/65536</td>
+</tr>
+<tr>
+<td><code>space_to_depth</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>SpaceToDepth</td>
+<td>F2 NE lane; user-facing <code>pixel_unshuffle</code></td>
+</tr>
+<tr>
+<td><code>split</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Split</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>squeeze</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Squeeze</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>stack</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Stack</td>
+<td>F0</td>
+</tr>
+<tr>
+<td><code>tile</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Tile</td>
+<td>F2 (A13+); factors of {2,3,4,8}. Absent on A11/A12</td>
+</tr>
+<tr>
+<td><code>transpose</code></td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td>Transpose</td>
+<td>F0 but capped by max-transpose-extent (16384 M1-A15 -&gt; 65536 M5; 0 on A11/A12)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

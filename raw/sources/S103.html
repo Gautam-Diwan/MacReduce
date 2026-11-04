@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>16. Numerical and scientific computing - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-4-workloads/16-numerical-scientific.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="16-numerical-and-scientific-computing"><a class="header" href="#16-numerical-and-scientific-computing">16. Numerical and scientific computing</a></h1>
+<blockquote>
+<p>Dense linear algebra and fixed-iteration numerics fit the engine.
+The wide accumulator keeps precision to a condition number of roughly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span>, after which fp16 input rounding sets the error floor.
+Dense factorizations and full spectral decompositions run by unrolling into one static graph.
+They reach about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> for the factorizations and about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> for the spectral decompositions.
+The discrete Fourier transform runs as a matrix multiply, fp16-clean to about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span>.
+The single architectural limit is a runtime-sized output, not pivoting.
+A data-dependent pivot is reached by cutting the graph at the pivot selection.</p>
+</blockquote>
+<p>The Apple Neural Engine is a dense fp16 matrix engine with a wide accumulator.
+That hardware structure decides which numerical and scientific kernels run on it without a precision penalty and which the architecture bars.
+Dense linear algebra and fixed-iteration numerics fit; the dense factorizations and full spectral decompositions run by unrolling into one static graph; the discrete Fourier transform fits as a matrix multiply while the fast-transform butterfly fits only as a static unroll.</p>
+<h2 id="what-the-dense-engine-computes-well"><a class="header" href="#what-the-dense-engine-computes-well">What the dense engine computes well</a></h2>
+<p>The three levels of dense linear algebra map onto the multiply array directly <a href="../references.html#ref-appleaccelerate">[AppleAccelerate]</a>.
+A level-1 operation is a vector reduction or scaling: a dot product is a single contraction, and an axpy or a norm is a scaled add or a reduction.
+A level-2 operation is a matrix-vector product, one matmul with a unit output dimension.
+A level-3 operation is a matrix-matrix product, the native shape of the array.
+The wide accumulator (chapter <a href="../part-1-machine/03-numerics.html">3</a>) stores the reduction in a register of fp32 class, so a representable sum comes back near exact and the only quantization is the fp16 rounding of the inputs and the output.</p>
+<p>Iterative kernels inherit the same precision behavior because each step is a matmul or a reduction.
+Power iteration for a dominant eigenpair, conjugate-gradient sweep for a symmetric positive-definite solve, and fixed-cycle generalized-minimal-residual solve for a general system all fold the matrix as a constant weight and run as one program.
+Because the matrix is a fixed weight, the program size does not grow with <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>: a symmetric positive-definite solve runs unchanged from a small system up to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">512</span></span></span></span> at the same relative error.
+Across these solvers the wide accumulator keeps the precision to a condition number of roughly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span>, above which the fp16 rounding of the inputs sets the error floor.</p>
+<p>The measured envelope for the on-engine iterative solvers is a relative error near <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span> at a condition number at or below <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>.
+A dominant eigenpair from power iteration returns to about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">15</span></span></span></span></span></span></span></span></span></span></span></span>, limited only by the spectral gap, because the iteration is a repeated matmul whose fixed point is exact in the representable range.</p>
+<p>The accumulator that retains the precision is measured, not assumed: a reduction accumulates in a register of fp32 class and rounds to fp16 only at the output port, with the silicon-probe worked examples and the radix-4 fan-in derived in chapter <a href="../part-1-machine/03-numerics.html">3</a>.
+A representable sum thus comes back near exact, while a cancellation-heavy reduction has its input lanes round in radix-4 groups first, which makes the matrix-multiply contraction path the more accurate route, exact to fp32 and rounded once at the output.
+The compiler emits a precision warning steering a narrow reduction toward it.</p>
+<h2 id="factorizations-and-spectral-decompositions-by-static-unrolling"><a class="header" href="#factorizations-and-spectral-decompositions-by-static-unrolling">Factorizations and spectral decompositions by static unrolling</a></h2>
+<p>The direct factorizations of dense linear algebra run on the engine, and the assumption that they were barred is a misreading of the static-dataflow constraint.
+No data-dependent control flow is not the same as no data-dependent computation.
+A data-dependent value, a pivot or a selection, flows through a fixed graph when a comparison, a <code>select</code>, an <code>argmax</code>, and a matmul hold it, and a convergence-gated loop becomes a fixed sweep count chosen at compile time.
+A factorization is thus expressible by unrolling its <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> recurrence into one static graph, and the closed-form recurrences that have no runtime branch unroll directly.</p>
+<p>The explicit Gram-Schmidt QR, unpivoted Cholesky, and Doolittle LU run as one program and reach about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> before the unrolled chain dominates compile time.
+The full dense spectral decompositions run as well.
+A fixed-sweep cyclic-Jacobi eigensolver has a compile-time-fixed sweep order and closed-form rotations with no pivot and no branch, and it converges in about six to ten sweeps for any symmetric input, so the full symmetric eigendecomposition unrolls and reaches about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span>.
+The generalized eigenproblem runs as a Cholesky factor followed by a triangular solve and that eigendecomposition.
+The nonsymmetric eigenvalues run as an unshifted QR iteration assembled into one fused program, where the unshifted form avoids the data-dependent shifts and deflation that make the standard routine look unportable.
+The full singular-value decomposition runs as the square root of the eigendecomposition of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span></span></span><span class="mord mathnormal">A</span></span></span></span>, and a top-<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> singular-value decomposition of a large matrix runs as a randomized sketch followed by the on-engine QR and small-block decomposition.</p>
+<p>Pivoting is reached by cutting the graph at the pivot.
+A pivoted LU runs with an on-engine <code>argmax</code> selecting the pivot row, expressed as a segmented graph: the <code>argmax</code> cuts the program into segments, and the data-dependent pivot index flows between them as a value rather than as a branch.
+The measured relative error on the segmented pivoted LU is about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span> at small <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>.</p>
+<p>What the architecture actually bars is a runtime-sized output.
+A rank-revealing or adaptive-tolerance factorization emits only the values above a tolerance, and how many that is depends on the data, so a static program cannot emit a runtime-sized result and can only emit all <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> values plus a mask.
+That limit is independent of whether the arithmetic is fp16 or fp64.
+What fp16 limits separately is the conditioning range, the roughly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span> ceiling above; the Jacobi spectral decompositions hold to a condition number of about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span> to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> because the squared system <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span></span></span><span class="mord mathnormal">A</span></span></span></span> doubles the conditioning.
+What graph size limits is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>: the explicit factorizations materialize the matrix in-graph, so they are compile-size bound at the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> figures above, while the iterative solvers fold the matrix as a constant weight and run unchanged to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">512</span></span></span></span>.</p>
+<h2 id="stencils-integration-and-series"><a class="header" href="#stencils-integration-and-series">Stencils, integration, and series</a></h2>
+<p>A computation with a static iteration count fits, because the engine unrolls a fixed loop into one fused program and pays the per-dispatch floor once for the whole sweep.
+A partial-differential-equation stencil iterated a fixed number of times is the clearest case.
+A five-point stencil run thirty-two times as one fused graph keeps every intermediate resident in the working set and amortizes the dispatch floor across all thirty-two steps, which is why it is among the engine's widest efficiency margins against the GPU (chapter <a href="../part-3-performance/10-power-efficiency.html">10</a>).
+Explicit ordinary-differential-equation integration with a fixed step count, fixed-iteration Newton solve, and truncated power series each share this form: the trip count is known at compile time, so the whole iteration becomes one static graph.</p>
+<p>A data-dependent trip count does not run.
+A loop that runs until a residual falls below a tolerance, or until a step-size controller accepts a step, asks the engine to decide at runtime how many iterations to execute, the same data-dependent control flow that bars pivoting.
+The fit is the fixed-budget form of each method: a convergence-gated loop becomes a fixed sweep count, chosen at compile time to cover the worst expected input.</p>
+<h2 id="fourier-transform-as-a-matrix-multiply"><a class="header" href="#fourier-transform-as-a-matrix-multiply">Fourier transform as a matrix multiply</a></h2>
+<p>The discrete Fourier transform of a length-<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> signal is a linear map, so it is a matrix multiply against a fixed Fourier matrix.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0954em;vertical-align:-1.2671em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8829em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2671em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span><span class="mord mathnormal mtight">πikn</span><span class="mord mtight">/</span><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">kn</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.938em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span><span class="mord mathnormal mtight">πikn</span><span class="mord mtight">/</span><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>The matrix <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> is a compile-time constant, so the transform runs as a single matmul that folds <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> as a weight, as <a href="#lst-c16-dft-matmul">listing 16.1</a> gives in NumPy.</p>
+<pre><code class="language-python">import numpy as np
+
+def dft_matrix(N):
+    # W[k, n] = exp(-2j*pi*k*n/N): the compile-time-constant Fourier matrix.
+    k = np.arange(N).reshape(N, 1)
+    n = np.arange(N).reshape(1, N)
+    return np.exp(-2j * np.pi * k * n / N)
+
+def dft(x):
+    # The transform is one matmul X = W @ x; W folds as a fixed weight.
+    # fp16-clean to about N = 2048; above that the fp16 rounding of W and x
+    # dominates the wide-accumulator reduction.
+    return dft_matrix(len(x)) @ x
+</code></pre>
+<p><a id="lst-c16-dft-matmul"></a><strong>Listing 16.1.</strong> The discrete Fourier transform expressed as one matrix multiply against a compile-time-constant Fourier matrix.</p>
+<p>The arithmetic is complex, and the engine computes in real fp16, so each complex value is held as a real and an imaginary pair and the complex product expands into four real multiplies and two real adds.
+The wide accumulator keeps the length-<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> reduction, so the transform is fp16-clean to about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span>, above which the fp16 rounding of the matrix entries and the input begins to dominate the result.</p>
+<p>The fast-transform factorization does not gain over the matmul form on this engine.
+A fast Fourier transform replaces the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> matmul with an <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span> chain of butterfly stages, but each stage is a small data shuffle and a complex multiply, and the shuffle is a static structure.
+The butterfly fits only when fully unrolled into a static graph, and at that point it is a deep chain of tiny operations that pays more dispatch and accumulates more fp16 rounding than the single dense matmul.
+For the transform sizes the engine handles in range, use the matmul form.</p>
+<h2 id="sparse-and-pruned-operands"><a class="header" href="#sparse-and-pruned-operands">Sparse and pruned operands</a></h2>
+<p>A sparse matrix gives a speed gain, not only a storage gain, when it is a constant weight.
+The engine has two independent sparsity mechanisms.
+One is a compute-time zero-skip: the multiply array detects a zero weight and skips the multiply, driven by a scan of the weight values, so it applies to any operand with zeros regardless of its storage format and pays off in a compute-bound layer.
+The other is a sparse stream: the weight is stored as a one-bit keep-mask plus the packed fp16 nonzeros, fewer bytes cross DRAM, and the operand is reconstructed on chip, which pays off in a bandwidth-bound layer.</p>
+<p>On the M1 the sparse stream is the measured gain for a pruned operand.
+A convolution stack at about 63 percent zeros streamed as a mask plus nonzeros runs 1.55 to 1.64 times faster than the same weights stored dense.
+The streamed weight file is at 0.43 times the dense size, and the effective bandwidth rises from about 29.5 to about 47.8 GB/s, the engine's weight-stream ceiling.
+The reconstruction is lossless apart from the fp16 rounding of the kept values, so the result matches the dense computation to a cosine of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0000</span></span></span></span>.
+The zero-skip mechanism, by contrast, returns about 1.01 times on the same bandwidth-bound stack, because skipping multiplies does not move a layer whose wall time is set by the DMA, and it needs a compute-bound layer to show.
+The two mechanisms appear side by side in <a href="#tbl-c16-sparsity">table 16.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Sparsity mechanism</th><th>What it cuts</th><th>Where it pays off</th><th>Measured M1 result</th></tr></thead><tbody>
+<tr><td>Compute-time zero-skip</td><td>multiply cycles</td><td>compute-bound layers</td><td>about 1.01x on a bandwidth-bound stack</td></tr>
+<tr><td>Sparse weight stream</td><td>DRAM weight traffic</td><td>bandwidth-bound layers</td><td>1.55 to 1.64x, weight file 0.43x dense</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c16-sparsity"></a><strong>Table 16.1.</strong> The two sparsity mechanisms on the M1 and where each one pays off, with the measured result on a pruned convolution stack at about 63 percent zeros.</p>
+<h2 id="the-fourier-transform-compiled"><a class="header" href="#the-fourier-transform-compiled">The Fourier transform compiled</a></h2>
+<p>The Fourier transform of the earlier section writes out as an engine program with the real and imaginary halves of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> as separate constant weights (<a href="#lst-c16-dft-graph">listing 16.2</a>).</p>
+<pre><code class="language-python"># The length-N discrete Fourier transform expressed as matrix multiplies.
+# X[k] = sum over n of x[n] * exp(-2*pi*i * k*n / N).
+# That sum IS a matrix-vector product: X = W x, where W[k,n] = exp(-2*pi*i * k*n / N).
+
+# 1. Form the Fourier matrix as a compile-time constant (built once, on the host).
+for k in 0 .. N-1:
+    for n in 0 .. N-1:
+        angle  = -2 * pi * k * n / N
+        Wr[k,n] = cos(angle)               # real part of the Fourier matrix
+        Wi[k,n] = sin(angle)               # imaginary part
+
+# 2. Build the transform as matmuls. The signal is held as real and
+#    imaginary parts, since the hardware works in real fp16.
+build graph G:
+    input xr : [N] fp16                    # real part of the signal
+    input xi : [N] fp16                    # imaginary part of the signal
+
+    # Complex product (Wr + i*Wi) * (xr + i*xi) split into real arithmetic:
+    Xr = matmul(Wr, xr) - matmul(Wi, xi)   # real part of the transform
+    Xi = matmul(Wr, xi) + matmul(Wi, xr)   # imaginary part of the transform
+    # (Equivalently one matmul over stacked real-imag pairs; same arithmetic.)
+
+    output Xr
+    output Xi
+
+# 3. Compile once: Wr and Wi fold in as fixed constant weights, so the whole
+#    transform is a single program and the per-call floor is paid one time.
+program = compile(G, target = H13)         # W is a constant weight, one program
+output  = run(program, xr = real(signal), xi = imag(signal))
+
+# The wide accumulator holds the length-N reduction, so the result stays
+# fp16-clean to about N = 2048.
+return output
+</code></pre>
+<p><a id="lst-c16-dft-graph"></a><strong>Listing 16.2.</strong> The length-N discrete Fourier transform as a compiled engine program, with the Fourier matrices folded in as constant weights.</p>
+<h2 id="reference-what-fits-and-what-is-architecture-limited"><a class="header" href="#reference-what-fits-and-what-is-architecture-limited">Reference: what fits and what is architecture-limited</a></h2>
+<p>Every kernel class above is either a fit or architecture-limited, with one binding constraint behind the verdict (<a href="#tbl-c16-reference">table 16.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Kernel class</th><th>On the engine</th><th>Bound</th></tr></thead><tbody>
+<tr><td>BLAS level 1, 2, 3 (dot, axpy, gemv, gemm)</td><td>fits</td><td>fp16 conditioning, roughly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></td></tr>
+<tr><td>Iterative solvers (power, conjugate gradient, generalized minimal residual)</td><td>fits</td><td>fp16 conditioning, roughly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></td></tr>
+<tr><td>PDE stencil, explicit ODE, fixed-iteration Newton, truncated series</td><td>fits</td><td>static trip count required</td></tr>
+<tr><td>DFT as <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">x</span></span></span></span></td><td>fits</td><td>fp16-clean to about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span></td></tr>
+<tr><td>Dense factorizations (QR, Cholesky, unpivoted and pivoted LU)</td><td>fits as a static unroll</td><td>graph size, about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span>; pivot via a segmented <code>argmax</code></td></tr>
+<tr><td>Full spectral decompositions (symmetric, generalized, nonsymmetric eig, SVD)</td><td>fits as a static unroll</td><td>graph size, about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span>; fp16 conditioning about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span> to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></td></tr>
+<tr><td>Rank-revealing or adaptive-tolerance factorization</td><td>architecture-limited</td><td>data-dependent output size, no static-graph form</td></tr>
+<tr><td>Data-dependent trip count</td><td>architecture-limited</td><td>no static-graph form</td></tr>
+<tr><td>FFT butterfly</td><td>only as a static unroll</td><td>no gain over the dense matmul</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c16-reference"></a><strong>Table 16.2.</strong> Numerical kernel classes that fit the engine or are architecture-limited, with the binding constraint on each.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-4-workloads/15-training.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-5-practice/17-model-design-rules.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-4-workloads/15-training.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-5-practice/17-model-design-rules.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

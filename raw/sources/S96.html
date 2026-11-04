@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>9. Roofline - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-3-performance/09-roofline.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="9-roofline"><a class="header" href="#9-roofline">9. Roofline</a></h1>
+<blockquote>
+<p>A layer is compute-bound only above 141 FLOP per byte; below it the engine runs on the memory slope.
+Keep every operation's working set under 2 MB or it streams its full activation from DRAM.
+Every dispatch pays a 0.23 ms floor, so batch or fuse until the compute clears it.</p>
+</blockquote>
+<p>The Apple Neural Engine is a roofline machine <a href="../references.html#ref-williams2009">[Williams2009]</a>.
+Two ceilings bound its performance on any layer: the multiply array sets a peak compute rate, and how fast operands stream from DRAM sets a peak bandwidth.
+A layer runs at whichever ceiling its arithmetic intensity reaches first.
+The constants below are the M1 instance, the measured silicon.
+The roofline has the same form on every chip in the family; only its constants change, scaling with core count and clock, which chapter <a href="12-cross-chip.html">12</a> covers and the M5 confirms.</p>
+<h2 id="roofline-ceilings-and-ridge-point"><a class="header" href="#roofline-ceilings-and-ridge-point">Roofline ceilings and ridge point</a></h2>
+<p>The compute ceiling depends on how it is measured, and two figures bracket it.
+The overhead-isolated matmul slope is about 12 fp16 TFLOP/s: a fused matmul chain runs as one dispatch, so deepening it grows the compute at fixed input and output cost.
+The per-layer slope cancels that fixed cost, leaving the marginal rate.
+A direct absolute measurement of one large matmul is lower, about 4.8 fp16 TFLOP/s on a 4096-dimension matrix multiply whose call time is far above the dispatch floor.
+That is about 87 percent of the roughly 5.5 TFLOP/s theoretical peak.
+A single conv dispatch is lower still, about 1.8 TFLOP/s, because it pays the fixed cost the slope subtracts away.</p>
+<p>The M1 fp16 peak is best read as the sequence of consistent numbers listed in <a href="#tbl-roofline">table 9.2</a>, from the 1.8 TFLOP/s conservative headline through the 3.25 TFLOP/s effective peak to the 4.8 TFLOP/s saturating ceiling.
+Apple markets the engine in int8 operations per second, the M1 at about 11 TOPS <a href="../references.html#ref-appleane">[AppleANE]</a>, and the fp16 rate is by convention about half of an int8 figure, which puts the fp16 theoretical peak near 5.5 TFLOP/s.
+The 4.8 TFLOP/s figure is the rate one large matrix multiply holds after it crosses the 2 MB working-set threshold, while a fused chain whose activations stay under the threshold sustains more.
+That is why chapter <a href="10-power-efficiency.html">10</a> gives a fused steady state near 8.1 TFLOP/s.
+The 5.5 TFLOP/s figure is a convention derived from the marketed int8 TOPS rather than a measured hardware ceiling.</p>
+<p>The int8 path is faster than fp16.
+A measured int8 convolution runs about 1.4 times faster than the fp16 form and trends toward 2 times at scale.
+The multiply array has a double-int8 mode that packs two int8 products into one multiply-accumulate, so int8 arithmetic runs at about twice the fp16 rate on the same array.
+This is distinct from the compressed-weight path of chapter <a href="../part-2-reaching/07-weights-and-compression.html">7</a>, where an int8 weight is dequantized to fp16 and then enters an ordinary fp16 multiply: there the saving is in stored bytes, here the saving is in compute cycles.
+The int8 path thus cuts compute cycles as well as storage.</p>
+<p>The bandwidth ceiling is the rate at which operands cross the DRAM boundary.
+The engine sustains about 85 GB/s of DRAM bandwidth measured at the memory controller, and the roofline below uses that figure as its B.
+A direct wall-clock measurement of weight streaming runs lower: a large matrix multiply with one output row reads each weight once and saturates at about 51 GB/s, roughly 60 percent of that 85 GB/s ceiling.
+That figure matches the compiler's own internal bandwidth constant of 50 GB/s.
+A small elementwise op reaches less than either.
+A single relu stream saturates near 10 GB/s effective, because the per-dispatch overhead caps it well below the DRAM rate.</p>
+<p>The attainable rate is the lower of the two ceilings at a layer's arithmetic intensity <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span>, measured in FLOP per byte.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">min</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mspace"> </span><span class="mord text"><span class="mord">fp16 TFLOP/s</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">85</span><span class="mspace"> </span><span class="mord text"><span class="mord">GB/s</span></span></span></span></span></span></p>
+<p>A layer with intensity <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span> is compute-bound when <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span> and bandwidth-bound otherwise.
+The ridge point is where the two ceilings cross, near 141 FLOP per byte, the compute roof over the bandwidth roof, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">12</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">12</span></span></span></span></span></span></span></span></span></span></span></span> over <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">85</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span>.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7387em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7387em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2604em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">85</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">12</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">12</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">141</span><span class="mspace"> </span><span class="mord text"><span class="mord">FLOP/byte</span></span></span></span></span></span></p>
+<p>Comparing a kernel's arithmetic intensity against that 141 FLOP-per-byte crossing routes it to its bound (<a href="#fig-c9-ridge">figure 9.1</a>).</p>
+<figure id="fig-c9-ridge">
+<pre class="mermaid">
+flowchart TD
+    K{"Arithmetic intensity<br/>vs the 141 FLOP/byte ridge point"}
+    K -->|above the ridge point| CB["Compute bound,<br/>limited by the 12 fp16 TFLOP/s roof:<br/>convolution, matrix multiply"]
+    K -->|below the ridge point| BB["Bandwidth bound,<br/>limited by DRAM bandwidth:<br/>autoregressive decode, tiny ops"]
+    style CB fill:#1e3327,stroke:#5fb38a
+    style BB fill:#342d18,stroke:#c9a85a
+</pre>
+<figcaption><strong>Figure 9.1.</strong> How a kernel's arithmetic intensity locates it against the roofline.</figcaption>
+</figure>
+<p>Convolutions are far to the right of the ridge point: a 3x3 conv at 256 channels reaches 466 FLOP per byte, so the engine rarely touches its DRAM ceiling on conv work.</p>
+<h2 id="on-chip-working-set-threshold"><a class="header" href="#on-chip-working-set-threshold">On-chip working-set threshold</a></h2>
+<p>The primary design limit is not the 141 FLOP-per-byte crossing but the on-chip working set, 2 MB on the M1.
+While a layer's activation fits in the 2 MB on-chip memory, its intermediate values stay on chip and do not cross DRAM.
+Once the activation exceeds 2 MB, every layer streams its full activation in and out of DRAM and arithmetic intensity collapses.
+The hardware counters show the threshold directly: at a batch where the activation is exactly 2 MB, a 96-layer matmul chain moved 426 MB of DRAM per dispatch, and arithmetic intensity fell to 60 FLOP per byte.
+The same matmul that reached 12 TFLOP/s with a 1 MB activation dropped to about 4.8 TFLOP/s.
+Crossing 2 MB moves a workload from compute-bound to bandwidth-bound on one step, so the working set is the first thing to tune.
+The working-set limit scales with on-chip memory: it is near 2 MB on the M1 and 4.72 MB on the M5, and chapter <a href="12-cross-chip.html">12</a> gives the per-generation values.</p>
+<h2 id="dispatch-floor"><a class="header" href="#dispatch-floor">Dispatch floor</a></h2>
+<p>Every dispatch pays a fixed minimum cost regardless of the work it contains.
+On the M1 that floor is about 0.23 ms per evaluation.
+A relu, sigmoid, average pool, and small convolution are all at 0.23 to 0.26 ms, and a 64-element linear is 0.23 ms: below the floor, neither the operation nor its size matters.
+Host dispatch and operand transfer set the floor, so a small op spends almost all of its wall time outside the multiply array.
+A live decomposition of a tiny model puts the full-call floor near 0.19 ms, of which about 98 percent is dispatch overhead and about 0.13 ms is the firmware round trip; chapter <a href="../part-1-machine/02-execution-model.html">2</a> breaks the budget down stage by stage.</p>
+<p>The wall time of a dispatch adds the fixed floor <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> to the time the work takes at the attainable rate <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span>.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">work</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.23</span><span class="mspace"> </span><span class="mord text"><span class="mord">ms</span></span></span></span></span></span></p>
+<p>When the work is small the second term vanishes and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, so small operations are dispatch-bound: a layer whose compute time is under 0.23 ms gains nothing from the engine being faster.
+The same convolution runs at 63 GFLOP/s at a 16x16 spatial size, where the floor dominates, and at 1247 GFLOP/s at 256x256, where compute amortizes the floor, a 20x span from one shape change.
+Batching and fusion grow the work term until it dominates the fixed <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, amortizing the floor across more useful FLOP.</p>
+<h2 id="fusion-economics"><a class="header" href="#fusion-economics">Fusion economics</a></h2>
+<p>Fusing a chain of operations into one program removes the per-dispatch floor from every operation but the first and removes the intermediate round-trips between them.
+A network run as N separate dispatches pays the 0.23 ms floor N times and copies each intermediate back to the host and forward again.
+The same network fused into one program pays the floor once and keeps the intermediates resident in the engine's working set.
+The slope measurement isolated that fixed per-dispatch cost at roughly 0.76 ms for a program with 1 MB of operand input and output, and fusion removes it from every dispatch it eliminates at close to no compute cost.</p>
+<p>The amortization is measured directly, and depth and batch are the two controls.
+A stack of conv-relu layers fused into one program keeps its per-call latency flat near 0.19 ms from one layer to thirty-two.
+A thirty-two-layer model thus pays one firmware round trip just as a one-layer model does, while the cost charged to each operation falls from about 222 microseconds at one layer to about 6.3 microseconds at thirty-two.
+Batching the same program to 512 samples amortizes that one round trip across the batch, dropping the per-sample cost from about 196 microseconds to about 1.5 microseconds, a 127-fold reduction.
+A deep model on a large batch thus pays a single round trip for all of it, which is why packing work into one fused program is the main way to cut latency below the compute roof.</p>
+<h2 id="cross-device-roofline"><a class="header" href="#cross-device-roofline">Cross-device roofline</a></h2>
+<p>The M1 ceilings above locate a layer against one engine.
+Taken on three devices, the same two measurements locate a layer against the whole machine, and the difference between the three rooflines is the device map.
+Each device's compute roof comes from a saturation sweep and its bandwidth roof from a streaming sweep, and the ratio of the two is the device's ridge point, the arithmetic intensity at which a layer crosses from bandwidth-bound to compute-bound.</p>
+<p>The three ridge points are far apart (<a href="#tbl-c9-perdevice">table 9.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Device</th><th style="text-align: right">Compute roof (GFLOP/s)</th><th style="text-align: right">Bandwidth roof (GB/s)</th><th style="text-align: right">Ridge (FLOP/byte)</th></tr></thead><tbody>
+<tr><td>Engine</td><td style="text-align: right">10191 (matmul) / 18771 (conv)</td><td style="text-align: right">24.1 (standalone)</td><td style="text-align: right">424</td></tr>
+<tr><td>GPU</td><td style="text-align: right">30862</td><td style="text-align: right">229.7</td><td style="text-align: right">134</td></tr>
+<tr><td>CPU</td><td style="text-align: right">1898</td><td style="text-align: right">130.4</td><td style="text-align: right">15</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c9-perdevice"></a><strong>Table 9.1.</strong> Per-device compute roof, bandwidth roof, and ridge point, M5/H17s measured; the engine bandwidth is its standalone-activation path.</p>
+<p>The engine ridge near 424 FLOP per byte is about three times the GPU ridge near 134 and about twenty-nine times the CPU ridge near 15.
+A layer must reach roughly three times the arithmetic intensity to be compute-bound on the engine that it would need on the GPU.
+The high engine ridge is a direct consequence of the standalone bandwidth: the engine still delivers about 10 TFLOP/s of compute while a standalone elementwise stream moves only about 24 GB/s, so the crossover is far to the right.</p>
+<p>The engine has two distinct effective bandwidths, and the gap between them sets which regime each workload runs in.
+A standalone elementwise or memory-bound operation streams at roughly 24 GB/s, the activation path measured on a relu or a reduction in isolation.
+A compiled matmul streams its weights faster than the standalone path, though the rate depends on the measurement.
+A decode GEMV at arithmetic intensity near 1 reaches about 112 GFLOP/s, which implies a weight-direct-memory-access path near 112 GB/s.
+A direct wall-clock measurement of one large single-row matrix multiply saturates lower, at the 51 GB/s established by the M1 bandwidth ceiling above.
+Either way the weight path is far faster than the throttled standalone activation path.</p>
+<p>A standalone bandwidth-bound operation, a large softmax or a large elementwise op, reaches only the 24 GB/s activation path on the engine, and the GPU reaches roughly 230 GB/s on the same stream.
+Such an op is thus dispatched to the GPU, not the engine: against the engine's own bandwidth roof a standalone layer_norm reaches 18 percent and a standalone softmax 63 percent, so dispatching them one at a time leaves the engine mostly idle.</p>
+<h2 id="fusion-as-a-control"><a class="header" href="#fusion-as-a-control">Fusion as a control</a></h2>
+<p>Fusion moves the engine's operating point to the right of its ridge, and the measurements below fix how far.
+Fusing operations into one program keeps intermediate activations on chip and streams each weight once for reuse across the whole graph, raising the program's effective arithmetic intensity above that of any single operation in it.
+A real three-convolution stack fused into one program reaches an effective rate of 20718 GFLOP/s.
+That rate is above the single-convolution saturation peak of 18771 GFLOP/s, at 110 percent of the convolution roof.
+Fusion lifts the block's effective arithmetic intensity from about 1076 for one standalone convolution to about 2854 for the fused stack, moving the operating point past the ridge into the compute-bound region.
+The over-roof GEMV at 466 percent of the standalone roof is the same effect for a single compiled weight stream.
+A fused convolution or attention graph runs in the compute-bound region where the engine is efficient, and the identical operations dispatched standalone do not.</p>
+<h2 id="locating-a-layer-before-it-is-built"><a class="header" href="#locating-a-layer-before-it-is-built">Locating a layer before it is built</a></h2>
+<p>Arithmetic intensity and working-set size together locate any layer.
+A layer above 141 FLOP per byte is compute-bound against the 12 TFLOP/s roof and one below it is bandwidth-bound against the 85 GB/s roof, but an activation over 2 MB is forced onto the memory slope whatever its nominal intensity, so the working set must shrink before any other tuning helps.
+The 0.23 ms dispatch floor sets a latency a small op cannot beat, so the developer batches or fuses small ops until their compute clears the floor.</p>
+<p>The estimate below is static: it takes a layer's shape and returns the bound and the control that moves it.</p>
+<pre><code class="language-python"># Locate a layer against the roofline BEFORE building it, from its shape alone,
+# with no hardware in hand. Three numbers decide where it falls and which
+# control moves it.
+
+# M1 roofline constants (see the constants table below):
+P            = 12e12    # compute roof, fp16 FLOP per second
+B            = 85e9     # bandwidth roof, bytes per second
+ridge_point  = 141      # P / B, in FLOP per byte: the compute-vs-bandwidth crossover
+working_cap  = 2e6      # on-chip working set, in bytes: above this it streams from DRAM
+t0           = 0.00023  # per-dispatch floor, in seconds (~0.23 ms), paid no matter the work
+
+# Count the layer's work and the bytes it must move, from its shape.
+function arithmetic_intensity(layer):
+    return total_flops(layer) / dram_bytes(layer)        # FLOP per byte
+
+# Classify the layer and name the control it needs.
+function place_layer(layer):
+    intensity    = arithmetic_intensity(layer)
+    working_set  = activation_bytes(layer)               # live intermediate size
+    work_seconds = total_flops(layer) / attainable_rate(intensity)
+    latency      = t0 + work_seconds                     # t ~= t0 + work / R(I)
+
+    # The working-set threshold dominates: above it, intensity collapses regardless.
+    if working_set &gt; working_cap:
+        return ("bandwidth", "shrink the working set: reshape or split below 2 MB")
+
+    # Below the dispatch floor the op size does not matter at all.
+    if work_seconds &lt; t0:
+        return ("dispatch", "batch or fuse until the compute clears the 0.23 ms floor")
+
+    # Otherwise the ridge point decides which roof binds.
+    if intensity &gt;= ridge_point:
+        return ("compute", "near the 12 TFLOP/s roof: no tuning needed")
+    else:
+        return ("bandwidth", "compress the weights or fuse to raise the intensity")
+
+# attainable_rate is the lower of the two roofs at this intensity.
+function attainable_rate(intensity):
+    return min(P, intensity * B)                         # R(I) = min(P, I*B)
+
+# Worked placement of a 3x3 convolution, 256 channels:
+(bound, lever) = place_layer(conv_3x3_256ch)
+# intensity ~= 466 FLOP/byte  -&gt; well right of the 141 ridge point
+# working_set &lt; 2 MB          -&gt; not on the memory slope
+# bound == "compute", lever  == "no tuning needed"
+
+# A layer that comes back "bandwidth" or with a working set above 2 MB is
+# reshaped, batched, or fused before any other tuning, because no clock-rate
+# advantage helps a layer pinned to the memory slope.
+</code></pre>
+<h2 id="reference-the-m1-roofline-constants"><a class="header" href="#reference-the-m1-roofline-constants">Reference: the M1 roofline constants</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Constant</th><th>Symbol</th><th style="text-align: right">M1/H13 value</th></tr></thead><tbody>
+<tr><td>Compute roof, overhead-isolated matmul slope</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span></td><td style="text-align: right">12 fp16 TFLOP/s</td></tr>
+<tr><td>Compute roof, saturating large matmul</td><td></td><td style="text-align: right">4.8 fp16 TFLOP/s</td></tr>
+<tr><td>Effective peak the analytic model is fit to</td><td></td><td style="text-align: right">3.25 fp16 TFLOP/s</td></tr>
+<tr><td>Convolution end-to-end ceiling</td><td></td><td style="text-align: right">1.8 TFLOP/s</td></tr>
+<tr><td>int8 over fp16 compute rate</td><td></td><td style="text-align: right">1.4 to 2 times</td></tr>
+<tr><td>Bandwidth roof, DRAM ceiling</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></td><td style="text-align: right">85 GB/s</td></tr>
+<tr><td>Bandwidth roof, saturating weight-stream wall clock</td><td></td><td style="text-align: right">51 GB/s</td></tr>
+<tr><td>Standalone activation-stream rate</td><td></td><td style="text-align: right">24 GB/s</td></tr>
+<tr><td>Single-relu effective stream</td><td></td><td style="text-align: right">10 GB/s</td></tr>
+<tr><td>Roofline ridge point</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span></td><td style="text-align: right">141 FLOP/byte</td></tr>
+<tr><td>On-chip working-set threshold</td><td></td><td style="text-align: right">2 MB</td></tr>
+<tr><td>Per-dispatch floor, slope method</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td><td style="text-align: right">0.23 ms</td></tr>
+<tr><td>Per-dispatch floor, measured tiny model</td><td></td><td style="text-align: right">0.19 ms</td></tr>
+<tr><td>Fused per-dispatch cost, 1 MB operands</td><td></td><td style="text-align: right">0.76 ms</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-roofline"></a><strong>Table 9.2.</strong> The M1 roofline constants, with the symbol each has in this chapter.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-2-reaching/08-entitlement-boundary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-3-performance/10-power-efficiency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-2-reaching/08-entitlement-boundary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-3-performance/10-power-efficiency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

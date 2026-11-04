@@ -1,0 +1,477 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>27. Kernel driver and IOKit ABI - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-8-system-internals/27-kernel-driver.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="27-kernel-driver-and-iokit-abi"><a class="header" href="#27-kernel-driver-and-iokit-abi">27. Kernel driver and IOKit ABI</a></h1>
+<blockquote>
+<p>The engine is reached through a single kernel driver and a flat user-client selector ABI.
+There are 17 control-client selectors and 9 direct-path selectors, each pinned to one exact size tuple.
+Opening either user client is gated on the kernel entitlement <code>com.apple.ane.iokit-user-access</code>, which exactly two system binaries have.
+Every application therefore reaches the engine through a privileged broker daemon.
+Selector 2 alone reaches a hardware doorbell from user space, through a four-layer call path ending in an MMIO mailbox write.
+The size tuples match across the M1 and M2-class kernel cache, so the ABI at this layer is family-invariant.</p>
+</blockquote>
+<h2 id="driver-stack-and-class-hierarchy"><a class="header" href="#driver-stack-and-class-hierarchy">Driver stack and class hierarchy</a></h2>
+<p>The three cooperating kexts, their bundles, principal classes, and provider matches appear in <a href="#tbl-c27-kext-stack">Table 27.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Kext role</th><th>Bundle</th><th>Principal class</th><th>Provider match</th></tr></thead><tbody>
+<tr><td>interface and hardware driver</td><td><code>AppleH11ANEInterface</code></td><td><code>ANEHWDevice</code> (registered as <code>H11ANEIn</code>)</td><td><code>RTBuddyService</code>, role <code>ANE</code></td></tr>
+<tr><td>per-die abstraction layer</td><td><code>AppleT8132ANEHAL</code></td><td><code>AppleT8132ANEHAL</code></td><td><code>IOResources</code></td></tr>
+<tr><td>multi-engine arbiter</td><td><code>AppleANELoadBalancer</code></td><td><code>ANEDriver</code> (<code>H1xANELoadBalancer</code>)</td><td><code>IOResources</code>, <code>IOKit</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-kext-stack"></a><strong>Table 27.1.</strong> Bundle, principal class, and provider match for each of the three kernel extensions.</p>
+<p>All three are version-locked, at build <code>9.511.3</code> on the M1 generation.
+The interface and hardware driver registers the device, vends the user clients, and rings the firmware.
+A per-die hardware abstraction layer supplies the clock, power, and topology constants.
+The load balancer owns the program-to-engine residency map and arbitrates across physical engines on parts that have more than one.
+The engine attaches as an Apple RTKit coprocessor endpoint, so the interface driver is the host side of a real-time-operating-system mailbox client.
+The work is spread over three kernel families: the address-translation family that drives the device IOMMU, the surface family that backs zero-copy tensor buffers, and the real-time mailbox family that queues firmware commands.</p>
+<p><code>ANEHWDevice::newUserClient(task*, void*, uint type, IOUserClient**)</code> vends two distinct user clients plus a hint-only client (<a href="#lst-c27-userclients">Listing 27.1</a>).</p>
+<pre><code class="language-c">/* ANEHWDevice::newUserClient vends, by requested type: */
+H11ANEInUserClient        /* control client: program lifecycle + the inference hot path */
+H11ANEInDirectPathClient  /* direct path: enqueue, memory-map, session-hint            */
+ANEClientHints            /* scheduling-hint client (setClientHint)                    */
+</code></pre>
+<p><a id="lst-c27-userclients"></a><strong>Listing 27.1.</strong> The three user-client types, by requested type.</p>
+<p>The two functional clients use separate connections and separate selector spaces that both start at zero, so one small selector integer names different methods on each.
+Each stores its connection at object offset <code>+0x40</code>, and every selector call loads that offset before issuing the kernel call.</p>
+<p>On the user-space side an <code>IOServiceOpen</code> whose return type is <code>0xe00002c5</code> opens the device, and the connection object is at offset <code>0x40</code> in the device handle.
+That type is opened by two front-ends: <code>ANEServicesDevice</code> for inference and <code>ANEHWDevice</code> for administration.
+The user-space selector immediates read on the M1 are selector 0 for the device open, selector 2 for the send-request, selector 3 for create, selector 4 for prepare, selector 6 for destroy, selector 10 for the version query, and selector 16 for the firmware load.
+The lifecycle indices differ from the kernel-registered table because the kernel has two user-client classes with independent selector tables.
+The two selectors agree across both sides, selector 0 opening the device at 104 bytes and selector 2 sending a request with a 2376-byte input and a 40-byte output.</p>
+<p>Every selector shim reads its arguments out of the framework <code>IOExternalMethodArguments</code> block at the fixed set of offsets in <a href="#lst-c27-extmethodargs">Listing 27.2</a>, identical across all 26 selectors.</p>
+<pre><code class="language-c">/* IOExternalMethodArguments field offsets, used by every selector shim: */
++0x08  asyncWakePort       /* mach completion port (async selectors only)        */
++0x10  scalarInput[]       /* also holds the 0x20-byte asyncReference block       */
++0x20  scalarInputCount
++0x30  structureInput      /* pointer to the typed argument struct                */
++0x38  structureInputSize
++0x48  scalarOutput[]
++0x50  scalarOutputCount
++0x58  structureOutput
++0x60  structureOutputSize
+</code></pre>
+<p><a id="lst-c27-extmethodargs"></a><strong>Listing 27.2.</strong> The <code>IOExternalMethodArguments</code> field offsets every selector shim reads.</p>
+<p>The shims share three return constants: <code>0xe00002c2</code> is <code>kIOReturnBadArgument</code>, returned on a size or null-pointer check failure, <code>0xe00002c7</code> is <code>kIOReturnUnsupported</code>, returned on a disabled or stub path, and <code>0xe00002c5</code> is the closed-or-closing client state.</p>
+<h2 id="user-client-dispatch-array-format"><a class="header" href="#user-client-dispatch-array-format">User-client dispatch-array format</a></h2>
+<p>Each user client routes a selector through the standard IOKit 2022 dispatch pattern.
+<code>H11ANEInUserClient::externalMethod</code> loads the dispatch-array pointer and the method count, then tail-calls the framework dispatcher, which validates the declared scalar and structure sizes against the array entry before it calls the named handler.
+Both dispatch arrays were read byte for byte out of the read-only data section of the kernel cache (<a href="#lst-c27-dispatch-disasm">Listing 27.3</a>).</p>
+<pre><code class="language-c">/* H11ANEInUserClient::externalMethod, disassembled (M1, T6000): */
+add x3, x3, #0xc08    /* x3 = &amp;_sANEDriverClientMethods           */
+mov w4, #0x11         /* count = 17 selectors (0..16)             */
+bl  IOUserClient2022::dispatchExternalMethod
+
+/* H11ANEInDirectPathClient::externalMethod: */
+add x3, x3, #0xeb0    /* x3 = &amp;_sANEDriverDirectPathClientMethods */
+mov w4, #0x9          /* count = 9 selectors (0..8)               */
+bl  IOUserClient2022::dispatchExternalMethod
+</code></pre>
+<p><a id="lst-c27-dispatch-disasm"></a><strong>Listing 27.3.</strong> The disassembled selector dispatch for each user client, with its dispatch-array pointer and selector count.</p>
+<p>Each array element is one <code>IOExternalMethodDispatch2022</code> record at a 40-byte stride, packing the authenticated handler pointer and the four size checks the dispatcher enforces, shown in <a href="#lst-c27-dispatch-elem">Listing 27.4</a>.</p>
+<pre><code class="language-c">/* IOExternalMethodDispatch2022 element, 40-byte stride, field offsets: */
+struct IOExternalMethodDispatch2022 {
+  void *function;                  /* +0x00  pointer-authenticated handler   */
+  uint32_t checkScalarInputCount;  /* +0x08  exact scalar-input count        */
+  uint32_t checkStructureInputSize;/* +0x0c  exact struct-input bytes        */
+  uint32_t checkScalarOutputCount; /* +0x10  exact scalar-output count       */
+  uint32_t checkStructureOutputSize; /* +0x14 exact struct-output bytes      */
+  uint8_t  reserved[0x10];         /* +0x18  reserved (debug-WP group flag)  */
+};
+</code></pre>
+<p><a id="lst-c27-dispatch-elem"></a><strong>Listing 27.4.</strong> The dispatch-array element layout, packing the handler pointer and the four size checks the dispatcher enforces.</p>
+<p>No entry on either client uses the sentinel <code>0xffffffff</code> that means "do not check".
+Every selector pins an exact scalar count and an exact struct size in exactly one record, and the dispatcher rejects any other size tuple with <code>kIOReturnBadArgument</code>.</p>
+<h2 id="control-client-selector-table"><a class="header" href="#control-client-selector-table">Control-client selector table</a></h2>
+<p>The control client has 17 selectors covering the open handshake, the program lifecycle, status and version reads, and the firmware-driven debug work-processor channel, with each handler and its kernel-authoritative sizes read out of the dispatch array into <a href="#tbl-c27-control-selectors">Table 27.2</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Sel</th><th>Handler</th><th style="text-align: right">Scalar in</th><th style="text-align: right">Struct in</th><th style="text-align: right">Scalar out</th><th style="text-align: right">Struct out</th></tr></thead><tbody>
+<tr><td style="text-align: right">0</td><td><code>ANE_DeviceOpen</code></td><td style="text-align: right">0</td><td style="text-align: right">104</td><td style="text-align: right">0</td><td style="text-align: right">104</td></tr>
+<tr><td style="text-align: right">1</td><td><code>ANE_DeviceClose</code></td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">2</td><td><code>ANE_ProgramSendRequest</code></td><td style="text-align: right">1</td><td style="text-align: right">2376</td><td style="text-align: right">0</td><td style="text-align: right">40</td></tr>
+<tr><td style="text-align: right">3</td><td><code>ANE_ProgramCreate</code></td><td style="text-align: right">0</td><td style="text-align: right">32</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">4</td><td><code>ANE_ProgramPrepare</code></td><td style="text-align: right">0</td><td style="text-align: right">56</td><td style="text-align: right">0</td><td style="text-align: right">56</td></tr>
+<tr><td style="text-align: right">5</td><td><code>ANE_ProgramUnprepare</code></td><td style="text-align: right">0</td><td style="text-align: right">56</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">6</td><td><code>ANE_ProgramDestroy</code></td><td style="text-align: right">0</td><td style="text-align: right">16</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">7</td><td><code>ANE_GetStatus</code></td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">32</td></tr>
+<tr><td style="text-align: right">8</td><td><code>ANE_ProgramCreateInstance</code></td><td style="text-align: right">0</td><td style="text-align: right">32</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">9</td><td><code>ANE_ProgramChainingPrepare</code></td><td style="text-align: right">0</td><td style="text-align: right">16</td><td style="text-align: right">0</td><td style="text-align: right">24</td></tr>
+<tr><td style="text-align: right">10</td><td><code>ANE_GetVersion</code></td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">1</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">11</td><td><code>ANE_RegisterDebugWorkProcessor</code></td><td style="text-align: right">0</td><td style="text-align: right">24</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">12</td><td><code>ANE_UnregisterDebugWorkProcessor</code></td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">13</td><td><code>ANE_GetDebugWorkProcessorItem</code></td><td style="text-align: right">2</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">14</td><td><code>ANE_CompleteDebugWorkProcessorItem</code></td><td style="text-align: right">2</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">15</td><td><code>ANE_ReleaseDebugWorkProcessorBuffers</code></td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">16</td><td><code>ANE_LoadFirmware</code></td><td style="text-align: right">3</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-control-selectors"></a><strong>Table 27.2.</strong> The seventeen control-client selectors, with handler name and kernel-authoritative scalar and structure sizes.</p>
+<p>Selector 0 is the open handshake.
+It passes a 104-byte device-info structure as both the input and the output buffer, echoes the caller header back, fills the output half with the device descriptor, and returns the session token at offset <code>+0x00</code> that every later request stores, with the handshake fields given in <a href="#tbl-c27-deviceinfo">Table 27.3</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Input (client to kernel)</th><th>Output (kernel to client)</th></tr></thead><tbody>
+<tr><td><code>+0x00</code></td><td>usage type byte (1 standard, 2 unsupported)</td><td>program / session token (u64)</td></tr>
+<tr><td><code>+0x08</code></td><td>callback function pointer; board id <code>0x1111222233334444</code></td><td>echoed</td></tr>
+<tr><td><code>+0x10</code></td><td>receiver context pointer</td><td>echoed</td></tr>
+<tr><td><code>+0x18</code></td><td>timeout <code>0x2710</code> = 10000</td><td>echoed</td></tr>
+<tr><td><code>+0x48</code></td><td>(output only)</td><td>ANE version <code>0x20</code> = 32, 256</td></tr>
+<tr><td><code>+0x50</code></td><td>(output only)</td><td>number of engines = 1</td></tr>
+<tr><td><code>+0x60</code></td><td>(output only)</td><td>CPU subtype = 4</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-deviceinfo"></a><strong>Table 27.3.</strong> The <code>ANEDeviceInfo</code> handshake structure passed in and echoed back by selector 0.</p>
+<p>The usage-type byte selects the standard client profile: usage <code>1</code> opens, usage <code>2</code> returns the unsupported code <code>24</code>.
+Selector 16 is inactive on this build: its shim returns <code>kIOReturnUnsupported</code> unconditionally, and the real firmware load runs internally at driver start.</p>
+<p>A compiled program reaches the kernel in one of two representations: <code>ANEProgramLegacyResource</code>, a loader for the program-image executable, and <code>ANEProgramRTResource</code>, a runtime op-graph variant.</p>
+<h2 id="direct-path-selector-table"><a class="header" href="#direct-path-selector-table">Direct-path selector table</a></h2>
+<p>The direct-path client has 9 selectors, listed in <a href="#tbl-c27-directpath-selectors">Table 27.4</a> with their handlers and sizes.
+Selectors 0, 1, and 2 reuse the control client's handler functions; the remaining six are the enqueue, memory-map, and session-hint methods of the low-latency submission model.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Sel</th><th>Handler</th><th style="text-align: right">Scalar in</th><th style="text-align: right">Struct in</th><th style="text-align: right">Scalar out</th><th style="text-align: right">Struct out</th></tr></thead><tbody>
+<tr><td style="text-align: right">0</td><td><code>ANE_DeviceOpen</code></td><td style="text-align: right">0</td><td style="text-align: right">104</td><td style="text-align: right">0</td><td style="text-align: right">104</td></tr>
+<tr><td style="text-align: right">1</td><td><code>ANE_DeviceClose</code></td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">2</td><td><code>ANE_ProgramSendRequest</code></td><td style="text-align: right">1</td><td style="text-align: right">2376</td><td style="text-align: right">0</td><td style="text-align: right">40</td></tr>
+<tr><td style="text-align: right">3</td><td><code>ANE_ProgramOutputSetEnqueue</code></td><td style="text-align: right">0</td><td style="text-align: right">40</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">4</td><td><code>ANE_ProgramInputsReady</code></td><td style="text-align: right">0</td><td style="text-align: right">3104</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">5</td><td><code>ANE_MemoryMapRequest</code></td><td style="text-align: right">1</td><td style="text-align: right">2080</td><td style="text-align: right">1</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">6</td><td><code>ANE_MemoryUnMapRequest</code></td><td style="text-align: right">0</td><td style="text-align: right">2080</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">7</td><td><code>ANE_SessionHintRequest</code></td><td style="text-align: right">0</td><td style="text-align: right">16</td><td style="text-align: right">0</td><td style="text-align: right">24</td></tr>
+<tr><td style="text-align: right">8</td><td><code>ANE_ProgramChainingSetActiveProcedure</code></td><td style="text-align: right">0</td><td style="text-align: right">32</td><td style="text-align: right">0</td><td style="text-align: right">0</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-directpath-selectors"></a><strong>Table 27.4.</strong> The nine direct-path selectors with their handler names and scalar and structure sizes; the full reference is in Appendix <a href="../appendices/c-decoded-tables.html">C</a>.</p>
+<p>Selector 5 is the device-IOMMU map.
+Its 2080-byte parameter structure describes a host buffer, and on success the handler writes the resulting engine-visible device address back into the single scalar output slot.
+Selectors 3 and 4 are the pre-post and trigger of the resident submission model: an output buffer set is enqueued, the inputs-ready signal fires, and the same doorbell path as selector 2 rings the engine.</p>
+<h2 id="register-and-exclave-method-catalog"><a class="header" href="#register-and-exclave-method-catalog">Register and exclave method catalog</a></h2>
+<p>Beyond the nine kernel selectors, the direct-path client exports a wider register, power, firmware, and secure-world method surface.
+These are not distinct kernel selector indices: each routes through one of the nine kernel selectors or through a separate entry point, and <a href="#tbl-c27-method-catalog">Table 27.5</a> names the surface by role.</p>
+<div class="table-wrapper"><table><thead><tr><th>Method</th><th>Role</th></tr></thead><tbody>
+<tr><td><code>ANE_PowerOn</code> / <code>ANE_PowerOff</code> / <code>ANE_IsPowered</code></td><td>power-domain control</td></tr>
+<tr><td><code>ANE_LoadFirmware</code> / <code>ANE_ForgetFirmware</code></td><td>firmware image lifecycle</td></tr>
+<tr><td><code>ANE_SendCommand</code></td><td>raw firmware command injection</td></tr>
+<tr><td><code>ANE_SetPowerManagement</code> / <code>ANE_SetDynamicPowerGating</code> / <code>ANE_SetPowerGatingHysteresisTime</code></td><td>power policy</td></tr>
+<tr><td><code>ANE_SetThrottlingPercentage</code></td><td>thermal throttle</td></tr>
+<tr><td><code>ANE_SetDARTCacheTTL</code> / <code>ANE_FlushInactiveDARTMappings</code> / <code>ANE_UnmapDartBuffers</code></td><td>address-translation controls</td></tr>
+<tr><td><code>ANE_ReadANERegister</code> / <code>ANE_WriteANERegister</code></td><td>raw memory-mapped register read and write</td></tr>
+<tr><td><code>ANE_FWSharedEventDoorbellRing</code></td><td>ring the firmware shared-event doorbell</td></tr>
+<tr><td><code>ANE_AddPersistentClient</code> / <code>ANE_RemovePersistentClient</code></td><td>keep the device resident</td></tr>
+<tr><td><code>ANE_MPMMemoryMapRequest</code> / <code>ANE_MPMMemoryUnmapRequest</code></td><td>the multi-process managed-memory region</td></tr>
+<tr><td><code>ANE_ExclaveCycle</code> / <code>ANE_ExclaveLoad</code> / <code>ANE_ExclaveEvaluate</code> / <code>ANE_ExclaveUnload</code></td><td>secure-world load and evaluate</td></tr>
+<tr><td><code>ANE_ExclaveReadPropertyValue</code> / <code>ANE_ExclaveWritePropertyValue</code></td><td>secure-world property access</td></tr>
+<tr><td><code>ANE_GetClientsInfo</code> / <code>ANE_ShowSharedMemoryAllocations</code> / <code>ANE_ShowModelMemoryStatus</code></td><td>diagnostics</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-method-catalog"></a><strong>Table 27.5.</strong> The register, power, firmware, and exclave method surface exported by the direct-path client beyond its nine kernel selectors.</p>
+<p>A second access check beyond the kernel entitlement gates the raw register read and write, command injection, and exclave methods: a privileged-virtual-machine-access property probed at client open, distinct from the device-open entitlement.</p>
+<h2 id="from-a-user-space-call-to-the-doorbell"><a class="header" href="#from-a-user-space-call-to-the-doorbell">From a user-space call to the doorbell</a></h2>
+<p>A submit on selector 2 crosses four layers from the user-space call down to the hardware doorbell write, traced in <a href="#lst-c27-doorbell-path">Listing 27.5</a>.</p>
+<pre><code class="language-c">/* The submit path for selector 2 / direct-path selector 4: */
+H11ANEInUserClient::externalMethod(sel=2, args)
+  -&gt; dispatchExternalMethod                 /* validates 2376-in / 40-out */
+  -&gt; ANE_ProgramSendRequest(client, ref, args)            /* arg shim     */
+  -&gt; ANEClientDevice::programSendRequest(ANEProgramRequestArgs*, ...)
+  -&gt; ANEDriver::ANE_ProgramSendRequest(...)               /* gated        */
+  -&gt; ANEHWDevice::doorBellRing(db)
+  -&gt; ANERegisterControl::write32(reg, 1 &lt;&lt; idx)           /* MMIO mailbox */
+</code></pre>
+<p><a id="lst-c27-doorbell-path"></a><strong>Listing 27.5.</strong> The four-layer call path from a user-space submit selector down to the hardware doorbell write.</p>
+<p>Below the dispatcher, the thin shim re-checks the argument sizes and unmarshals the typed argument structure, the client object method builds the memory descriptors and retains the shared-event fences, and the gated driver method runs on the command-gate workloop.
+The 2376-byte request structure contains the program handle minted at create time, a sequence number, the quality-of-service and execution-priority pair, and the array of surface identifiers for the input, output, and intermediate buffers, with the measured field layout in <a href="#tbl-c27-request-struct">Table 27.6</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Offset</th><th>Field</th><th>Observed</th></tr></thead><tbody>
+<tr><td><code>+0x000</code></td><td>program / instance token (u64)</td><td>the handle minted by program-create</td></tr>
+<tr><td><code>+0x008</code></td><td>sequence number</td><td>0, then 1 on the next submit</td></tr>
+<tr><td><code>+0x010</code></td><td>priority / quality-of-service pair</td><td><code>(5, 21)</code>, qos class and execution priority</td></tr>
+<tr><td><code>+0x01c</code></td><td>io category</td><td>2</td></tr>
+<tr><td><code>+0x020</code></td><td>surface identifier array</td><td>input, output, intermediate surfaces</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-request-struct"></a><strong>Table 27.6.</strong> The measured field layout of the 2376-byte request structure submitted on selector 2.</p>
+<p>The 40-byte output returns the sequence and the echoed token: <code>+0x00</code> is the sequence and result, <code>+0x08</code> is the echoed token, and <code>+0x20</code> is a status flag.
+Selector 2 alone uses the asynchronous machinery, and it is the only path that reaches a hardware doorbell from user space.
+Completion arrives at a mach wake port as a callback, not by a shared-memory poll.
+The doorbell write itself reads the doorbell index from the request, requires it below 32, computes the mask <code>1 &lt;&lt; index</code>, and stores that mask into the engine register aperture, the mailbox signal that triggers the firmware.</p>
+<p>The reverse signal, the engine telling the host a job is complete, travels the same windowed store mechanism in firmware.
+The engine rings a host interrupt with an interrupt-atomic memory-mapped store to the host-supplied target register, bracketed by clearing and then setting bit 39 of the implementation-defined AArch64 system register <code>S3_3_C15_C8_0</code>.
+Clearing bit 39 opens the posted-write window, the firmware stores the doorbell value into the host aperture, and a barrier separates the store from the status sample.
+The firmware then reads back the uncorrectable-cache-error bit (bit 1) and the transaction-reject bit (bit 7) to confirm the store has committed before setting bit 39 to close the window.
+The whole sequence runs with interrupts disabled so a nested handler cannot corrupt the status read.</p>
+<h2 id="entitlement-gate-and-broker-model"><a class="header" href="#entitlement-gate-and-broker-model">Entitlement gate and broker model</a></h2>
+<p>The client open checks two kernel entitlements, the hard device-open gate and the resident data-chaining gate (<a href="#lst-c27-entitlements">Listing 27.6</a>).</p>
+<pre><code class="language-c">/* checked at H11ANEInUserClient::init via copyClientEntitlement: */
+"com.apple.ane.iokit-user-access"            /* the hard device-open gate   */
+"com.apple.ane.allow-dataChaining-access"    /* resident data-chaining gate */
+</code></pre>
+<p><a id="lst-c27-entitlements"></a><strong>Listing 27.6.</strong> The two kernel entitlements checked when a user client is opened.</p>
+<p>A single kernel entitlement gates opening either user client.
+The check runs once at client construction and is a boolean on the client object.
+Across the whole system, exactly two binaries have <code>com.apple.ane.iokit-user-access</code>: the system broker daemon and its per-user sibling.
+No application process opens the device.
+Every other consumer reaches the engine through the broker over a cross-process call, where the credential is an entitlement from the broker's own private family and never the kernel gate.</p>
+<p>The driver stamps the capability at client creation in <code>ANEClientInfo::create</code>, which reads each entitlement through <code>copyClientEntitlement</code> and records <code>isPrivileged</code> and <code>allowDataChaining</code> as bits on the client.
+Beyond the two open gates, the driver enforces six further <code>com.apple.ane</code> and <code>com.apple.private.ane</code> entitlements covering scheduling priority, memory and data access, and client and coalition hints, as <a href="#tbl-c27-driver-entitlements">Table 27.7</a> lists.</p>
+<div class="table-wrapper"><table><thead><tr><th>Entitlement</th><th>Capability</th></tr></thead><tbody>
+<tr><td><code>com.apple.ane.realtime-priority-client</code></td><td>the real-time-priority client grant</td></tr>
+<tr><td><code>com.apple.ane.allow-system-reserved-priorities</code></td><td>use of the system-reserved scheduling priorities</td></tr>
+<tr><td><code>com.apple.ane.memory</code></td><td>a memory-access grant</td></tr>
+<tr><td><code>com.apple.ane.allow-data</code></td><td>a data-access grant</td></tr>
+<tr><td><code>com.apple.private.ane.allow-set-client-hints</code></td><td>set per-client hints</td></tr>
+<tr><td><code>com.apple.private.ane.allow-share-coalition-hints</code></td><td>share hints across a coalition</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-driver-entitlements"></a><strong>Table 27.7.</strong> The kernel-driver entitlements beyond the two open gates, with the capability each grants.</p>
+<p>The broker keys are a private entitlement family, checked per connection and per method over a cross-process call, with each key, its capability, and its holder count given in <a href="#tbl-c27-entitlement-family">Table 27.8</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Entitlement</th><th>Capability</th><th>Holders</th></tr></thead><tbody>
+<tr><td><code>com.apple.ane.iokit-user-access</code></td><td>the hard kernel gate: open the user client, privileged device open</td><td>2: the broker and its per-user sibling</td></tr>
+<tr><td><code>com.apple.ane.allow-dataChaining-access</code></td><td>resident data-chaining on the direct-path client</td><td>kernel-checked at client init</td></tr>
+<tr><td><code>com.apple.aned.private.allow</code></td><td>baseline: compile, load, instantiate through the broker</td><td>18</td></tr>
+<tr><td><code>com.apple.aned.private.ANEAccess.allow</code></td><td>inference-client access-grant variant</td><td>14</td></tr>
+<tr><td><code>com.apple.aned.private.adapterWeight.allow</code></td><td>stream adapter weights onto a shared resident base model</td><td>5</td></tr>
+<tr><td><code>com.apple.aned.private.processModelShare.allow</code></td><td>share one resident model across processes</td><td>4</td></tr>
+<tr><td><code>com.apple.aned.private.secondaryANECompilerServiceAccess.allow</code></td><td>the longer-duration compiler service for large models</td><td>1</td></tr>
+<tr><td><code>com.apple.aned.private.aggressivePowerSaving</code></td><td>the aggressive-power-saving execution mode</td><td>gate helper only</td></tr>
+<tr><td><code>com.apple.aned.private.modelPurgeInAllPartitions</code></td><td>purge models across all cache partitions</td><td>gate helper only</td></tr>
+<tr><td><code>com.apple.security.temporary-exception.iokit-user-client-class</code></td><td>open the direct-path user client for own submission</td><td>27</td></tr>
+<tr><td><code>com.apple.security.ts.ane-client</code></td><td>trust-cache blessed-client slot for latency-critical consumers</td><td>5</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-entitlement-family"></a><strong>Table 27.8.</strong> The entitlement family that gates the engine, from a static scan of the M1 system binaries, independent of boot-security state.</p>
+<p>The broker is a listener that enforces per-connection and per-method entitlement checks.
+It sorts admitted clients into a restricted tier, unrestricted tier, and per-user tier, and it threads a quality-of-service argument through every compile, load, and instantiate method.
+The restricted tier admits the adapter-weight, model-share, and aggressive-power-saving requests through a per-method admission helper, and the per-user tier serves the per-user broker.</p>
+<p>Swappable model weights without recompilation rest on the adapter-weight path.
+A base model is loaded once, and each adapter is a new instance bound to a named base-model identifier holding only its per-adapter weight files, through a create-instance-with-weights method that names the base-model identifier and the weight-file count.
+Residency and power are explicit per-instance arguments on the create-instance method: an enable-power-saving flag, a more-aggressive variant gated by the restricted tier, an opt-out-of-model-memory-unwiring flag that keeps a hot client's weights resident at the cost of footprint, and a queue-depth that the broker down-adjusts under contention.
+A queue-index function and a program-priority function map the quality-of-service argument to hardware scheduling.
+A privileged subset of system daemons also has a sandbox exception that opens the direct-path user client and drives per-inference submission on its own connection, skipping the per-call round trip through the broker.
+That exception is a latency optimization, not a capability grant: the privileged device open still happens in the broker, which hands the client a program handle and an intermediate-buffer handle.</p>
+<p>The kernel binds residency to code-signing identity.
+A second client may attach to an already-resident program only when its team identifier and code-directory hash match the owner, so a shared resident model or key-value cache cannot leak across tenants.
+The kernel resolves the caller's team identifier and code-directory hash, and the attach path tests them against the resident owner before a sibling instance reuses the shared intermediate-buffer handle.
+With one physical engine on this generation, cross-client arbitration is time-division multiplexing on a single gated request queue, biased by the per-stream quality of service the clients declare.</p>
+<h2 id="live-device-properties"><a class="header" href="#live-device-properties">Live device properties</a></h2>
+<p>The driver publishes its topology and version constants into the registry, read live on the M1 host and decoded in <a href="#tbl-c27-device-props">Table 27.9</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Property</th><th>Value</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>architecture type string</td><td><code>h13g</code></td><td>microarchitecture family, drives per-family codegen</td></tr>
+<tr><td>version</td><td>96 = <code>0x60</code></td><td>major hardware version</td></tr>
+<tr><td>minor version</td><td>17</td><td>minor revision</td></tr>
+<tr><td>board type</td><td>96</td><td>board and system-on-chip type id</td></tr>
+<tr><td>board subtype</td><td>0</td><td>board sub-variant</td></tr>
+<tr><td>number of cores</td><td>16</td><td>compute cores in this engine</td></tr>
+<tr><td>number of engines</td><td>1</td><td>distinct engine units, load balancer is a pass-through</td></tr>
+<tr><td>CPU subtype</td><td>4</td><td>program-ABI gate</td></tr>
+<tr><td>internal build</td><td>No</td><td>release build, gates the debug surfaces</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c27-device-props"></a><strong>Table 27.9.</strong> The device properties the driver publishes into the registry on the M1 host.</p>
+<p>The number-of-cores value is a topology count and not the throughput-relevant multiply-array width, so a floating-point rate is taken from the measured cost-model anchor, never inferred from the core count.
+At rest the registry shows the device, load-balancer instance, and standing hints client present, with zero control clients and zero direct-path clients open, confirming the brokered, lazily-opened model.
+The driver opens the user clients on demand per active client and tears them down when idle.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-7-toolchain/26-hidden-layers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-8-system-internals/28-dart-iommu.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-7-toolchain/26-hidden-layers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-8-system-internals/28-dart-iommu.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

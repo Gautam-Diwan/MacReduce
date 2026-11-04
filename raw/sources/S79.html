@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Appendix B. Hidden-layer catalog - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/appendices/b-hidden-layer-catalog.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="appendix-b-hidden-layer-catalog"><a class="header" href="#appendix-b-hidden-layer-catalog">Appendix B. Hidden-layer catalog</a></h1>
+<blockquote>
+<p>This appendix is the reference catalog of the hardware-native layer kinds reached by authoring the network description directly, behind chapter <a href="../part-7-toolchain/26-hidden-layers.html">26</a>.</p>
+</blockquote>
+<p>Every row is a native descriptor the conversion path never emits: the descriptor and its <code>_ANECValidate&lt;Name&gt;Layer</code> checker are present in the compiler on every target, and the layer is reached by handing the compiler a Unit whose <code>Type</code> is the native name and whose <code>Params</code> list the attributes the matching <code>ZinParse&lt;Name&gt;Unit</code> parser reads.</p>
+<h2 id="catalog"><a class="header" href="#catalog">Catalog</a></h2>
+<p>Each native layer kind appears in <a href="#tbl-apb-catalog">table B.1</a> with what it computes, its netplist <code>Type</code> and compiler symbol, and its family gate.</p>
+<div class="table-wrapper"><table><thead><tr><th>Layer kind</th><th>What it computes</th><th>Netplist <code>Type</code> and compiler symbol</th><th>Family gate</th></tr></thead><tbody>
+<tr><td>Fused attention</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">softmax</span></span><span class="mopen">(</span><span class="mord mathnormal">Q</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> from four operands (Q, K, V, scale) plus an optional fifth additive mask <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span>, with the channel axis holding the sequence</td><td><code>SDPA</code>; <code>ANECSDPALayerDesc</code>, <code>ZinParseSDPAUnit</code>, <code>anec.sdpa</code>. The one parsed key is <code>SubtractMax</code>, defaulting false in <code>_ANECSDPALayerDescInitialize</code> and set true for a correct softmax</td><td>All families from the M1 onward; runs on the matmul, softmax, and transpose path, not the texture engine</td></tr>
+<tr><td>Sort</td><td>Full sort along a chosen axis, ascending or descending, values or argsort indices</td><td><code>Sort</code>; <code>ZinParseSortUnit</code>. Keys: <code>Direction</code>, <code>SortDimension</code>, <code>VectorDimension</code>, <code>SortIndices</code>, <code>Indices</code></td><td>Validator callable on the M1, but the code generator rejects <code>Sort</code> there; runs on later families</td></tr>
+<tr><td>Top-k</td><td>The k largest or smallest along an axis, values or indices, index outputs returned float16-encoded and exact below 2048</td><td><code>TopK</code>; <code>ZinParseTopKUnit</code>. Keys: <code>Type</code> (Max or Min), <code>K</code>, <code>SortDimension</code>, <code>VectorDimension</code>, <code>SortIndices</code>, <code>Indices</code></td><td>Runs on the M1 outside a forbidden band: <code>K</code> in <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mclose">}</span></span></span></span> fails the compiler at every width</td></tr>
+<tr><td>Argument min and max</td><td>Spatial or channel argmin and argmax over a kernel window</td><td><code>ArgMinMax</code>; <code>_ANECValidateArgMinMaxLayer</code>. Keys: <code>Mode</code> (SpatialArgMax, ChannelArgMax, SpatialArgMin, ChannelArgMin), <code>KernelWidth</code>, <code>KernelHeight</code>, <code>Pad*</code></td><td>All families from the M1 onward</td></tr>
+<tr><td>Whole-tensor argument min and max</td><td>Argmin or argmax over an entire tensor dimension</td><td><code>GlobalArgMinMax</code>. Keys: <code>Type</code> (Max or Min), <code>Dimension</code></td><td>Gated to the A15 generation; rejected on the M1</td></tr>
+<tr><td>Spatial rearrange</td><td>Depth-to-space and space-to-depth in two channel-ordering conventions, plus space-and-batch reshuffles, parameterized by per-axis integer factors</td><td><code>PixelShuffle</code>, <code>PixelUnshuffle</code>, <code>ChannelToSpace</code>, <code>SpaceToChannel</code>, <code>SpaceToBatch</code>, <code>BatchToSpace</code>; <code>ZinParse&lt;Name&gt;Unit</code>. Three int32 keys: <code>FactorX</code>, <code>FactorY</code>, <code>FactorZ</code></td><td>All families from the M1 onward; <code>BatchToSpace</code> requires batch <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> divisible by <code>FactorX</code> times <code>FactorY</code></td></tr>
+<tr><td>Range normalization</td><td>Maps a tensor to its minimum-to-maximum span per row or per column</td><td><code>MinMaxNormalization</code>; <code>_ANECValidateMinMaxNormLayer</code>, <code>_ANECMinMaxNormLayerDescInitialize</code>. Keys: <code>Dimension</code> (Width or Height), <code>Epsilon</code> as a float16 bit pattern</td><td>Width and Height run; <code>Dimension</code> of Channel is arch-gated and rejected on the M1</td></tr>
+<tr><td>Local response normalization</td><td>Cross-channel response normalization over a channel window</td><td><code>LocalResponseNormalization</code>; <code>_ANECValidateLRNLayer</code>. <code>Alpha</code> is a float16 bit pattern divided internally by <code>KernelChannel</code>; only the first <code>KernelChannel</code> channels are normalized</td><td>All families from the M1 onward</td></tr>
+<tr><td>Scaled elementwise</td><td>A binary elementwise op fused with a scalar scale, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">op</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></td><td><code>ScaledElementWise</code>. Keys: <code>Type</code> (Add, Mult, Sub, and the elementwise vocabulary), <code>Scale</code> as a float16 bit pattern</td><td>All families from the M1 onward</td></tr>
+<tr><td>Template cross-correlation</td><td>Valid cross-correlation of a single-channel map with an unflipped template, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1858em;vertical-align:-0.4358em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.0017em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">u</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4358em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mopen">[</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span></span></span></span></td><td><code>CrossCorrelation</code>. The MIL frontend rejects the op; the netplist <code>Type</code> reaches it directly</td><td>All families from the M1 onward</td></tr>
+<tr><td>Three-vector cross product</td><td>The cross product of two length-3 vectors held in the channel axis, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">cross</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></td><td><code>CrossProduct</code>. Inputs shaped D1 C3 H1 W1; the MIL frontend rejects the op</td><td>All families from the M1 onward</td></tr>
+<tr><td>Furthest-point sampling</td><td>Greedy L2 furthest-point sampling of up to 1024 centroids from up to 8192 points, seeded at the first point, centroids returned channel-major</td><td><code>FurthestPointSampling</code>. Keys: <code>CentroidCount</code>, <code>DistanceMetric</code> (L2 only on this architecture)</td><td>All families from the M1 onward</td></tr>
+<tr><td>Radius neighborhood search</td><td>An L2 ball query returning a points-by-centroids membership matrix, one membership flag per pair</td><td><code>RadiusSearch</code>. Two inputs (centroids, points), both D1 C3 H1; key <code>Radius</code></td><td>All families from the M1 onward</td></tr>
+<tr><td>Stereo cost volume</td><td>The L1 matching cost per disparity, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">cost</span></span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">∣</span><span class="mord"><span class="mord mathrm">aux</span></span><span class="mopen">[</span><span class="mord mathnormal">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.07778em;">ref</span></span><span class="mopen">[</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mclose">]∣</span></span></span></span>, over <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> disparity planes</td><td><code>CostVolume</code>. Keys: <code>DisparityDirection</code>, <code>DisparityRange</code>; requires reference width <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span></td><td>All families from the M1 onward</td></tr>
+<tr><td>Re-strided input view</td><td>A contiguous offset window <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord text"><span class="mord">Offset</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">Offset</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Size</span></span><span class="mclose">]</span></span></span></span> along one named axis, no data movement</td><td><code>InputView</code>. Keys: <code>Dimension</code>, <code>Offset</code>, <code>Size</code>, <code>Step</code>; gates <code>InvalidInputView{Dimension,Offset,Size,Step}</code></td><td>All families from the M1 onward</td></tr>
+<tr><td>Runtime-offset dynamic slice</td><td>A window <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mopen">[</span><span class="mord text"><span class="mord">start</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6984em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">start</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">SliceSize</span></span><span class="mclose">]</span></span></span></span> whose start is bound as a constant or runtime index</td><td><code>DynamicSlice</code>; reached by the MIL <code>slice_by_index</code> path. Keys: <code>DynamicSliceAxisOrder</code>, <code>DynamicSliceInfo</code>, <code>CoordinateInfo</code>, <code>PaddingInfo</code>, <code>BackgroundValue</code></td><td>Validator callable on the M1, but the code generator rejects <code>DynamicSlice</code> there; runs on later families</td></tr>
+<tr><td>Tile, concatenate, and reshape utilities</td><td>Flatten as an NCHW identity reshape, inference-time dropout as identity, and broadcast of a length-1 axis</td><td><code>Flatten</code>, <code>Dropout</code> (rate 0), <code>Broadcast</code> (keys <code>Dimension</code>, <code>Size</code>)</td><td>All families from the M1 onward</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apb-catalog"></a><strong>Table B.1.</strong> The hidden-layer catalog.</p>
+<h2 id="arch-gated-negatives"><a class="header" href="#arch-gated-negatives">Arch-gated negatives</a></h2>
+<p>Three rows above name layers a later chip accepts and the M1 rejects, by the family gates of chapter <a href="../part-3-performance/12-cross-chip.html">12</a>.
+<code>GlobalArgMinMax</code> is gated to the A15 generation and rejected on the M1.
+<code>MinMaxNormalization</code> with a Channel reduction is arch-gated and rejected on the M1, while its Width and Height reductions run.
+The texture-engine samplers (resize, crop-and-resize, grid resample, and the affine spatial transform) are accepted from the A14 generation and rejected on the M1, where the compiler reports that the affine transform is not supported on this architecture.
+They are part of the same gated family but are not authored as netplist Units here.</p>
+<p>A second class of rejection is not a family gate but the attested-is-not-reachable rule of chapter <a href="../part-1-machine/04-capability-surface.html">4</a>: the <code>Sort</code> and <code>DynamicSlice</code> validators are callable on the M1, yet the code generator rejects both, and <code>TopK</code> is accepted only outside the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mclose">}</span></span></span></span> band.
+An authored layer is confirmed only by a compile-and-run on the target.</p>
+<h2 id="validator-gate-set"><a class="header" href="#validator-gate-set">Validator gate set</a></h2>
+<p>Every authored layer passes through one per-layer validator, the <code>_ANECValidate&lt;Op&gt;Layer</code> family, of which 55 symbols are exported and 50 are per-layer.
+The compiler runs the same validators in two roles: the segmenter dry-runs them through <code>_ANECValidateNetworkCreate</code> to decide engine eligibility, and the back-end legalizer re-runs them during a real compile, so the dry-run prediction never drifts from the compile result.
+The five non-layer exports are <code>_ANECValidate</code>, <code>_ANECValidateNetworkCreate</code>, <code>_ANECValidateMPSModule</code>, <code>_ANECValidateMPSModuleCreate</code>, and <code>_ANECValidateMutableProcedureInfo</code>.</p>
+<p>Each validator reads a fixed bottom (input-tensor) count and a per-chip feature byte from the hardware-abstraction layer, and rejects with a measured literal string.
+<a href="#tbl-apb-validator-gates">Table B.2</a> reproduces those gates for the validators that guard the authored and bridge-reachable layers, with the bottom count, constraint, and reject string for each.</p>
+<div class="table-wrapper"><table><thead><tr><th>Validator</th><th>Bottoms</th><th>Gate and constraint</th><th>Reject string</th></tr></thead><tbody>
+<tr><td><code>SDPA</code></td><td>4 or 5</td><td>key and value same shape; mask broadcast-compatible; scale constant</td><td><code>SDPA layer must have only 4 or 5(optional mask) inputs</code></td></tr>
+<tr><td><code>Conv</code></td><td>1 plus weight</td><td>kernel within the per-chip range; large kernel W and H multiple of 8; channels divisible by groups</td><td><code>Invalid conv kernel %s = %zd, It should be in [%zd, %zd]</code></td></tr>
+<tr><td><code>MatrixMult</code></td><td>2</td><td>depth 1 on both operands; out-C equals A-C; fits the kernel-memory budget</td><td><code>depth &gt; 1 is not supported for MatMult</code></td></tr>
+<tr><td><code>Linear</code></td><td>1 plus weight</td><td>input rank below 5</td><td><code>Linear layer must have only one single input.</code></td></tr>
+<tr><td><code>Pool</code></td><td>1</td><td>window below input; pad below kernel; mode gated per chip</td><td><code>Pooling mode "%s" is not available on this ANE architecture.</code></td></tr>
+<tr><td><code>Neuron</code></td><td>1</td><td>non-linear mode 1 to 46; type in the per-chip list; ReLU-N positive parameters when the gate byte is 0</td><td><code>This platform doesn't support Neuron %s</code></td></tr>
+<tr><td><code>Reduction</code></td><td>1</td><td>reduce-then-square needs feature byte <code>0x494</code> (0 through the M1); each axis at most 4</td><td><code>square operation after reduction is not supported</code></td></tr>
+<tr><td><code>Softmax</code></td><td>1</td><td>feature byte <code>0x815</code> (0 on older); output Float</td><td><code>Softmax is not supported by this ANE architecture</code></td></tr>
+<tr><td><code>LayerNorm</code></td><td>1</td><td>channels divisible by num-groups; grouped form requires depth 1</td><td><code>... does not yet support depth &gt; 1</code></td></tr>
+<tr><td><code>InstanceNorm</code></td><td>1</td><td>feature byte <code>0x816</code>; spatial axes only</td><td><code>InstanceNorm layer not supported for this ANE architecture</code></td></tr>
+<tr><td><code>MinMaxNorm</code></td><td>1</td><td>feature byte <code>0x818</code>; spatial only, the Channel axis arch-gated</td><td>(encoded assert, byte <code>0x818</code>)</td></tr>
+<tr><td><code>LRN</code></td><td>1</td><td>feature byte <code>0x81a</code>; channel count of 16 or above fails code generation on the M1</td><td><code>LRN is not supported on this architecture.</code></td></tr>
+<tr><td><code>ArgMinMax</code></td><td>1</td><td>channel-reduce C at most 2048 fp16; pad below kernel; equal left and right, zero front and back</td><td><code>ArgMinMax layer must have one input</code></td></tr>
+<tr><td><code>GlobalArgMinMax</code></td><td>1</td><td>feature byte <code>0x4f2</code> (1 from the M1 on the bridge route); mode 1 or 2; reduce dimension not 5</td><td>(encoded assert, byte <code>0x4f2</code>)</td></tr>
+<tr><td><code>Transpose</code></td><td>1</td><td>permutation valid; extent capped 16384 through the M3, 65536 on the M5; last four dimensions only</td><td><code>NE Input Transpose is not supported for this arch</code></td></tr>
+<tr><td><code>Concat</code></td><td>variadic</td><td>match input zero on every non-concat axis; constant positive axis; same layout</td><td><code>Concat layer must have at least 2 inputs</code></td></tr>
+<tr><td><code>Pad</code></td><td>1</td><td>H or W axes only; symmetric and reflect modes need texture byte <code>0x81d</code> (0 on the M1)</td><td><code>Channel padding is not supported on ANE</code></td></tr>
+<tr><td><code>Broadcast</code></td><td>1</td><td>broadcast only from a length-1 axis; depth-axis broadcast needs byte <code>0x812</code></td><td><code>Broadcast along depth axis is not supported on this architecture</code></td></tr>
+<tr><td><code>Gather</code></td><td>2</td><td>M1 software envelope: data batch 1, depth 1, index channel 3; texture path from the A14</td><td><code>Cannot decompose layer on this architecture</code></td></tr>
+<tr><td><code>PixelShuffle</code> / <code>PixelUnshuffle</code></td><td>1</td><td>depth factor 1; W and H factors in 1, 2, 3, 4, 8; channel divisible by the factor product</td><td><code>returned invalid:</code></td></tr>
+<tr><td><code>SpaceToBatch</code> / <code>BatchToSpace</code></td><td>1</td><td>factors fully factor into 2, 3, 4, 8; batch divisible by the factor product</td><td><code>Input batch n = %zd is not divisible by factor x = %d * factor y = %d</code></td></tr>
+<tr><td><code>ChannelToSpace</code></td><td>1</td><td>the z dimension is not reorganizable</td><td><code>ChannelToSpace in z dimension is not supported, current factor.z = %d.</code></td></tr>
+<tr><td><code>Resize</code></td><td>1</td><td>dimension or ratio, not both; sampling axes H and W; texture byte <code>0x81d</code> (0 on the M1 takes a software route)</td><td><code>failed to map resize layer on this arch</code></td></tr>
+<tr><td><code>CropResize</code></td><td>2</td><td>index format fp16; texture engine from the A14; same coordinate, method, and padding across axes</td><td><code>Codegen Error: Invalid Texture CropCfg</code></td></tr>
+<tr><td><code>AffineTransform</code></td><td>2</td><td>matrix fp16; texture byte <code>0x81d</code> (0 on the M1)</td><td><code>affine transform is not supported on this architecture</code></td></tr>
+<tr><td><code>Resample</code></td><td>2</td><td>warp depth 1; warp channel 1 or 2; texture engine from the A14</td><td><code>Channel size in coordinates should be 1 or 2</code></td></tr>
+<tr><td><code>Sort</code></td><td>1</td><td>direction valid; output fp16 or uint16; validator passes, code generation rejects on the M1</td><td>(passes validation, code-generation reject)</td></tr>
+<tr><td><code>TopK</code></td><td>1</td><td>k in the sort-dimension range; the M1 rejects at code generation, and k in 3 or 4 is forbidden on the M5</td><td>(passes validation, code-generation reject)</td></tr>
+<tr><td><code>Dropout</code></td><td>1</td><td>feature byte <code>0x4a9</code> (1 only from the A15); rate in the half-open unit interval</td><td><code>Dropout layer is not supported on this architecture.</code></td></tr>
+<tr><td><code>Random</code></td><td>none</td><td>feature byte <code>0x4a9</code> (1 only from the A15); low below high; output Int8, UInt8, or Float16</td><td><code>Random layer is not supported on this architecture.</code></td></tr>
+<tr><td><code>RingBufferWriter</code></td><td>2</td><td>the writer must connect to a live-state buffer; circular mode arch-gated</td><td><code>Circular buffer is not supported on this architecture</code></td></tr>
+<tr><td><code>NMS</code></td><td>2 or more</td><td>boxes channel 4; runs only on a CPU or GPU backend, never engine-native</td><td>(passes validation, not engine-native)</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apb-validator-gates"></a><strong>Table B.2.</strong> The per-layer validator gates.</p>
+<p>The validators are public exported symbols, so they are callable from user space, and this is the basis of the precompile predictor: a callable validator marks a schema-gated layer reachable by direct authoring.
+A callable validator that accepts the schema does not guarantee the layer compiles, which is why the <code>Sort</code>, <code>TopK</code>, <code>DynamicSlice</code>, and the M1 <code>CropResize</code> rows pass the validator and fail at hardware-executable lowering.
+One opcode-surface gap holds the other way: the RCAS and Reverse operations have an internal semantics validator but no exported per-layer symbol, so they are not reachable by direct authoring through this route.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../appendices/a-op-device-matrix.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendices/c-decoded-tables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../appendices/a-op-device-matrix.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendices/c-decoded-tables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

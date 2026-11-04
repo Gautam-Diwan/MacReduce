@@ -1,0 +1,334 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>1. What the ANE is - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-1-machine/01-what-the-ane-is.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="1-what-the-ane-is"><a class="header" href="#1-what-the-ane-is">1. What the ANE is</a></h1>
+<blockquote>
+<p>The Apple Neural Engine is a fixed-function fp16 matrix accelerator with a wide accumulator, reachable directly below Core ML.
+That pairing explains most of its numerical behavior and much of its efficiency.
+It leads on compute-bound vision and convolution: 3.8 times faster than the GPU on a 256-channel 3x3 convolution, at 9 times the efficiency.
+The GPU leads only on bandwidth-bound decode.
+The overhead-isolated compute slope nears 12 fp16 TFLOP/s against 85 GB/s of DRAM, and a 2 MB on-chip working set is the binding limit.</p>
+</blockquote>
+<p>The Apple Neural Engine is a fixed-function matrix accelerator built into every recent Apple system on chip, from the A11 and the M1 onward.
+It runs the feed-forward neural networks of on-device perception, vision and speech, at low power, and leaves the CPU and the GPU free for the rest of the system.
+Apple distributes it in volume and documents almost none of it.
+The engine is beside the CPU and the GPU on the same chip, where the three share one pool of DRAM, as <a href="#fig-soc">figure 1.1</a> shows.</p>
+<figure id="fig-soc">
+<pre class="mermaid">
+flowchart TB
+    subgraph SoC["Apple silicon, one chip"]
+        direction LR
+        CPU["CPU cores<br/>plus matrix unit"]
+        GPU["GPU"]
+        ANE["Apple Neural Engine<br/>fp16 MAC array<br/>4 cores on M1, 16 on M5"]
+    end
+    MEM[("Unified DRAM<br/>shared bandwidth")]
+    CPU <--> MEM
+    GPU <--> MEM
+    ANE <--> MEM
+    style ANE fill:#22323f,stroke:#6fa8c9
+    style MEM fill:#2a2f34,stroke:#8a98a6
+</pre>
+<figcaption><strong>Figure 1.1.</strong> The Apple Neural Engine beside the CPU and GPU on one chip, sharing unified DRAM.</figcaption>
+</figure>
+<h2 id="reachable-surface"><a class="header" href="#reachable-surface">Reachable surface</a></h2>
+<p>The public way to use the engine is Core ML <a href="../references.html#ref-applecoreml">[AppleCoreML]</a>, sketched in <a href="#lst-c1-coreml-predict">listing 1.1</a>.</p>
+<pre><code class="language-swift">// The public path: ask for the engine, but Core ML still places the work.
+let config = MLModelConfiguration()
+config.computeUnits = .cpuAndNeuralEngine  // a hint, not a guarantee
+let model = try MLModel(contentsOf: url, configuration: config)
+let out = try model.prediction(from: input)  // planner splits ops across CPU, GPU, ANE
+// The caller is not told which device ran each segment.
+</code></pre>
+<p><a id="lst-c1-coreml-predict"></a><strong>Listing 1.1.</strong> The Core ML load-and-predict path, where the compute-unit field is a placement hint rather than a guarantee.</p>
+<p>A cost-driven placement planner segments a model handed to Core ML across the CPU, GPU, and ANE.
+An eligibility check decides which operations the engine can accept, and a roofline and transfer cost model decides where each segment runs.
+The planner is opaque.
+A caller does not choose the device and is not told which device ran the work.</p>
+<p>A direct route reaches the engine without Core ML.
+The same private Espresso runtime that Apple's own dispatchers use is callable from ordinary user space.
+It compiles a network to the engine's program format, loads it, and drives an execution stream, with no placement planner in the path and no special entitlement for the operations the compiler accepts.
+This route makes the engine a target a developer can address on purpose.
+It is not a supported or App-Store-safe path; see the status note in the front matter.
+Part II covers it in full.</p>
+<p>The stack from a graph to the silicon is a fixed set of layers, and the direct route enters one level below Core ML at the runtime (<a href="#tbl-c1-stack">table 1.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Layer</th><th>Role</th></tr></thead><tbody>
+<tr><td>Core ML, the GPU graph framework, the direct runtime route</td><td>three independent front ends</td></tr>
+<tr><td>Espresso and the runtime</td><td>the universal compile, load, and execution-stream layer</td></tr>
+<tr><td>the engine framework and its daemon</td><td>program lifecycle, brokered over cross-process messaging</td></tr>
+<tr><td>the kernel driver</td><td>the coprocessor endpoint, mailbox transport, signed program load</td></tr>
+<tr><td>the firmware</td><td>the engine's own real-time operating system, the dispatch loop, the data-movement and power control</td></tr>
+<tr><td>the silicon</td><td>the multiply array, the on-chip memory, and the address-translation unit</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c1-stack"></a><strong>Table 1.1.</strong> The software and firmware stack from a compute graph to the silicon, with the role of each layer.</p>
+<p>The compile path requires the modern intermediate language, which the compiler accepts only from the A13 and M1 generation up.
+The pre-A13 parts have no path through this toolchain, which is why the M1 is the practical floor for addressing the engine directly.</p>
+<h2 id="one-fact-that-explains-the-machine"><a class="header" href="#one-fact-that-explains-the-machine">One fact that explains the machine</a></h2>
+<p>The products are fp16 while the accumulator is wide, of fp32 class, and that property accounts for most of what the engine does.
+The datapath multiplies in fp16 end to end: fp16 inputs, fp16 weights, fp16 outputs.
+The frontend accepts fp32, int32, and bf16 as type annotations, but the backend does not implement them.
+The datapath reconstructs compressed weights to fp16 before they reach the multiplier.</p>
+<p>The running sum is not fp16.
+Input tiles round to fp16 on the way in, the output port rounds to fp16 on the way out, and the accumulation between those two points is held in a wide accumulator.
+Any sum the fp16 grid can represent comes back near exact.
+Sixteen thousand ones reduce bit exact; a naive fp16 running sum stalls near two thousand instead, once the partial total exceeds the spacing of its own increments.
+A cancellation probe settles the question: a sum of a large value, its negation, and one, taken near sixteen thousand, returns the one intact, which an fp16 running sum would have swallowed.
+The sum is physically wider than fp16.</p>
+<p>The wide accumulator is what suits the engine to vision, audio, and encoders.
+Those workloads are convolutions, matrix multiplies, and normalizations whose partial sums stay in range and whose results are representable, so the accumulator keeps their precision.
+The same arithmetic explains where a transformer decoder loses precision in fp16.
+The loss comes from the per-product fp16 rounding of the inputs and weights under heavy cancellation, in the down-projection in particular.
+The accumulator is wide enough; the inputs to it are already quantized.
+A cancellation-heavy step has no fp16-safe form on the engine and needs a wider anchor on the CPU or the GPU.</p>
+<p>The fp16 datapath also accounts for the power efficiency.
+A narrow multiply and a fixed-function pipeline move and compute far fewer bits per result than a general-purpose vector unit.</p>
+<h2 id="two-core-counts"><a class="header" href="#two-core-counts">Two core counts</a></h2>
+<p>The engine reports two different core counts, and only one is the throughput unit.
+The advertised 16-core figure is the count Apple markets, 16 on the M1, exposed at runtime as the device property for the number of engine cores.
+The architectural figure is the core count the compiler tiles work across and the cost model scales by, read from the hardware-abstraction-layer offset <code>0x238</code>, which is 4 on the M1.
+The core count is 4 on the M1 base part, 8 on the M1 Pro and Max, and 16 on the M5.
+Each core emits up to 4 output channels per cycle in the default fp16 path.
+On the M1 that works out to about 16 output-channel multiply-accumulates per cycle in fp16, and int8 doubles the lanes to reach about 32, consistent with the overhead-isolated compute slope near 12 fp16 TFLOP/s.</p>
+<h2 id="where-it-leads"><a class="header" href="#where-it-leads">Where it leads</a></h2>
+<p>On compute-bound work the engine is faster than the GPU outright.
+A 3x3 convolution at 256 channels runs about 3.8 times faster than the same work on the GPU and about 9 times more energy efficient, and batched matrix multiply is more efficient at every batch size (<a href="#tbl-c1-gpu">table 1.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>workload</th><th>engine vs GPU speed</th><th>engine vs GPU efficiency</th></tr></thead><tbody>
+<tr><td>3x3 convolution (256 channels)</td><td>3.8x faster</td><td>9x more efficient</td></tr>
+<tr><td>batched matrix multiply</td><td>faster below N of 2048</td><td>more efficient at every batch size</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c1-gpu"></a><strong>Table 1.2.</strong> Engine versus GPU speed and efficiency on the convolution and batched matrix multiply workloads.</p>
+<p>The case where the GPU leads is real but limited: it holds for bandwidth-bound autoregressive decode, where the work is moving weights.
+The measured envelope on the M1 fixes the scale.
+The overhead-isolated compute slope reaches nearly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span> fp16 TFLOP/s against a DRAM bandwidth of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">85</span></span></span></span> GB/s, at about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.5</span></span></span></span> pJ per FLOP sustained, near <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.37</span></span></span></span> at the compute optimum.
+The roofline ridge point, the arithmetic intensity above which a kernel is compute-bound, is at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">141</span></span></span></span> FLOP per byte.
+A hard 2 MB on-chip working-set threshold is the primary design limit: a kernel whose live tiles exceed it stalls on off-chip streaming.
+Newer chips scale the core count and the clock, but the form of the roofline and the fp16 datapath apply across the family.</p>
+<h2 id="reference-the-m1-envelope"><a class="header" href="#reference-the-m1-envelope">Reference: the M1 envelope</a></h2>
+<p><a href="#tbl-c1-envelope">Table 1.3</a> collects the M1 envelope figures.</p>
+<div class="table-wrapper"><table><thead><tr><th>Quantity</th><th>Symbol</th><th style="text-align: right">M1/H13 value</th></tr></thead><tbody>
+<tr><td>Compute roof</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span></td><td style="text-align: right">12 fp16 TFLOP/s</td></tr>
+<tr><td>DRAM bandwidth roof</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></td><td style="text-align: right">85 GB/s</td></tr>
+<tr><td>Energy per FLOP</td><td></td><td style="text-align: right">0.5 pJ sustained, 0.37 pJ optimum</td></tr>
+<tr><td>Roofline ridge point</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∗</span></span></span></span></span></span></span></span></span></span></span></span></td><td style="text-align: right">141 FLOP/byte</td></tr>
+<tr><td>On-chip working-set threshold</td><td></td><td style="text-align: right">2 MB</td></tr>
+<tr><td>fp16 maximum finite magnitude</td><td></td><td style="text-align: right">65504</td></tr>
+<tr><td>Advertised 16-core figure, M1</td><td></td><td style="text-align: right">16</td></tr>
+<tr><td>Core count, M1 (HAL <code>0x238</code>)</td><td></td><td style="text-align: right">4</td></tr>
+<tr><td>Core count, M1 to M5</td><td></td><td style="text-align: right">4 to 16</td></tr>
+<tr><td>Output channels per cycle per core, fp16</td><td></td><td style="text-align: right">4</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c1-envelope"></a><strong>Table 1.3.</strong> The M1 envelope figures, the two distinct core counts, and the family core-count span.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-1-machine/02-execution-model.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-1-machine/02-execution-model.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

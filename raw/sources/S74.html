@@ -1,0 +1,2518 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../glossary/">
+      
+      
+        <link rel="next" href="../reproducibility/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Roadmap - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/roadmap/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roadmap" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Roadmap
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../op-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/numerics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/capabilities-and-targets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-things-stand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where things stand
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recently-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recently completed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recently completed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-chip-deployment-m1-m5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip deployment (M1-M5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-chip-cost-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-chip cost model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weight-compression-datapaths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weight-compression datapaths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-engine-training-autograd-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-engine training (autograd + Trainer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group_norm-at-diffusion-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        group_norm at diffusion shapes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-engine-image-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-engine image input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-failure-backoff-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile-failure backoff guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoder-llm-inference-and-pretrained-model-loaders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoder-LLM inference and pretrained-model loaders
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-frontiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open frontiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Open frontiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-llm-training-at-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end LLM training at scale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stable-diffusion-15-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stable Diffusion 1.5 end-to-end
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m2-m3-silicon-power-anchors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M2 / M3 silicon power anchors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-hard-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known hard limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Known hard limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two locks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#true-4cc-fourcc-image-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        True 4CC (FourCC) image input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#control-flow-and-recurrence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control flow and recurrence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known bottlenecks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limits-of-the-capability-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits of the capability map
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-things-stand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where things stand
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recently-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recently completed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recently completed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-chip-deployment-m1-m5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip deployment (M1-M5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-chip-cost-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-chip cost model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weight-compression-datapaths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weight-compression datapaths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-engine-training-autograd-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-engine training (autograd + Trainer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group_norm-at-diffusion-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        group_norm at diffusion shapes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-engine-image-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-engine image input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-failure-backoff-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile-failure backoff guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoder-llm-inference-and-pretrained-model-loaders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoder-LLM inference and pretrained-model loaders
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-frontiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open frontiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Open frontiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-llm-training-at-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end LLM training at scale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stable-diffusion-15-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stable Diffusion 1.5 end-to-end
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m2-m3-silicon-power-anchors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M2 / M3 silicon power anchors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-hard-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known hard limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Known hard limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two locks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#true-4cc-fourcc-image-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        True 4CC (FourCC) image input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#control-flow-and-recurrence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control flow and recurrence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known bottlenecks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limits-of-the-capability-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits of the capability map
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h1>
+<p>Forward-looking strategy for ANEForge: what is solved, what is genuinely
+open, and what is permanently out of reach. A living document; every entry
+has a specific reason for being here, not a wishlist.</p>
+<p>ANEForge is a direct, CoreML-free Python frontend for the Apple Neural
+Engine. It lowers an operator graph into a single fused Espresso <code>e5rt</code>
+program and dispatches it to ANE silicon, with no entitlement and no
+CoreML dependency. The capability surface is characterized in
+<a href="../capabilities/">capabilities.md</a>; the cross-chip story in
+<a href="../cross-chip/">cross-chip.md</a>; and training in <a href="../training/">training.md</a>.</p>
+<h2 id="where-things-stand">Where things stand<a class="headerlink" href="#where-things-stand" title="Permanent link">&para;</a></h2>
+<p>The infrastructure is mature. The frontend compiles whole graphs to one
+ANE program; pretrained vision CNNs (ResNet, ViT), CLIP, transformer encoders and
+rerankers, decoder LLMs (Llama/Qwen/Mistral/Gemma, MoE, hybrid DeltaNet, GPT-2)
+with prefill and resident-KV-cache decode, Whisper speech-to-text (encoder +
+decoder), and diffusion UNet blocks load and run correctly; weights stream at fp16, int8, int4-LUT,
+sparse, or blockwise; a reverse-mode autograd trains real networks
+forward, backward, and optimizer-step on the engine; a per-chip cost model
+estimates latency for any ANE generation without that hardware in hand; and
+the same graph cross-compiles statically across the M1-M5 family. The
+correctness corpus (<code>tests/run_corpus.py</code>) is the standing gate and is green.</p>
+<p>The remaining work is concentrated in three places: extending autograd
+coverage so transformers train end-to-end, pushing fp16-sensitive models
+(notably Stable Diffusion) past their numerical walls, and filling the
+cross-chip story with the one silicon class (M3/A15) we have not measured.</p>
+<h2 id="recently-completed">Recently completed<a class="headerlink" href="#recently-completed" title="Permanent link">&para;</a></h2>
+<p>These were open directions. They have shipped and moved here so the open
+frontiers below read honestly.</p>
+<h3 id="cross-chip-deployment-m1-m5">Cross-chip deployment (M1-M5)<a class="headerlink" href="#cross-chip-deployment-m1-m5" title="Permanent link">&para;</a></h3>
+<p>A single ANEForge graph compiles statically for any ANE generation. The
+compiler binary is byte-identical across chips; all per-chip difference is
+HAL data plus a <code>MinimumFamily&lt;N&gt;</code> op gate, so a target is selected by
+name (<code>compile(target='hXX')</code>) and validated without that silicon present.
+<code>cross_compile_check</code> gates target names (an unknown architecture silently
+falls back on <code>e5rt</code>, so it is rejected up front), and family detection
+(<code>detect_family</code>) resolves the running chip, including the M2/M3/M4 classes
+via the verified <code>M(n) = H(n + 12)</code> board-type ladder. The op walls are
+family-wide, not M5-specific; the trig floor (Sin/Cos) and a few
+resampling ops are the only core-net-irrelevant gaps on the oldest
+families. fp16 numerics are the one axis that genuinely needs each chip,
+and <code>predict_fp16_divergence</code> + <code>CrossChipFP16Warning</code> flag where a graph
+may diverge across families. <code>cross_compile_check</code> runs the same static
+<code>preflight</code> family-cap gate as <code>compile(target=)</code> before invoking the
+compiler, so a per-family cap violation (conv kernel width, max tensor
+dimension, a below-floor op) is rejected statically rather than left to the
+host cross-compiler, which does not reliably enforce a different family's
+HAL-gated caps and would otherwise pass cross-chip CI and only fail on the
+real silicon. See <a href="../cross-chip/">cross-chip.md</a>.</p>
+<h3 id="per-chip-cost-model">Per-chip cost model<a class="headerlink" href="#per-chip-cost-model" title="Permanent link">&para;</a></h3>
+<p><code>af.estimate(out, target='hXX')</code> returns a measurement-free latency
+estimate for any of the 28 ANE targets, derived from the compiler's own
+analytic <code>cycles -&gt; roofline -&gt; wall-time</code> model. <code>af.project_peak(arch)</code>
+gives the generational fp16-peak table. The model is anchored to
+silicon-measured rooflines on both M1 and M5 (<code>_cost._ANCHORS</code>): the M5
+loop-closure correction is in place (effective bandwidth scales with core
+count, not clock), so <code>estimate(target='h17s')</code> now matches measured M5
+convs within ~13%. The A14/h14 anchor is silicon-validated out of sample
+(1.17x over nine fresh shapes). <code>target=None</code> keeps the precise M5-measured
+heuristic, so the optimizer path is unchanged. <code>af.estimate_provenance(arch)</code>
+reports whether a target's estimate is silicon-anchored (A13/h13, A14/h14,
+A16/h17s, with the A16 tier folding H16/H17* onto the h17s point) or
+extrapolated from the nearest measured anchor, so a caller knows which
+estimates rest on measured silicon. <code>project_peak</code>'s generational multiple
+is a peak-compute ceiling; typical measured speedups are lower.</p>
+<h3 id="weight-compression-datapaths">Weight-compression datapaths<a class="headerlink" href="#weight-compression-datapaths" title="Permanent link">&para;</a></h3>
+<p><code>compile(compress=...)</code> streams compressed weights on the
+<code>e5rt</code> path with an accuracy-gated fallback chain: <code>int4</code> (4-bit LUT
+palettization), <code>sparse</code> (unstructured bitmask), <code>int8</code> (per-tensor or
+per-channel affine), and <code>blockwise</code> (blockwise affine). All forms compile
+and run; <code>compress=None</code> is byte-identical to fp16. int4-LUT, sparse, and
+int8 stream weights (dequant during DMA); blockwise dequantizes in-program,
+a footprint lever rather than a bandwidth one. The single-matmul streaming
+win does not always carry to full models - end-to-end this is primarily a
+footprint and capacity lever, with the bandwidth win realized on large
+weight-bound layers. <code>compress="auto"</code> is family-aware: it filters its
+candidate encodings through <code>native_streams(family)</code>, so on a
+bandwidth-starved family it only auto-selects forms that stream natively and
+falls back to fp16 rather than a folding encoding (which would cost accuracy
+for no bandwidth win). On M1 (h13) that means int4-LUT only; A14+ stream all
+four. The family is taken from <code>compile(target=)</code>, or the host chip when no
+target is given; an explicit single-mode <code>compress=</code> is never filtered.</p>
+<h3 id="on-engine-training-autograd-trainer">On-engine training (autograd + Trainer)<a class="headerlink" href="#on-engine-training-autograd-trainer" title="Permanent link">&para;</a></h3>
+<p><code>aneforge/autograd.py</code> is a reverse-mode autograd whose forward, backward,
+and optimizer step all run as ANE graph ops. <code>Trainer</code> and
+<code>UnrolledTrainer</code> train real networks: a full-MNIST MLP reaches ~98% with a
+host optimizer and ~97.8% with the optimizer on the engine.
+<code>Trainer(resident_state=True)</code> keeps weights and optimizer moments resident
+on the ANE across steps via output-to-input buffer aliasing, so the host
+supplies only the minibatch and learning rate. <code>UnrolledTrainer</code> runs K
+steps in one dispatch and is resident by default. Op coverage now spans MLP
+and CNN graphs (matmul, bmm, conv, pooling, relu, gelu, the elementwise and
+reduction ops, softmax, slice/concat/reshape/transpose), so CNNs train; the
+gap that blocks transformers is below. See <a href="../training/">training.md</a>.</p>
+<h3 id="group_norm-at-diffusion-shapes">group_norm at diffusion shapes<a class="headerlink" href="#group_norm-at-diffusion-shapes" title="Permanent link">&para;</a></h3>
+<p><code>group_norm</code> is tiled over rank-4 feature maps, so the SD-1.5 wall shapes
+(640 channels at 64x64, 512 at 128x128) compile and run family-wide. This
+removes the group-norm wall that previously blocked large diffusion feature
+maps; the remaining SD-1.5 blocker is numerical, not structural (see below).</p>
+<h3 id="on-engine-image-input">On-engine image input<a class="headerlink" href="#on-engine-image-input" title="Permanent link">&para;</a></h3>
+<p><code>af.image_input(shape, scale=, bias=)</code> declares a uint8 input and
+dequantizes on the engine, byte-identical to a host convert and saving the
+host-side conversion per frame. This is the terminal form of direct image
+input on the e5rt path; true 4CC (FourCC) input is not reachable there (below).</p>
+<h3 id="compile-failure-backoff-guard">Compile-failure backoff guard<a class="headerlink" href="#compile-failure-backoff-guard" title="Permanent link">&para;</a></h3>
+<p><code>aneforge/_circuit.py</code> is a backoff rate-limiter wired into <code>Program.compile</code>.
+After a compile failure the breaker paces the next compile by a short interval, a
+defensive backstop so the autotuner's burst of variant compiles cannot pile up;
+success clears it. Warn-and-sleep by default
+(<code>ANEFORGE_COMPILE_BREAKER_STRICT</code> raises, <code>ANEFORGE_DISABLE_COMPILE_BREAKER</code>
+disables), and exposes <code>af.CompileBackoffError</code> and <code>af.reset_compile_breaker</code>.
+<code>af.image_input</code> uses the uint8 route.</p>
+<h3 id="decoder-llm-inference-and-pretrained-model-loaders">Decoder-LLM inference and pretrained-model loaders<a class="headerlink" href="#decoder-llm-inference-and-pretrained-model-loaders" title="Permanent link">&para;</a></h3>
+<p>The <code>llm.py</code> runner loads Hugging Face decoder LLMs and runs prefill plus
+resident-KV-cache decode as fused ANE programs, matching HF logits: dense
+Llama/Qwen/Mistral, Gemma (GeGLU + scaled embeddings + <code>(1+w)</code> RMSNorm), sparse
+Qwen-MoE, and hybrid DeltaNet+attention (Qwen3.5), with automatic segmentation
+past the ~2 GB program ceiling, int8/int4 weights, and exact speculative decoding
+(~2.3x on Qwen3-8B). A config-driven <code>LayerSpec</code> plan keeps the runner
+architecture-agnostic, so a new family is an adapter, not a new code path; an
+unsupported architecture is rejected rather than mis-loaded. Alongside it, model
+loaders bring GPT-2 (the first LayerNorm decoder, tiled tied lm_head), ViT-B/16,
+ResNet-18/34/50/101, CLIP, BERT/RoBERTa/DistilBERT rerankers (<code>CrossEncoder</code>),
+and Whisper speech-to-text (audio encoder + autoregressive decoder, both on the
+ANE with resident-KV-cache decode) onto the engine. Reproducible benchmarking
+landed too: the roofline suite (per-machine <code>ROOFLINES.md</code>, contributor-driven)
+and the MLPerf ResNet-50 harness that clears the MLCommons submission checker at
+reference accuracy. See <a href="../llm/">llm.md</a> and
+<a href="../developer/models/">developer/models.md</a>.</p>
+<h2 id="open-frontiers">Open frontiers<a class="headerlink" href="#open-frontiers" title="Permanent link">&para;</a></h2>
+<p>The honest list of what is not done and is worth doing.</p>
+<h3 id="end-to-end-llm-training-at-scale">End-to-end LLM training at scale<a class="headerlink" href="#end-to-end-llm-training-at-scale" title="Permanent link">&para;</a></h3>
+<p>The autograd registry now covers the normalization layers (<code>layer_norm</code>,
+<code>rms_norm</code>, <code>group_norm</code>, <code>l2_norm</code>) and <code>silu</code> alongside the structural,
+linear-algebra, activation, and math ops, so transformer and LLaMA-style
+blocks, diffusion-UNet / GroupNorm CNNs, plain CNNs, and MLPs all train end to
+end on the engine; the pre-norm transformer and LLaMA-block examples converge as
+the proof. The remaining gradient gaps are low-value and do not block mainstream
+training: the reduction-routing ops <code>amax</code> / <code>amin</code> / <code>cumsum</code> and a few
+parametric activations (<code>atan</code>, <code>softplus</code>, clamped variants), each an additive
+frontend follow-up. Normalization affine is now learnable too: passing parameter
+Tensors for a norm's <code>gamma</code> / <code>beta</code> composes the normalize op with an explicit
+trainable scale and shift, so the affine trains with the rest of the model (a
+numpy <code>gamma</code> / <code>beta</code> still bakes a fixed affine). Scale is demonstrated on
+three axes, all on the engine: a four-layer model that reconstructs its training
+text (<code>examples/train_charlm.py</code>), a corpus-trained model that generalizes to a
+held-out split (<code>examples/train_charlm_corpus.py</code>), and a sixteen-layer model
+trained with a layer-streamed compile (<code>examples/train_charlm_deep.py</code>). The
+compile-size ceiling on depth is removed: <code>aneforge.streaming.CheckpointedStack</code>
+compiles a stack of identical layers' per-layer forward and backward once and
+reuses them for every layer, so compile work is constant in depth (the
+sixteen-layer model's programs compile in about half a second, where the
+eight-layer monolith took about 162 seconds), with gradients bit-exact against
+the monolith. What remains is engineering reach, not a capability gap: larger
+corpora, longer context windows, and a resident-state or on-engine optimizer for
+the streamed path.</p>
+<p>The conv input-gradient on M1 is now slice-saturation-safe (the im2col backward
+concatenates patches on a non-last axis so it never transits the h13 width-axis
+crop-DMA saturation). The remaining M1-specific item is behavior under many
+rapid compiles, which the compile backoff in <code>aneforge/_circuit.py</code> paces as a
+defensive backstop, best verified on M1 hardware.</p>
+<p>Separately, LLM decode throughput remains GPU territory: decode is
+dispatch-bound and the fp16-product precision limits force the
+cancellation-sensitive layers onto the CPU, so the GPU wins decode on both
+speed and energy at every batch size. ANEForge runs decoder-LLM inference
+correctly (prefill plus resident-KV decode, HF-matching logits), and
+compute-bound prefill is a genuine ANE win; speculative decoding narrows the
+decode gap (exact, ~2.3x) without closing it. The engine's niche stays
+fp16-tolerant, compute-bound work - vision, encoders, on-device embedding, and
+prompt prefill - not high-throughput autoregressive decode. See the bottlenecks
+section.</p>
+<h3 id="stable-diffusion-15-end-to-end">Stable Diffusion 1.5 end-to-end<a class="headerlink" href="#stable-diffusion-15-end-to-end" title="Permanent link">&para;</a></h3>
+<p>Per-component validation passes (UNet and VAE steps run on the ANE within a
+few percent), and the group-norm shape wall is gone. The remaining wall is
+classifier-free guidance (CFG) cancellation: the conditional minus
+unconditional difference is a small fraction of the signal magnitude and is
+swamped by accumulated fp16 noise over the denoising trajectory. A
+numerical-envelope limit, not a missing op. The path forward is paired-fp16
+precision carried through the UNet tail (the subtraction itself is exact by
+Sterbenz; the loss is input quantization), partially built in the math toolkit
+and not yet wired through the full UNet.</p>
+<h3 id="m2-m3-silicon-power-anchors">M2 / M3 silicon power anchors<a class="headerlink" href="#m2-m3-silicon-power-anchors" title="Permanent link">&para;</a></h3>
+<p>The watt-complete characterization is measured on three physical chips (M1 /
+A13, M2 Pro / A14, and M5 / A16-class): the M2 run is the full 16-class watt map
+(<code>device_compare_wattcomplete_results_M2.json</code>), plus a 25-point latency grid that
+drives the h14 cost anchor and its mid-utilization ramp and a power anchor
+(per-compression-mode energy and idle/compute/conv rails). The M-series-to-H-target
+ladder is verified, so M3/M4 remain ground-truth capability targets (H15/H16).
+The remaining gap is A15/M3: its absolute power rail and full watt-complete map
+have not been measured, and neither M1 nor the now-anchored A14 can supply those
+points. Capability and relative cost are covered family-wide; per-rail watts for
+the A15 generation need that hardware.</p>
+<h2 id="known-hard-limits">Known hard limits<a class="headerlink" href="#known-hard-limits" title="Permanent link">&para;</a></h2>
+<p>These are not roadmap items. They are the boundaries of the approach,
+stated so nothing here overclaims.</p>
+<h3 id="the-two-locks">The two locks<a class="headerlink" href="#the-two-locks" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>No fp32 / int32 / bf16 compute. The ANE compute dataplane is fp16
+   (with a wide, at-least-fp32 accumulator). fp32, int32, and bf16 are
+   accepted by the MIL parser but are "not implemented on any backend" for
+   the ANE - even a bare cast is rejected. This is silicon, not a path
+   limit. Every cancellation-sensitive workload that needs exact products
+   (notably long-contraction matmuls under cancellation, and the
+   transformer down-projection) has no fp16-tolerable form.</p>
+</li>
+<li>
+<p>The entitlement boundary. Custom signed HWX cannot be loaded (the
+   kernel driver verifies code signatures), and the fully autonomous,
+   zero-host-call dispatch loop is entitlement-gated. Measurement shows the
+   e5rt surface is functionally complete for the workloads here: bounded
+   multi-step host-free dispatch is reachable without an entitlement, and
+   per-step host dispatch was never the bottleneck, so the entitlement adds no
+   capability these models need.</p>
+</li>
+</ol>
+<h3 id="true-4cc-fourcc-image-input">True 4CC (FourCC) image input<a class="headerlink" href="#true-4cc-fourcc-image-input" title="Permanent link">&para;</a></h3>
+<p>Declaring a true interchange image format (e.g. <code>&amp;BGA</code>) as an input is
+not reachable on the e5rt path. The format grammar is solved and the MIL
+parses and type-checks, but the final lowering of <code>pixel_buffer_to_tensor</code>
+does not complete without the entitled CoreML <code>Input4CCFormat</code> + IOSurface
+route. <code>af.image_input(uint8)</code> is the terminal form for direct image input.</p>
+<h3 id="control-flow-and-recurrence">Control flow and recurrence<a class="headerlink" href="#control-flow-and-recurrence" title="Permanent link">&para;</a></h3>
+<p><code>cf_if</code>/<code>else</code>/<code>loop</code>, <code>phi_virtual</code>, and <code>rnn_arch</code> (LSTM/GRU) are a
+genuine single-procedure wall on the authorable netplist surface, and Apple
+itself routes recurrence off the ANE. Static-iteration unrolling fits;
+data-dependent control flow does not.</p>
+<h2 id="known-bottlenecks">Known bottlenecks<a class="headerlink" href="#known-bottlenecks" title="Permanent link">&para;</a></h2>
+<p>Measured, not speculative.</p>
+<ul>
+<li>
+<p>Per-call dispatch floor. Each <code>e5rt</code> dispatch has a fixed launch cost
+  (tens of microseconds; higher on bandwidth-rich chips). Tiny op chains
+  are floor-bound, where BNNS or numpy can win; ANE territory begins around
+  ~100 MFLOPs per call. Fusing the whole graph into one program - the
+  frontend's default - amortizes this.</p>
+</li>
+<li>
+<p>LLM decode is dispatch-bound and GPU-favored. The fp16-product
+  precision limits force the precision-sensitive layers onto the CPU, which
+  burns more power than running the whole model on the GPU; with the
+  per-token dispatch overhead, the GPU wins LLM decode on speed and energy at
+  every batch size. Batching is the dominant decode-throughput lever, but ANE
+  batched serving plateaus far below the GPU because it stays CPU-dominated.</p>
+</li>
+<li>
+<p>Per-PID program cap. <code>aned</code> enforces a hard cap of 128 simultaneously
+  loaded programs per process, with no LRU eviction (program 129 fails to
+  compile). <code>Program.release()</code> frees a slot immediately. Budget shape
+  specializations against this cap, or fuse more aggressively.</p>
+</li>
+<li>
+<p>Very large or rapid back-to-back compiles. Very large unrolled graphs
+  or many programs compiled back-to-back in one process can fail to compile.
+  This is environmental, not a code bug; reduce program size or re-run. The
+  compile backoff in <code>aneforge/_circuit.py</code> paces repeated failures as a
+  defensive backstop.</p>
+</li>
+</ul>
+<h2 id="limits-of-the-capability-map">Limits of the capability map<a class="headerlink" href="#limits-of-the-capability-map" title="Permanent link">&para;</a></h2>
+<p>The op census is exhaustive over the surface Apple exports, not over the
+silicon's full op set. Three structural blind spots remain:</p>
+<ol>
+<li>
+<p>Internal-only layers. The crackability predictor keys on exported
+   validators; at least one real hardware layer (<code>RCAS</code>) has an internal
+   validator and no exported symbol, found only by an opcode cross-check.
+   Others may exist that the export census structurally cannot see.</p>
+</li>
+<li>
+<p>Composite reachability without a single-layer validator. Several ops
+   run on silicon with no <code>*Layer</code> validator (<code>conv_transpose</code>,
+   <code>group_norm</code>, <code>rms_norm</code>, and others). Reachability is empirical
+   (probe-confirmed), not derivable from the validator list, and the
+   predictor is necessary-leaning but not sufficient - HWX codegen is the
+   real gate.</p>
+</li>
+<li>
+<p>Temporal and single-process scope. The whole map is one OS build and
+   one compiler version, measured single-process and steady-state.
+   Contention with other ANE clients, QoS preemption, cache eviction under
+   memory pressure, and per-op thermal behavior are unmapped. Negative
+   labels are characterized at specific configs, not swept boundaries, and
+   several decompose through a second authoring path (so "hard limit" can
+   over-count genuine silicon walls). A second OS build or chip converts
+   these from inferred to measured.</p>
+</li>
+</ol>
+<p>The largest source of unknown-unknowns is what Apple's own models exercise
+(Path B, streaming state, dynamic shapes, control flow) that we would not think
+to author. Sweeping the on-system Apple <code>espresso.net</code> corpus is the cheapest
+way to surface those.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

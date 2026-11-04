@@ -1,0 +1,497 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>3. Numerics - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-1-machine/03-numerics.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="3-numerics"><a class="header" href="#3-numerics">3. Numerics</a></h1>
+<blockquote>
+<p>The datapath is fp16 end to end with a wide accumulator of fp32 class, so representable sums come back near exact.
+Convolution, matrix multiply, and normalization keep their precision.
+A cancellation-heavy step like the transformer down-projection loses it to per-product fp16 input rounding, not to the accumulator, and needs a wider anchor off-engine.
+The fp16 ceiling is 65504, and a width-axis slice with a nonzero begin offset applies a fixed gain of sixteen.
+A fill above 4094 therefore overflows silently to infinity on the M1 and the A14.
+Activation lookup tables are accurate to about half a unit in the last place.
+They coerce a NaN to a clamp value and have a small origin bias that a bit-exact oracle must model.</p>
+</blockquote>
+<p>Computation on the engine is fp16 with a wide accumulator.
+That property, stated in chapter <a href="01-what-the-ane-is.html">1</a>, decides which computations keep their precision on the engine and which lose it.</p>
+<h2 id="fp16-datapath"><a class="header" href="#fp16-datapath">fp16 datapath</a></h2>
+<p>The multiply array is fp16 end to end.
+An fp16 value decodes from a sign bit, five-bit exponent, and ten-bit fraction as</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mbin mtight">−</span><span class="mord mtight">15</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span></span></span></span></span></p>
+<p>with a maximum finite magnitude of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65504</span></span></span></span>.
+Inputs are fp16, weights are fp16, outputs are fp16.
+The frontend accepts fp32, int32, and bf16 as type annotations, but the backend does not implement them, so those annotations do not reach the silicon as wider arithmetic.
+Bias is the single exception in the descriptor: it may be held as fp32, but it is added in the fp16 datapath.
+The datapath reconstructs compressed weights to fp16 before they reach the multiplier; it dequantizes an int8, int4, or palettized weight to fp16 on the way in, and the multiply that follows is the same fp16 multiply as for an uncompressed weight.
+The dequantization is affine, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span>, with the scale <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> scalar or per-output-channel, and agrees with the documented conversion-tool quantization relation <a href="../references.html#ref-applecoremltools">[AppleCoreMLTools]</a>.
+On the M1 generation the quantization is symmetric, so <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>; the inverse encode is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">round</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span>.</p>
+<p>The order of rounding in one multiply-accumulate pass is fixed.
+A weight is dequantized to fp16, the fp16 multiply runs, the products accumulate in the wide register, an optional per-channel scale and bias apply in fp16, an optional activation table applies, and the result stores to memory as fp16.
+Two rounding points bracket the accumulation: the inputs round to fp16 going in, and the output rounds to fp16 going out.</p>
+<h2 id="wide-accumulator"><a class="header" href="#wide-accumulator">Wide accumulator</a></h2>
+<p>The running sum between those two rounding points is not fp16.
+The input port rounds tiles to fp16 on the way in and the output port rounds to fp16 on the way out, but the reduction in between is held in a wide register of fp32 class on every ANE device.
+The accumulator width is a fixed hardware property.</p>
+<p>Representable sums thus come back near exact.
+A reduction of sixteen thousand ones is bit exact, where a naive fp16 running sum would stall near two thousand once the partial total passes the spacing of its own increments.
+The spacing of fp16 at a partial of magnitude <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">ulp</span></span><span class="mopen">(</span><span class="mord mathnormal">p</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">⌊</span><span class="mop mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">o</span><span class="mtight" style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span style="top:-2.2341em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2659em;"><span></span></span></span></span></span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight">p</span><span class="mclose mtight">⌋</span><span class="mbin mtight">−</span><span class="mord mtight">10</span></span></span></span></span></span></span></span></span></span></span></span>, so once <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span> the spacing exceeds <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> and an added unit increment falls below half a step and is swallowed.</p>
+<p>The worked case that shows the accumulator is wider than fp16 yet supplied by fp16-rounded inputs is the sum of one value of 4096 followed by 1024 ones.
+The exact sum is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">4096</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1024</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">5120</span><span class="mpunct">,</span></span></span></span></span></p>
+<p>and the engine returns 5116, between the naive-fp16 result <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4096</span></span></span></span> and the exact total.
+A naive fp16 running sum returns 4096, because each added one falls below half the spacing at 4096 and is swallowed.
+The engine instead keeps the 1024 ones that fp16 would drop, and the small deficit from the exact 5120 is the fp16 rounding of the single input tile that contains the 4096.</p>
+<p>The discriminating test is a cancellation triple.
+A sum of a large value, its negation, and a one, repeated sixteen times near a magnitude of four thousand, returns all sixteen ones intact.
+An fp16 running sum holding four thousand has a spacing of two there, so each one would round away.
+The ones survive, so the accumulator is physically wider than fp16.
+The first reduction stage groups input lanes into tiles of four, fp16-rounded, which then supply the one wide accumulator.
+Swept across magnitudes, the survivor count is layout-independent: the same result whether the one precedes or follows the negation, so the hardware re-associates over a fixed lane lattice rather than the source order.
+<a href="#tbl-c3-cancel-sweep">Table 3.1</a> records the survivor count against the cancellation magnitude and the fp16 spacing there.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Cancellation magnitude</th><th style="text-align: right">fp16 spacing at that magnitude</th><th style="text-align: right">Survivors of sixteen ones</th></tr></thead><tbody>
+<tr><td style="text-align: right">1024</td><td style="text-align: right">1</td><td style="text-align: right">16</td></tr>
+<tr><td style="text-align: right">3000</td><td style="text-align: right">2</td><td style="text-align: right">16</td></tr>
+<tr><td style="text-align: right">4090</td><td style="text-align: right">2</td><td style="text-align: right">16</td></tr>
+<tr><td style="text-align: right">4096</td><td style="text-align: right">4</td><td style="text-align: right">4</td></tr>
+<tr><td style="text-align: right">8000</td><td style="text-align: right">4</td><td style="text-align: right">4</td></tr>
+<tr><td style="text-align: right">16000</td><td style="text-align: right">8</td><td style="text-align: right">4</td></tr>
+<tr><td style="text-align: right">30000</td><td style="text-align: right">16</td><td style="text-align: right">4</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c3-cancel-sweep"></a><strong>Table 3.1.</strong> The cancellation-threshold survivor sweep, M1/H13 measured, which fixes the first-stage tile width at four.</p>
+<p>The survivor count holds at sixteen up to a magnitude of 4090, then drops to a hard floor of exactly four at 4096 and stays at four out to 30000.
+The threshold is at 4096 because that is the first magnitude where the fp16 spacing reaches four, so a one sharing a four-lane tile with a rounded partial at or above 4096 falls below the in-tile rounding threshold and vanishes.
+The flat floor of four is the signature of a four-lane tile: a three-element triple period beating against a four-lane tile leaves exactly four unaffected lanes out of sixteen.
+A single one added next to one large resident value cannot expose the tile, because that value forces the whole wide partial onto its own coarse spacing and the one rounds away regardless of which tile it is in.</p>
+<p>Both behaviors are reproducible on the engine by reducing an fp16 vector.
+The cancellation probe routes a sum through a matmul against a ones vector so the reduction is in the wide accumulator, and the slice trigger exercises the width-axis crop gain (<a href="#lst-c3-accum-probe">listing 3.1</a>).</p>
+<pre><code class="language-python"># Pseudocode for the engine's wide accumulator and the width-slice saturation.
+# Each reduce_via_matmul(v) runs on the engine: v is fp16, summed against a
+# fp16 ones-vector so the reduction accumulates in the wide (fp32-class) register;
+# the result is read back as fp16.
+
+# (a) Cancellation probe: a large value, its negation, and ones near the threshold.
+#     A naive fp16 running sum at 4000 has ulp = 2 and swallows every one.
+big = 4000.0
+v = ([big, -big, 1.0] * 16)               # 16 ones survive the cancellation
+assert reduce_via_matmul(v) == 16.0       # engine keeps all 16; fp16 loop -&gt; 0
+
+#     The accumulator is wide, but the inputs still round to fp16 going in:
+v = [4096.0] + [1.0] * 1024               # one tile of 4096, then 1024 ones
+assert reduce_via_matmul(v) == 5116.0     # between naive-fp16 4096 and exact 5120
+
+# (b) Width-axis slice saturation: a nonzero begin offset applies a x16 crop gain.
+#     The fp16 ceiling is 65504, so 4094*16 == 65504 passes but 4096*16 overflows.
+def width_slice_with_offset(value):       # slice begin offset != 0 on the width axis
+    return value * 16.0                   # the fixed crop-DMA gain, then fp16 store
+
+assert width_slice_with_offset(4094.0) == 65504.0          # at the ceiling, finite
+assert width_slice_with_offset(4096.0) == float("inf")     # 65536 &gt; 65504 -&gt; inf
+</code></pre>
+<p><a id="lst-c3-accum-probe"></a><strong>Listing 3.1.</strong> Probes for the wide accumulator's cancellation behavior and the width-slice saturation that overflows to infinity above the fp16 ceiling.</p>
+<h2 id="compressed-weights-and-the-streaming-gate"><a class="header" href="#compressed-weights-and-the-streaming-gate">Compressed weights and the streaming gate</a></h2>
+<p>The datapath reconstructs a compressed weight to fp16 before it reaches the multiply array, so the arithmetic is fp16 regardless of the storage format.
+What differs by format and by chip is whether the compressed bytes stream to the engine compressed and decompress on the way in, or fold to dense fp16 in memory first.
+A format that streams moves fewer bytes across the DRAM boundary; a format that folds yields the storage saving but not the bandwidth.
+Which formats stream and which fold varies across three chip generations (<a href="#tbl-c3-weight-stream">table 3.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>M1 / A13</th><th>A14 / M2</th><th>A16 / M5</th></tr></thead><tbody>
+<tr><td>int4 palette lookup table</td><td>stream</td><td>stream</td><td>stream</td></tr>
+<tr><td>int8 affine</td><td>fold</td><td>stream</td><td>stream</td></tr>
+<tr><td>sparse</td><td>stream</td><td>stream</td><td>stream</td></tr>
+<tr><td>blockwise</td><td>fold</td><td>fold</td><td>stream</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c3-weight-stream"></a><strong>Table 3.2.</strong> Which compressed-weight formats stream natively versus fold to dense fp16, by generation, M1 measured with A14 and M5 rows from the per-format gate.</p>
+<p>On the M1 the int4 palette form streams natively, measured at about 2.37 times the bandwidth of the dense weight, and a sparse weight with at least half its values zero streams as a one-bit keep-mask with the packed fp16 nonzeros.
+The int8 affine and blockwise forms fold to dense fp16 before the data-movement step.
+The fold expands the int8 weight to a dense fp16 constant in DRAM before the multiply, so the bytes that cross the DRAM boundary are full-width fp16 and the layer gets no bandwidth gain on the M1.
+The int8 fold is a stored-size saving only on the M1.
+The weight is half the size on disk, but it is reconstructed to fp16 in DRAM before the data-movement step, so a weight-streaming-bound matmul moves the same bytes as fp16 and runs at the fp16 latency.
+The int8 form first streams as int8 on the A14 and M2 generation, where it is dispatched as int8 and dequantized at the multiply port so it moves half the bytes of fp16.
+A bandwidth-bound matmul reaches about 0.52 times the fp16 latency at a weight of 8192 by 8192.
+The compressed-weight quantization adds error only at the input rounding: an int8 conv weight tracks the fp16 result at a cosine near 1.0, with a relative error near 0.6 percent against an fp32 reference, against about 0.02 percent for fp16.</p>
+<h2 id="where-precision-holds-and-where-it-is-lost"><a class="header" href="#where-precision-holds-and-where-it-is-lost">Where precision holds and where it is lost</a></h2>
+<p>Convolution, matrix multiply, and normalization keep their precision when their partial sums stay in fp16 range and their results are representable.
+The reduction happens in the wide accumulator, and the only quantization is the fp16 rounding of the inputs and the output.
+Vision, audio, and encoder workloads are in this regime, and run on the engine without a precision penalty.</p>
+<p>Precision is lost on cancellation-heavy steps.
+The transformer decoder down-projection is the case that fails: a large positive and a large negative contribution nearly cancel, and the result is a small difference between two large numbers.
+The loss does not come from the accumulator, which is wide enough to hold the partial.
+It comes from the per-product fp16 rounding of the inputs and weights before they enter the accumulator.
+Once the operands are quantized to fp16, the cancellation amplifies that quantization into the result.
+There is no fp16-safe form for such a step on the engine; the anchor has to be computed wider, on the CPU or the GPU.</p>
+<h2 id="activation-functions"><a class="header" href="#activation-functions">Activation functions</a></h2>
+<p>Lookup tables evaluate the nonlinear activations.
+Identity and plain ReLU are not table-driven, since ReLU is a max, but sigmoid, tanh, gelu, swish, erf, exp, and the rest route through a piecewise-linear table of fixed knots.
+The table is a 33-knot piecewise-linear curve, not a dense sample grid.
+The input maps affinely onto the 32 segments between 33 knots, the bracketing segment evaluates as a slope times the input plus an intercept in fp16, and the value clamps to the end-knot asymptote past the table domain.
+Accuracy comes from the piecewise fit and the per-function domain.
+A user sigmoid does not lower to the plain sigmoid table.
+It lowers to a high-precision sigmoid table by default, which pushes the domain to a wider range with a finer subdivision near the linear region, so a sigmoid-heavy or attention-gate-heavy model stays accurate under fp16.</p>
+<p>On the standard set, measured on device, the worst absolute error is at the level of the fp16 storage floor: sigmoid 0.0034, tanh 0.0017, gelu 0.0059, each under 0.4 percent of the function range.
+The on-device value matches the fp16-rounded exact function to about half a unit in the last place.
+The table adds nothing measurable on top of fp16 storage rounding.
+The exceptions are sin, cos, and atan, which have up to about 0.04 to 0.12 absolute error near the seams of their argument reduction; a model that evaluates trig directly near a magnitude of pi should fold the range upstream.</p>
+<h2 id="edge-behavior-a-correctness-oracle-must-model"><a class="header" href="#edge-behavior-a-correctness-oracle-must-model">Edge behavior a correctness oracle must model</a></h2>
+<p>Several edge behaviors of the fp16 datapath depart from a host IEEE reference, and a model that reproduces engine results bit for bit has to encode them.
+The engine coerces a NaN to positive infinity at the input boundary, and never produces a NaN anywhere.
+A NaN sent in and echoed through the identity <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> returns positive infinity, with the same bits as sending positive infinity directly, and every downstream op then behaves as if the value had been positive infinity.
+A NaN into relu returns infinity, a NaN into sigmoid or tanh returns 1.0, a NaN into erf returns 1.0, and a NaN into exp returns infinity.
+A NaN into the maximum of two values returns infinity, and a softmax of a lane holding a NaN puts all the mass on that lane.
+The one case where a NaN is not bit-identical to positive infinity is the variance reduction inside layer normalization, where the NaN enters as a large finite magnitude rather than as literal infinity.
+Rms normalization gives identical results for a NaN input and an infinity input.
+An upstream NaN through any gate leaves the engine as a finite or infinite value and does not surface as a NaN to downstream code.</p>
+<p>The engine flushes to positive zero all the indeterminate forms that produce a NaN under IEEE.
+The infinity minus infinity case returns positive zero, the zero times infinity case returns positive zero, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">sqrt</span></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> returns positive zero, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">rsqrt</span></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> returns positive zero, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> returns positive zero.</p>
+<p>The engine preserves denormals elementwise but flushes them inside the multiply-accumulate.
+An fp16 denormal down to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">24</span></span></span></span></span></span></span></span></span></span></span></span> (about <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5.96</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span></span>) echoes bit-exactly through <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> on the elementwise path, and scales correctly, so the common assumption that the engine flushes denormals globally is false for that path.
+A pair of denormals summed inside a matmul, with a representable denormal total, returns positive zero, so the flush-to-zero is a property of the accumulator stage and not of the datapath as a whole.
+The M5 accumulator instead preserves denormals, so a denormal input and a product of two denormals both survive a matmul reduction unflushed.
+The flush is an M1-generation property, and the M2 through M4 parts between them were not measured, so the generation at which it changed is unknown.</p>
+<p>Signed zero loses its sign before a reciprocal or a reciprocal square root.
+The reciprocal of negative zero returns positive infinity where IEEE returns negative infinity, and the reciprocal square root of negative zero returns positive infinity where IEEE returns negative infinity, while <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">sqrt</span></span></span></span></span> of negative zero stays positive zero per IEEE.
+A negative zero echoes as positive zero through <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>, so the engine drops the sign bit of a zero before the reciprocal path.</p>
+<p>A few activation tables collapse a large input: softplus and softsign of positive infinity return positive zero, where the values should be positive infinity and a unit magnitude.
+The logarithm of positive zero returns a finite sentinel of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">45440</span></span></span></span> rather than negative infinity.
+These are properties of the table approximations, distinct from the NaN coercion above.</p>
+<p>Softmax subtracts a hardware maximum before the exponential, so it does not overflow even when a raw exponential would.
+A softmax of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1000</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">]</span></span></span></span> returns <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">]</span></span></span></span> and matches a wide reference, despite <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord">1000</span><span class="mclose">)</span></span></span></span> being far past the fp16 range, and a softmax of four equal values returns four quarters.
+A bare <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mop">exp</span></span></span></span> with no max-subtraction overflows to infinity at an input near <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">11.094</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">ln</span><span class="mopen">(</span><span class="mord">65504</span><span class="mclose">)</span></span></span></span>, so the stable route is the fused softmax rather than a hand-rolled exponential over a sum.</p>
+<p>Rounding on the fp16 output grid is round half to even.
+A tie at the midpoint between two representable fp16 values rounds to the value with an even last bit, not away from zero.
+A partial of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2049</span></span></span></span> at a grid spacing of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> rounds to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span>, the even neighbor, and a trailing half above the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2048</span></span></span></span> threshold rounds the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.5</span></span></span></span> accumulation to even.
+The M5 returns <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2050</span></span></span></span> for this case, rounding up where the M1 rounds to even.
+Whether the wide accumulator presents a value just above <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2049</span></span></span></span> rather than an exact tie, or the rounding differs by generation, is unresolved.</p>
+<p>Some activation tables have a small constant bias at the origin.
+The decoded gelu table returns <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">0.000543</span></span></span></span> at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> where the exact gelu is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>, and the swish table returns <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">0.001259</span></span></span></span> at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> where the exact swish is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>.
+The bias is below the fp16 storage floor and does not affect the per-op accuracy figures, but a bit-exact oracle has to hold it.</p>
+<h2 id="saturation-hazard"><a class="header" href="#saturation-hazard">Saturation hazard</a></h2>
+<p>The fp16 maximum finite value is 65504.
+The compute datapath has no fp32 margin, so a value above that saturates to infinity silently.</p>
+<p>The multiply-accumulate output stage saturates earlier than the storage format, at exactly <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32768</span></span></span></span>, just above half the fp16 ceiling.
+This is a different axis from the width-slice gain below: it is a property of the accumulator output port, and it fires on matrix multiply, linear, and any convolution that accumulates two or more taps, whatever the number of accumulation terms.
+The threshold is pinned to the bit: the largest fp16 value below <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span></span></span></span>, which is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32752</span></span></span></span>, passes through a linear, and the next fp16 value, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32768</span></span></span></span>, returns infinity.
+It holds for <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>, for <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>, and for a two-channel convolution, so it tracks the would-be output magnitude at the accumulator port.
+An interior partial that exceeds <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span></span></span></span> overflows to infinity even when a later cancellation would have brought the final result back into range.
+The paths that drive a dedicated reduction or a single elementwise multiply have the full fp16 range instead.
+A reduce-sum rounds to 65504 first and then overflows, an elementwise multiply overflows at the true fp16 limit of 65504, and a pointwise one-by-one convolution with a single input channel passes a fill of 60000.
+This earlier accumulator ceiling is consistent with the multiply-accumulate datapath having about one bit less margin than the fp16 storage format on the M1, so the guard for a matrix multiply or a multi-tap convolution is to keep the output magnitude below <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">15</span></span></span></span></span></span></span></span></span></span></span></span>.</p>
+<p>The slice path has a second saturation.
+A width-axis slice with a nonzero begin offset routes through a crop DMA that applies a fixed gain of sixteen.
+A value at or below 4094 passes through bit exact, because <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4094</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65504</span></span></span></span> is the fp16 ceiling.
+A value of 4095 or above becomes infinity, because it rounds to 4096 on the fp16 grid and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4096</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6835em;vertical-align:-0.0391em;"></span><span class="mord">65536</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65504</span></span></span></span>, past the ceiling.
+The control case, a slice with a zero begin offset, is free of the saturation at the same fill values, so the trigger is the nonzero width-axis offset and not the magnitude alone.
+The hazard is on the width axis only: a nonzero begin offset on the height, channel, or batch axis stays finite at the same fill values.
+The saturation is measured on both the M1 generation (H13) and the A14 generation (H14), where a fill at width offset 4094 stays finite (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4094</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65504</span></span></span></span>) and a fill at 4096 overflows to infinity (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4096</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">65536</span></span></span></span>).
+The non-saturating route arrives on the A15 generation and later, so the hazard is not fixed by the immediate next family.
+The guard is to avoid nonzero last-axis begin offsets on a width slice, or to route the offset onto a different axis.</p>
+<h2 id="determinism"><a class="header" href="#determinism">Determinism</a></h2>
+<p>For a fixed graph and a fixed input the M1 engine is bit-deterministic: the raw fp16 output bytes are identical across reruns, across an independent recompile, and across a fresh process.
+The lowered program fixes the accumulation order, so there is no run-to-run drift to round away.</p>
+<p>Re-executing one compiled program on the same input returns the same fp16 bytes every time, measured at zero units in the last place over 200 repeats for a matrix multiply, two-layer convolution, and long reduction.
+The same holds over 50 repeats for softmax, reduce-mean, and a large matrix multiply.
+Compiling the same graph twice at optimization level zero, the byte-identical lowering path, produces two programs whose outputs agree to the bit, including a genuinely tiled <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">128</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1024</span><span class="mclose">]</span><span class="mord">@</span><span class="mopen">[</span><span class="mord">1024</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1024</span><span class="mclose">]</span></span></span></span> matrix multiply.
+Running the same graph in a fresh subprocess, with a new dispatch client, returns the same output digest as the in-process run, so daemon and process state do not perturb the result.</p>
+<p>The result is also independent of batch size and batch position.
+A row computed alone is bit-identical to the same row computed inside a batch, and the same row placed at every position of a batch of sixteen gives sixteen identical outputs.
+Row zero is invariant across batch sizes of one, two, eight, thirty-two, and one hundred twenty-eight.
+The engine computes each batch element identically regardless of its neighbors.</p>
+<p>The one thing that changes the bits is changing the math.
+Writing a graph with a different association order, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> against <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>, gives different fp16 rounding.
+About 31 percent of the elements differ, by about one fp16 unit in the last place at that magnitude, with a maximum absolute difference near <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">7.8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span>.
+Each ordering is itself perfectly reproducible, so this is ordinary fp16 non-associativity of the graph as written and not hardware nondeterminism.
+Two high-level ops that lower to the same kernel agree to the bit.
+A dot product written as a matrix multiply and the same dot product written as an elementwise multiply followed by a reduce-sum return identical bytes here, because the compiler lowered both to the same accumulation order.
+Reassociation bites only when the graph dictates a different order.</p>
+<h2 id="keeping-a-graph-inside-the-fp16-envelope"><a class="header" href="#keeping-a-graph-inside-the-fp16-envelope">Keeping a graph inside the fp16 envelope</a></h2>
+<p>Two numeric decisions belong before a graph is compiled.
+A developer anchors a cancellation-heavy reduction off-engine, on the CPU or the GPU.
+A width-axis slice avoids a nonzero begin offset, because the fixed gain of sixteen overflows a fill above 4094 to infinity.</p>
+<p>The cancellation-heavy step routes to a wider unit, and the rest stays on the engine, with the three rules worked through one graph in <a href="#lst-c3-safe-graph">listing 3.2</a>.</p>
+<pre><code class="language-python"># Keep a graph numerically safe BEFORE compiling it, by applying three rules
+# to every reduction and every cropped tile in the graph.
+
+# fp16 limits the whole datapath uses:
+fp16_max         = 65504        # largest finite fp16 value; above this -&gt; infinity
+accum_out_max    = 32768        # multiply-accumulate output port saturates here
+width_slice_gain = 16           # a width-axis crop with a nonzero begin offset
+                                #   multiplies its values by this fixed gain
+
+# RULE 1: route a reduction through a matmul against a ones-vector, so the
+#         sum accumulates in the wide (fp32-class) accumulator and stays near exact.
+#         A plain elementwise running sum rounds at every step in narrow fp16.
+function safe_reduce_sum(vector v):                  # v is fp16
+    ones = vector_of_ones(length(v))                 # fp16, same length as v
+    return matmul(v, ones)                           # one dot product, wide accumulator
+
+# RULE 2: a cancellation-heavy step (a large positive nearly canceling a large
+#         negative) has no fp16-safe form on the engine, because the operands
+#         were already rounded to fp16 before the subtract. Scale it up so the
+#         small difference clears the fp16 grid, OR split it out to a wider
+#         unit (CPU or GPU) and feed the result back as a graph input.
+function place_cancellation_step(step):
+    if is_cancellation_heavy(step):
+        return compute_off_engine(step)              # wider anchor, fed back as input
+    else:
+        return keep_on_engine(step)                  # representable sums stay near exact
+
+# RULE 3: keep every tile value under the limit that applies to its path,
+#         so nothing saturates silently to infinity mid-graph.
+function check_tile_value(value, path):
+    if path == "matmul_or_multitap_conv":
+        require value &lt;= accum_out_max               # output-port ceiling, ~half fp16_max
+    if path == "width_slice_with_nonzero_offset":
+        require value * width_slice_gain &lt;= fp16_max # 4094*16 == 65504 passes; 4096*16 overflows
+    otherwise:
+        require value &lt;= fp16_max                    # plain elementwise / single reduction
+
+# Assemble the safe graph: representable conv/matmul/norm stay on the engine,
+# reductions go through safe_reduce_sum, the cancellation step is anchored wide.
+graph G:
+    input  x                                         # fp16 activations
+    feats  = conv(x, weights = W)                    # representable sums, stays on engine
+    pooled = safe_reduce_sum(feats)                  # RULE 1: wide-accumulator reduction
+    output pooled
+program P = compile(G, target = H13)                 # fp16 datapath, wide accumulator
+result = dispatch(P, features)
+# The cancellation-heavy down-projection (RULE 2) is computed off-engine and
+# fed back as an input, never lowered into this graph.
+</code></pre>
+<p><a id="lst-c3-safe-graph"></a><strong>Listing 3.2.</strong> The three rules that keep a graph inside the fp16 envelope before compile.</p>
+<h2 id="reference-fp16-numeric-constants"><a class="header" href="#reference-fp16-numeric-constants">Reference: fp16 numeric constants</a></h2>
+<p><a href="#tbl-c3-constants">Table 3.3</a> collects the fp16 numeric constants, the saturation thresholds, and the activation-table error figures.</p>
+<div class="table-wrapper"><table><thead><tr><th>Constant</th><th style="text-align: right">Value</th></tr></thead><tbody>
+<tr><td>fp16 maximum finite magnitude</td><td style="text-align: right">65504</td></tr>
+<tr><td>Multiply-accumulate output ceiling</td><td style="text-align: right">32768</td></tr>
+<tr><td>Width-slice crop-DMA gain</td><td style="text-align: right">16</td></tr>
+<tr><td>Width-slice finite fill ceiling</td><td style="text-align: right">4094</td></tr>
+<tr><td>Width-slice overflow fill</td><td style="text-align: right">4096</td></tr>
+<tr><td>Wide-accumulator bit-exact reduction</td><td style="text-align: right">16000 ones</td></tr>
+<tr><td>Worked sum, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">4096</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1024</span></span></span></span></td><td style="text-align: right">5116</td></tr>
+<tr><td>First reduction-stage tile width</td><td style="text-align: right">4 lanes</td></tr>
+<tr><td>Sigmoid worst absolute error</td><td style="text-align: right">0.0034</td></tr>
+<tr><td>Tanh worst absolute error</td><td style="text-align: right">0.0017</td></tr>
+<tr><td>Gelu worst absolute error</td><td style="text-align: right">0.0059</td></tr>
+<tr><td>Gelu origin bias at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">0.000543</span></span></span></span></td></tr>
+<tr><td>Swish origin bias at <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">0.001259</span></span></span></span></td></tr>
+<tr><td>Trig seam absolute error (sin, cos, atan)</td><td style="text-align: right">0.04 to 0.12</td></tr>
+<tr><td>Activation table knot count</td><td style="text-align: right">33</td></tr>
+<tr><td>Sigmoid table domain clamp</td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">9.938</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mord">8.320</span><span class="mclose">]</span></span></span></span></td></tr>
+<tr><td>Exp input where output first reaches infinity</td><td style="text-align: right">11.094</td></tr>
+<tr><td>Square input where output first reaches infinity</td><td style="text-align: right">256</td></tr>
+<tr><td>int4 palette native stream speedup, M1</td><td style="text-align: right">2.37x</td></tr>
+<tr><td>int8 fold on M1 (stored-size saving, no stream gain)</td><td style="text-align: right">1.0x fp16 latency</td></tr>
+<tr><td>int8 weight-stream latency, A14/M2 (8192 weight)</td><td style="text-align: right">0.52x fp16</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c3-constants"></a><strong>Table 3.3.</strong> The fp16 numeric constants, M1/H13 measured, with the saturation reproduced on A14/H14.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-1-machine/02-execution-model.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-1-machine/04-capability-surface.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-1-machine/02-execution-model.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-1-machine/04-capability-surface.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

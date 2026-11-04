@@ -8,23 +8,33 @@ We fine-tune a language model by treating the processors in a Mac as federated c
 
 ## 1. Introduction
 
-A Mac already contains two trainers that do not share a stack. MLX runs QLoRA on the GPU. Core ML, ANEForge, Orion, and maderix are the routes onto the Neural Engine. A route that does not import, or that never shows residency, is reported as unavailable. It is not replaced by the GPU. When several Macs take part, each machine uses the same grouping, and the adapter has to cross the link between them.
+The Apple Neural Engine is a 16-core matrix processor next to the CPU and the GPU.
+MLX fine-tuning never schedules it, so that unit sits idle while the GPU trains.
+Apple exposes it through Core ML, for inference, and Core ML may still run the graph on the GPU.
+ANEForge reverse-engineered the private aned path and compiles a Python graph, forward and backward, onto the engine.
+Orion did the same in Objective-C for a small transformer: attention and the feed-forward block run on the engine, and Adam runs on the CPU.
+That is what makes an engine client possible.
 
-FedAvg cuts that traffic by taking local steps before an average (McMahan et al., AISTATS 2017). A longer local run then dominates a plain mean, so unequal step counts use the FedNova rescaling (Wang et al., NeurIPS 2020). We label that correction as plain-SGD normalization when the local solver is AdamW. Int8 codes with an error residual shrink the payload. Star, ring, and tree averages agree before quantization and may differ after it.
+FedAvg takes local steps before an average (McMahan et al., AISTATS 2017). Unequal step counts use the FedNova rescaling, labeled as plain SGD when the solver is AdamW (Wang et al., NeurIPS 2020). Int8 codes keep an error residual. Star, ring, and tree agree before quantization.
 
 ## 2. Method
 
-A cohort is an intra-Mac mode and a machine count. GPU mode is one GPU client per Mac. Combined mode is one client per Mac. That client may step on both processors and then emits one delta. Split mode places a GPU client and a Neural Engine client on every Mac, so n Macs yield n GPUs and n Neural Engines. Shards are one seeded partition of the corpus.
+We will train three cohorts, and use the same cohort on every Mac.
+The first is n GPUs.
+The second is n combined clients, each a GPU and a Neural Engine that send one adapter delta.
+The third is n GPUs and n Neural Engines, as separate clients.
+Every client trains on a shard of the same WikiText-2 mixture. The base stays on the client. The network carries only the LoRA delta.
+Chaining more than two Macs is an open part of this design, and we invite teammates to take that measurement.
 
-Each round starts from the broadcast adapter. FedAvg returns one delta per block of local AdamW steps. The control returns one delta per optimizer step. The mean is a star, a ring, or a tree, with the FedNova rescaling when step counts differ. Quantized clients send int8 codes and a scale, and keep an error residual. Base weights are counted and are not sent.
+Each round starts from the broadcast adapter. FedAvg averages after a block of local AdamW steps. The control averages after every step. The average is a star, a ring, or a tree, with the FedNova rescaling when step counts differ. We will also send the delta as int8 codes plus an error residual, and count the base-weight bytes that stayed home.
+We will run these exchanges over the network. A wired link, including Thunderbolt, is a follow-up we may try once the network numbers are in.
 
-The GPU path is MLX QLoRA, rank 8, on `mlx-community/Qwen3-0.6B-4bit`. A Neural Engine client runs only after its stack imports and a Qwen3 adapter step exists. One Mac reduces in process. Further Macs join through a relay. This machine is one M4 (Mac16,12).
+The model is QLoRA rank 8 on `mlx-community/Qwen3-0.6B-4bit`. The GPU client uses MLX. The engine client uses ANEForge or Orion.
+Single-machine numbers come from an M4 MacBook Air with 10 CPU cores (4 performance, 6 efficiency), 10 GPU cores, a 16-core Neural Engine, and 24 GB of unified memory.
 
 ## 3. Evaluation
 
-The dataset is Salesforce WikiText-2 raw v1 at revision `b08601e04326c79dfdd32d625aee71d232d685c3`. Training uses the first 4,096 lines for three epochs, batch size 8, and two gradient-accumulation steps. Validation and test stay the full splits. The metric is validation perplexity at each epoch. A finished arm also reports full-split test perplexity, adapter bytes per round, and the base-weight bytes that stayed local.
-
-The baseline is one Mac, GPU only, FedAvg, star aggregation, and an uncompressed delta. The communication control is that cohort with one all-reduce per optimizer step. The other arms cross the three modes with ring and tree aggregation, int8 residuals, and FedNova where local steps differ. A Neural Engine number is kept only with a compute plan or a measured power trace. The comparison fails if the curves agree within run spread, if a Neural Engine client never becomes resident, or if a private stack cannot be pinned. This is an open-ended 10-805 miniproject led by Gautam Diwan (gdiwan). The final report will use the 2024 NeurIPS format. Serving and speculative decoding are later work.
+The dataset is Salesforce WikiText-2 raw v1 at revision `b08601e04326c79dfdd32d625aee71d232d685c3`. Training uses the first 4,096 lines for three epochs, batch size 8, and two gradient-accumulation steps. Validation and test stay the full splits. The metric is validation perplexity at each epoch, plus adapter bytes per round. The baseline is one Mac, GPU only, FedAvg, on a star, with an uncompressed delta. The same metric is reported for n GPUs, for n combined GPU and Neural Engine clients, and for n GPUs together with n Neural Engines. A Neural Engine point counts when a compute plan or a power trace shows the engine ran.
 
 ## References
 

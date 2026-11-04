@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>7. Weights and compression - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-2-reaching/07-weights-and-compression.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="7-weights-and-compression"><a class="header" href="#7-weights-and-compression">7. Weights and compression</a></h1>
+<blockquote>
+<p>The engine reconstructs four compressed weight forms at the multiplier input.
+On the unentitled direct route a form either streams its compressed bytes for a bandwidth gain or folds to dense fp16 for none.
+The target chip decides which.
+The M1 streams only int4 lookup-table, at 2.37 times fp16, and structured sparsity at 1.55 to 1.64 times; it folds int8 and blockwise affine.
+The M5 streams all four at 1.6 to 1.8 times.
+Choose the form by what streams on the target.
+On the M1, fall back to int8 only where its halved stored size pays, since the int8 fold expands to fp16 in DRAM and yields no bandwidth there.</p>
+</blockquote>
+<p>A compiled network stores its weights as a separate stream that the engine reads from DRAM on every dispatch.
+The weight stream is the primary cost of any layer whose arithmetic intensity is low, which covers most decode-shaped and projection-heavy work.
+Compressing the weights moves fewer bytes across that stream; it does more than shrink a stored file.</p>
+<h2 id="compression-is-a-bandwidth-feature-on-the-direct-route"><a class="header" href="#compression-is-a-bandwidth-feature-on-the-direct-route">Compression is a bandwidth feature on the direct route</a></h2>
+<p>Compressed weights reach the engine through the direct runtime described in chapter <a href="05-software-stack.html">5</a>.
+They are not gated behind an entitlement, and the operations that reconstruct them are accepted by the compiler without special privilege.
+The reconstruction happens at the multiplier input, consistent with the fp16 datapath of chapter <a href="../part-1-machine/03-numerics.html">3</a>: a compressed weight is turned back into fp16 before it reaches the multiply array, and the multiply that follows is the same fp16 multiply as for an uncompressed weight.</p>
+<p>The word compression covers two distinct outcomes.
+A form that streams reaches the engine in its compressed bytes and is decompressed on chip, so fewer bytes cross DRAM and the layer runs faster when it was bandwidth bound.
+A form that folds is reconstructed to a dense fp16 constant before the dispatch, so the bytes that cross DRAM are full-width fp16 and the layer gets no bandwidth gain.
+The target chip sets which outcome applies to a form, not the frontend.</p>
+<h2 id="compression-forms"><a class="header" href="#compression-forms">Compression forms</a></h2>
+<p>The engine reconstructs four weight-compression forms, the same linear quantization, palettization, and pruning the conversion tools document as a model-size feature <a href="../references.html#ref-applecoremltools">[AppleCoreMLTools]</a>.
+Per-tensor and per-channel int8 keep the weight as a single byte per element with an fp16 scale, one scale for the whole tensor or one per output channel, reconstructed as the scale times the byte.
+The reconstruction is the affine dequantization</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></span></p>
+<p>with stored quantized byte <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>, fp16 scale <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span>, and zero point <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span>, the encode being <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">round</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span>.
+The zero point folds to zero on the M1 generation, so the int8 form there is symmetric and the relation reduces to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span> with <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> (<a href="#lst-c7-int8-dequant">listing 7.1</a>).</p>
+<pre><code class="language-python"># affine int8 dequant, evaluated at the multiplier input
+w_fp16 = scale * (q - zero_point)        # general affine form
+w_fp16 = scale * q                       # M1: zero_point folds to 0, symmetric only
+# q is int8 in [-127, 127]; scale is fp16, scalar or one per output channel.
+</code></pre>
+<p><a id="lst-c7-int8-dequant"></a><strong>Listing 7.1.</strong> The affine int8 dequantization evaluated at the multiplier input, with the symmetric form the M1 reduces to.</p>
+<p>Each compressed form is declared to the compiler as a single <code>constexpr_*</code> reconstruction op that folds into the weight descriptor, one per form (<a href="#lst-c7-constexpr-ops">listing 7.2</a>).
+The op count per form is fixed, and a violation is a hard validation error.</p>
+<pre><code class="language-python"># the constexpr reconstruction op per form (one MIL op each, folded into the conv/linear weight)
+constexpr_affine_dequantize(q, scale, zero_point)   # int8 affine:  w = scale * (q - zero_point)
+constexpr_lut_to_dense(indices, lut)                # int4 palette: w = lut[indices]
+constexpr_sparse_to_dense(mask, nonzeros)           # sparsity:     scatter into mask positions
+constexpr_blockwise_shift_scale(q, scale)           # blockwise:    one scale per contiguous block
+</code></pre>
+<p><a id="lst-c7-constexpr-ops"></a><strong>Listing 7.2.</strong> The single reconstruction op that declares each compressed weight form to the compiler.</p>
+<p>The int4 lookup-table form uses a four-bit index per element into a sixteen-entry fp16 codebook, and reconstruction is a table lookup with no arithmetic since the codebook is already fp16.
+Structurally it is a palette rather than an arithmetic dequantization, which is why it behaves differently from int8 on the streaming question.</p>
+<p>A worked example shows the packing and the decode.
+The four weights <code>[1.0, 0.0, 0.0, 1.0]</code> index a sixteen-entry fp16 codebook whose first two slots contain <code>0.0</code> (entry 0, <code>0x0000</code>) and <code>1.0</code> (entry 1, <code>0x3c00</code>).
+The index stream <code>[1, 0, 0, 1]</code> packs two four-bit indices per byte, low nibble first, so the four weights occupy the two bytes <code>0x01</code> and <code>0x10</code>.
+Decoding reads each nibble as a table index, recovering <code>[1.0, 0.0, 0.0, 1.0]</code>.</p>
+<p>Structured sparsity has a one-bit mask marking the nonzero positions plus the packed fp16 values of those nonzeros.
+The mask costs one bit per element and the values cost two bytes per surviving element, so a weight that is half zeros or more stores well below its dense size.
+Reconstruction scatters the values back into the masked positions exactly apart from the fp16 rounding of the kept values.
+Blockwise affine gives a separate scale to each contiguous block of elements, finer than a per-channel scale and so lower in quantization error.</p>
+<h2 id="what-streams-on-each-family"><a class="header" href="#what-streams-on-each-family">What streams on each family</a></h2>
+<p><a href="#tbl-c7-streams">Table 7.1</a> gives the per-form outcome on each chip generation.</p>
+<div class="table-wrapper"><table><thead><tr><th>Form</th><th>M1/H13</th><th>A14/M2</th><th>A15/M3 and later</th><th>M5/H17s</th><th>Speedup</th></tr></thead><tbody>
+<tr><td>int8 (per-tensor / per-channel)</td><td>fold</td><td>stream</td><td>stream</td><td>stream</td><td>M5 1.6-1.8x; M1 folds, no stream gain</td></tr>
+<tr><td>int4 lookup-table</td><td>stream</td><td>stream</td><td>stream</td><td>stream</td><td>M1 2.37x; M5 1.6-1.8x</td></tr>
+<tr><td>structured sparsity</td><td>stream</td><td>stream</td><td>stream</td><td>stream</td><td>M1 1.55-1.64x at 0.43x dense bytes; M5 1.6-1.8x</td></tr>
+<tr><td>blockwise affine</td><td>fold</td><td>fold</td><td>stream</td><td>stream</td><td>M5 1.6-1.8x; M1 and M2 fold, no stream gain</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c7-streams"></a><strong>Table 7.1.</strong> Whether each compressed weight form streams or folds to dense per chip generation, with the measured speedup.</p>
+<p>On the M1, of the H13 generation, only the int4 lookup-table form streams natively.
+A bandwidth-bound stack of one-by-one convolutions runs 2.37 times faster with int4 weights than with fp16, measured on the M1, because the four-bit indices move at a quarter of the fp16 byte count.
+Structured sparsity also streams natively on the M1: a convolution stack that is about sixty-three percent zeros runs 1.55 to 1.64 times faster than the same weights stored dense, at 0.43 times the dense weight bytes.
+The output is bit-faithful to the dense reference apart from fp16 rounding.</p>
+<p>The int8 and blockwise forms fold on the M1.
+The accuracy cost is the per-output int8 quantization: the int8 weight tracks the fp16 result at a cosine near 1.0, with a relative error near one percent against an fp32 reference; fp16 against the same reference is near two parts in ten thousand.</p>
+<p>From the A14 generation the int8 and sparse forms also stream, alongside int4, measured on the M2 of the H14 generation at 0.64 and 0.54 times fp16 on a bandwidth-bound matmul.
+On the A14 and M2 the int8 weight is dispatched as int8 and reconstructed from half the bytes.
+The measured latency runs from 0.85 times fp16 at a two-thousand-wide weight down to 0.52 times fp16 at an eight-thousand-wide weight, deeper as the weight grows and the stream dominates.
+Blockwise affine does not stream on the A14: it still folds there, measured at 0.985 times fp16, a near-zero bandwidth gain, and it first streams from the A15 generation.
+On the M5, of the H17s generation, all four forms stream, at a measured 1.6 to 1.8 times fp16 on bandwidth-bound layers.</p>
+<p>The streaming-versus-folding split is a hardware-abstraction-layer decision.
+Every weight-bearing operation is legal on every chip, so the boundary is in a set of feature bytes the compiler reads from the per-chip table.
+In that table one master byte enables weight streaming at all and a cluster of per-format bytes admits each compressed form by generation.
+<a href="#tbl-c7-hal-bytes">Table 7.2</a> gives those feature bytes and the generation each switches on.</p>
+<div class="table-wrapper"><table><thead><tr><th>Hardware-abstraction-layer byte</th><th>Role</th><th style="text-align: right">M1/H13</th><th style="text-align: right">A14/M2</th><th style="text-align: right">A15/M3</th><th style="text-align: right">A16, A17, M5</th></tr></thead><tbody>
+<tr><td><code>+0x48f</code></td><td>kernel-streaming master</td><td style="text-align: right">1</td><td style="text-align: right">1</td><td style="text-align: right">1</td><td style="text-align: right">1</td></tr>
+<tr><td><code>+0x528</code>, <code>+0x532</code>, <code>+0x537</code></td><td>per-format gates that switch on at A14</td><td style="text-align: right">0</td><td style="text-align: right">1</td><td style="text-align: right">1</td><td style="text-align: right">1</td></tr>
+<tr><td><code>+0x520</code>, <code>+0x523</code>, <code>+0x533</code>, <code>+0x539</code></td><td>per-format gates that switch on at A15</td><td style="text-align: right">0</td><td style="text-align: right">0</td><td style="text-align: right">1</td><td style="text-align: right">1</td></tr>
+<tr><td><code>+0x529</code></td><td>palette and stride gate</td><td style="text-align: right">1</td><td style="text-align: right">1</td><td style="text-align: right">1</td><td style="text-align: right">1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c7-hal-bytes"></a><strong>Table 7.2.</strong> The hardware-abstraction-layer feature bytes that gate compressed-weight streaming, by chip generation.</p>
+<p>The master byte is set from the A13 generation, which is why the M1 streams anything at all, and the palette gate is set on the M1, which is why the int4 lookup-table form streams there.
+The per-format gates for the affine int8 and blockwise forms are clear on the M1 and switch on at the A14 and A15 generations, which is why those two forms fold on the M1 and stream on the newer parts.
+Structured sparsity streams on the M1 by a separate route: it is held as a mask-and-values weight operand under the master byte rather than as a palettized kernel coefficient, so it streams under the master gate independent of the per-format cluster.
+The int8 floor at A14 is confirmed on the M2 silicon, and the blockwise floor at A15 is read from that gate pattern and not yet confirmed on the intermediate silicon.</p>
+<p>On the M1 the int8 fold is a stored-size saving only.
+The weight is half the size on disk, but it is expanded to a dense fp16 constant in DRAM before the data-movement step, so a weight-streaming-bound matmul moves full-width fp16 bytes and runs at the fp16 latency, with no bandwidth gain.
+The int8 weight first streams as int8 on the A14 and M2 generation, where it is dispatched as int8 and dequantized at the multiplier input rather than materialized to a dense fp16 constant in DRAM.
+A matmul-path measurement on the A14 and M2 makes this concrete: at a weight matrix wide enough to leave the dispatch floor, the int8 and fp16 weight streams reach the same effective bandwidth against their stored bytes, while the int8 form moves half the bytes (<a href="#tbl-c7-int8-matmul">table 7.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Weight width <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span></th><th style="text-align: right">fp16 latency</th><th style="text-align: right">int8 latency</th><th style="text-align: right">int8 / fp16</th></tr></thead><tbody>
+<tr><td>2048</td><td style="text-align: right">0.290 ms</td><td style="text-align: right">0.253 ms</td><td style="text-align: right">0.87</td></tr>
+<tr><td>4096</td><td style="text-align: right">0.740 ms</td><td style="text-align: right">0.447 ms</td><td style="text-align: right">0.60</td></tr>
+<tr><td>8192</td><td style="text-align: right">2.610 ms</td><td style="text-align: right">1.351 ms</td><td style="text-align: right">0.52</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c7-int8-matmul"></a><strong>Table 7.3.</strong> The int8 matmul-path weight stream against fp16 on the A14 and M2, the latency ratio approaching one half as the weight grows.</p>
+<h2 id="choosing-a-form"><a class="header" href="#choosing-a-form">Choosing a form</a></h2>
+<p>What streams on the target drives the choice of compression form, chip by chip.
+On the M1, prefer structured sparsity for a weight that is half zeros or more, since it streams and is lossless apart from fp16 rounding, and prefer the int4 lookup table otherwise, since it is the densest form that streams there.
+Reserve int8 on the M1 for the case where sixteen levels are too coarse, taking it for its halved stored size.
+On the M5 and the newer generations, where every form streams, choose by accuracy per byte rather than by what streams.</p>
+<p>The wide accumulator of chapter <a href="../part-1-machine/03-numerics.html">3</a> is what makes streamed low-precision weights safe on the layers that tolerate them.
+A streamed weight is reconstructed to fp16 and then enters the same fp16 multiply and wide reduction as a dense weight, so the quantization of the weight itself is the only precision lost.
+On convolution, matrix multiply, and normalization, whose partial sums stay in range, the reduction holds and the compressed weight keeps the layer's accuracy.
+A cancellation-heavy step has no fp16-safe form, compressed or not, for the reason given in chapter <a href="../part-1-machine/03-numerics.html">3</a>.</p>
+<h2 id="patching-weights-in-a-compiled-program"><a class="header" href="#patching-weights-in-a-compiled-program">Patching weights in a compiled program</a></h2>
+<p>A host can patch a compiled program's weights in place without recompiling.
+Each weight tensor occupies a decoded region of the program image with a known tiling.
+A convolution weight is in a <code>0xC0</code>-stride layout and a matrix-multiply weight in a <code>0x40</code>-stride layout, and editing the weight values leaves the program descriptor unchanged.
+A host can thus swap new weights into an already-compiled program, which makes a weight-only update inexpensive.</p>
+<p>The driver has a per-patch-mutable-buffer accounting path that confirms the route, <code>ANEScheduler::pendingRequestsPerPatchMutableBuffer</code>.
+The descriptor names the operations and binds the buffers, and a weight-value edit touches neither, so the same compiled program runs with the new coefficients.</p>
+<h2 id="automating-the-choice"><a class="header" href="#automating-the-choice">Automating the choice</a></h2>
+<p>The estimate classifies a layer as compute bound or bandwidth bound so the procedure chooses a form only where the layer is bandwidth bound and a stream would help.
+The procedure keeps the smallest form that streams natively on the target and clears an accuracy tolerance against an fp32 reference.
+Which forms stream depends on the target: the M1 streams int4 and sparse while int8 and blockwise fold, and the A14 and later stream int8 as well.
+Sparsity applies only when at least half the weight is zero, and the candidates are tried smallest-bytes-first, int4 before sparse before int8.
+Here <code>accuracy_error</code> round-trips the weight through the candidate form and compares the layer output against the fp32 reference.</p>
+<pre><code class="language-python">tolerance = 0.01    # max relative error of the layer vs an fp32 reference
+
+def native_streams(chip):
+    if chip == H13:   return [int4, sparse]       # M1: int8 and blockwise fold
+    if chip &gt;= H14:   return [int4, sparse, int8]
+
+def choose_weight_form(layer, weights, chip):
+    if not is_bandwidth_bound(layer, chip):
+        return fp16
+    candidates = native_streams(chip)
+    if fraction_zero(weights) &lt; 0.5:
+        candidates.remove(sparse)
+    for form in sorted(candidates, key=bytes_per_weight):
+        if accuracy_error(form, weights, layer) &lt;= tolerance:
+            return form
+    return fp16
+
+form = choose_weight_form(layer, W, chip=H13)     # M1 -&gt; int4 (streams, 2.37x)
+program = compile(graph_with(W, form), chip=H13)
+</code></pre>
+<p>On the M1 the procedure chooses a folding form, int8 or blockwise, only where the halved stored size or a finer scale pays on the matmul path, not for a stream gain.</p>
+<h2 id="reference-per-form-streaming-and-measured-cost"><a class="header" href="#reference-per-form-streaming-and-measured-cost">Reference: per-form streaming and measured cost</a></h2>
+<p>The figures behind this chapter's streaming claims are collected in <a href="#tbl-c7-reference">table 7.4</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Constant</th><th>Generation</th><th style="text-align: right">Value</th></tr></thead><tbody>
+<tr><td>int4 lookup-table stream speedup</td><td>M1/H13</td><td style="text-align: right">2.37x fp16</td></tr>
+<tr><td>Structured sparsity stream speedup</td><td>M1/H13</td><td style="text-align: right">1.55-1.64x fp16</td></tr>
+<tr><td>Structured sparsity stored bytes</td><td>M1/H13</td><td style="text-align: right">0.43x dense</td></tr>
+<tr><td>int8 fold on M1 (stored-size saving, no stream gain)</td><td>M1/H13</td><td style="text-align: right">1.0x fp16 latency</td></tr>
+<tr><td>int8 stored size on disk</td><td>M1/H13</td><td style="text-align: right">0.5x fp16</td></tr>
+<tr><td>int8 accuracy versus fp32 reference</td><td>M1/H13</td><td style="text-align: right">cosine near 1.0, relative error near 1%</td></tr>
+<tr><td>int8 matmul latency, 2k-wide weight</td><td>A14/M2</td><td style="text-align: right">0.85x fp16</td></tr>
+<tr><td>int8 matmul latency, 8k-wide weight</td><td>A14/M2</td><td style="text-align: right">0.52x fp16</td></tr>
+<tr><td>int8 stream speedup</td><td>A14/M2</td><td style="text-align: right">0.64x fp16</td></tr>
+<tr><td>Structured sparsity stream speedup</td><td>A14/M2</td><td style="text-align: right">0.54x fp16</td></tr>
+<tr><td>Blockwise affine fold</td><td>A14/M2</td><td style="text-align: right">0.985x fp16 (no stream gain)</td></tr>
+<tr><td>All four forms stream speedup</td><td>M5/H17s</td><td style="text-align: right">1.6-1.8x fp16</td></tr>
+<tr><td>Streaming master gate</td><td>A13</td><td style="text-align: right">on</td></tr>
+<tr><td>int8 per-format stream floor</td><td>A14</td><td style="text-align: right">confirmed on M2 silicon</td></tr>
+<tr><td>Blockwise affine per-format stream floor</td><td>A15</td><td style="text-align: right">predicted, not silicon-confirmed</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c7-reference"></a><strong>Table 7.4.</strong> The per-form streaming behavior and measured cost, by chip generation.</p>
+<p>The compressed weight element types are a subset of the engine element-type catalog the kernel descriptor records.
+The forms that bear on weight encoding are the integer lanes, fp16 dense and codebook entries, and packed palette indices.
+<a href="#tbl-c7-element-types">Table 7.5</a> gives those entries of the catalog.</p>
+<div class="table-wrapper"><table><thead><tr><th>Element type</th><th style="text-align: right">Width</th><th>Role in weight encoding</th></tr></thead><tbody>
+<tr><td>int8</td><td style="text-align: right">1 byte</td><td>affine int8 lane</td></tr>
+<tr><td>uint8</td><td style="text-align: right">1 byte</td><td>affine uint8 lane</td></tr>
+<tr><td>float16</td><td style="text-align: right">2 bytes</td><td>dense weight, codebook entry, scale, and bias</td></tr>
+<tr><td>uint4</td><td style="text-align: right">4 bits</td><td>4-bit palette index</td></tr>
+<tr><td>int4</td><td style="text-align: right">4 bits</td><td>4-bit signed, palette-only on the M1</td></tr>
+<tr><td>e4m3</td><td style="text-align: right">1 byte</td><td>fp8, gated off on the M1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c7-element-types"></a><strong>Table 7.5.</strong> The weight-relevant entries of the engine element-type catalog, with the width each has.</p>
+<p>There is no int4 arithmetic lane in the datapath, so the four-bit value is always a palette index into the sixteen-entry fp16 codebook, which is why the element-type table marks int4 palette-only on the M1.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-2-reaching/06-dispatch-without-coreml.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-2-reaching/08-entitlement-boundary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-2-reaching/06-dispatch-without-coreml.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-2-reaching/08-entitlement-boundary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

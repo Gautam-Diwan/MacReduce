@@ -1,0 +1,35 @@
+{
+    "adapter_path": "evidence/qwen3-0.6b-curve/adapters",
+    "batch_size": 8,
+    "clear_cache_threshold": 0,
+    "data": "data/wikitext-2-raw-v1-curve-4096",
+    "epochs": 3,
+    "fine_tune_type": "lora",
+    "grad_accumulation_steps": 2,
+    "grad_checkpoint": true,
+    "iters": 1536,
+    "learning_rate": 0.0001,
+    "lora_parameters": {
+        "rank": 8,
+        "dropout": 0.0,
+        "scale": 20.0
+    },
+    "lr_schedule": null,
+    "mask_prompt": false,
+    "max_seq_length": 512,
+    "model": "mlx-community/Qwen3-0.6B-4bit",
+    "num_layers": -1,
+    "optimizer": "adamw",
+    "optimizer_config": {
+        "adamw": {}
+    },
+    "resume_adapter_file": null,
+    "save_every": 1536,
+    "seed": 0,
+    "steps_per_eval": 512,
+    "steps_per_report": 10,
+    "test": true,
+    "test_batches": -1,
+    "train": true,
+    "val_batches": -1
+}

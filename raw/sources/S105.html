@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>18. Optimization and the cost model - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-5-practice/18-optimization-cost-model.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="18-optimization-and-the-cost-model"><a class="header" href="#18-optimization-and-the-cost-model">18. Optimization and the cost model</a></h1>
+<blockquote>
+<p>The compiler turns a shape into a wall-time estimate through three stages: a cycle count, a roofline, and a fixed dispatch floor.
+Only the per-chip parameters change across the family.
+On the M1 it fits the five reference convolutions it was tuned against within plus or minus 17 percent.
+Those fits assume a peak of 3.25 fp16 TFLOP/s, bandwidth of 9.0 GB/s, and a 0.23 ms floor.
+Across a broader sweep the median error is about 31 percent, so the estimate is an ordinal placement tool rather than an absolute-latency oracle.
+The same model estimates latency for any of the 28 targets without the chip in hand.
+Bandwidth scales by core count, the floor by clock.
+The autotuner ranks equivalent rewrites by this estimate and preserves accuracy by default.
+On attention blocks it gains 3.7 to 5.3 times at cosine similarity 1.0.</p>
+</blockquote>
+<p>The compiler estimates how long a layer will take before it runs.
+The same model drives an ahead-of-dispatch latency estimate for any chip in the family and a deterministic autotuner that ranks equivalent graph rewrites.</p>
+<h2 id="three-stages-of-the-model"><a class="header" href="#three-stages-of-the-model">Three stages of the model</a></h2>
+<p>Compute cycles come first, estimated from the operation and its dimensions.
+For a convolution the cycle count is the input-channel passes times the kernel volume times the output spatial extent, divided by the active compute units, and sparsity scales it down by the fraction of zero weights.
+Pooling and elementwise operations use their own cycle variants of the same form.</p>
+<p>Next comes a roofline.
+Compute time is the cycle count divided by the throughput rate, memory time is the operand bytes divided by the bandwidth, and the layer latency is the larger of the two.
+A layer whose memory time exceeds its compute time is bandwidth-bound; the reverse is compute-bound.</p>
+<p>The last stage converts to wall time, a latency in microseconds.
+The model runs at a clock near 0.8 times the maximum frequency, scales the rates by a per-chip efficiency curve, and adds a fixed overhead for the per-input transfer setup plus a constant dispatch cost.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">cycles</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">bytes</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>The throughput is set by the compute-unit geometry and the efficiency curve, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">cores</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.07778em;">eff</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathrm">clock</span></span></span></span></span>, and the bandwidth <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> is the DMA rate the chip sustains across the operand stream.
+On the M1 the model fits the measured convolution latencies with a peak of 3.25 fp16 TFLOP/s, bandwidth of 9.0 GB/s, and dispatch overhead <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> of 0.23 ms, all five reference convolutions within plus or minus 17 percent.</p>
+<h2 id="per-chip-parameters"><a class="header" href="#per-chip-parameters">Per-chip parameters</a></h2>
+<p>Only the parameter values change from chip to chip; the three-stage structure is identical across the family.
+The compute-unit count, per-cycle divisor, clock range, and efficiency curve are read from the hardware abstraction table for each target, the table chapter <a href="../part-7-toolchain/24-hal-gates.html">24</a> decodes.
+The fitted M1 and M5 values appear side by side in <a href="#tbl-c18-chip-params">table 18.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Quantity</th><th>Source</th><th>M1/H13</th><th>M5/H17s</th></tr></thead><tbody>
+<tr><td>Compute units</td><td>core-count field</td><td>4</td><td>16</td></tr>
+<tr><td>Cycle divisor</td><td>divisor field</td><td>64</td><td>64</td></tr>
+<tr><td>Clock range</td><td>DVFS table</td><td>0.40 to 1.43 GHz</td><td>0.74 to 2.36 GHz</td></tr>
+<tr><td>Efficiency</td><td>frequency curve</td><td>1.0</td><td>about 0.84</td></tr>
+<tr><td>Fitted peak</td><td>silicon anchor</td><td>3.25 fp16 TFLOP/s</td><td>8.9 fp16 TFLOP/s</td></tr>
+<tr><td>Fitted bandwidth</td><td>silicon anchor</td><td>9.0 GB/s</td><td>57 GB/s</td></tr>
+<tr><td>Dispatch floor</td><td>silicon anchor</td><td>0.23 ms</td><td>0.11 ms</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c18-chip-params"></a><strong>Table 18.1.</strong> The cost-model parameters that change from chip to chip, with their source and the fitted values for the M1 and M5.</p>
+<p>The M1 model takes efficiency as 1.0, meaning it sustains peak at any clock; later generations derate to about 0.84 because the array cannot hold the peak multiply rate at the higher clock ceiling.
+The compute units scale 4 to 16 to 32 to 64 across the die variants, and the clock ceiling rose from 1.43 GHz to 2.36 GHz, which together put the M5 theoretical peak near 5.5 times the M1.
+The fitted peaks in the table scale more conservatively, about 2.7 times, from 3.25 to 8.9 fp16 TFLOP/s, since the cost model anchors to the rate the array sustains rather than the theoretical product.</p>
+<p>Bandwidth scales with the compute-unit count rather than the clock.
+The M5 streams the same bandwidth-bound model at 57 GB/s against the M1's 9.0 GB/s, close to the 16-to-4 core ratio, so the per-chip anchor sets bandwidth by core count and the dispatch floor by clock.
+The 9.0 GB/s here is the cost model's jointly calibrated effective fit, and it is not the 51 GB/s single-row saturating weight-stream of chapter <a href="../part-3-performance/09-roofline.html">9</a> nor the roughly 40 GB/s broad-shape effective rate, which measure different things.
+A model anchored to the M1 alone over-predicts M5 latency by a mean of 99 percent: clock-scaling the M1 bandwidth yields about 15 GB/s, which the true 57 GB/s rate exceeds by about 3.8 times.
+Substituting the M5 measured bandwidth, floor, and peak brings four of the five reference convolutions within 13 percent (<a href="#lst-c18-estimate-latency">listing 18.1</a>).</p>
+<pre><code class="language-python">def estimate_latency(cycles, op_bytes, chip):
+    # Stage 1 input: cycles = input-channel passes * kernel volume *
+    #                output spatial extent / active compute units.
+    # Stage 2: roofline picks the binding term.
+    compute_time = cycles / chip["peak_flops"]   # f: cores * 4 * eff * clock
+    memory_time  = op_bytes / chip["bandwidth"]  # B: DMA rate the chip sustains
+    # Stage 3: add the fixed per-eval dispatch floor.
+    return max(compute_time, memory_time) + chip["dispatch_floor"]
+
+# Fitted M1/H13 anchors: peak 3.25 fp16 TFLOP/s, B 9.0 GB/s, floor 0.23 ms.
+m1 = {"peak_flops": 3.25e12, "bandwidth": 9.0e9, "dispatch_floor": 0.23e-3}
+# A small operation collapses to the dispatch floor; a large one tracks
+# whichever of compute_time and memory_time binds.
+</code></pre>
+<p><a id="lst-c18-estimate-latency"></a><strong>Listing 18.1.</strong> The three-stage cost model evaluated against per-chip anchors, taking the larger of the compute and memory terms plus the dispatch floor.</p>
+<h2 id="reading-the-model-before-dispatch"><a class="header" href="#reading-the-model-before-dispatch">Reading the model before dispatch</a></h2>
+<p>The model returns a per-chip latency estimate for an output graph without running it, which locates a layer against the roofline of chapter <a href="../part-3-performance/09-roofline.html">9</a> ahead of time.
+The estimate is the same three-stage number described above, evaluated for a named target.
+For chips that cannot be run locally it is the only available latency figure, since the structure is identical across all 28 targets and only the per-chip parameters differ.</p>
+<p>Two readings of the estimate matter most.
+A small operation collapses to the dispatch floor, and the floor is the optimization target: an operation whose compute term is under 0.23 ms on the M1 gains nothing from a faster array, so the work must grow to clear the floor.
+A large operation tracks the binding roofline term, and the question is whether the layer is compute-bound or bandwidth-bound, which decides whether shape or streaming is the control.</p>
+<p>Fusion removes floors and intermediate round-trips.
+A network run as separate dispatches pays the floor on every one and copies each intermediate back to the host and forward again; the same network fused into one program pays the floor once and keeps the intermediates resident.
+The model accounts for this: fusing operations removes their separate <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> terms and the operand bytes of the eliminated round-trips, which is why a network is compiled as one program.</p>
+<h2 id="what-the-optimizer-does"><a class="header" href="#what-the-optimizer-does">What the optimizer does</a></h2>
+<p>The optimizer ranks equivalent rewrites of a graph using an op-agnostic cost estimate and a deterministic autotuner.
+The cost estimate is the analytic roofline-plus-floor number, applied uniformly to every operation.
+The autotuner enumerates rewrites that compute the same result, estimates each, caches the measured outcomes, and selects the lowest deterministically, so the same graph yields the same choice on every run.</p>
+<p>The rewrites preserve accuracy by default.
+A route rewrite that decomposes attention into a fused form is selected only when it computes the same result to within tolerance, and a rewrite that trades precision, such as an integer-quantized weight stream, is taken only under an explicit tolerance and a speedup margin.
+The default never changes the numerical result of the graph.</p>
+<p>The reported gains follow the roofline.
+A fused attention route rewrite is 3.7 to 5.3 times faster on attention blocks and on a full vision transformer at cosine similarity 1.0, because it removes per-dispatch floors and intermediate round-trips.
+The optimizer's gate is the test corpus, which contains the cross-chip latency table as a regression so a change to the model cannot silently move an estimate.</p>
+<h2 id="estimating-latency-and-tuning-a-graph"><a class="header" href="#estimating-latency-and-tuning-a-graph">Estimating latency and tuning a graph</a></h2>
+<p>The estimate locates a graph against any target's roofline before dispatch, and the autotuner selects the lowest-latency equivalent rewrite under an accuracy bound (<a href="#lst-c18-estimate-tune">listing 18.2</a>).</p>
+<pre><code class="language-python"># Estimate latency for a named target with no hardware in hand, then tune.
+# The three-stage estimate: compute_time = cycles / f, memory_time = bytes / B,
+# latency = max(compute_time, memory_time) + dispatch_floor (t0).
+
+target = H17s                                 # per-chip f, B, t0 read from the hardware table
+
+function estimate(graph, target):
+    cycles = sum over ops of compute_cycles(op)        # stage 1: per-op cycle count
+    bytes  = sum over ops of operand_bytes(op)
+    compute_time = cycles / f(target)                  # stage 2: roofline
+    memory_time  = bytes  / B(target)
+    latency = max(compute_time, memory_time) + t0(target)   # stage 3: add dispatch floor
+    if   latency near t0(target):       bound = "dispatch"
+    elif memory_time &gt; compute_time:    bound = "bandwidth"
+    else:                               bound = "compute"
+    return latency, bound
+
+latency, bound = estimate(G, target)
+# If bound == "dispatch": batch or fuse until the compute term clears the floor;
+# no faster array helps a layer pinned to the dispatch floor.
+
+# Tune: enumerate equivalent rewrites, estimate each, keep the lowest that holds the tolerance.
+best := G                                      # the unmodified graph
+best_latency := latency
+for each rewrite R that computes the same result as G:
+    if max_abs_difference(R, G) &lt;= tolerance:  # accuracy-preserving only (tolerance = 0 by default)
+        latency_R, _ = estimate(R, target)
+        if latency_R &lt; best_latency:
+            best := R
+            best_latency := latency_R
+# A fused-attention route rewrite is 3.7 to 5.3 times faster on attention blocks at cosine 1.0.
+# Note: attention has no analytic cost form, so its estimate is absent and must be timed on device.
+</code></pre>
+<p><a id="lst-c18-estimate-tune"></a><strong>Listing 18.2.</strong> Estimating a graph's latency for a named target with no hardware, then ranking accuracy-preserving rewrites by the same estimate.</p>
+<p>No faster array helps a layer pinned to the 0.23 ms floor on the M1, so a graph whose estimate prints <code>dispatch</code> is batched or fused until the compute term clears it.</p>
+<h2 id="two-cost-models-and-their-coefficients"><a class="header" href="#two-cost-models-and-their-coefficients">Two cost models and their coefficients</a></h2>
+<p>There are two cost models in the toolchain.
+The model above is the intra-engine analytic model the compiler uses, the cycles-to-roofline-to-wall-time chain, fit to silicon for a per-chip latency estimate.
+A second model decides backend placement: whether each operation runs on the engine, central processor, or graphics processor, and it is in the segmenter rather than the engine compiler.
+The placement model costs an operation as the same roofline form, <code>max(flops/peak, bytes/bandwidth) + launch</code>, but with coarse abstract anchors rather than silicon-fit ones.</p>
+<p>A live read of the compiler shows how the intra-engine model scores one layer.
+A layer's cycles are the larger of the core compute time and the direct-memory-access and L2 transfer time, plus the dependency stalls, computed in <code>ZinEnginePerf::ComputeRunTime</code>.
+The layer total is the execute cycles plus the overhead cycles.
+The tiling choice is the argument that minimizes the split cost against the unsplit cost, searched once and cached.
+<code>CalculateExeCycles</code> reads a precomputed double at layer offset <code>+0x1e0</code> and saturates at 65535, the width of the 16-bit task-descriptor field.</p>
+<p>The two answer different questions at different layers: the per-layer model sizes and tiles work already bound for the engine, while the placement model orders the three backends.</p>
+<p>The live measurement validates the analytic roofline.
+The measured full-call floor of about 190 microseconds is about 16 percent below the frontend's analytic per-chip anchor of 220 microseconds, inside the model's stated plus-or-minus 17 percent fit.</p>
+<p>The placement-model anchors are per-backend, not per-chip, and each backend is charged against an abstract roofline peak and bandwidth read from the segmenter cost functions (<a href="#tbl-c18-backend-anchors">table 18.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Backend</th><th style="text-align: right">Peak (GFLOP/s)</th><th style="text-align: right">Bandwidth (GB/s)</th></tr></thead><tbody>
+<tr><td>Engine</td><td style="text-align: right">800</td><td style="text-align: right">50</td></tr>
+<tr><td>Graphics processor</td><td style="text-align: right">120</td><td style="text-align: right">40</td></tr>
+<tr><td>Central processor</td><td style="text-align: right">20</td><td style="text-align: right">10</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c18-backend-anchors"></a><strong>Table 18.2.</strong> The abstract per-backend roofline anchors the placement model uses to order the three backends, read from the segmenter cost functions.</p>
+<p>These anchors are deliberately coarse.
+The 800 GFLOP/s engine peak is about four times under the M1 silicon fit of 3.25 fp16 TFLOP/s, and the 50 GB/s engine bandwidth is above the 9 GB/s effective fit, so the two errors run in opposite directions and the net placement order survives.
+The job of these numbers is to separate the engine from the graphics processor by 6.7 times and from the central processor by 40 times, a separation that holds under any single miscalibration.
+Absolute latency accuracy is the job of the learned per-operation layer above them.</p>
+<p>The placement model also charges a launch cost on every segment and a transfer cost on every backend crossing, which is why the segmenter prefers long single-backend runs (<a href="#tbl-c18-penalties">table 18.3</a>, in the model's relative units).</p>
+<div class="table-wrapper"><table><thead><tr><th>Penalty</th><th style="text-align: right">To the engine</th><th style="text-align: right">To another backend</th></tr></thead><tbody>
+<tr><td>Launch cost per segment</td><td style="text-align: right">0.05</td><td style="text-align: right">0.10</td></tr>
+<tr><td>Transfer cost across backends</td><td style="text-align: right">0.09</td><td style="text-align: right">0.23</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c18-penalties"></a><strong>Table 18.3.</strong> The fixed launch and transfer penalties the placement model charges, in the model's relative units.</p>
+<p>A transfer between two operations on the same backend costs zero, so a long run kept on the engine pays neither the per-segment launch nor the per-crossing transfer.</p>
+<h2 id="learned-per-operation-leaves"><a class="header" href="#learned-per-operation-leaves">Learned per-operation leaves</a></h2>
+<p>Above the coarse roofline the placement model has a learned per-operation layer: 322 regression trees, one set per platform class and compute path, that map the coarse roofline ratio onto a calibrated cost in nanoseconds.
+The trees split on a normalized feature built from the operation flops and bytes, and the leaf is the predicted cost.
+The engine trees are the small roofline-form ones, and the cost they return is monotone in operation cost: elementwise below pooling below linear below convolution below transposed convolution.
+<a href="#tbl-c18-tree-leaves">Table 18.4</a> gives representative engine cost-tree leaves, spanning a constant-leaf elementwise operation to the largest transposed-convolution leaf.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation (engine)</th><th>Tree form</th><th style="text-align: right">Leaf cost</th></tr></thead><tbody>
+<tr><td><code>relu</code></td><td>constant leaf</td><td style="text-align: right">50 ns</td></tr>
+<tr><td><code>add</code></td><td>constant leaf</td><td style="text-align: right">26.5 to 36 ns</td></tr>
+<tr><td><code>mul</code></td><td>constant leaf</td><td style="text-align: right">40 to 80 ns</td></tr>
+<tr><td><code>reduce_sum</code></td><td>constant leaf</td><td style="text-align: right">22 ns</td></tr>
+<tr><td><code>max_pool</code></td><td>single-threshold leaf</td><td style="text-align: right">26 to 29 ns</td></tr>
+<tr><td><code>conv</code> (main tree)</td><td>seven-split learned tree</td><td style="text-align: right">417.7 ns to 8609.6 ns</td></tr>
+<tr><td><code>matmul</code></td><td>three-threshold tree</td><td style="text-align: right">116.9 ns to 66408.3 ns</td></tr>
+<tr><td><code>linear</code></td><td>three-threshold tree</td><td style="text-align: right">67 ns to 14.7 microseconds</td></tr>
+<tr><td><code>conv_transpose</code></td><td>three-threshold tree</td><td style="text-align: right">3.5 to 37.8 microseconds</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c18-tree-leaves"></a><strong>Table 18.4.</strong> Representative learned engine cost-tree leaves, in the model's nanosecond output.</p>
+<p>Three operations have no engine tree at all, because the placement model never puts them on the engine: gather, the recurrent cell, and the argument-maximum reduction are central-processor or graphics-processor placements only.</p>
+<p>The learned leaves and the silicon-fit analytic anchors reach calibrated accuracy by different routes.
+The analytic model above replaces the coarse anchors with silicon-fit ones and brings all five reference convolutions within plus or minus 17 percent.
+The placement model keeps the coarse anchors as a binning feature and bolts a learned per-operation tree on top.
+The convolution case shows both against silicon.
+Four convolutions set the coarse placement roofline and the silicon-anchored analytic estimate against the measured M1 latency (<a href="#tbl-c18-conv-compare">table 18.5</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Convolution</th><th style="text-align: right">Coarse roofline only</th><th style="text-align: right">Analytic, h13 anchors</th><th style="text-align: right">Measured, M1</th></tr></thead><tbody>
+<tr><td>3x3 C256 to 256 at 28</td><td style="text-align: right">1156 microseconds</td><td style="text-align: right">505 microseconds</td><td style="text-align: right">507 microseconds</td></tr>
+<tr><td>1x1 C512 to 512 at 32</td><td style="text-align: right">671 microseconds</td><td style="text-align: right">511 microseconds</td><td style="text-align: right">444 microseconds</td></tr>
+<tr><td>1x1 C1024 to 1024 at 16</td><td style="text-align: right">671 microseconds</td><td style="text-align: right">569 microseconds</td><td style="text-align: right">686 microseconds</td></tr>
+<tr><td>1x1 C2048 to 2048 at 8</td><td style="text-align: right">671 microseconds</td><td style="text-align: right">1210 microseconds</td><td style="text-align: right">1047 microseconds</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c18-conv-compare"></a><strong>Table 18.5.</strong> Coarse roofline, anchored estimate, and measured M1 latency for four convolutions.</p>
+<p>The coarse roofline cannot even order these four: it ties the three one-by-one convolutions and misclassifies the memory-bound deep-narrow C2048 at 8 as compute-bound, predicting it faster than it runs.
+The anchored analytic estimate reproduces the non-obvious silicon result that the deep-narrow C2048 at 8, with about a twentieth the multiply-accumulate count, runs about twice as slowly as the compute-bound 3x3 C256 at 28.
+This is because the former is bandwidth-bound at arithmetic intensity 60 and the latter is compute-bound at 466.</p>
+<h2 id="fidelity-the-estimate-actually-has"><a class="header" href="#fidelity-the-estimate-actually-has">Fidelity the estimate actually has</a></h2>
+<p>The plus-or-minus 17 percent fit is a property of the five reference convolutions the M1 anchors were tuned against, not of the estimate at large.
+A broad sweep of 68 graphs across eight operation families, each estimated by the cost model for the <code>h13</code> target and timed against the on-device per-call latency, locates the median absolute error at about 31 percent.
+Only 11 of the 68 shapes are inside plus or minus 17 percent.
+The estimate is sound as an ordinal placement tool: it identifies the binding roofline term and orders shapes correctly, so the backend choice and the relative ranking the optimizer needs survive the error.
+The error is directional and concentrated in the bandwidth-bound regime, where the 9.0 GB/s anchor undershoots the roughly 40 GB/s effective rate the engine sustains and the estimate over-predicts the large-weight shapes by several times.</p>
+<p>Attention has no estimate at all.
+The cost model returns no estimate for any scaled-dot-product-attention graph, because attention compiles to a segmented plan whose native sub-programs the analytic model has no cost form for.
+This is a coverage gap: the estimate is absent for attention, so such a graph must be timed on device.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-5-practice/17-model-design-rules.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-5-practice/19-pitfalls-and-limits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-5-practice/17-model-design-rules.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-5-practice/19-pitfalls-and-limits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>33. Telemetry and hardware counters - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-8-system-internals/33-telemetry.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="33-telemetry-and-hardware-counters"><a class="header" href="#33-telemetry-and-hardware-counters">33. Telemetry and hardware counters</a></h1>
+<blockquote>
+<p>The engine has a hardware performance-counter block of twenty-four per-task-descriptor counters, master enable at <code>ANEProgramCreateArgs+0x6c</code>, and free-running firmware timestamp at MMIO <code>0x2_6b17_8000</code>.
+The block geometry and the timestamp are readable; the per-task-descriptor counter values are not.
+One kernel gate blocks them on the unentitled path.
+Forcing the stats mask non-zero turns a successful load into a rejected one, since the compiled program has no stats-descriptor section for the kernel to size.
+What remains readable is the whole-engine telemetry outside that gate: DRAM read and write bytes, engine energy in millijoules, and clock-state residency.</p>
+</blockquote>
+<h2 id="counter-block-geometry"><a class="header" href="#counter-block-geometry">Counter block geometry</a></h2>
+<p>The counters group by engine block, with the count in each group and a representative name in <a href="#tbl-c33-counter-groups">Table 33.1</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Group</th><th>Counters in group</th><th>Representative counter</th></tr></thead><tbody>
+<tr><td>Neural engine cycles</td><td>6</td><td><code>kANE_NE_COMPUTE_CYCLES</code>, <code>kANE_NE_INPUT_STALL_CYCLES</code></td></tr>
+<tr><td>L2 (on-chip 2 MB) cycles</td><td>4</td><td><code>kANE_L2_NOMINAL_CYCLES</code>, <code>kANE_L2_READ_STALL_CYCLES</code></td></tr>
+<tr><td>L2 processing-element cycles</td><td>3</td><td><code>kANE_L2PE_COMPUTE_CYCLES</code></td></tr>
+<tr><td>Precision compute cycles</td><td>2</td><td><code>kANE_FP16_CYCLES</code>, <code>kANE_INT8_CYCLES</code></td></tr>
+<tr><td>Kernel-manager stall</td><td>1</td><td><code>kANE_KM_STALL_CYCLES</code></td></tr>
+<tr><td>Data-movement bytes</td><td>7</td><td><code>kANE_DMA_READ_BYTES</code>, <code>kANE_L2_TO_NE_DATA</code></td></tr>
+<tr><td>Per-descriptor energy</td><td>1</td><td><code>kANE_DPE_ENERGY</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c33-counter-groups"></a><strong>Table 33.1.</strong> The per-task-descriptor counter groups, with the count in each and a representative counter name.</p>
+<p>The per-task-descriptor counter namespace is twenty-four named counters, every one of them per task descriptor, grouped by engine block.
+<a href="#tbl-c33-counter-namespace">Table 33.2</a> names all twenty-four in those same groups, recovered from the counter-name accessor.</p>
+<div class="table-wrapper"><table><thead><tr><th>Group</th><th>Counters</th></tr></thead><tbody>
+<tr><td>Neural engine cycles</td><td><code>kANE_NE_NOMINAL_CYCLES</code>, <code>kANE_NE_COMPUTE_CYCLES</code>, <code>kANE_NE_THROTTLE_CYCLES</code>, <code>kANE_NE_INPUT_STALL_CYCLES</code>, <code>kANE_NE_OUTPUT_STALL_CYCLES</code>, <code>kANE_NE_KERNEL_STALL_CYCLES</code></td></tr>
+<tr><td>On-chip 2 MB memory cycles</td><td><code>kANE_L2_NOMINAL_CYCLES</code>, <code>kANE_L2_THROTTLE_CYCLES</code>, <code>kANE_L2_READ_STALL_CYCLES</code>, <code>kANE_L2_WRITE_STALL_CYCLES</code></td></tr>
+<tr><td>L2 processing-element cycles</td><td><code>kANE_L2PE_COMPUTE_CYCLES</code>, <code>kANE_L2PE_INPUT_STALL_CYCLES</code>, <code>kANE_L2PE_OUTPUT_STALL_CYCLES</code></td></tr>
+<tr><td>Precision compute cycles</td><td><code>kANE_FP16_CYCLES</code>, <code>kANE_INT8_CYCLES</code></td></tr>
+<tr><td>Kernel-manager stall</td><td><code>kANE_KM_STALL_CYCLES</code></td></tr>
+<tr><td>Data-movement bytes</td><td><code>kANE_DMA_READ_BYTES</code>, <code>kANE_DMA_READWRITE_BYTES</code>, <code>kANE_AF_TO_KM_DATA</code>, <code>kANE_AF_TO_L2_DATA</code>, <code>kANE_L2_TO_AF_DATA</code>, <code>kANE_L2_TO_NE_DATA</code>, <code>kANE_NE_TO_L2_DATA</code></td></tr>
+<tr><td>Per-descriptor energy</td><td><code>kANE_DPE_ENERGY</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c33-counter-namespace"></a><strong>Table 33.2.</strong> The complete twenty-four-counter per-task-descriptor namespace, recovered from the counter-name accessor, grouped by engine block.</p>
+<p>The byte counters track data movement along the activation-function to kernel-manager to L2 to neural-engine path, and one per-descriptor counter estimates energy from the digital-power estimator.
+With this set a host can attribute, per scheduling unit, whether a task descriptor is compute-bound, input-stalled, output-blocked, or throttled, directly in hardware counters.
+The master enable is a single field in the program-create argument struct.
+It is the per-task-descriptor stats mask at <code>ANEProgramCreateArgs+0x6c</code>, a <code>u32</code> that is after the quality-of-service field and the packed boolean flags and before the memory-pool identifier (<a href="#lst-c33-createargs">Listing 33.1</a>).</p>
+<pre><code class="language-c">ANEProgramCreateArgs (offsets):
+  +0x18..+0x57 : two SHA256-class hashes (model hash + key)
+  +0x5c (u32)  : count (number of procedures)
+  +0x64 (u32)  : qos                  = 21 (0x15)
+  +0x68 (u32)  : packed bool flags    = 0x10
+  +0x6c (u32)  : statsMask            &lt;- the per-TD counter master enable
+  +0x70 (u32)  : memoryPoolID         = 0
+  +0x80        : program name "main_main__Op0_AneInference"
+</code></pre>
+<p><a id="lst-c33-createargs"></a><strong>Listing 33.1.</strong> The program-create argument fields, with the per-task-descriptor stats-mask master enable at offset <code>+0x6c</code>.</p>
+<p>The driver remaps a client-facing mask to a driver mask before it reaches this field.
+The remap keeps only the low nibble: a mask of <code>0xffffffff</code> translates to a driver mask of <code>0x0</code>, that is, no collection, and <code>0xf</code> is the only fully-enabled translation.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">driverMask</span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">remap</span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">16</span><span class="mclose">)</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">16</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">16</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>When the mask is non-zero the firmware writes each task descriptor's counter block into a shared stats buffer in DRAM.
+The host decoder is built against the <code>sCAneStatsData</code> ABI version <code>0x0201</code>, distinct from the on-wire header magic <code>0x0101</code> the firmware writes into the buffer (chapter <a href="29-firmware.html">29</a>).
+The buffer's required size is the sum of the stats header, event descriptors, and per-event records.
+The host decodes it through a parser that walks a Group to Layer to task-descriptor hierarchy, where the leaf task-descriptor node contains the counter block.</p>
+<h2 id="free-running-timestamp"><a class="header" href="#free-running-timestamp">Free-running timestamp</a></h2>
+<p>A monotonic firmware timestamp underlies the whole telemetry surface.
+The firmware reads it from a single free-running memory-mapped counter through a one-line helper, then stamps each trace-event record from that read (<a href="#lst-c33-timebase">Listing 33.2</a>).</p>
+<pre><code class="language-c">/* free-running engine timebase counter, read by the firmware helper @0x30988 */
+#define ANE_TIMEBASE_COUNTER  0x26b178000ULL   /* MMIO 0x2_6b17_8000 */
+
+static inline uint64_t ane_read_timebase(void) {
+    return *(volatile uint64_t *)ANE_TIMEBASE_COUNTER;  /* ldr x0, [x8] ; ret */
+}
+</code></pre>
+<p><a id="lst-c33-timebase"></a><strong>Listing 33.2.</strong> The firmware helper that reads the free-running engine timebase counter.</p>
+<p>Each firmware trace-event record has a <code>timeStamp</code> field alongside its task-descriptor identifier, network identifier, program identifier, process identifier, and task-queue, as <a href="#lst-c33-trace-events">Listing 33.3</a> shows.</p>
+<pre><code class="language-text">[ANE_TM_EVENT_START]:          tid, nid, progId, procId, currTQ, timeStamp
+[ANE_TM_EVENT_FINISH]:         tid, nid, progId, procId, currTQ, timeStamp
+[ANE_EVENT_CONTEXT_SWITCH_IN]: tid, nid, prevTQ, progId, procId, currTQ, timeStamp
+</code></pre>
+<p><a id="lst-c33-trace-events"></a><strong>Listing 33.3.</strong> The fields of each firmware trace-event record.</p>
+<p>The host-visible clock residency runs in 24 MHz ticks, one tick every 41.67 ns, read out of the system-on-chip state-residency channels.
+The timestamp is monotonic and survives a power-gate, since the firmware re-anchors it from the same free-running source across a clock-state transition.
+It is the basis for the per-dispatch wall-clock intervals that the signpost stream exposes, and it is readable with no entitlement beyond root.</p>
+<h2 id="what-the-host-can-read-and-what-it-cannot"><a class="header" href="#what-the-host-can-read-and-what-it-cannot">What the host can read and what it cannot</a></h2>
+<p>The block geometry and the timestamp are observable; the counter values are not.
+The split follows the stats mask: the timestamp and the whole-engine channels do not route through it, and the per-task-descriptor counters do, as <a href="#lst-c33-readable-blocked">Listing 33.4</a> contrasts.</p>
+<pre><code class="language-c">/* READABLE: no stats mask in the path */
+uint64_t  t  = ane_read_timebase();                 /* free-running firmware timestamp */
+int64_t   rd = ioreport_delta("AMC Stats|Perf Counters|ANE0 RD");  /* DRAM read bytes  */
+int64_t   mj = ioreport_delta("Energy Model|-|ANE0");              /* engine energy, mJ */
+
+/* BLOCKED: gated by the per-task-descriptor stats mask */
+args.statsMask = 0xf;                  /* master enable, ANEProgramCreateArgs+0x6c     */
+create = ANE_ProgramCreate(&amp;args);     /* create -&gt; 1                                  */
+load   = ANE_ProgramLoad(create);      /* load   -&gt; 0: initStatsBufferSection bails     */
+perf   = read_perf_iosurface();        /* every byte 0: per-run output buffer is null  */
+</code></pre>
+<p><a id="lst-c33-readable-blocked"></a><strong>Listing 33.4.</strong> The readable timestamp and whole-engine channels contrasted with the blocked per-task-descriptor counter path.</p>
+<p>The values are blocked because the master enable never takes effect on the host path.
+On the unentitled runtime path the runtime sets the stats mask to <code>0</code> below the model layer, so firmware collection is never armed and the per-run output buffer comes back null.
+Forcing the mask non-zero through an in-process hook does not help: the program-create call then reaches the kernel routine of <a href="#lst-c33-statsbuffer">Listing 33.5</a>, which looks up the program's stats-descriptor section by name, reads its size field, and bails on a zero size.
+The <code>aned</code> daemon is what zeroes the mask: it sets <code>statsMask=0</code> for a <code>coreAnalyticsClientType</code> of <code>ThirdPartyAppUsingANE</code>, so the mask is cleared by client type, and the host-side null check is the string <code>perfStatsIOSurface is NULL!</code>.</p>
+<pre><code class="language-armasm">initStatsBufferSection(ANEProgramCreateArgsOutput*, task*):
+  ldr  w8, [x8, #0x28]     ; size of the stats-descriptor section
+  str  w8, [x28]
+  cbz  w8, bail            ; size 0 =&gt; return 0 (create fails)
+  ...                      ; non-zero =&gt; kalloc + map the stats buffer
+</code></pre>
+<p><a id="lst-c33-statsbuffer"></a><strong>Listing 33.5.</strong> The kernel routine that bails when the stats-descriptor section size is zero, failing the create call.</p>
+<p>The compiled program has no stats-descriptor section, so the size is always zero and the kernel returns failure.
+Forcing a non-zero mask thus turns a successful load into a rejected one (<code>create -&gt; 1; load -&gt; 0</code>), and no host-side primitive synthesizes the missing section.
+One kernel gate thus blocks both the per-task-descriptor counters and the per-run output buffer: each depends on a stats-descriptor section that only an internal profiling-compile emits.</p>
+<p>What remains readable is the whole-engine telemetry outside that gate, with each channel's format, unit, and reading in <a href="#tbl-c33-telemetry-channels">Table 33.3</a>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Channel</th><th>Format</th><th>Unit</th><th>Reads out</th></tr></thead><tbody>
+<tr><td><code>AMC Stats | Perf Counters | ANE0 RD</code></td><td>fmt=1 delta integer</td><td>B</td><td>DRAM read bytes</td></tr>
+<tr><td><code>AMC Stats | Perf Counters | ANE0 WR</code></td><td>fmt=1 delta integer</td><td>B</td><td>DRAM write bytes</td></tr>
+<tr><td><code>AMC Stats | Perf Counters | ANE0 DCS RD</code></td><td>fmt=1 delta integer</td><td>B</td><td>DRAM read bytes via the compression-subsystem path</td></tr>
+<tr><td><code>AMC Stats | Perf Counters | ANE0 DCS WR</code></td><td>fmt=1 delta integer</td><td>B</td><td>DRAM write bytes via the compression-subsystem path</td></tr>
+<tr><td><code>Energy Model | - | ANE0</code></td><td>fmt=1 delta integer</td><td>mJ</td><td>engine energy</td></tr>
+<tr><td><code>PMP | AF BW | ANE0 RD+WR</code></td><td>fmt=2 residency</td><td>events</td><td>aggregate read-plus-write bandwidth events</td></tr>
+<tr><td><code>SoC Stats | Cluster Power States | ANE0</code></td><td>fmt=2 residency</td><td>24Mticks</td><td>clock-state residency</td></tr>
+<tr><td><code>SoC Stats | Events | SOC0_ANE_F1</code>, <code>SOC0_ANE_F2</code></td><td>fmt=2 residency</td><td>24Mticks</td><td>clock-domain frequency-point residency</td></tr>
+<tr><td><code>SoC Stats | Events | ANE0_ADCLK_TRIG</code>, <code>ANE0_DITHR_TRIG</code></td><td>fmt=2 residency</td><td>24Mticks</td><td>adaptive-clock and dither trigger ticks</td></tr>
+<tr><td><code>Interrupt Statistics | ane0 0</code></td><td>fmt=1 counters</td><td>counts, MATUs</td><td>first and second-level interrupt-handler count and time</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c33-telemetry-channels"></a><strong>Table 33.3.</strong> The whole-engine telemetry channels readable on the unentitled path, with their format, unit, and what each reads out.</p>
+<p>The memory-controller per-agent byte counters report DRAM read and write bytes for the engine, both on the raw path and separately on the compression-subsystem path, and the energy model reports engine energy in millijoules.
+The system-on-chip state channels report clock residency, frequency-point residency, and the adaptive-clock and dither trigger counts, and the per-map fabric arbiter reports the engine's bandwidth and clock-floor votes.
+The interrupt statistics report the host kernel's cost of servicing engine completions, in counts and Mach Absolute Time Units, split into first-level and second-level handlers and isolated separately for the engine and its address-translation unit.
+A storage coprocessor that an earlier reading mistook for the engine, exposing vector-lane read and write counters, is unrelated to engine telemetry; the bandwidth counter is the memory-controller <code>ANE0</code> channel and the power channel is the energy model.</p>
+<p>The aggregate bandwidth channel resolves into per-channel histograms, the fabric channel <code>PMP0 / DCS BW / ANE L0</code> and <code>L1</code> carrying read and write distributions for the two DRAM read channels, read as State-residency histograms.
+The <code>SoC Stats / Events</code> channel also exposes the throttle-trigger family <code>ANE_THROTTLE_{SW,HW,PPT,DITHER,EXT}_TRIG</code> and <code>VDD_DRAM_VOLTAGE_CHANGE</code>, per-trigger software, hardware, peak-power, and dither throttle counts, all readable without entitlement.</p>
+<p>The per-dispatch op lifecycle is also readable as the timestamped signpost stream of <a href="#lst-c33-signposts">Listing 33.6</a>, captured on the engine subsystem with no entitlement beyond root, which confirms the three-request structure of a dispatch without exposing any counter value.</p>
+<pre><code class="language-text">_ANEF_MODEL_EVALUATE                    one per host execute call
+  _ANEF_MODEL_EVAL
+  _ANEF_MODEL_EVAL_DRIVER_REQUEST       request 1 of the dispatch (Cast)
+  _ANEF_MODEL_EVAL_DRIVER_REQUEST       request 2 of the dispatch (AneInference)
+  _ANEF_MODEL_EVAL_DRIVER_REQUEST       request 3 of the dispatch (Cast)
+  _ANEF_MODEL_EVAL_PERFCOUNTER_SAMPLE   the per-descriptor counter sample is reported here when armed
+_ANEF_MODEL_COMPILE   _ANEF_MODEL_LOAD   _ANEF_MODEL_UNLOAD
+_ANEF_IOSURFACES_MAP  _ANEF_INPUT_BUFFERS_READY  _ANEF_ENQUEUE_OUTPUT_SET
+</code></pre>
+<p><a id="lst-c33-signposts"></a><strong>Listing 33.6.</strong> The client-side signpost intervals of one dispatch, with the three driver requests that correspond to the Cast, AneInference, and Cast program operations.</p>
+<p>Each interval has a Mach-time begin stamp, and the three driver requests are the three program operations of a dispatch, one driver-to-firmware request each.
+The firmware reports the blocked per-descriptor counter sample on the evaluate interval only when the stats mask is armed, so the signpost stream confirms the dispatch structure on live silicon while the counter values stay behind the same gate.</p>
+<h2 id="roofline-and-power-figures-from-the-readable-channels"><a class="header" href="#roofline-and-power-figures-from-the-readable-channels">Roofline and power figures from the readable channels</a></h2>
+<p>The measured roofline elsewhere in this guide rests on the readable whole-engine channels, not on the blocked per-descriptor counters.
+Bandwidth comes from a delta on the memory-controller byte counters across a real workload.
+A 96-layer matmul chain at batch 8192 moved 17.2 GB of reads and 16.9 GB of writes over 432 ms, which is between 79 and 90 GB/s, the engine's share of the unified memory.
+A delta on the energy-model millijoule channel over the same run gives about 0.48 pJ/FLOP and about 2.3 W under sustained compute.</p>
+<p>The compute roof and the dispatch floor are wall-clock measurements, timed against the firmware timestamp and the host clock.
+The 2 MB working-set threshold is confirmed directly from the byte counters.
+At batch 8192 the activation is exactly 2 MB, the counters show 426 MB of DRAM moved per dispatch, arithmetic intensity falls to 60 FLOP/byte, and throughput drops from 12 TFLOP/s to about 4.8 TFLOP/s.
+The per-descriptor counters would attribute that drop to specific stall classes, the input-stall and L2-read-stall cycles, but the whole-engine byte and energy channels already locate the workload on the bandwidth slope, which is what the roofline needs.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-8-system-internals/32-security.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-9-cross-silicon/34-the-28-targets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-8-system-internals/32-security.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-9-cross-silicon/34-the-28-targets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

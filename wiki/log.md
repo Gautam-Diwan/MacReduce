@@ -171,3 +171,94 @@ The course question is heterogeneous federated learning. The project name stays 
 ## 2026-10-27 — Federated round loop, still not trained
 
 `run_federated` now runs FedAvg and per-step all-reduce on named adapter tensors, with int8 error feedback, FedNova, and star, ring, and tree means. A second Mac raises `PeerRequired` unless a relay is passed. The loopback relay was tested with synthetic payloads. It is not a second Mac. `src/macreduce/lora_client.py` holds the MLX QLoRA local step and `require_ane`, which refuses a missing or uncompiled Neural Engine stack. `macreduce federate --execute` calls that path. It was not invoked. The CPU reference in the tests is SGD toward a fixed target, not WikiText. The proposal was rewritten in the shape of a one-page NeurIPS preprint, with WikiText-2, validation perplexity, and one-Mac GPU FedAvg named in the evaluation section. The official NeurIPS style file was not fetched. The PDF uses the same text width, Times text, abstract, and numbered sections.
+
+## 2026-10-27 — ANEForge step on the engine
+
+`aneforge==0.4.0` is installed in the project environment. `macreduce ane-forge` does `import aneforge as af`, runs four Adam steps of a 16-by-1 linear map, and keeps a 256-wide matmul busy. Forward, backward, and update use device mask `0x4`, the package's Neural Engine mask. During the matmul, system mactop showed Neural Engine power up to 0.79 W and combined bandwidth up to 2.9 GB/s. `ane_active` stayed 0. mactop is not per-process. Raw result: [evidence/ane-forge](../evidence/ane-forge/README.md). Orion still has no Python import. This is not a Qwen3 LoRA step.
+
+## 2026-10-28T23:15:29.616023+00:00 — Intake S37
+
+Added [S37](sources/S37.md) as unread; source synthesis is pending.
+
+## 2026-10-28 — Read S37
+
+Read the abstract, chapter 1 through the M1 envelope, the opening of chapter 6, chapter 14 sections 14.4 through 14.10, and chapter 15 of [S37](sources/S37.md). The PDF is 303 pages. The rest was not read. The card records the fp16 datapath, the direct `e5rt` route, and training by a host-built backward graph. Silicon figures in those chapters are the author's M1 and M5 measurements. [Related work](research/related-work.md) and the [ANE guide](guides/ane.md) link the card. This is not a claim about Qwen3 on the project M4.
+
+## 2026-10-28 — One-Mac feasibility probe
+
+`macreduce feasibility` ran three traces on this M4: GPU QLoRA, an ANEForge matmul, and both at once. MLX peak memory was about 1.3 GB under an 8 GB limit. GPU-only Neural Engine power was 0. The engine-only trace peaked at 0.76 W and 3.28 GB/s. One combined sample showed 15.9 W on the GPU and 0.73 W on the engine together. The engine graph is not Qwen3, so the arms do not share a perplexity or a delta. The 4-step, 2-batch perplexity is too short to be the proposal curve. Raw files: [evidence/feasibility](../evidence/feasibility/README.md). Report: [one-Mac feasibility](experiments/2026-10-28-one-mac-feasibility.md).
+
+## 2026-10-28 — Curve figures
+
+`macreduce lora` now traces mactop, including the Prometheus scrape, and writes matplotlib figures for loss, validation perplexity, power, cumulative energy, memory, and latency. `src/macreduce/plots.py` and `src/macreduce/telemetry.py` hold that code. `macreduce figures` redraws a saved run. Matplotlib and seaborn are project dependencies, added with uv. The three-epoch Qwen3-0.6B curve is the run those figures are for. The short feasibility probe is not that curve.
+
+## 2026-10-28 — Working set, tqdm, checkpoints
+
+The QLoRA entry is `python main.py --config configs/qlora_m4.yaml`. The memory budget is the GPU's recommended working set (`infrastructure.memory_limit_bytes: auto`), and the wired limit is raised to that size. An earlier search that capped MLX at 8 GB was stopped. `training.batch_size: auto` now keeps the microbatch with the highest steady tokens per second. The uncheckpointed step is tried first. Gradient checkpointing is only the fallback when that step does not fit. Accumulation is 1, so one microbatch is one AdamW update. The base stays Qwen3-0.6B 4-bit with rank-8 LoRA. The Qwen3 backward graph is still not compiled for the Neural Engine, so this step stays on the GPU. The training loop uses tqdm. Each epoch writes a checkpoint with the adapter, AdamW moments, and the step under `checkpoints/`. `--resume latest` continues that checkpoint. The three-epoch curve has not finished. The power figure is instantaneous watts, not cumulative joules.
+
+## 2026-10-28 — Batch search starts small
+
+A batch-16 step with no activation recomputation peaked at 19.08 GB, just over the 19.07 GB working set, at 171 tokens/s. That is the memory ceiling, not a fast step. The search now starts at batch 1 and stops when a larger batch drops below 90% of the best tokens/s. The running search was restarted so it uses that rule.
+
+## 2026-10-28 — Curve started at batch 2
+
+The search that this run used measured, with no activation recomputation: batch 1 at 285 tokens/s and 0.90 GB, batch 2 at 350 tokens/s and 2.92 GB, batch 4 at 220 tokens/s and 4.28 GB. It kept batch 2. An earlier pass the same evening ranked batch 1 above batch 2, so three probe steps are noisy. The live process is the second ranking. Baseline scoring of the full test split had started. The three-epoch result is not in yet. Checkpoints are every epoch.
+
+## 2026-10-28 — Timestamped GPU and Neural Engine runs
+
+The GPU-only curve was stopped during its baseline pass. Each `python main.py --config configs/qlora_m4.yaml` launch now creates a new directory under `evidence/qwen3-0.6b-curve/` named with the local timestamp, and figures are written only inside that directory. `placement.mode` is `gpu_ane`. The Qwen adapter still trains on the GPU. For the whole run a second thread keeps an ANEForge linear Adam step and two 512-by-2048 matmuls resident in one program, and the run stops if either program's device mask is not `0x4`. A 256-wide matmul on this machine is dispatch-floor bound at a predicted 63 us. The wider program compiled to `0x4` and a 20-call timing was 1.29 ms per call. That engine graph is not the Qwen adapter. The three-epoch result is not in yet.
+
+## 2026-10-28 — LoRA branch on the Neural Engine
+
+The side matmul is no longer the GPU+ANE training path. `placement.mode: gpu_ane` keeps the frozen 4-bit Qwen base on the GPU. The trainable product `(x @ A) @ B` and its gradients are ANEForge programs on device mask `0x4`. A mask other than `0x4` raises. On a 16-by-4-by-12 check, the engine gradients matched the MLX gradients at cosine 0.998 or better. `mx.compile` cannot call the engine, so that path runs the step without it. The launch log is `run.log` inside the timestamped run directory. The shared `run.log` is not the live log. The three-epoch result is not in yet.
+
+## 2026-10-28 — Decoder block on the Neural Engine
+
+The 20:45:53 launch died in the first training step with `AttributeError: 'Dropout' object has no attribute 'p'`. MLX stores the keep probability on `_p_1`. No training report was written. The rank-8 product path is not the GPU+ANE step anymore. Each such call is under the dispatch floor and it flushes the GPU graph.
+
+`placement.mode: gpu_ane` now keeps blocks 0–26 as 4-bit QLoRA on the GPU. Block 27, the frozen base plus its LoRA, is one ANEForge program on device mask `0x4`. The host pads that program to sequence 512. Measured on this M4: one block at sequence 512 compiled in 2.8 s with no dispatch-floor warning, and a separate call timed the forward at 4.9 ms and the backward at 12.2 ms, with finite gradients. Two blocks produced a non-finite backward. Four blocks compiled a backward that failed to execute. Eight blocks failed in `ANECCompile`. A later one-step loss on random tokens was finite, and the LoRA gradients on block 26 (GPU) and block 27 (Neural Engine) were finite. A one-block toy matched the MLX block output at cosine above 0.98, and the output-projection gradient matched a finite difference within 25%. The devices alternate inside the step. The three-epoch result is not in yet.
+
+## 2026-10-28 — Neural Engine backward loss scale
+
+The 21:16 launch compiled block 27 and trained. Validation loss before any update was 4.191, perplexity 66.11. Train loss then rose from 4.56 at step 10 to 8.87 at step 50 and was NaN from step 60. The process was still stepping and was stopped around step 300. There was no traceback. The run directory is `evidence/qwen3-0.6b-curve/2026-10-28T21-16-00`.
+
+On one WikiText batch the block forward matched MLX, loss 3.957 against 3.963. The language-model cotangent peaked near 1e-3. At that magnitude the fp16 backward for the query factor had cosine about -0.08 against the float32 gradient. Scaling the cotangent so its peak is 1, then dividing the gradients on the host, brought the hidden cotangent and every LoRA factor to cosine 1.000. A peak near 16 overflowed the same block. The host now applies that scale, and a non-finite training loss stops the run. The three-epoch result is not in yet.
+
+## 2026-10-28 — Backward peak backs off
+
+The 21:38 launch matched the GPU-only losses through step 60, where the window loss was 4.84. The next step raised `neural engine backward is not finite`. No checkpoint was written. Peak 1 overflows on that batch. The backward now retries cotangent peaks 0.25, 0.0625, and 0.015625, and records the first peak below 1. A 70-step replay with the same seed and batch 2 passed that step at peak 0.25. The step loss was 10.38, the next step was 3.62, and the mean of steps 63–70 was 4.14. The three-epoch result is not in yet.
+
+## 2026-10-28 — Recipe, not the RMSNorm backward
+
+The 22:12 launch died at step 111 with `neural engine cotangent is not finite`. A replay of that old recipe (LoRA scale 20, constant AdamW 1e-4, no clip) reproduced it. At the failing state the float32 block output was already 105984, past the fp16 maximum, so the engine forward returned inf and the head cotangent became NaN. Steps 91–100 of that launch included one 77 s step; replays of the same code did not repeat it.
+
+An isolated aneforge `rms_norm` backward on a 512-by-1024 input with outliers of 4608 matched a float64 reference at cosine 1.00000. That overflow hypothesis is not what happened. On GPU-trajectory states, the block-27 backward at cotangent peak 1 was finite, with the hidden cotangent and every LoRA factor at cosine at least 0.9957 against float32. A float32 block 27, with no Neural Engine at all, diverged under the old recipe (10-step means 7.8–11 from step 120 to 200). The old recipe is the measured cause. The fp16 overflows were the consequence.
+
+The training config now follows the published QLoRA and Qwen3 LoRA recipes: rank 8, mlx-lm scale 2.0, dropout 0, AdamW peak 1e-4, weight decay 0.01, 300 warmup steps from 1e-7, cosine decay to 1e-6, global gradient clip 1.0. Those values are read from `configs/qlora_m4.yaml`. Sources: mlx-lm discussion 1985, arXiv 2106.09685, arXiv 2305.14314, the Unsloth LoRA hyperparameter guide, and LLaMA-Factory `examples/train_lora/qwen3_lora_sft.yaml`. Scale 20 at 1e-4 was about ten times mlx-lm's own default pairing of scale 20 with 1e-5.
+
+A 260-step GPU plus Neural Engine replay, seed 0, batch 2, real WikiText order, stayed finite. Ten-step means were 5.14, 4.11, 4.50, 4.62, 3.95, 3.98, 3.52, 3.70, 3.59, 3.45 at steps 10–100 and 3.08, 3.10, 3.23 at steps 200, 210, and 260. Step 61 was 3.87 and step 111 was 3.23. All 520 row-backwards used peak 1. Forward cosine against the GPU block stayed at least 0.99996. The hidden cotangent and every LoRA B factor stayed at cosine at least 0.9986. LoRA A cosines were low in the warmup (0 at steps 1–2, 0.40 at step 4) because B is still near zero and the A gradient is below fp16; the norm ratio on those factors was about 0.02–0.4, and the B gradients that actually move the adapter matched. The three-epoch result is not in yet.
+
+## 2026-10-29T17:02:34.803510+00:00 — Intake S158
+
+Added [S158](sources/S158.md) as unread; source synthesis is pending.
+
+## 2026-10-29T17:02:34.826336+00:00 — Intake S159
+
+Added [S159](sources/S159.md) as unread; source synthesis is pending.
+
+## 2026-10-29T17:02:34.848237+00:00 — Intake S160
+
+Added [S160](sources/S160.md) as unread; source synthesis is pending.
+
+## 2026-10-29T17:02:34.870700+00:00 — Intake S161
+
+Added [S161](sources/S161.md) as unread; source synthesis is pending.
+
+## 2026-10-29 — ANEForge pages are searchable
+
+The earlier crawl had saved S38–S157 as HTML and left them out of `raw/manifest.json`, so they were not sources and `wiki.py search` could not see them. S38–S125 are now registered. Each of those cards carries a short extract of the rendered page so a search hits the page that owns the term. The call rules are in [Write an ANEForge program](guides/aneforge.md) and the symptom table is in [ANEForge lookup](queries/aneforge.md).
+
+S126–S157 were GitHub directory pages (fonts, badges, workflows, folder listings). They repeated the file tree in [S41](sources/S41.md) and were removed, notes and snapshots together. They had never been manifest records.
+
+Four files from commit `896c4943c5ebf811c0e815f8d1381fd1e157fa7d` were read and saved: [S158](sources/S158.md), [S159](sources/S159.md), [S160](sources/S160.md), [S161](sources/S161.md). The paper PDF [S38](sources/S38.md) is still not text-extracted. The architecture-guide chapters were extracted into their cards and were not rewritten as call rules, except the sentences cited in the guide.
+

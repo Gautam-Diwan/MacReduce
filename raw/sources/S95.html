@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>8. Entitlement boundary - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-2-reaching/08-entitlement-boundary.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="8-entitlement-boundary"><a class="header" href="#8-entitlement-boundary">8. Entitlement boundary</a></h1>
+<blockquote>
+<p>The direct route reaches the engine's useful compute.
+Four features are behind the framework loader or an entitlement: three-dimensional convolution, native stateful types, bf16 program input and output, and flexible or symbolic shapes.
+Each passes an earlier layer and fails at the one that runs the work.
+None of the four runs on the engine on the M1 under either route.
+One hard limit is below all of this: a hand-built or self-compiled program is rejected at load with error <code>0xe00002e2</code>.
+The reachable surface is therefore everything the system daemon's compiler will accept.</p>
+</blockquote>
+<p>The direct route reaches the engine through the execution runtime, below the model framework, with no placement planner in the path.
+The sanctioned route reaches it through the model framework, which adds a segmenter, a model container, and a set of loader features the direct route does not have.
+The direct route reaches the engine's useful compute; four features are behind the framework loader or behind an entitlement.
+This boundary is about technical reachability alone; whether a path is supported by Apple or permitted for distribution is a separate and stricter matter, treated in the front-matter status note.</p>
+<h2 id="what-the-direct-route-reaches"><a class="header" href="#what-the-direct-route-reaches">What the direct route reaches</a></h2>
+<p>The operations that on-device perception and numerics networks are built from compile and run on the direct route without any entitlement.
+Two-dimensional convolution and its transpose, matrix multiply, fused attention, the normalizations, the activation tables, pooling, elementwise arithmetic, and the data-movement operations all run, bounded only by the per-chip limits of chapter <a href="../part-1-machine/04-capability-surface.html">4</a>.
+Compressed weights stream where the family supports it and reconstruct to fp16 where it does not.
+The compiler accepts these operations and the runtime dispatches them, and an entitlement gates none of them.
+An entitlement gates a separate set of loader-tier features instead.</p>
+<h2 id="features-that-are-gated"><a class="header" href="#features-that-are-gated">Features that are gated</a></h2>
+<p>Four features are attested in the hardware capability tables or recognized by the compiler frontend, yet do not run on the direct route.
+Each is gated, and the gate is at a different layer in each case (<a href="#tbl-c8-gated">table 8.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Feature</th><th>Gated by</th><th>Direct path</th><th>Entitled/framework path</th></tr></thead><tbody>
+<tr><td>Three-dimensional convolution</td><td>Missing backend lowering on every device mask</td><td>Frontend recognizes it, lowering fails with a not-implemented rejection</td><td>Segmenter places it on the central or graphics processor, not the engine</td></tr>
+<tr><td>Native stateful types (state, ring buffer)</td><td>Absent counter-and-event direct-memory-access engine in the M1 descriptor</td><td>Compile fails; reserved operation classes do not lower</td><td>Model container wires the stateful types; engine still lacks the primitive on the M1</td></tr>
+<tr><td>bf16 program input and output</td><td>Serialization layer and datapath; bf16 is not among the eleven program-I/O dtype codes</td><td>Compile fails with an unsupported-dtype rejection</td><td>Framework accepts the bf16 array, then casts to fp16 before the engine segment</td></tr>
+<tr><td>Flexible and symbolic shapes</td><td>Runtime path, not the compiler; the symbolic-shape gate is on for the M1</td><td>A symbolic dimension parses, then fails to lower</td><td>Compiles a small set of fixed shapes ahead of time and dispatches the nearest</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c8-gated"></a><strong>Table 8.1.</strong> Features blocked on the direct path, what gates each, and how the direct and framework routes behave.</p>
+<p><a href="#lst-c8-attempts">Listing 8.1</a> shows where each is admitted and where it stops.</p>
+<pre><code class="language-python"># 3D convolution: the frontend recognizes a static-weight 3D conv (it enforces
+# "3D Convolution does not support dynamic weights"); lowering then fails on every mask.
+conv(input, weight, kernel=[d, h, w])
+  -&gt; frontend: accepted
+  -&gt; lowering: "Not implemented": Some ops are not supported on any of the specified backends
+
+# bf16 program input/output: not among the eleven program-I/O dtype codes.
+# ANECIRDataType = {0 int4, 1 uint8, 2 int8, 3 fp16, 4 fp32, 5 int16, 6 uint16,
+#                   7 int32, 8 uint32, 9 int64, 10 uint64}   # bf16 absent
+function_output dtype = bf16
+  -&gt; compile: "Unsupported function output dtype bf16"   # no code to serialize it
+
+# symbolic shape: a "?" dimension parses, then will not lower on the direct path.
+tensor&lt;fp16, [1, ?, 64]&gt;
+  -&gt; parse: accepted (the symbolic variable s0 binds)
+  -&gt; lowering: "Not implemented": Some ops are not supported on any of the specified backends
+</code></pre>
+<p><a id="lst-c8-attempts"></a><strong>Listing 8.1.</strong> Where each gated feature is admitted at one layer and rejected at the next, for three-dimensional convolution, a bf16 program output, and a symbolic shape.</p>
+<p>The hardware capability tables advertise a kernel-depth dimension, and the frontend recognizes a three-dimensional convolution with a static weight, but lowering then fails on every device mask with a not-implemented rejection.
+No backend on the M1 has a code-generation path for the three-dimensional convolution operation class.
+The sanctioned route does not run it on the engine either: its segmenter places the operation on the central processor or the graphics processor instead, so on this silicon there is no on-engine path to it for any caller.</p>
+<p>Native stateful types need a hardware primitive the silicon does not have.
+The model framework documents the stateful type and flexible input shapes at developer.apple.com/documentation/coreml, and this account corrects the impression that those documented capabilities run on the engine directly <a href="../references.html#ref-applecoreml">[AppleCoreML]</a>.
+The compiler reserves the operation classes for resident state and ring buffers, the operation table even naming a ring-buffer writer and reader and the counter-and-event direct-memory-access opcodes, but the in-place update needs that counter-and-event engine, and it is stubbed out of the M1 hardware descriptor.
+Every register setter for it, the source and destination base addresses, shape and stride setters, atomic-operation and counter-mode setters, and wait-event address and value setters, has a body that asserts the engine is unsupported on this architecture.
+A program that declares native resident state fails the compile, and this gate is stronger than an entitlement: the silicon path does not contain the engine, so no entitlement, property, or compiler option synthesizes it.
+A resident cache on the M1 is built instead from a shared buffer kept live across dispatches, the documented zero-copy path for this generation.
+The counter-and-event engine arrives on a later generation, so native resident state is a per-family feature of the generations after the M1.</p>
+<p>The serialization layer and the datapath both block the bf16 program input and output type.
+The dtype enumeration that declares a program's input and output types has eleven codes, covering fp16, fp32, and the integer widths, and bf16 is not among them, so a program that declares a bf16 input or output fails the compile with an unsupported-dtype rejection.
+The framework accepts a bf16 array at its boundary, but it casts to fp16 before the engine segment, so the engine runs no bf16 datapath under the sanctioned route either.
+The fp16 datapath of chapter <a href="../part-1-machine/03-numerics.html">3</a> already gives the accumulation precision a bf16 declaration would otherwise imply.</p>
+<p>Flexible and symbolic shapes stop at the runtime path.
+The compiler has a full symbolic-shape system, with its master gate on for the M1, yet the direct runtime path will not drive it: a program with a symbolic dimension parses and then fails to lower.
+The sanctioned route reaches flexible shapes by compiling a small set of fixed shapes ahead of time and dispatching the nearest, with a dynamic remainder on the central processor.
+That is bucketed fixed-shape specialization, not one symbolic program on the engine, and the direct route matches it by padding to a fixed maximum or compiling a small set of length buckets, with the compile cache making a repeated shape free.</p>
+<h2 id="image-input-boundary"><a class="header" href="#image-input-boundary">Image-input boundary</a></h2>
+<p>A fifth feature is at the boundary in a sharper form: direct image-format input, where a camera or video surface is sent to the engine in its native four-character-code pixel format with no host-side conversion to fp16.
+The operation that performs this on-engine conversion, <code>pixel_buffer_to_tensor</code>, is present in the intermediate-representation parser on the direct route and parses without an unknown-operation rejection.
+Its input is a distinct surface type, <code>pixel_buffer&lt;format, shape, bytes_per_row&gt;</code>, and the format token is a <code>FMT_*</code> enumeration that maps onto the per-chip interchange-format table, so the grammar, format enumeration, and type rules are all reachable and solvable on the direct route.</p>
+<p>The boundary is at lowering.
+On the direct route the intermediate program parses and type-checks and reaches the engine backend, but it does not lower there, so the conversion cannot be compiled on the direct route.
+The entitled framework route supplies the image-input descriptor and the surface setup that the lowering needs, so direct four-character-code input is a framework-route feature on the M1.
+The terminal direct-route form is an on-engine integer-to-fp16 dequantization of a plain byte input, which avoids the unsupported operation and still removes the host-side conversion.</p>
+<h2 id="what-the-boundary-means-concretely"><a class="header" href="#what-the-boundary-means-concretely">What the boundary means concretely</a></h2>
+<p>The choice between the routes is a choice of loader and convenience, not of reachable compute.
+Vision, encoders, on-device numerics, and training of the supported operation set are built from the operations the direct route compiles and dispatches, none of which the gated set touches.
+The entitled path adds a bounded list: a segmenter that places arbitrary models across three devices with fallback, a model container with flexible-shape and stateful wiring, and a loader-tier feature set.
+It does not add a different engine: the four gated features are absent on the M1 under both routes, or are matched by a direct-route construction that does the same work.</p>
+<h2 id="load-time-signature-check"><a class="header" href="#load-time-signature-check">Load-time signature check</a></h2>
+<p>One hard limit is below the compute and defines the whole access model: a hand-built or self-compiled program cannot be loaded onto the engine.
+The kernel driver verifies every submitted program before it reaches the firmware, by a corecrypto signature check over the program bytes and a trustcache check on the backing file's vnode, and rejects a program that fails either check at load with error <code>0xe00002e2</code>.
+The only program the kernel will load is one the system daemon compiled and signed in place, so a caller cannot author a network binary by hand and submit it.
+This is why the direct route does not build a loadable binary: it authors a network in the intermediate representation and hands it to the daemon, which compiles and signs it on the caller's behalf, and the caller then drives the resulting signed program.
+The reachable surface is thus everything the daemon's compiler will accept, not everything the engine could in principle run.</p>
+<h2 id="unentitled-dispatch-path"><a class="header" href="#unentitled-dispatch-path">Unentitled dispatch path</a></h2>
+<p>The kernel driver rejects a binary the client signs itself at load with <code>0xe00002e2</code>, so the daemon's compile-and-sign step is not optional.
+The client authors the network as intermediate language, since a self-authored binary never passes the load check.
+It hands that intermediate language to the system daemon, the one process able to sign, and the daemon compiles and signs it in place, so the returned program carries the signature and trustcache trust the kernel load check requires.
+The client then drives that signed program over the kernel interface directly, where the corecrypto signature and trustcache checks pass because it is daemon-signed, and the program loads onto the engine.</p>
+<h2 id="reference-the-boundary-constants"><a class="header" href="#reference-the-boundary-constants">Reference: the boundary constants</a></h2>
+<p><a href="#tbl-c8-constants">Table 8.2</a> collects the constants of the entitlement boundary on the M1.</p>
+<div class="table-wrapper"><table><thead><tr><th>Constant</th><th>Value</th></tr></thead><tbody>
+<tr><td>Program-load rejection code</td><td><code>0xe00002e2</code></td></tr>
+<tr><td>Program-I/O dtype codes (<code>ANECIRDataType</code>)</td><td>11 codes: 0 int4, 1 uint8, 2 int8, 3 fp16, 4 fp32, 5 int16, 6 uint16, 7 int32, 8 uint32, 9 int64, 10 uint64</td></tr>
+<tr><td>bf16 program input or output</td><td>absent from the 11 codes; compile rejected</td></tr>
+<tr><td>Three-dimensional convolution</td><td>no backend lowering on any device mask</td></tr>
+<tr><td>Native stateful types</td><td>counter-and-event direct-memory-access engine stubbed out of the M1 descriptor</td></tr>
+<tr><td>Flexible and symbolic shapes</td><td>parse and bind, then fail to lower on the direct runtime path</td></tr>
+<tr><td>Load-time signature checks</td><td>corecrypto signature over program bytes plus trustcache vnode-trust check</td></tr>
+<tr><td>Entitlement-rejection return code</td><td><code>0xe00002c7</code> (<code>kIOReturnUnsupported</code>)</td></tr>
+<tr><td>Native counter-and-event engine</td><td>every register setter asserts unsupported on this architecture</td></tr>
+<tr><td>Direct image-format input</td><td><code>pixel_buffer_to_tensor</code> parses, then does not lower on the direct route</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c8-constants"></a><strong>Table 8.2.</strong> The constants of the entitlement boundary, M1/H13.</p>
+<p>The entitlement check the direct route never trips returns a distinct code from the program-load rejection.
+The program-load check returns <code>0xe00002e2</code> from the signature and trustcache check, while the entitlement gate that guards the higher inference-tier features returns <code>0xe00002c7</code>, <code>kIOReturnUnsupported</code>, the code a client gets when a gated feature's entitlement is absent.
+The four gated features above fail upstream of either kernel code, inside the compiler or the firmware descriptor, which is why a host-side entitlement moves none of them.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-2-reaching/07-weights-and-compression.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-3-performance/09-roofline.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-2-reaching/07-weights-and-compression.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-3-performance/09-roofline.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

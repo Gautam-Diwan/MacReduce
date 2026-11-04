@@ -7,11 +7,19 @@ name = "macreduce-lab"
 version = "0.1.0"
 description = "Distributed QLoRA and Neural Engine placement on Apple Silicon"
 requires-python = ">=3.12"
-dependencies = ["numpy>=2.0,<3", "psutil>=7,<8"]
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.0,<3",
+    "psutil>=7,<8",
+    "pyyaml>=6.0.3",
+    "seaborn>=0.13.2",
+    "tqdm>=4.70.1",
+]
 
 [project.optional-dependencies]
 mlx = ["mlx==0.32.4; sys_platform == 'darwin' and platform_machine == 'arm64'"]
 serve = ["mlx-lm==0.32.2", "coremltools==9.0"]
+ane = ["aneforge==0.4.0"]
 cpu = ["torch>=2.8,<3"]
 dev = ["pytest>=8,<10", "ruff>=0.12"]
 

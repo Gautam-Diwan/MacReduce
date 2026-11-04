@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>10. Power and efficiency - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-3-performance/10-power-efficiency.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="10-power-and-efficiency"><a class="header" href="#10-power-and-efficiency">10. Power and efficiency</a></h1>
+<blockquote>
+<p>The engine draws less power than the GPU on every workload class measured, including the ones where the GPU is faster.
+On the M1 it delivers 2 to 14 times the GPU energy efficiency.
+The advantage holds across the M1, M2, and M5, so it is a property of the fixed-function fp16 datapath, not of one chip.</p>
+</blockquote>
+<p>That 2 to 14 times envelope is throughput per watt of idle-subtracted total-package power.
+A stack of sixteen 3x3 convolutions sets the high mark: the engine reaches 2063 GFLOP/s per watt against the GPU's 142, a 14.5 times efficiency advantage, while also running about 2 times faster.
+The M5 has the same shape at 2289 GFLOP/s per watt on the engine against 175 on the GPU, a 13 times advantage.</p>
+<p>The efficiency lead survives even where the engine loses on latency.
+On a large square matrix multiply with inner dimension 4096 the M1 GPU is about 2 times faster in raw throughput, yet the engine still leads on energy.
+It computes that workload at 4.4 watts where the GPU draws 32.5 watts, a 4.0 times efficiency edge.
+The engine's draw stays in the single digits of watts across these classes; the GPU climbs into the tens.</p>
+<h2 id="watt-complete-map"><a class="header" href="#watt-complete-map">Watt-complete map</a></h2>
+<p>The map covers the workload classes a perception or encoder deployment is built from.
+Convolution appears as a single 3x3 layer and as a sixteen-deep resnet-style stack.
+There are three matrix-multiply sizes, a dispatch-bound floor, a bandwidth-bound mid size, and a compute-bound 4096 square, and two attention lengths, a short vision-transformer sequence and a longer 512 sequence.
+Layer norm, rms norm, and group norm stand in for the normalization family.
+The scientific kernels are a discrete Fourier transform as a matrix multiply, a five-point stencil, and a fixed-iteration linear solve.</p>
+<p>Only the efficiency standouts of that set are tabulated below, with the ratio on each chip generation.</p>
+<div class="table-wrapper"><table><thead><tr><th>Workload</th><th style="text-align: right">Engine GFLOP/s/W</th><th style="text-align: right">GPU GFLOP/s/W</th><th style="text-align: right">Ratio</th><th>Silicon</th></tr></thead><tbody>
+<tr><td>Conv-resnet stack (16x 3x3)</td><td style="text-align: right">2063</td><td style="text-align: right">142</td><td style="text-align: right">14.5x</td><td>M1/H13</td></tr>
+<tr><td>Conv-resnet stack (16x 3x3)</td><td style="text-align: right">2289</td><td style="text-align: right">175</td><td style="text-align: right">13x</td><td>M5/H17s</td></tr>
+<tr><td>Large square GEMM (inner 4096)</td><td style="text-align: right">4.4 W</td><td style="text-align: right">32.5 W</td><td style="text-align: right">4.0x</td><td>M1/H13</td></tr>
+<tr><td>Five-point stencil (fused)</td><td style="text-align: right">n/a</td><td style="text-align: right">n/a</td><td style="text-align: right">49x</td><td>M5/H17s</td></tr>
+<tr><td>Workload-class envelope</td><td style="text-align: right">n/a</td><td style="text-align: right">n/a</td><td style="text-align: right">2 to 14x</td><td>M1/H13</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c10-headline"></a><strong>Table 10.1.</strong> Engine versus GPU energy efficiency across workloads and chip generations, in GFLOP/s/W or absolute watts.</p>
+<p>The large square GEMM row of <a href="#tbl-c10-headline">table 10.1</a> reports absolute package power rather than throughput per watt, because the GPU is faster on that workload on raw throughput while the engine still draws fewer watts to compute it.
+The efficiency lead is largest on the convolution stack and on the fused multi-step stencil, where the engine does sustained compute at low power and the GPU spends proportionally more power to keep its units supplied.
+It narrows on the small normalization reductions, where both devices finish in well under a millisecond and the per-watt numbers are close to a tie, and again on the large 4096 square matrix multiply, which favors the GPU on speed and on fp16 accuracy though the engine keeps its lower absolute draw there.
+Only at the trivial dispatch-bound region, the 256-inner matrix multiply, does the engine lose the efficiency comparison outright, where the FLOP count is too small to matter and the lowest call overhead is the better choice.</p>
+<h2 id="two-generation-result"><a class="header" href="#two-generation-result">Two-generation result</a></h2>
+<p>The same sixteen-class harness was run on an M1 and on an M5, with package power taken from hardware instrumentation on both.
+Both silicons return the same verdict: the engine is the efficiency device on every substantial workload class.
+On the convolution stack the advantage holds at 14.5 times and 13 times across the generation gap.
+A third run on the M2, an A14 part, fills the middle and reproduces the same shape, with the convolution stack at 2234.6 GFLOP/s per watt on the engine against 172.8 on the GPU, a 12.9 times advantage.
+The engine rail never exceeds about 6 watts where the GPU pulls 13 to 21 watts on the same classes.</p>
+<p>The per-class efficiency rows on the M2 trace the same split the M1 and M5 maps draw (<a href="#tbl-c10-m2">table 10.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Workload</th><th style="text-align: right">Engine GFLOP/s/W</th><th style="text-align: right">GPU GFLOP/s/W</th><th style="text-align: right">Energy ratio (GPU over engine)</th></tr></thead><tbody>
+<tr><td>GEMM floor (M=64, K=256, N=256)</td><td style="text-align: right">11.4</td><td style="text-align: right">16.6</td><td style="text-align: right">0.7x</td></tr>
+<tr><td>GEMM bandwidth (M=128, K=1024, N=1024)</td><td style="text-align: right">298.2</td><td style="text-align: right">129.9</td><td style="text-align: right">2.3x</td></tr>
+<tr><td>GEMM compute (M=256, K=4096, N=4096)</td><td style="text-align: right">773.3</td><td style="text-align: right">213.7</td><td style="text-align: right">3.6x</td></tr>
+<tr><td>Conv single (C=64, 32x32, k=3)</td><td style="text-align: right">25.1</td><td style="text-align: right">31.4</td><td style="text-align: right">0.8x</td></tr>
+<tr><td>Conv resnet stack (C=256, 32x32, k=3, d=16)</td><td style="text-align: right">2234.6</td><td style="text-align: right">172.8</td><td style="text-align: right">12.9x</td></tr>
+<tr><td>Attention ViT (S=197)</td><td style="text-align: right">480.8</td><td style="text-align: right">120.2</td><td style="text-align: right">4.0x</td></tr>
+<tr><td>Attention long sequence (S=512)</td><td style="text-align: right">567.4</td><td style="text-align: right">150.1</td><td style="text-align: right">3.8x</td></tr>
+<tr><td>Five-point stencil (256x256, 32 steps)</td><td style="text-align: right">37.6</td><td style="text-align: right">0.8</td><td style="text-align: right">47.8x</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c10-m2"></a><strong>Table 10.2.</strong> Per-class engine versus GPU efficiency on the M2, an A14 part, with the total-package energy ratio.</p>
+<p>The real-model rows on the M2 are the engine's widest margin: a full twelve-layer ViT-B/16 forward runs at 67.9 millijoules per inference against the GPU's 714.3, a 10.5 times energy advantage, and a ResNet-18 forward at 2.6 against 22.3 millijoules per inference, an 8.5 times advantage.
+Both also run from 1.7 to 4 times faster.
+On the M1 the engine draws under 2.3 watts at its compute roof and spends roughly 0.5 picojoules per FLOP in its fixed-function datapath.</p>
+<p>The advantage is wider on the older M1 because that chip is more bandwidth-limited.
+The M1 streams at roughly 10 GB/s effective against the M5's roughly 57 GB/s, and the smaller memory bandwidth makes the GPU spend proportionally more power to lead on raw throughput there.
+On the M1 the engine sustains a 256-channel 3x3 convolution at 643 GFLOP/s per watt, drawing 1.78 watts, with the rail reading about zero at idle.
+The 1.78 watt figure is the canonical short-run draw for this workload, and a longer 176 second run of the same convolution in chapter <a href="../part-8-system-internals/31-power-thermal.html">31</a> settles slightly lower at about 1.66 watts.
+The two figures are thus the same workload measured over different durations rather than a disagreement.</p>
+<h2 id="rail-off-idle-floor"><a class="header" href="#rail-off-idle-floor">Rail-off idle floor</a></h2>
+<p>The engine reads about zero milliwatts at idle, and that figure is a property of the power-state machine, not a measurement artifact.
+The firmware keeps the engine in a fully gated state, <code>ANE_POWER_STATE_ALL_OFF</code>, with every domain off, until a job arrives.
+Power-up is lazy and job-triggered: the engine is at <code>ALL_OFF</code> and brings up its base domain only on the first call, transitioning through <code>ANE_POWER_STATE_BASE_PS_ON_WAIT</code> before it gates in the compute sets.
+There is no clock-gated but powered idle floor; the idle state is rail-off.</p>
+<p>The M1 engine has five independently gated power domains: a base domain for the control and front-end fabric, brought up first, and four compute sets, one per ANE cluster.
+Dynamic power-gating, on by default, collapses the compute sets back toward <code>ALL_OFF</code> between jobs, so idle work pays no rail power.
+Disabling it keeps the sets powered between jobs, trading idle power for lower per-job latency.
+Thermal management and voltage are off-engine: the firmware image has no thermal, temperature, or throttle path, so those decisions are in the system-on-chip power manager.
+The rail-off idle is why the efficiency map subtracts a flat zero for the engine baseline while the GPU and CPU baselines subtract a nonzero idle draw.</p>
+<h2 id="power-scales-with-utilization"><a class="header" href="#power-scales-with-utilization">Power scales with utilization</a></h2>
+<p>The idle rail reads zero and the dispatch floor draws about 0.9 watts, and from there the draw climbs with how much of the multiply array a workload keeps active.
+A twenty-point sweep on an M1 Max, read at the root power sampler, traces the curve: a dispatch-floor matrix multiply draws about 0.9 watts, a compute-bound 1024 by 4096 fp16 matrix multiply about 4.3 watts, and the int8 form about 5.8 watts.
+That is a roughly fivefold range set by utilization alone.
+The draw is regime-dependent as well: a bandwidth-bound matrix multiply that mostly streams a large weight draws about 1.4 watts, a convolution about 1.3 watts because its lowering leaves part of the array idle, and an elementwise operation almost nothing on the engine rail.
+Efficiency peaks at the fp16 compute optimum near 2.68 trillion operations per watt, about 0.37 picojoules per FLOP, and falls to about 22 picojoules per FLOP at the dispatch floor, which is a further reason to amortize work past the floor.
+The engine exposes only the power reading and a binary on-or-off state even to the root sampler, with no frequency or voltage telemetry, so the draw is observable but the sequence of operating points behind it is not.</p>
+<h2 id="sustained-load-holds-one-clock-state"><a class="header" href="#sustained-load-holds-one-clock-state">Sustained load holds one clock state</a></h2>
+<p>The efficiency figures above are warmup measurements, so they leave open whether the engine stays in its power state under minutes of continuous load.
+A compute-bound probe answers it directly: a chain of eight 1024-square fp16 matrix multiplies run as one program in a low-overhead zero-copy loop, at about 2.11 milliseconds per call, roughly ten times the dispatch floor, so the loop is compute-bound.
+Run continuously for 210 seconds and 98,092 calls on the M1, the throughput curve is flat.
+The whole-run median is 2109.6 microseconds, the start bucket reads 2153 microseconds and the end bucket 205 seconds later reads 2143.
+The per-five-second bucket medians vary by about 4 percent in a non-monotonic band that is sampling noise, not thermal decay.
+The engine rail, sampled read-only at five-second cadence, pins at about 5.5 watts for the whole run, with start, middle, and end thirds reading 5530, 5522, and 5391 milliwatts, a drift under 3 percent.
+Thermal pressure reads Nominal on every sample, and the engine never leaves its single clock state, with the steady draw set by the workload's utilization as the previous section describes.
+The M1 engine does not throttle on this workload over 3.5 minutes: it runs at one clock state and stays there.</p>
+<p>What moves first-call latency is at the boundaries of a burst (<a href="#tbl-c10-phases">table 10.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Phase</th><th>Behavior on the M1</th></tr></thead><tbody>
+<tr><td>Warmup</td><td>About a three-call ramp: call 1 about 7.6 ms (3.6x steady), call 2 about 4.6 ms, call 3 within 13 percent of steady, then flat at about 2.15 ms.</td></tr>
+<tr><td>Steady state</td><td>Flat at about 8.1 TFLOP/s and about 5.5 W for 3.5 minutes, p50 2110 microseconds, p99 only 36 percent over p50.</td></tr>
+<tr><td>Sub-second idle</td><td>A modest first-call penalty of 1.2x to 1.7x, then the next call is back to steady.</td></tr>
+<tr><td>Multi-second idle</td><td>The first call after a 5-second gap costs about 260 ms, roughly 123x the steady p50, then the very next call returns to about 2.1 ms.</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c10-phases"></a><strong>Table 10.3.</strong> Sustained-load phases on the M1, with the warmup and idle re-wake costs that the flat steady state hides.</p>
+<p>The idle re-wake penalty is the consequence of the rail-off idle described above.
+Once idle crosses a few seconds the compute sets gate fully off, and the first call after the gap pays a one-time cold re-wake of tens to hundreds of milliseconds before the engine returns to its steady state on the following call.
+The cost falls on the first call of each active burst.
+Latency-sensitive code that must answer immediately after an idle gap should thus keep the engine warm with a sub-second dispatch cadence or a low-cost keep-alive call.</p>
+<p>The engine rail sampled directly on the M1 confirms that average power tracks utilization.
+Idle draws about 0 milliwatts.
+A sustained batch-of-512 hot loop draws about 1.48 watts.
+A single-call loop draws about 755 milliwatts, about half the hot-loop figure, because a single small call leaves the engine idle for most of the dispatch window.</p>
+<h2 id="compression-as-an-energy-control"><a class="header" href="#compression-as-an-energy-control">Compression as an energy control</a></h2>
+<p>Streaming a weight in a narrower format cuts energy per inference even though instantaneous power stays roughly flat.
+On a bandwidth-bound 4096-inner matrix multiply on the M2, the engine draws between 2.06 and 2.59 watts across fp16, int8, int4, and sparse, with the sparse stream drawing the most watts.
+The energy per inference still falls with the narrower format, because latency falls faster than power rises (<a href="#tbl-c10-formats">table 10.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Weight format</th><th style="text-align: right">Engine power</th><th style="text-align: right">Latency</th><th style="text-align: right">Energy per inference</th><th style="text-align: right">Versus fp16 energy</th></tr></thead><tbody>
+<tr><td>fp16</td><td style="text-align: right">2.18 W</td><td style="text-align: right">0.690 ms</td><td style="text-align: right">1.50 mJ</td><td style="text-align: right">1.00x</td></tr>
+<tr><td>int8</td><td style="text-align: right">2.06 W</td><td style="text-align: right">0.431 ms</td><td style="text-align: right">0.89 mJ</td><td style="text-align: right">0.59x</td></tr>
+<tr><td>int4</td><td style="text-align: right">2.29 W</td><td style="text-align: right">0.270 ms</td><td style="text-align: right">0.62 mJ</td><td style="text-align: right">0.41x</td></tr>
+<tr><td>Sparse (about 32 percent dense)</td><td style="text-align: right">2.59 W</td><td style="text-align: right">0.330 ms</td><td style="text-align: right">0.86 mJ</td><td style="text-align: right">0.57x</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c10-formats"></a><strong>Table 10.4.</strong> Power, latency, and energy per inference across weight formats on a bandwidth-bound matrix multiply, M2.</p>
+<p>An int4 weight stream reaches the same answer at 0.41 times the fp16 energy on this part, a 2.4 times energy reduction at equal work, with no efficiency-versus-latency tradeoff to weigh: the narrower format is faster and more efficient.</p>
+<h2 id="where-the-lead-comes-from"><a class="header" href="#where-the-lead-comes-from">Where the lead comes from</a></h2>
+<p>The fp16 datapath is why the lead holds even where the GPU is faster on latency: a narrow multiply and a fixed-function pipeline move and compute far fewer bits per result than a general-purpose vector unit.
+The engine thus spends less energy reaching the same answer wherever the math stays in its precision range.</p>
+<h2 id="reading-a-layers-energy-off-its-shape"><a class="header" href="#reading-a-layers-energy-off-its-shape">Reading a layer's energy off its shape</a></h2>
+<p>A workload's efficiency follows from where the roofline locates it.
+A layer that is compute-bound on the engine spends its energy in the fixed-function multiply array, which is the regime where the engine outruns the GPU on throughput per watt by the wide margins in the map above.
+A layer pinned to the memory slope, or below the dispatch floor, spends its energy moving bytes or paying call overhead, where the efficiency lead narrows toward a tie.</p>
+<p>So the energy regime can be read off a shape at design time: count the work and the bytes, take the bound, and look up which region of the map the layer falls in.</p>
+<pre><code class="language-python"># Estimate the energy of one layer before any hardware is in hand.
+# A 3x3 stride-1 convolution, 256 channels, on a 56 by 56 feature map.
+
+given layer L = conv_3x3(input = [1, 256, 56, 56], stride = 1)
+given target chip = H13            # M1; peak and bandwidth come from its roofline
+
+# 1. Count the work the layer does and the bytes it must move.
+flops = total multiply_adds in L           # arithmetic operations
+bytes = weight_bytes(L) + input_bytes(L) + output_bytes(L)
+
+# 2. Locate the layer on the roofline of the chosen chip.
+peak      = compute_peak(chip)             # operations per second the array can sustain
+bandwidth = memory_bandwidth(chip)         # bytes per second from on-chip and DRAM
+floor     = dispatch_floor(chip)           # fixed per-call overhead, about 0.23 ms on H13
+
+compute_time = flops / peak                # time if the array is the limit
+memory_time  = bytes / bandwidth           # time if moving bytes is the limit
+latency      = max(compute_time, memory_time) + floor
+
+if compute_time &gt;= memory_time:  regime = "compute"     # array busy, most efficient regime
+else:                            regime = "bandwidth"    # moving bytes, efficiency lead narrows
+if latency is dominated by floor:  regime = "dispatch"  # call overhead, leads converge
+
+# 3. Energy = power drawn in that regime, times how long the layer runs.
+power  = sustained_power(chip, regime)     # e.g. about 1.78 W compute-bound on H13
+energy = power * latency
+
+# 4. Amortized versus per-call: a layer called once pays the full floor,
+#    a layer called many times spreads that fixed floor across the calls.
+energy_per_call_standalone = power * (max(compute_time, memory_time) + floor)
+energy_per_call_amortized  = power * (max(compute_time, memory_time) + floor / number_of_calls)
+
+return regime, latency, energy_per_call_standalone, energy_per_call_amortized
+</code></pre>
+<p>A layer that prints <code>compute</code> runs in the region where the convolution-stack figures hold, up to 2063 GFLOP/s per watt on the M1; a layer that prints <code>dispatch</code> or <code>bandwidth</code> falls toward the tie at the small-reduction and trivial-matmul regions.</p>
+<h2 id="reference-engine-versus-gpu-efficiency-constants"><a class="header" href="#reference-engine-versus-gpu-efficiency-constants">Reference: engine versus GPU efficiency constants</a></h2>
+<p><a href="#tbl-c10-constants">Table 10.5</a> lists every figure quoted in this chapter.</p>
+<div class="table-wrapper"><table><thead><tr><th>Quantity</th><th style="text-align: right">Value</th><th>Silicon</th></tr></thead><tbody>
+<tr><td>Convolution-stack efficiency, engine</td><td style="text-align: right">2063 GFLOP/s/W</td><td>M1/H13</td></tr>
+<tr><td>Convolution-stack efficiency, GPU</td><td style="text-align: right">142 GFLOP/s/W</td><td>M1/H13</td></tr>
+<tr><td>Convolution-stack efficiency ratio</td><td style="text-align: right">14.5x</td><td>M1/H13</td></tr>
+<tr><td>Convolution-stack efficiency, engine</td><td style="text-align: right">2289 GFLOP/s/W</td><td>M5/H17s</td></tr>
+<tr><td>Convolution-stack efficiency, GPU</td><td style="text-align: right">175 GFLOP/s/W</td><td>M5/H17s</td></tr>
+<tr><td>Convolution-stack efficiency ratio</td><td style="text-align: right">13x</td><td>M5/H17s</td></tr>
+<tr><td>Convolution-stack efficiency, engine</td><td style="text-align: right">2234.6 GFLOP/s/W</td><td>M2/H14</td></tr>
+<tr><td>Convolution-stack efficiency, GPU</td><td style="text-align: right">172.8 GFLOP/s/W</td><td>M2/H14</td></tr>
+<tr><td>Convolution-stack efficiency ratio</td><td style="text-align: right">12.9x</td><td>M2/H14</td></tr>
+<tr><td>Sustained 3x3 convolution efficiency</td><td style="text-align: right">643 GFLOP/s/W</td><td>M1/H13</td></tr>
+<tr><td>Engine power, sustained convolution</td><td style="text-align: right">1.78 W</td><td>M1/H13</td></tr>
+<tr><td>Engine power, sustained convolution</td><td style="text-align: right">~3.8 W</td><td>M2/H14</td></tr>
+<tr><td>Engine power, compute-bound GEMM</td><td style="text-align: right">~5.9 W</td><td>M2/H14</td></tr>
+<tr><td>Large 4096 GEMM, engine power</td><td style="text-align: right">4.4 W</td><td>M1/H13</td></tr>
+<tr><td>Large 4096 GEMM, GPU power</td><td style="text-align: right">32.5 W</td><td>M1/H13</td></tr>
+<tr><td>Large 4096 GEMM efficiency ratio</td><td style="text-align: right">4.0x</td><td>M1/H13</td></tr>
+<tr><td>Five-point stencil efficiency ratio (fused)</td><td style="text-align: right">49x</td><td>M5/H17s</td></tr>
+<tr><td>Five-point stencil efficiency ratio (fused)</td><td style="text-align: right">47.8x</td><td>M2/H14</td></tr>
+<tr><td>ViT-B/16 forward energy, engine versus GPU</td><td style="text-align: right">67.9 against 714.3 mJ/inf, 10.5x</td><td>M2/H14</td></tr>
+<tr><td>ResNet-18 forward energy, engine versus GPU</td><td style="text-align: right">2.6 against 22.3 mJ/inf, 8.5x</td><td>M2/H14</td></tr>
+<tr><td>int4 weight stream energy versus fp16</td><td style="text-align: right">0.41x at equal work</td><td>M2/H14</td></tr>
+<tr><td>Workload-class efficiency envelope</td><td style="text-align: right">2 to 14x</td><td>M1/H13</td></tr>
+<tr><td>Engine rail, upper bound on the measured classes</td><td style="text-align: right">~6 W</td><td>M2/H14</td></tr>
+<tr><td>Idle engine power</td><td style="text-align: right">~0 W (rail-off)</td><td>M1/H13</td></tr>
+<tr><td>Engine rail, sustained batch-of-512 hot loop</td><td style="text-align: right">~1.48 W</td><td>M1/H13</td></tr>
+<tr><td>Engine rail, single-call loop</td><td style="text-align: right">~755 mW</td><td>M1/H13</td></tr>
+<tr><td>Effective stream rate, M1</td><td style="text-align: right">~10 GB/s</td><td>M1/H13</td></tr>
+<tr><td>Effective stream rate, M5</td><td style="text-align: right">~57 GB/s</td><td>M5/H17s</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c10-constants"></a><strong>Table 10.5.</strong> The power and efficiency constants of this chapter, with the silicon each was measured on.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-3-performance/09-roofline.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-3-performance/11-ane-vs-gpu-vs-cpu.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-3-performance/09-roofline.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-3-performance/11-ane-vs-gpu-vs-cpu.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

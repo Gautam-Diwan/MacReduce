@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Open questions - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/back-matter/open-questions.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="open-questions"><a class="header" href="#open-questions">Open questions</a></h1>
+<blockquote>
+<p>Open questions fall into three kinds.
+Some another chip or an on-silicon probe would answer; some the sanctioned entitlement would answer.
+The rest are impossible, because the data does not exist or the silicon leaves no observable trace.
+Each item gives why it is open and what would close it.</p>
+</blockquote>
+<p>The engine is decoded from the host call down to the register writes, and everything that exists as bytes or strings has been resolved into human-readable form.
+Two silicon points are measured directly: M1/H13 and M5/H17s.
+M5/H17s confirmed all ten cross-silicon predictions on device.
+The M3/H15 generation and the upper tier above H17s rest on decompilation alone.
+M5/H17s closes none of the upper-tier items, because it is a 16-core H17s part rather than the H17d 64-core ceiling, H18-gated fp8 runtime, or Ultra multi-die collective.</p>
+<h2 id="why-an-item-is-open"><a class="header" href="#why-an-item-is-open">Why an item is open</a></h2>
+<p>A chip-measurement item has its structure decoded but needs another generation, the upper tier, or an on-silicon probe to read the realized values.
+An entitlement item is attested in the hardware-abstraction layer or the intermediate language but is reachable only through the sanctioned model path.
+An impossible item cannot be resolved at all: either the data does not exist, or the behavior is irreducible silicon that leaves no trace in any result and no artifact to decode.</p>
+<h2 id="ledger"><a class="header" href="#ledger">Ledger</a></h2>
+<p>The open items sort into three tables by how each could be resolved.
+<a href="#tbl-openq-chip">Table 36.10</a> gives the items another chip or an on-silicon probe would resolve.</p>
+<div class="table-wrapper"><table><thead><tr><th>Open item</th><th>Why it is open</th><th>What would close it</th></tr></thead><tbody>
+<tr><td>Live values of the single-shot fault and translation-fault capture registers</td><td>The registers are located (four fault descriptors and a status word at engine+0xe028) and the ANE-side handler has a benign branch, but the IODART substrate panics on a real fault, so the live values are uncaptured</td><td>A fault path that recovers instead of panicking the IODART substrate</td></tr>
+<tr><td>Realized A15 / M3 / H15 silicon behavior</td><td>The dedicated A15 compiler branch is decoded (its cost table, its 45-operation family set, the full H15 targets, the YUV420 input it alone accepts), only the realized numbers need the part</td><td>On-chip measurement of an H15 part</td></tr>
+<tr><td>Realized upper-tier behavior: 64-core H17d, H18-gated fp8 datapath, Ultra multi-die collective</td><td>The encodings are decoded (the core-count parameter, the fp8 e4m3 and e5m2 convert-and-quantize path, the Ultra device-mesh collective) and the upper tier adds only cores over A16, no new operations, but none of it materializes without the part</td><td>An H17d, H18, or Ultra part</td></tr>
+<tr><td>Set behavior of the family-gated abstraction-layer fields</td><td>The fields are named and the silicon-capability subset is complete, but their set behavior needs later silicon</td><td>A part where the gate is on, for example the A18 or H17-plus FIFO-mode field</td></tr>
+<tr><td>Per-state frequency and voltage of the operating-point sequence</td><td>The engine has no local DVFS and is driven by the SoC power controller, the firmware seven-step credit sequence is recovered, the per-state frequency and voltage stay behind the opaque power-management base</td><td>A power-management-side probe</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-openq-chip"></a><strong>Table 36.10.</strong> Open items a further on-silicon measurement would resolve: the structure is decoded, the realized values need the part or the probe.</p>
+<p>Another group of items waits on the sanctioned entitlement alone (<a href="#tbl-openq-entitlement">table 36.11</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Open item</th><th>Why it is open</th><th>What would close it</th></tr></thead><tbody>
+<tr><td>Live per-run firmware performance-counter values</td><td>The read path and its gate are decoded (the <code>aned</code> daemon clears the stats mask for a third-party client, and a host-side null check skips the buffer on the unentitled path), only the live values need the entitled output buffer</td><td>The entitled path that supplies the output buffer</td></tr>
+<tr><td>Entitled-only features: 3-D convolution, native state and ring buffer, bf16 program input and output, flexible shapes</td><td>Attested in the hardware-abstraction layer but unreachable on the direct path</td><td>The sanctioned model path that can reach them</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-openq-entitlement"></a><strong>Table 36.11.</strong> Open items the sanctioned entitlement would resolve, attested but gated off the direct path.</p>
+<p>No further access would close the last group (<a href="#tbl-openq-impossible">table 36.12</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Open item</th><th>Why it cannot be resolved</th></tr></thead><tbody>
+<tr><td>Gate-level MAC and adder-tree wavefront skew</td><td>The output is order-independent, so no result reveals the per-cycle wiring, which sits below the timing floor; only Apple's register-transfer netlist would show it</td></tr>
+<tr><td>Exact fp16 partial-sum rounding order within one MAC reduction</td><td>The wide accumulator makes the output bit-identical for any summation order, so the internal sequence leaves no trace; only the register-transfer netlist would show it</td></tr>
+<tr><td>No flat numeric error or status enumeration</td><td>Status is held by notification names and positional indices, not a stored enum; the flat enumeration does not exist</td></tr>
+<tr><td>The execution-loop state labels</td><td>The five states are reconstructed from handler behavior; no name table exists in firmware</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-openq-impossible"></a><strong>Table 36.12.</strong> Open items that cannot be resolved externally: irreducible silicon behavior, or data that does not exist.</p>
+<h2 id="form-of-the-residual"><a class="header" href="#form-of-the-residual">Form of the residual</a></h2>
+<p>The impossible items are few: the gate-level reduction wavefront and the internal fp16 rounding order are irreducible silicon, and the flat status enumeration and the execution-loop state labels do not exist as stored data.
+Everything else is decoded in structure and waits only on a part, a probe, or the entitled path.
+Static analysis closed the firmware address rebase that once sat at the host and firmware boundary, and the M5 measurement confirmed the cross-silicon model without reaching any of the parts the hardware items need.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../back-matter/methodology.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../back-matter/statements.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../back-matter/methodology.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../back-matter/statements.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

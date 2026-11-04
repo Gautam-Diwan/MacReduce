@@ -1,0 +1,442 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20. Datapath and MAC geometry - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-6-silicon/20-datapath-mac.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="20-datapath-and-mac-geometry"><a class="header" href="#20-datapath-and-mac-geometry">20. Datapath and MAC geometry</a></h1>
+<blockquote>
+<p>The multiply-accumulate array is four cores on the M1, each with an eight-deep accumulator file, reading every geometry constant from a per-chip hardware-abstraction table.
+The lane width emits eight output channels per cycle in the int8 fast path and four in the default fp16 path.
+Output channels are the dimension that splits across cores and across accumulator passes.
+Each core reduces through a radix-4 tree of fp16-rounded tiles into one wide running accumulator of fp32 class, rounding to fp16 only at the output port.
+The firmware has no convolution, Winograd, or systolic code: it is the real-time kernel and the tile, kernel, and output direct-memory-access plumbing, and nothing else.</p>
+</blockquote>
+<p>The array is a set of cores, accumulators, and lanes whose dimensions are constants in the compiler and in a per-chip hardware-abstraction table.
+The compiler supplies it by re-basing direct-memory-access engines per tile.
+Those dimensions and the roofline that follows from them are in <a href="#tbl-c20-geometry">table 20.1</a>.</p>
+<h2 id="geometry-constants"><a class="header" href="#geometry-constants">Geometry constants</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>quantity</th><th>table offset</th><th>M1 value</th><th>scope</th></tr></thead><tbody>
+<tr><td>core count</td><td><code>0x238</code></td><td>4</td><td>per die variant</td></tr>
+<tr><td>accumulator budget per core</td><td><code>0x0c</code></td><td>8</td><td>all chips</td></tr>
+<tr><td>accumulator-split granule</td><td><code>0x230</code></td><td>64</td><td>all chips</td></tr>
+<tr><td>performance cycle divisor</td><td><code>0x228</code></td><td>64</td><td>A12 and later</td></tr>
+<tr><td>output channels per cycle, fp16</td><td>accessor table</td><td>4</td><td>architectural</td></tr>
+<tr><td>output channels per cycle, int8</td><td>accessor table</td><td>8</td><td>architectural</td></tr>
+<tr><td>patch-width floor, log2</td><td><code>0x400</code></td><td>4</td><td>M1</td></tr>
+<tr><td>patch-width cap, log2</td><td><code>0x410</code></td><td>9</td><td>M1</td></tr>
+<tr><td>working-set cap</td><td><code>0x1b8</code></td><td>2 MB</td><td>M1</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-geometry"></a><strong>Table 20.1.</strong> The multiply-accumulate array geometry constants, with hardware-abstraction-table offset, M1 value, and the scope over which each holds.</p>
+<p>The compiler's performance model reads the array geometry from these fields in the per-chip hardware-abstraction table.
+The core count is keyed to the die rather than to the generation.
+The decoded four-core figure on the M1 counts physical compute sets, which the per-core power-rail step confirms below.
+Apple's published per-chip figure, the 16-core count the I/O registry also reports, is a different quantity <a href="../references.html#ref-appleane">[AppleANE]</a>.
+The M1 has four cores; the M5 generation has sixteen; small reference variants have one.
+The accumulator budget of eight, uniform across every chip, is the depth of the accumulator file per core in work units.
+An operation fits single-buffered when its accumulator demand is at most eight, and double-buffered when twice its demand is at most eight, so double-buffering holds up to a demand of four.</p>
+<h2 id="output-channels-per-cycle-and-the-lane-width"><a class="header" href="#output-channels-per-cycle-and-the-lane-width">Output channels per cycle and the lane width</a></h2>
+<p>Two accessors of the performance model set the lane width (<a href="#tbl-c20-lane-accessors">table 20.2</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>accessor</th><th>returns</th><th>selected by</th></tr></thead><tbody>
+<tr><td><code>GetNumOutputChannelsPerCycle</code></td><td>8 (int8 fast path), 4 (fp16 default), 2 or 1 (narrow modes)</td><td>data type and mode</td></tr>
+<tr><td><code>GetNumOutputChannelsPerAccumulator</code></td><td>8 / 4 / 2 / 1 (table below)</td><td>source-patch size</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-lane-accessors"></a><strong>Table 20.2.</strong> The two lane-width accessors of the performance model, with what each returns and the input that selects the value.</p>
+<p>The second accessor selects among four per-accumulator channel counts by source-patch size, each held at its own hardware-abstraction-table offset (<a href="#tbl-c20-oc-per-acc">table 20.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>HAL offset</th><th>output channels per accumulator</th><th>selected when</th></tr></thead><tbody>
+<tr><td><code>0x3a8</code></td><td>8</td><td>tiny-source mode (small-source-mode field reads 2)</td></tr>
+<tr><td><code>0x3b0</code></td><td>4</td><td>small-source mode (small-source-mode field reads 1)</td></tr>
+<tr><td><code>0x3b8</code></td><td>2</td><td>default, format 3 / fp16-packed</td></tr>
+<tr><td><code>0x3c0</code></td><td>1</td><td>default, non-format-3 and not half-work-unit</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-oc-per-acc"></a><strong>Table 20.3.</strong> Output channels per physical accumulator slot, the hardware-abstraction-table offset holding each value, and the source-patch size that selects it.</p>
+<p>Each of the four values is its own field in the hardware-abstraction table, at offsets <code>0x3a8</code>, <code>0x3b0</code>, <code>0x3b8</code>, and <code>0x3c0</code>, and <code>GetNumOutputChannelsPerAccumulator</code> returns the one the operation's source-patch mode selects.
+The values are uniform across every chip in the set, so the multiplexing law is architectural, not per-die.
+The source-patch mode is set by <code>ComputeSmallSourceMode</code>, which classifies an operation as default, small, or tiny from the output tensor dimensions against the kernel: tiny mode requires a source of at least 2 that fits the field at <code>0x338</code>, which is 4 on the M1.</p>
+<p>The lane width is the column dimension of the systolic tile.
+<code>GetNumOutputChannelsPerCycle</code> sets the per-cycle count: eight in the int8 fast path, four in the default fp16 path, and two or one for narrow modes.
+One core streams an input patch and emits up to that many output channels per cycle, the eight-wide case being double-int8 mode.
+<code>GetNumOutputChannelsPerAccumulator</code> sets how many output channels time-share one physical accumulator slot.
+A tiny input patch underuses the array spatially, so the compiler packs eight output channels onto one accumulator to keep the multipliers busy; with a large patch each output channel keeps its own accumulator.</p>
+<h2 id="radix-4-reduction-and-wide-accumulator"><a class="header" href="#radix-4-reduction-and-wide-accumulator">Radix-4 reduction and wide accumulator</a></h2>
+<p>The reduction that supplies one accumulator runs in two stages.
+The first stage groups input lanes into tiles of four, each rounded to fp16.
+Those fp16-rounded tiles then feed a single wide running accumulator of fp32 class, with the rounding back to fp16 deferred to the output port.</p>
+<p>The fan-in of four comes from measurement rather than from the table.
+A reduction of <code>[+B, -B, +1]</code> triples, repeated sixteen times so that the true sum is sixteen, returns sixteen survivors below a partial magnitude of 4096 and saturates to exactly four survivors for every <code>B</code> at or above 4096.
+The saturation count of four is the radix-4 tile signature: once a tile has a partial at or above 4096, the unit increments sharing that tile fall below half of the fp16 spacing and vanish, and the three-element triple period beats against the four-lane tile to leave four unaffected lanes.
+The threshold is at 4096 because that is where the fp16 spacing first reaches four.
+The result is layout-independent: the <code>[+B, -B, +1]</code> and <code>[+B, +1, -B]</code> orderings return byte-identical values, so the hardware reduction order is a fixed lattice over lane index.</p>
+<p>The cross-tile accumulator is wider than fp16.
+A reduction of one value of 4096 followed by 1024 ones returns 5116, between the naive-fp16 result 4096 and the exact 5120, and sixteen unit increments all survive next to a partial of 8192 where an fp16 accumulator would drop most of them.
+The radix-4 first stage is consistent with the eight-work-unit accumulator file, since four input lanes plus margin fit the per-core budget.</p>
+<h2 id="output-channel-group-tiling"><a class="header" href="#output-channel-group-tiling">Output-channel-group tiling</a></h2>
+<p>The compiler tiles output channels into output-channel groups sized to the accumulator file.
+<code>ComputeMaxOcgSize</code> derives the group size from the accumulator budget, the kernel-element count, and a per-format byte cap.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathrm">OCG</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">min</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mord mathrm">floor_pow2</span></span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">W</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">byte_cap</span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span></span></span></span></span></p>
+<p>where the byte cap is 32, 16, or 8 bytes per kernel element depending on the weight format, read from the hardware-abstraction table at offset <code>0x388</code>, <code>0x390</code>, or <code>0x398</code>.
+In compiler terms, <code>ComputeMaxOcgSize</code> reads the accumulator budget at field <code>0x0c</code>, divides it by the kernel-element count, rounds down to a power of two, and clamps to the per-format byte cap, as <a href="#lst-c20-ocg-size">listing 20.1</a> gives.</p>
+<pre><code class="language-python"># ComputeMaxOcgSize: output-channel-group size for one pass
+acc_per_oc = GetNumOutputChannelsPerAccumulator(mode)   # 1, 2, 4, or 8
+budget     = floor_pow2( HAL[0x0c] / (kW * kH * kD) )    # HAL[0x0c] = 8 accumulators
+byte_cap   = HAL[ocg_cap_offset(format)] / (kW * kH * kD)   # 0x388/0x390/0x398 = 32/16/8 B/elem
+OCG        = min( ComputeMaxOcg(budget, acc_per_oc), byte_cap )
+</code></pre>
+<p><a id="lst-c20-ocg-size"></a><strong>Listing 20.1.</strong> How the compiler computes the output-channel-group size for one pass from the accumulator budget, kernel-element count, and per-format byte cap.</p>
+<p>A 1-by-1 convolution has a kernel-element count of one, so it admits a large group.
+At a kernel-element count of nine, a 3-by-3 convolution gets a group roughly nine times smaller and needs more passes over the input.
+The compiler relieves that pressure by selecting Winograd for dense 3-by-3 stride-1 convolutions, since the transform cuts the effective kernel-element count.</p>
+<p>Once the output-channel count exceeds one output-channel group, the array re-streams the input for a second pass.
+The number of passes is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">OCG</span><span class="mspace"> </span><span class="mord mathrm">passes</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">⌈</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">OCG</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">⌉</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">.</span></span></span></span></span></p>
+<p>For a 1-by-1 fp16 convolution at a 32-by-32 spatial size, the per-layer slope shows a distinct super-linear jump in cost between an output-channel count of 192 and 256: a step from 20 microseconds to 61 microseconds per layer, a roughly threefold cost step for a 1.33-fold increase in arithmetic.
+That step is the pass count incrementing from one to two as the group cap is reached.
+A 3-by-3 convolution reaches the same threshold at fewer output channels per pass, matching the nine-fold accumulator pressure.</p>
+<h2 id="winograd-selection-gate"><a class="header" href="#winograd-selection-gate">Winograd selection gate</a></h2>
+<p>The eligibility gate is <code>CanUseWinogradMode</code>, a fixed conjunction of conditions that all must hold (<a href="#tbl-c20-winograd-gate">table 20.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>condition</th><th>meaning</th></tr></thead><tbody>
+<tr><td><code>HAL[0x680]</code> bit 0 set</td><td>the per-chip Winograd-enable bit, present on the M1</td></tr>
+<tr><td>kernel underlying type not 5, not 2, not unity</td><td>the format is Winograd-eligible and the weights are not 1-by-1 or identity</td></tr>
+<tr><td>tensor format not 12</td><td>the input format class is eligible</td></tr>
+<tr><td>one kernel axis equals 3</td><td>the transformed axis is fixed at 3, so 3-by-3 only</td></tr>
+<tr><td>the orthogonal kernel axis is below 6</td><td>the input-tile width of the larger tile is 6</td></tr>
+<tr><td>no third (depth) kernel extent</td><td>two-dimensional convolution</td></tr>
+<tr><td>unit stride</td><td>input and output extents are consistent with stride 1</td></tr>
+<tr><td><code>OCG x kH x kW x kD x 2</code> clears the work threshold</td><td>enough work to amortize the transform</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-winograd-gate"></a><strong>Table 20.4.</strong> The conditions of the Winograd eligibility gate, each of which must hold for the mode to be considered.</p>
+<p>The axis-equals-3 plus orthogonal-axis-below-6 pair pins the supported tile set to two forms: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span>, with an output tile of 2 and an input tile of 4, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span>, with an output tile of 4 and an input tile of 6.
+The work threshold on the term <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">OCG</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">W</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> is precision-dependent: it is 32 for work-unit modes 1 and 2, 8 for a non-float kernel, and 16 for a float kernel.
+The higher float threshold is the compiler's guard against the precision cost of the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span> transform, since the float convolution must clear a larger work bar before the transform is taken.
+No accumulator widening is tied to Winograd; the precision safety comes from the eligibility and threshold gating instead.</p>
+<p>Eligibility is not selection.
+Even when the gate passes, Winograd is taken only when it beats both direct convolution and the accumulator-double-buffering path, decided by a cost-model comparison that reads the same accumulator and lane-width accessors.
+Winograd is rejected when the convolution uses unicast, when the weight is sparse (sparse weights keep their own datapath and skip zeros), or when double-buffering the accumulator file already saturates the array.
+The transform matrices themselves live in the engine: the compiler sets a single <code>winograd_mode</code> config field, and the input, filter, and output transforms run inside the engine datapath.
+The textbook <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span> and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span> forms describe the behavior, but the coefficients are resident in hardware and not recoverable from the program.</p>
+<h2 id="four-core-granule"><a class="header" href="#four-core-granule">Four-core granule</a></h2>
+<p>Output channels are the dimension the compiler splits across cores.
+<code>ZinMirNECoreAssignment</code> builds a strided round-robin map: core <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> owns output channels <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mclose">}</span></span></span></span> for a core count <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>.
+On the M1 with four cores, channel <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> is on core</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">core</span></span><span class="mopen">(</span><span class="mord mathnormal">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.0556em;"></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4.</span></span></span></span></span></p>
+<p>The active-core count is not something the developer sets.
+The compiler sets it from the output-channel count and the group size, rounds it up to the next power of two, and writes it into the task descriptor.
+<code>GetNumNeededNEsNextPow2</code> sets the count (<a href="#lst-c20-core-map">listing 20.2</a>).</p>
+<pre><code class="language-python"># ZinMirNECoreAssignment: strided round-robin channel-to-core map (M1: num_nes = 4)
+def core(c, num_nes):
+    return c % num_nes                       # channel c -&gt; core c mod 4 on the M1
+
+# OCG passes and active-core count, both driven by C_out and the OCG size
+def ocg_passes(c_out, ocg):
+    return ceil(c_out / ocg)                 # input re-streamed once per pass
+
+def cores_needed(c_out, ocg, num_nes):       # num_nes = HAL[0x238] = 4 on the M1
+    return min(num_nes, next_pow2(ceil(c_out / ocg)))
+</code></pre>
+<p><a id="lst-c20-core-map"></a><strong>Listing 20.2.</strong> The strided round-robin channel-to-core map alongside the pass count and active-core count, both driven by the output-channel count and the group size.</p>
+<p><a href="#tbl-c20-core-scaling">Table 20.5</a> reports the measured throughput as the active-core count rises from one to four, showing near-linear integer scaling of the single-core rate.</p>
+<div class="table-wrapper"><table><thead><tr><th>output channels</th><th>cores lit</th><th>throughput, GMAC/s</th><th>ratio to one core</th></tr></thead><tbody>
+<tr><td>1</td><td>1</td><td>3.8</td><td>1.00</td></tr>
+<tr><td>2</td><td>2</td><td>7.6</td><td>2.00</td></tr>
+<tr><td>3</td><td>3</td><td>11.4</td><td>3.00</td></tr>
+<tr><td>4</td><td>4</td><td>15.4</td><td>4.05</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-core-scaling"></a><strong>Table 20.5.</strong> Measured throughput as the active-core count rises from one to four.</p>
+<p>Driving a single 1-by-1 convolution at each output-channel count below the core count, in a dispatch loop pinned at a fixed rate by per-dispatch overhead, the sustained throughput rises in exact integer multiples of the single-core rate.
+Each added core does one more output channel's worth of multiply-accumulates in the same wall time.
+The power rail confirms the count independently: the engine draws a step of about 10 milliwatts per added core over an always-on floor of about 800 milliwatts, matching the firmware's one always-on base domain plus four independently power-gated compute sets, one per core.</p>
+<p>A live capture of the compiler during a real M1 compile pins the geometry it costs against (<a href="#tbl-c20-live-geometry">table 20.6</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>quantity</th><th>live M1 value</th></tr></thead><tbody>
+<tr><td>clusters costed</td><td>1</td></tr>
+<tr><td>active engines costed (<code>GetTotalNumberOfActiveNEs</code>)</td><td>8</td></tr>
+<tr><td>candidate split geometries speculated</td><td>1, 4, and 16 engines</td></tr>
+<tr><td>kernel-memory budget</td><td>64 units</td></tr>
+<tr><td>fixed per-layer overhead</td><td>44 cycles</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-live-geometry"></a><strong>Table 20.6.</strong> Costed-geometry constants captured live during an M1 compile, with the active-engine count and the candidate split geometries.</p>
+<p>The 8 active engines the compiler costs against differ from the 16 cores the I/O registry reports for the M1: the costed geometry is 8 active engines on 1 cluster, a model-internal figure rather than the registry core count or the four physical compute sets that the power rail confirms above.
+The model also sets a 64-unit kernel-memory budget that weight residency must fit under, and a 44-cycle fixed per-layer overhead that is added to every layer's execute cycles.</p>
+<p>The full datapath reads top to bottom from the output-channel groups down through the four cores to each core's accumulator and its radix-4 reduction, as <a href="#fig-c20-datapath">figure 20.1</a> draws it.</p>
+<figure id="fig-c20-datapath">
+<pre class="mermaid">
+flowchart TB
+  Cout["Output channels C_out"] --> OCG["Output-channel groups, size OCG = min(floor_pow2(8 / kW kH kD), byte_cap)"]
+  OCG -->|"round-robin: channel c to core c mod 4"| Cores
+  subgraph Cores["Four cores on the M1"]
+    direction LR
+    C0["Core 0"]
+    C1["Core 1"]
+    C2["Core 2"]
+    C3["Core 3"]
+  end
+  C0 --> A0["Accumulator file, 8 deep, double-buffered to demand 4"]
+  A0 --> RT["Radix-4 reduction tree, fp16-rounded tiles of four"]
+  RT --> WA["Wide running accumulator, fp32 class"]
+  WA --> OUT["Output port, rounds to fp16"]
+</pre>
+<figcaption><strong>Figure 20.1.</strong> The multiply-accumulate datapath, with output-channel groups tiled across four cores, each core holding a wide accumulator fed by a radix-4 reduction tree.</figcaption>
+</figure>
+<h2 id="roofline-from-the-geometry"><a class="header" href="#roofline-from-the-geometry">Roofline from the geometry</a></h2>
+<p>Peak fp16 throughput is the product of the core count, lane width, and clock.
+Writing the lane width as output channels per cycle, the peak rate of multiply-accumulate operations is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">MAC</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">cores</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">lanes</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mpunct">,</span></span></span></span></span></p>
+<p>and the floating-point rate is twice that, since one multiply-accumulate is two floating-point operations.
+On the M1 the best fp16 mode is four cores times four output channels per cycle, and the int8 fast path doubles the lane width to eight.
+The measured all-four-cores-saturated rate for a large 1-by-1 convolution is about 3.48 trillion multiply-accumulates per second, about 7 fp16 TFLOP/s at the engine output: above the 4.8 fp16 TFLOP/s large-matmul saturating ceiling of chapter <a href="../part-3-performance/09-roofline.html">9</a>, because this convolution stays under the 2 MB working-set threshold and remains compute-bound, and below the overhead-subtracted roofline anchor of 12 fp16 TFLOP/s.
+The full-saturation power at that rate is about 4.7 watts, which is on the convolution power anchor and within 0.3 watts of the 4.4-watt large-matrix-multiply anchor, so the rail readings are calibrated.</p>
+<p>The frontend does not reach that doubled lane.
+The int8 compile flag quantizes the weights and leaves the multiply-accumulate in fp16, so it halves the streamed weight bytes and leaves the eight-channel int8 compute path unused.
+A 3-by-3 convolution at 256 input and output channels and a square matmul both run within a few percent of fp16.
+The int8 path reaches about 1.5 times faster only where the weight is large enough to stream from main memory, near a 4096-by-4096 weight at a batch of 256 or more.</p>
+<p>The working-set cap closes the roofline at the memory edge.
+The largest single operand that stays on chip is 2 MB.
+Past that, the operand is tiled and streamed from main memory, which adds traffic and moves the workload onto the bandwidth side of the roofline.</p>
+<h2 id="task-descriptor-that-holds-the-geometry"><a class="header" href="#task-descriptor-that-holds-the-geometry">Task descriptor that holds the geometry</a></h2>
+<p>The compiler reaches the array through a per-partition task descriptor, a flat register image organized into seven register groups, and serializes each group into the address-value pairs the firmware writes.
+On the M1 the descriptor is the version-10 layout, one of fourteen versioned descriptor structs the compiler builds, selected by chip family.
+<a href="#tbl-c20-descriptor-groups">Table 20.7</a> lists the seven register groups of that layout.</p>
+<div class="table-wrapper"><table><thead><tr><th>group</th><th>register count</th><th>address base</th><th>contents</th></tr></thead><tbody>
+<tr><td>kernel and common</td><td>34</td><td><code>0x5500</code></td><td>kernel-DMA enable, format, stride, common config, task type, output transpose, network id</td></tr>
+<tr><td>dimensions</td><td>19</td><td>none</td><td>input and output width, height, depth, channels, group count, broadcast, transpose, interleave, output-channel-group size</td></tr>
+<tr><td>tile DMA</td><td>69</td><td><code>0x4d00</code></td><td>the three tile-DMA engines: enable, cache hints, base-address halves, row, channel, depth, group strides, format, wrap</td></tr>
+<tr><td>elementwise, planar engine, padding</td><td>30</td><td><code>0x4100</code></td><td>elementwise and planar-engine config, padding mode, planar-engine index</td></tr>
+<tr><td>L2 and texture</td><td>14</td><td><code>0x4500</code></td><td>L2 source and result config, texture mode, source dimensions</td></tr>
+<tr><td>kernel format and op mode</td><td>11</td><td><code>0x4900</code></td><td>op mode, kernel alignment, sparse and palette flags, padding constant, bias and post-scale enables</td></tr>
+<tr><td>L2 result</td><td>21</td><td><code>0x5100</code></td><td>L2-result base, strides, wrap, result format</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-descriptor-groups"></a><strong>Table 20.7.</strong> The seven register groups of the version-10 task descriptor, each with its register count, address base, and contents.</p>
+<p>The dimension group encodes the per-axis caps directly in its field widths.
+Input width, height, and depth are 15-bit fields masked <code>0x7fff</code>, while the channel fields are 17-bit, masked <code>0x1ffff</code>, so a channel axis reaches 131071 where a spatial axis stops at 32767.
+The output-channel-group size is a 3-bit field, and the active-core count is the <code>ActiveNE</code> field, a 3-bit value that records how many cores the task runs on, set from the shape by <code>GetNumNeededNEsNextPow2</code>.</p>
+<p>A fused convolution folds its per-channel affine and its activation into four separate kernel-coefficient streams, each a distinct sub-buffer with its own base offset and a relocation slot the loader patches at load.
+Each of the four streams has its own relocation register (<a href="#tbl-c20-coeff-streams">table 20.8</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>stream</th><th>relocation register</th><th>role</th></tr></thead><tbody>
+<tr><td>bias</td><td><code>0x1554</code></td><td>the per-channel additive offset</td></tr>
+<tr><td>post-scale</td><td><code>0x1558</code></td><td>the per-channel output multiply, where a dequantize scale folds</td></tr>
+<tr><td>palette lookup</td><td><code>0x155c</code></td><td>the palettized-weight lookup table</td></tr>
+<tr><td>activation lookup</td><td><code>0x1560</code></td><td>the 33-segment piecewise-linear activation table</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c20-coeff-streams"></a><strong>Table 20.8.</strong> The four kernel-coefficient streams a fused convolution emits, each with the relocation register the loader patches and the role it holds.</p>
+<p>A convolution with batch normalization and a following activation thus stays one operation: the scale and bias fold into the post-scale and bias streams, the activation runs as the activation-lookup stream, and one fused operation streams all four coefficient banks alongside its weights.</p>
+<h2 id="cross-source-corroboration"><a class="header" href="#cross-source-corroboration">Cross-source corroboration</a></h2>
+<p>The accumulator and output-channel-group geometry decoded in this chapter from the compiler is independently described in Apple's neural-engine patents, analyzed in Maynard Handley's AArch64-Explore vol. 7 (ANE).
+The patents describe a 256-by-8-by-32-byte accumulator with eight storage channels per multiply-accumulator, splittable into two four-channel halves, with a per-pass channel interleave; this matches the eight-deep accumulator file, the demand-four double-buffering, and the output-channel-group tiling derived here.
+The patents' rasterizer loop manager is the kernel-rasterizer unit, and their account of descriptors held in a configuration queue and switched in order is the register-write task descriptor of chapter <a href="../part-7-toolchain/23-program-format.html">23</a>.
+The two derivations are independent: one read from the shipped compiler and the live engine, the other from the patent record.</p>
+<p>The patents describe a configurable design spanning many parts, so the absolute counts there (a 256-wide multiply-accumulator array, an eight-core organization) are family ceilings rather than M1 figures; the per-chip core count read from the hardware-abstraction table, four on the M1, is the value that holds for a given part.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-5-practice/handoff.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-6-silicon/21-memory-hierarchy.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-5-practice/handoff.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-6-silicon/21-memory-hierarchy.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,66 @@
+# Qwen3-0.6B 4-bit QLoRA on this M4.
+# The frozen base stays 4-bit so the resident weights are small on unified memory.
+# Rank-8 LoRA on every layer is the trainable adapter and the communication payload.
+# The recipe follows the published Qwen3 LoRA configs: scale 2 (PEFT alpha 2r),
+# dropout 0, AdamW peak 1e-4 with weight decay 0.01, 300 warmup steps from 1e-7,
+# cosine decay to 1e-6 at the last step, and a global gradient-norm clip of 1.0.
+# mlx-lm's own default pairs scale 20 with 1e-5; scale 20 at 1e-4 was 5-10x every
+# mainstream recipe and diverged under small numerical perturbations.
+# One microbatch is one update. The decay length comes from the computed step count.
+# placement.mode gpu_ane keeps the early 4-bit blocks on the GPU. A suffix of
+# full decoder blocks, base plus LoRA, is one Neural Engine program. The mask must be 0x4.
+# Each launch writes a new timestamped directory under logging.dir. The log and figures live there.
+# memory_limit_bytes: auto is the GPU's recommended working set. The wired limit is raised to match.
+# batch_size: auto keeps the microbatch with the highest steady tokens per second under that set.
+# grad_checkpoint: auto recomputes activations only when the uncheckpointed step does not fit.
+# Checkpoints keep the adapter, AdamW moments, and the step. Set checkpoint.resume to latest to continue.
+
+data:
+  dataset: Salesforce/wikitext
+  config: wikitext-2-raw-v1
+  revision: b08601e04326c79dfdd32d625aee71d232d685c3
+  path: data/wikitext-2-raw-v1
+  train_examples: 4096
+
+model:
+  name: mlx-community/Qwen3-0.6B-4bit
+  revision: 73e3e38d981303bc594367cd910ea6eb48349da8
+  max_seq_length: 512
+  lora_rank: 8
+  lora_scale: 2.0
+  lora_dropout: 0.0
+  num_layers: -1
+
+training:
+  batch_size: auto
+  grad_accumulation_steps: 1
+  grad_checkpoint: auto
+  epochs: 3
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  lr_schedule:
+    name: cosine_decay
+    warmup: 300
+    warmup_init: 1.0e-7
+    end: 1.0e-6
+  optimizer: adamw
+  iters: null
+  steps_per_report: 10
+  val_batches: -1
+  test_batches: -1
+
+placement:
+  mode: gpu_ane
+
+infrastructure:
+  seed: 0
+  memory_limit_bytes: auto
+  prometheus_port: 9096
+
+checkpoint:
+  save_every: epoch
+  resume: null
+
+logging:
+  dir: evidence/qwen3-0.6b-curve

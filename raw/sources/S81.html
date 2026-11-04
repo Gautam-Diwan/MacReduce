@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Appendix D. Glossary - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/appendices/d-glossary.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="appendix-d-glossary"><a class="header" href="#appendix-d-glossary">Appendix D. Glossary</a></h1>
+<blockquote>
+<p>This appendix defines the acronyms, proper nouns, and symbols the guide uses across all nine parts.</p>
+</blockquote>
+<p>The term <a href="#tbl-apd-terms">table D.1</a> is the reference the rest of the guide leans on.</p>
+<h2 id="core-facts"><a class="header" href="#core-facts">Core facts</a></h2>
+<p>Read these four corrections first; several entries in the table below depend on them.
+The M5 base part is H17, specifically the <code>h17s</code> compiler target, not H16s; H16s and H17s are separate targets distinguished only by the generation-tag byte.
+The multiply-accumulate datapath uses a single wide accumulator of the fp32 class, supplied by radix-4 fp16-rounded input tiles; the accumulator width is fixed hardware on every device and is never a per-chip parameter, so it is not a recursive fp16 reduction tree.
+On M1/H13 two weight-compression forms stream natively, the int4 palette (int4-LUT) and the sparse form whose mask and values have at least 50 percent zeros; int8 and blockwise-affine weights fold into the descriptor on that generation and only stream natively from later families.
+The firmware task-queue notification identifier (NID) is 8-bit, taking values 1 through 255.</p>
+<h2 id="terms"><a class="header" href="#terms">Terms</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody>
+<tr><td>A11 through A18, M1 through M5</td><td>Apple system-on-chip marketing names, each with an ANE of a specific H-generation, related by <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mclose">)</span></span></span></span>.</td></tr>
+<tr><td>AFPP</td><td>The on-device firmware program container: a three-level big-endian FourCC package, <code>ANEH</code> then <code>ANEP</code> then sections.</td></tr>
+<tr><td><code>aned</code></td><td>The system ANE broker daemon at <code>/usr/libexec/aned</code> that holds the IOKit access gate, so every unentitled client reaches the engine by sending it a request.</td></tr>
+<tr><td><code>aneuserd</code></td><td>The per-user sibling of <code>aned</code>, the other holder of the IOKit access gate.</td></tr>
+<tr><td>ANEC, <code>anec.*</code></td><td>The compiler backend intermediate-language dialect of 97 operations, the target of front-end lowering and the input to task-descriptor codegen.</td></tr>
+<tr><td>ANECCompile</td><td>The backend compile entry point that direct netplist authoring supplies rather than bypasses.</td></tr>
+<tr><td>ANECompiler</td><td>The single compiler binary that lowers the front IR to the backend IR and then to task descriptors for every target, so one host can construct any of the 28 targets' hardware-abstraction blobs.</td></tr>
+<tr><td>ANECompilerService</td><td>The out-of-process compile service; repeated failed compiles in quick succession can stall it, so pace compiles after a failure by about 15 seconds, covered in Part V.</td></tr>
+<tr><td>ANEServices</td><td>The user-space framework layer beneath the runtime that marshals requests into IOKit calls.</td></tr>
+<tr><td>AppleH11ANEInterface</td><td>The kernel driver for the engine, decompiled at version 9.511.3, that holds the IOKit class hierarchy and the user client.</td></tr>
+<tr><td>ASC_CHINOOK</td><td>The firmware's internal chip codename string for the H13 ANE coprocessor.</td></tr>
+<tr><td>bridge ops</td><td>Hidden backend layer kinds reached by direct netplist authoring, such as fused attention, fused rank, and fused rearrange, each paired with one frontend bridge module, described in Part II and cataloged in Appendix <a href="b-hidden-layer-catalog.html">B</a>.</td></tr>
+<tr><td>CCDMA</td><td>The cross-chip and cross-engine DMA and event-sync engine; on M1/H13 it is folded, and it is present natively on A15 and later and on M5, where it enables resident state.</td></tr>
+<tr><td>CSNE, <code>CSNE_CMD_*</code></td><td>The host-to-firmware command protocol, where <code>CSNE_CMD_*</code> are the numeric command opcodes the host mailbox issues to the firmware.</td></tr>
+<tr><td>DART</td><td>The ANE's IOMMU, a 16 KB-page, 3.5 GiB-window unit that maps host physical RAM into the engine's device address space.</td></tr>
+<tr><td>DPE</td><td>Dynamic Power Estimation: a firmware activity-counter power estimate calibrated by 10 device-tree coefficients and bounded by the peak-power ceiling.</td></tr>
+<tr><td>DVA</td><td>Device Virtual Address: the address the engine issues, resolved by DART to physical RAM, used interchangeably with IOVA.</td></tr>
+<tr><td>dispatch floor</td><td>The fixed per-dispatch latency, about 0.23 ms on the M1 anchor and a fitted 0.11 ms on the M5, below which a kernel cannot run regardless of its size, covered in Part III.</td></tr>
+<tr><td><code>.e5</code></td><td>The compiled-program dispatch-layer container whose size tracks the segment and dispatch count rather than the operation count.</td></tr>
+<tr><td>e5rt</td><td>The E5 runtime, the C API that the frontend uses to load and stream programs and the unentitled reachable surface, which still relays to <code>aned</code> underneath.</td></tr>
+<tr><td>EIR, NitroIR</td><td>The runtime's lowered IR, a Lisp-style S-expression node tree serialized on disk, whose pivot type is the fp16 <code>ndarray&lt;half&gt;</code>.</td></tr>
+<tr><td>Espresso</td><td>Apple's cross-backend neural-network runtime and scheduler that hosts the E5 execution engine and the cost-model placement segmenter.</td></tr>
+<tr><td>ExeLoop</td><td>The firmware's main control execution loop and finite-state machine that fetches and dispatches task descriptors through the RUN, IDLE, and EXEC states.</td></tr>
+<tr><td>fp16</td><td>Half-precision IEEE float, the engine's native compute and storage type, with a maximum finite magnitude of 65504.</td></tr>
+<tr><td>fp16 accumulator</td><td>A shorthand tag for the MAC numeric behavior: a single wide accumulator of the fp32 class supplied by radix-4 fp16-rounded input tiles, where the only quantization is fp16 input and partial rounding and the fp16 output grid.</td></tr>
+<tr><td>fp8 (E4M3, E5M2)</td><td>The 8-bit float weight and activation datapath, present only on H18, which decodes to fp16 before the MAC.</td></tr>
+<tr><td>generation-tag</td><td>The hardware-abstraction blob's generation byte at offset <code>0x0</code>, holding the hex H-number, the decisive discriminator between near-identical targets such as H16s and H17s.</td></tr>
+<tr><td>GOC, DynamicGOC</td><td>Generate-Output-Channels, the dynamic unit that generates the output-channel-group kernel tiles from a runtime weight, present from M1 onward.</td></tr>
+<tr><td>HAL</td><td>The Hardware Abstraction Layer: the per-target scalar and byte blob that data-drives nearly all per-family behavior and is the source of truth for capability, limit, and cost, detailed in Part IX.</td></tr>
+<tr><td><code>.hwx</code></td><td>The fully lowered hardware-executable container, the counterpart to the <code>.e5</code>.</td></tr>
+<tr><td>int4-LUT, palette weights</td><td>Palettized 4-bit weight compression, one of the two formats that stream natively on M1/H13 (alongside the sparse form) at about 2.37 times, where int8 and blockwise-affine instead fold into the descriptor.</td></tr>
+<tr><td>IOVA</td><td>IO Virtual Address: the device virtual address DART produces from host physical RAM, on a 16 KB page over a 3.5 GiB window.</td></tr>
+<tr><td>KMEM</td><td>The on-chip working and scratch buffer the task descriptor sizes for weights and tiles, gated at 64 KB at legalization and the basis of the working-set threshold.</td></tr>
+<tr><td>KV-cache (resident)</td><td>An on-device key and value cache that stays resident across dispatches for decode, built on M1 with <code>share_buffer</code> rather than native state, covered in Part VIII.</td></tr>
+<tr><td>LUT</td><td>Lookup table, used both for piecewise-linear activation approximation and for the palette of int4 weight compression.</td></tr>
+<tr><td>MAC</td><td>Multiply-accumulate, the compute primitive whose datapath is an fp16 multiply, radix-4 fp16-rounded input tiles, and one wide accumulator of the fp32 class.</td></tr>
+<tr><td>MIL</td><td>The Model Intermediate Language, the front IR in single-assignment form that the compiler segments and lowers to the backend IR.</td></tr>
+<tr><td>MLComputePlan</td><td>The model-framework introspection surface that reports per-operation device assignment and a cost weight, the readable view of the placement segmenter.</td></tr>
+<tr><td><code>.mlmodelc</code></td><td>The compiled model bundle that pairs the runtime net, shapes, weights, and the <code>.hwx</code>.</td></tr>
+<tr><td>multi-die, AllReduce, AllGather</td><td>The multi-die collective-communication layer present on the multi-die H14 through H18 Max and Ultra-class dies, not a base-class feature.</td></tr>
+<tr><td>NE core</td><td>A neural-engine compute core; the per-family count decodes from the HAL as base 4, then 8, 16, 32, or 64 by suffix, described in Part IX.</td></tr>
+<tr><td>NID</td><td>The firmware task-queue notification identifier owned by the state machine, 8-bit and taking values 1 through 255.</td></tr>
+<tr><td>OCG</td><td>The Output-Channel Group, the compiler's output-channel tiling unit sized to the accumulator file, where a larger group means fewer DMA re-bases.</td></tr>
+<tr><td>OC/cycle</td><td>The per-cycle output-channel throughput of the MAC array, the roofline unit in the cost model.</td></tr>
+<tr><td>Path-A</td><td>Direct netplist authoring, hand-writing the backend netplist to reach hidden layer kinds, which supplies <code>ANECCompile</code> and so cannot reach a lowering the backend rejects, covered in Part II.</td></tr>
+<tr><td>palettization</td><td>Weight compression that maps each weight to a lookup-table index, the int4 form of which streams natively on M1/H13.</td></tr>
+<tr><td>power domains</td><td>The five independently gated power domains of the H13 ANE, by which the engine modulates power through the number it energizes.</td></tr>
+<tr><td>PPL</td><td>Page Protection Layer: the kernel page-table protection layer through which the ANE's DART leaf writes go.</td></tr>
+<tr><td>PPT</td><td>The peak-power ceiling and throttle under which the Dynamic Power Estimation values are bounded.</td></tr>
+<tr><td><code>pushTDList</code></td><td>The firmware function that hands a task descriptor to the hardware and re-enters with an already-built descriptor for resident chains.</td></tr>
+<tr><td>roofline</td><td>The performance bound that takes the smaller of compute-limited and bandwidth-limited rates as a function of arithmetic intensity, the basis of the cost model in Part III.</td></tr>
+<tr><td>RTBuddy</td><td>Apple's coprocessor real-time-OS runtime framework, the substrate the ANE firmware app runs on.</td></tr>
+<tr><td>RTKit</td><td>The real-time-OS substrate beneath the ANE firmware, providing the task and thread model and the synchronization primitives.</td></tr>
+<tr><td><code>share_buffer</code></td><td>The runtime primitive that aliases an output buffer to an input buffer after compile, giving a zero-copy resident cache without native state.</td></tr>
+<tr><td>slice ×16 saturation</td><td>An H13 codegen defect in which a slice with a nonzero last-axis begin lowers to a scaled kernel that silently sends values above 4094, which is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">65504/16</span></span></span></span>, to infinity; H13-only and clean on H17.</td></tr>
+<tr><td>SoC T-number</td><td>The SoC part number, such as T8103 for the M1 base and T8142 for the M5 base, which maps to an ANE H-generation through the board-type sequence.</td></tr>
+<tr><td>sparse-binary, SparseFmt</td><td>The sparse-weight compute format, where the weight has a binary sparsity mask; the mask-and-values form streams natively on M1/H13, while the packed sparse-binary palette-index form is absent from the M1 version-5 descriptor and present from A15 and M5.</td></tr>
+<tr><td>SPTM</td><td>Secure Page Table Monitor: the kernel monitor that, with the Page Protection Layer, governs page-table edits and physical-frame ownership.</td></tr>
+<tr><td>stack layers</td><td>The top-to-bottom software path from the frontend through the runtime, the framework, <code>aned</code>, ANEServices, IOKit, and firmware to silicon, in Part VIII.</td></tr>
+<tr><td>styx</td><td>The firmware and chip codename for the M1/H13 ANE.</td></tr>
+<tr><td>TD, task descriptor</td><td>The hardware work unit the firmware loads and the engine executes: a register-image descriptor of DMA sub-blocks and framing, emitted per generation from the compiler's descriptor struct, detailed in Part VII.</td></tr>
+<tr><td>TileDMA, KernelDMA</td><td>The conv datapath DMA engines: the kernel source streams weight coefficients, the tile source streams input activation tiles, and the tile destination writes outputs.</td></tr>
+<tr><td>TM, Tensor-Mover</td><td>The firmware tile-manager driver that moves tiles and drives the texture layers.</td></tr>
+<tr><td>TQ, task queue</td><td>The firmware queue the state machine enqueues a program's task-descriptor partitions into.</td></tr>
+<tr><td>wide accumulator</td><td>The fp32-class running sum of the MAC, which holds small addends rather than dropping them, so a sum of representable terms stays near-exact, covered in Part III.</td></tr>
+<tr><td>Winograd</td><td>The Winograd fast-convolution transform the compiler can emit for small kernels, trading multiplies for transforms.</td></tr>
+<tr><td>Zin, ZinIr, ZinMir</td><td>The compiler's internal class namespaces: the IR-object layer, the mid-IR build layer, and the task-descriptor codegen layer.</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apd-terms"></a><strong>Table D.1.</strong> The acronyms, proper nouns, and symbols used across the guide with their definitions.</p>
+<h2 id="family-and-silicon-map"><a class="header" href="#family-and-silicon-map">Family and silicon map</a></h2>
+<p>The relation <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">12</span><span class="mclose">)</span></span></span></span> is anchored at both ends, with the live M1 reporting <code>h13g</code> and the M5 cost-model trees decompiled on the M5 host reporting <code>H17C</code> and <code>H17S</code>.
+The compiler-family index drives operation legality, and the per-target HAL drives codegen, limits, and cost.
+<a href="#tbl-apd-family-map">Table D.2</a> maps each marketing name to its ANE generation, architecture string, compiler family, generation-tag, and core counts; Part IX gives the full table.</p>
+<div class="table-wrapper"><table><thead><tr><th>Marketing name</th><th>ANE H-gen</th><th>OS arch string</th><th>Compiler family</th><th>generation-tag</th><th>NE cores by suffix</th></tr></thead><tbody>
+<tr><td>A13, M1</td><td>H13</td><td><code>h13</code>, <code>h13g</code></td><td>A13</td><td><code>0x0d</code></td><td>4, 8 (g)</td></tr>
+<tr><td>A14, M2</td><td>H14</td><td><code>h14</code>, <code>h14g</code>, <code>h14c</code></td><td>A14</td><td><code>0x0e</code></td><td>4, 8, 32</td></tr>
+<tr><td>A15, M3</td><td>H15</td><td><code>h15</code>, <code>h15g</code>, <code>h15c</code></td><td>A15</td><td><code>0x0f</code></td><td>4, 8, 32</td></tr>
+<tr><td>A16, M4</td><td>H16</td><td><code>h16</code>, <code>h16s</code></td><td>A16</td><td><code>0x10</code></td><td>4, 8, 16, 32</td></tr>
+<tr><td>A17, M5</td><td>H17</td><td><code>h17</code>, <code>h17s</code></td><td>A17</td><td><code>0x11</code></td><td>4, 8, 16 (M5), 32, 64</td></tr>
+<tr><td>A18</td><td>H18</td><td><code>h18</code></td><td>A18</td><td><code>0x12</code></td><td>4</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-apd-family-map"></a><strong>Table D.2.</strong> The Apple chip marketing names mapped to ANE generation, architecture string, compiler family, generation-tag, and core counts.</p>
+<p>The M5 base is the <code>h17</code> runtime arch and the <code>H17s</code> compiler target, the 16-core variant, not H16s.
+The suffixes <code>g</code>, <code>s</code>, <code>c</code>, and <code>d</code> decode to NE-core counts of 8, 16, 32, and 64 from a single HAL field.
+A17 and A18 add no new operation capabilities over A16 and scale only the core count; the A13 to A16 jump was the last capability expansion.
+The fp8 datapath is H18 only.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../appendices/c-decoded-tables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendices/f-provenance.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../appendices/c-decoded-tables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendices/f-provenance.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

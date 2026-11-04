@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>15. Training on the engine - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/part-4-workloads/15-training.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="15-training-on-the-engine"><a class="header" href="#15-training-on-the-engine">15. Training on the engine</a></h1>
+<blockquote>
+<p>The engine has no backward operation.
+A full forward, backward, and optimizer loop still runs as ordinary inference-style graph operations, with the optimizer state resident across steps.
+The registered gradient set matches the closed form to a cosine of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0000</span></span></span></span>.
+Transformers, normalization-based convolutional networks, and gated linear networks all train end to end.
+A small convolutional network trains to a final test accuracy of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9080</span></span></span></span> on the M1 and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9070</span></span></span></span> on the M5, at a loss scale of 1024.
+That is a difference of one test sample in one thousand.
+The conv weight-gradient saturates above 4094 on the width axis on the M1 and M2, so a preflight check guards that one numeric edge.</p>
+</blockquote>
+<p>There is no backward operation, no gradient layer, and no adjoint primitive in the compiler's operation catalog.
+A network still trains end to end anyway, optimizer step included, because every stage of the loop is expressible in the operations the engine already runs.
+This chapter states how that expression works and which gradients are numerically trustworthy, then isolates the one path that diverges in fp16.
+The result is a capability, not a speed claim.</p>
+<h2 id="a-backward-pass-built-from-forward-operations"><a class="header" href="#a-backward-pass-built-from-forward-operations">A backward pass built from forward operations</a></h2>
+<p>A search of the compiler binary for an engine-native gradient layer returns nothing.
+Every gradient operation held in the shared compiler belongs to the graphics-processor dialect, is costed by the graphics-processor cost model, and executes there.
+The convolution data-gradient and weight-gradient, the max-pool and average-pool gradients, normalization, recurrent, top-k, pad, strided-slice, and resize gradients are all graphics-processor operations.
+At the operation level the engine is inference-only.</p>
+<p>The engine-native convolution family is the forward convolution and a single-channel cross-correlation.
+The forward convolution has a transpose mode, so the data-gradient, which is a transposed convolution, has a native operation.
+The weight-gradient has no native operation, because the only cross-correlation is single-channel and cannot serve the multi-channel correlation a weight-gradient requires.
+The weight-gradient thus lowers through a patch-extraction expansion into a matrix multiply, which is why a trainable convolution has its weight as a graph input and why its backward cost grows with the minibatch.</p>
+<p>The public on-device update path meets the same boundary <a href="../references.html#ref-applecoreml">[AppleCoreML]</a>.
+When the system framework fine-tunes a model on device, the forward pass may run on the engine, but the backward pass runs on the graphics processor or the host through those gradient operations.</p>
+<p>Training the whole loop on the engine thus means not calling any backward operation.
+The forward pass is a graph of engine operations.
+The backward pass is a second graph, built by the host from the same forward operations and their analytic gradients, that computes cotangents through the network.
+The optimizer update is a third graph that combines the gradients with the parameter and optimizer state.
+All three are inference-style graphs of operations the compiler already accepts, so all three compile and dispatch on the direct route from chapter <a href="../part-2-reaching/06-dispatch-without-coreml.html">6</a>.</p>
+<p>A trainable weight is a graph input, not an embedded constant.
+The forward graph reads the weight from a bound buffer, so the update graph can write a new value into that buffer between steps without recompiling.
+This is what lets the optimizer step run on the engine: the weight is an operand, and an operand can be both read by the forward pass and written by the update.</p>
+<h2 id="gradient-vocabulary-and-its-correctness"><a class="header" href="#gradient-vocabulary-and-its-correctness">Gradient vocabulary and its correctness</a></h2>
+<p>A gradient is built by composing each forward operation with its vector-Jacobian product.
+The registered set was checked against closed-form derivatives by forming a linear loss <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0497em;vertical-align:-0.2997em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.162em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathrm">op</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, whose exact gradient is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">op</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>, and comparing the engine-computed gradient to that reference.</p>
+<p>The core set matches to a cosine of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0000</span></span></span></span> against the closed form, at the fp16 error level.
+That set covers the activations <code>relu</code>, <code>sigmoid</code>, <code>tanh</code>, and <code>gelu</code>, the elementwise <code>mul</code>, <code>add</code>, <code>sub</code>, <code>square</code>, the linear <code>matmul</code> and batched <code>matmul</code>, <code>softmax</code>, <code>conv</code>, <code>avg_pool</code>, <code>max_pool</code>, the reductions <code>reduce_sum</code> and <code>reduce_mean</code>, and the shape operations <code>transpose</code>, <code>reshape</code>, <code>flatten</code>, <code>slice</code>, and <code>concat</code>.
+The four normalization layers <code>layer_norm</code>, <code>rms_norm</code>, <code>group_norm</code>, and <code>l2_norm</code>, the <code>silu</code> activation, and a set of unary math operations including <code>exp</code>, <code>sqrt</code>, <code>rsqrt</code>, <code>log</code>, <code>erf</code>, and <code>cos</code> were added later and verified against a finite-difference reference at the same cosine.
+The normalization gradients re-inject the per-channel scale as a supplied value-input, since the engine has no constant-tensor operation to hold it.
+The registered operations group by kind (<a href="#tbl-c15-gradients">table 15.1</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Group</th><th>Operations with a registered gradient</th></tr></thead><tbody>
+<tr><td>Activations</td><td><code>relu</code>, <code>sigmoid</code>, <code>tanh</code>, <code>gelu</code>, <code>silu</code></td></tr>
+<tr><td>Elementwise</td><td><code>mul</code>, <code>add</code>, <code>sub</code>, <code>square</code></td></tr>
+<tr><td>Linear</td><td><code>matmul</code>, batched <code>matmul</code>, <code>softmax</code>, <code>conv</code>, <code>avg_pool</code>, <code>max_pool</code></td></tr>
+<tr><td>Reductions</td><td><code>reduce_sum</code>, <code>reduce_mean</code></td></tr>
+<tr><td>Shape</td><td><code>transpose</code>, <code>reshape</code>, <code>flatten</code>, <code>slice</code>, <code>concat</code></td></tr>
+<tr><td>Normalization</td><td><code>layer_norm</code>, <code>rms_norm</code>, <code>group_norm</code>, <code>l2_norm</code></td></tr>
+<tr><td>Unary math</td><td><code>exp</code>, <code>sqrt</code>, <code>rsqrt</code>, <code>log</code>, <code>erf</code>, <code>cos</code></td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c15-gradients"></a><strong>Table 15.1.</strong> The registered gradient vocabulary, each verified to a cosine of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0000</span></span></span></span> against the closed form or a finite-difference reference at the fp16 error level.</p>
+<p>With the normalization gradients present, a transformer block, normalization-based convolutional network, and gated linear network all train end to end on the engine, where previously only a plain multilayer network did.
+Some operations have a forward but no registered gradient, among them <code>cumsum</code>, <code>amax</code>, <code>amin</code>, and several parametric activations.
+A model that uses one of those compiles and runs its forward pass, then the backward construction raises an explicit error rather than producing a silently wrong gradient.
+The gap there is coverage, not correctness.</p>
+<h2 id="a-resident-state-training-step"><a class="header" href="#a-resident-state-training-step">A resident-state training step</a></h2>
+<p>The optimizer state stays resident on the engine across steps, through the buffer-aliasing mechanism of chapter <a href="../part-1-machine/02-execution-model.html">2</a>.
+The first and second moments of an adaptive optimizer, along with the weights themselves, persist as buffers in the engine working set from one dispatch to the next.
+The host sends only the per-step minibatch and the scalar learning rate, and reads the weight buffers back at a checkpoint.
+The large held tensors never cross the host boundary on every step.</p>
+<p>One dispatch advances the network by one optimizer step, as <a href="#lst-c15-step">listing 15.1</a> shows: forward, backward, and update in a single submitted graph.</p>
+<pre><code class="language-python"># Resident buffers, allocated once and kept in the engine working set:
+#   W           trainable weights        (read by forward, written by update)
+#   M, V        optimizer moments        (read and written by update)
+# Per-step host inputs: minibatch (x, y), learning rate lr_t
+
+for step in range(num_steps):
+    # all three stages are one engine graph, one dispatch
+    logits = forward(W, x)                 # inference-style ops
+    g      = backward(W, x, y, logits)     # vjp graph, no native backward op
+    M      = beta1 * M + (1 - beta1) * g           # update, on engine
+    V      = beta2 * V + (1 - beta2) * (g * g)
+    W      = W - lr_t * M / (sqrt(V) + eps)        # writes resident W in place
+    # M, V, W remain resident; host sends only (x, y, lr_t) next step
+</code></pre>
+<p><a id="lst-c15-step"></a><strong>Listing 15.1.</strong> A resident-state training step run as one engine graph, with weights and optimizer moments resident across steps.</p>
+<p>The adaptive update is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.2903em;vertical-align:-0.93em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">η</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.2583em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8517em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8117em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1883em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">ϵ</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.93em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9028em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9028em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-2.453em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the gradient from the backward graph.
+The host-supplied learning rate <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">η</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> already absorbs any loss scaling, because the scale factor cancels in the ratio <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1017em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8517em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8117em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1883em;"><span></span></span></span></span></span></span></span></span> and must not be divided out a second time.</p>
+<p>A small convolutional network trains this way to a final test accuracy of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9080</span></span></span></span>.
+On the M1 generation, the seeded handwritten-digit network reaches that accuracy after 300 steps, deterministic and reproducible to the digit across runs.</p>
+<h2 id="conv-weight-gradient-divergence"><a class="header" href="#conv-weight-gradient-divergence">Conv weight-gradient divergence</a></h2>
+<p>One gradient path diverges in fp16 on the M1 and the M2 generations.
+The convolution is built from a patch-extraction step, a set of width-offset slices, followed by a matmul.
+A nonzero-offset width slice on these generations saturates above 4094, the bound derived in chapter <a href="../part-1-machine/03-numerics.html">3</a> and guarded in chapter <a href="../part-5-practice/19-pitfalls-and-limits.html">19</a>.</p>
+<p>The weight-gradient runs the backward activations back through those same width-offset slices.
+When the loss-scaled backward activations exceed about 4094, a few weight-gradient elements saturate to infinity and the gradient is corrupted.
+The break is magnitude-gated and finite-to-infinity, not a small rounding error: at a fixed shape the path is exact at loss scale 384 and produces its first infinity at loss scale 512.
+A larger input magnitude crosses the same threshold at a lower loss scale.</p>
+<p>The input magnitude and the loss scale cross the threshold independently, as <a href="#tbl-c15-saturation">table 15.2</a> records across a sweep of both.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Input scale</th><th style="text-align: right">Loss scale</th><th>Result</th><th style="text-align: right">Infinities</th></tr></thead><tbody>
+<tr><td style="text-align: right">1</td><td style="text-align: right">256</td><td>free</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">1</td><td style="text-align: right">384</td><td>free</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">1</td><td style="text-align: right">512</td><td>saturates</td><td style="text-align: right">1</td></tr>
+<tr><td style="text-align: right">1</td><td style="text-align: right">768</td><td>saturates</td><td style="text-align: right">3</td></tr>
+<tr><td style="text-align: right">1</td><td style="text-align: right">1024</td><td>saturates</td><td style="text-align: right">8</td></tr>
+<tr><td style="text-align: right">4</td><td style="text-align: right">256</td><td>saturates</td><td style="text-align: right">36</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c15-saturation"></a><strong>Table 15.2.</strong> Conv weight-gradient saturation at a fixed shape, finite-to-infinity and magnitude-gated.</p>
+<p>A 1x1 convolution does not touch the slice path, because it has no width-offset patch slice.
+The hazard is limited.
+A convolution-first network sends the normalization-bounded input through the width-offset slices on the forward side, where values stay well below 4094 regardless of loss scale.
+Its conv input-gradient, the path that would take the loss-scaled gradient through the slice, is discarded because no layer precedes the first convolution.
+The handwritten-digit network trains correctly at loss scales of 128, 1024, and 65536, with overlapping curves and final accuracies of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9070</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9080</span></span></span></span>, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9100</span></span></span></span>.
+The residual risk is a network that pushes width-offset-slice values in the weight-gradient path past 4094, which a preflight check can flag on the M1 and M2 generations.
+The M5 generation takes a different slice route and has no such saturation; the non-saturating route arrives on the A15 generation and later.</p>
+<h2 id="cross-generation-parity"><a class="header" href="#cross-generation-parity">Cross-generation parity</a></h2>
+<p>The same seeded network trains deterministically on both generations, with the data order and initialization fixed.
+The two accuracy curves track to three decimals through all 300 steps and part by a single borderline prediction at the end (<a href="#tbl-c15-parity">table 15.3</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Step</th><th style="text-align: right">M1 test accuracy</th><th style="text-align: right">M5 test accuracy</th></tr></thead><tbody>
+<tr><td style="text-align: right">0</td><td style="text-align: right">0.0850</td><td style="text-align: right">0.0850</td></tr>
+<tr><td style="text-align: right">50</td><td style="text-align: right">0.8790</td><td style="text-align: right">0.8810</td></tr>
+<tr><td style="text-align: right">100</td><td style="text-align: right">0.9020</td><td style="text-align: right">0.9020</td></tr>
+<tr><td style="text-align: right">150</td><td style="text-align: right">0.9050</td><td style="text-align: right">0.9030</td></tr>
+<tr><td style="text-align: right">200</td><td style="text-align: right">0.9070</td><td style="text-align: right">0.9070</td></tr>
+<tr><td style="text-align: right">250</td><td style="text-align: right">0.9080</td><td style="text-align: right">0.9070</td></tr>
+<tr><td style="text-align: right">300</td><td style="text-align: right">0.9080</td><td style="text-align: right">0.9070</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c15-parity"></a><strong>Table 15.3.</strong> The seeded handwritten-digit network trained identically on both generations, deterministic and reproducible.</p>
+<p>That one-sample gap is the end-to-end signature of the per-operation cross-generation fp16 difference, at most one unit in the last place per operation, accumulating across 300 steps until it flips one near-threshold logit.
+The difference does not vanish, but it is far too small to affect the trained model, so training is portable across the two generations.</p>
+<h2 id="a-resident-state-training-loop"><a class="header" href="#a-resident-state-training-loop">A resident-state training loop</a></h2>
+<p>The weights are declared as trainable graph inputs and the optimizer moments allocated once, both outside the step loop (<a href="#lst-c15-loop">listing 15.2</a>).</p>
+<pre><code class="language-python">graph G:
+    input   x : [B, 1, 28, 28] fp16          # one minibatch of images
+    input   y : [B]                           # one minibatch of labels
+    weights W                                 # trainable, an input not an embedded constant
+    logits = forward(W, x)                    # inference-style ops only
+    loss   = cross_entropy(logits, y)
+    output  loss, grad(loss, W)               # autodiff appends the backward pass
+
+program P = compile(G, target = H13)   # forward + backward in one program, one dispatch
+M, V := 0                                     # adaptive optimizer moments, resident on the engine
+for step in 1..300:
+    grads = dispatch(P, x_batch, y_batch)     # forward and backward in one submitted graph
+    M = beta1 * M + (1 - beta1) * grads               # update, on-device
+    V = beta2 * V + (1 - beta2) * (grads * grads)
+    W = W - lr_t * M / (sqrt(V) + eps)        # optimizer step writes resident W in place
+    # M, V, W stay resident; host sends only (x_batch, y_batch, lr_t) next step
+    # lr_t already absorbs loss scaling: it cancels in M / sqrt(V), do not divide out again
+W_final = read(W)                             # read the weights back at a checkpoint
+</code></pre>
+<p><a id="lst-c15-loop"></a><strong>Listing 15.2.</strong> A resident-state training loop, keeping the weights and optimizer moments resident across all 300 steps.</p>
+<h2 id="reference-training-correctness-and-the-numeric-edge"><a class="header" href="#reference-training-correctness-and-the-numeric-edge">Reference: training correctness and the numeric edge</a></h2>
+<p>Everything this chapter establishes about correctness reduces to a handful of figures and one guarded numeric edge (<a href="#tbl-c15-reference">table 15.4</a>).</p>
+<div class="table-wrapper"><table><thead><tr><th>Quantity</th><th style="text-align: right">Value</th></tr></thead><tbody>
+<tr><td>Registered-gradient cosine versus closed form</td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0000</span></span></span></span></td></tr>
+<tr><td>Final test accuracy, M1</td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9080</span></span></span></span> after 300 steps</td></tr>
+<tr><td>Final test accuracy, M5</td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9070</span></span></span></span></td></tr>
+<tr><td>Cross-generation accuracy gap</td><td style="text-align: right">one test sample in one thousand</td></tr>
+<tr><td>Per-operation cross-generation fp16 difference</td><td style="text-align: right">at most one unit in the last place</td></tr>
+<tr><td>Loss-scale accuracies, M1 (128, 1024, 65536)</td><td style="text-align: right"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9070</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9080</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.9100</span></span></span></span></td></tr>
+<tr><td>Conv weight-gradient saturation, width axis</td><td style="text-align: right">4094, where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">65504/16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4094</span></span></span></span></td></tr>
+<tr><td>First infinity at fixed shape</td><td style="text-align: right">loss scale 512 (exact at loss scale 384)</td></tr>
+<tr><td>Generations with the saturation</td><td style="text-align: right">M1 and M2; non-saturating on A15 and later</td></tr>
+</tbody></table>
+</div>
+<p><a id="tbl-c15-reference"></a><strong>Table 15.4.</strong> The training correctness figures and the single guarded numeric edge.</p>
+<h2 id="capability-and-its-scale"><a class="header" href="#capability-and-its-scale">Capability and its scale</a></h2>
+<p>Training reaches the engine for the supported operation set, with the optimizer state resident across steps and the conv weight-gradient as the one guarded numeric edge.
+The loop is dispatch-bound: the per-step work is small relative to the dispatch cost, so at this scale the engine is no faster than the host or the graphics processor.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part-4-workloads/14-llm-case-study.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part-4-workloads/16-numerical-scientific.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part-4-workloads/14-llm-case-study.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part-4-workloads/16-numerical-scientific.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid.min.js"></script>
+        <script src="../mermaid-init.js"></script>
+        <script src="../home-link.js"></script>
+        <script src="../highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

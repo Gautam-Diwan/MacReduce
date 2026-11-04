@@ -1,0 +1,78 @@
+{
+  "status": "ok",
+  "import": "aneforge as af",
+  "aneforge": "0.4.0",
+  "device_mask": "0x4",
+  "device_mask_meaning": "Apple Neural Engine",
+  "programs": {
+    "forward": 4,
+    "backward": [
+      4
+    ],
+    "update": [
+      4
+    ]
+  },
+  "steps": 4,
+  "losses": [
+    0.30810546875,
+    0.04833984375,
+    0.056732177734375,
+    0.360595703125
+  ],
+  "weight_max_abs_move": 0.1839597374200821,
+  "mactop": [
+    {
+      "ane_power_w": 0.7936889937536284,
+      "ane_bw_gbs": 2.9108765450168024,
+      "ane_active": 0,
+      "gpu_power_w": 0.0975559938744498
+    },
+    {
+      "ane_power_w": 0.778873718385257,
+      "ane_bw_gbs": 2.5920587527050687,
+      "ane_active": 0,
+      "gpu_power_w": 0.08998560754588161
+    },
+    {
+      "ane_power_w": 0.7393378518755039,
+      "ane_bw_gbs": 2.739602217967396,
+      "ane_active": 0,
+      "gpu_power_w": 0.10275641561350028
+    },
+    {
+      "ane_power_w": 0.7625804390866995,
+      "ane_bw_gbs": 2.7072576059176616,
+      "ane_active": 0,
+      "gpu_power_w": 0.09041628636552047
+    },
+    {
+      "ane_power_w": 0.7942811755361399,
+      "ane_bw_gbs": 2.756095100881593,
+      "ane_active": 0,
+      "gpu_power_w": 0.09734616862806159
+    },
+    {
+      "ane_power_w": 0.793622206184227,
+      "ane_bw_gbs": 2.8141845006721384,
+      "ane_active": 0,
+      "gpu_power_w": 0.09977094625550838
+    },
+    {
+      "ane_power_w": 0.7481105068889324,
+      "ane_bw_gbs": 2.6206778253289262,
+      "ane_active": 0,
+      "gpu_power_w": 0.08660026761597059
+    },
+    {
+      "ane_power_w": 0.7933062417742582,
+      "ane_bw_gbs": 2.715465454592892,
+      "ane_active": 0,
+      "gpu_power_w": 0.09934351231330676
+    }
+  ],
+  "matmul_calls": 109920,
+  "mactop_status": "available",
+  "ane_power_w_max": 0.7942811755361399,
+  "ane_bw_gbs_max": 2.9108765450168024
+}

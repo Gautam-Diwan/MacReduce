@@ -1,0 +1,2389 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Direct, CoreML-free Apple Neural Engine backend for Python">
+      
+      
+        <meta name="author" content="Spencer H. Bryngelson">
+      
+      
+      
+        <link rel="prev" href="../optimizer-and-cost/">
+      
+      
+        <link rel="next" href="../bridges/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Numerics - ANEForge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="aneforge" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/developer/numerics/" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#numerics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ANEForge" class="md-header__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANEForge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Numerics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ANEForge" class="md-nav__button md-logo" aria-label="ANEForge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANEForge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sbryngelson/ANEForge" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sbryngelson/ANEForge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get something running
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get something running
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aneforge-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training on the ANE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mil-primer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIL primer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use the engine well
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Use the engine well
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cross-chip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-chip deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../numeric-cliffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numeric correctness cliffs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dispatch backends
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../e5rt-dispatch-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    e5rt dispatch reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Know what works
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Know what works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../op-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ONNX import
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLMs (decode, MoE, speculative)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mlperf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLPerf (ResNet-50 on the ANE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rooflines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware results (ANE leaderboard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph & operators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/compile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile, optimize, estimate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training & autograd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretrained models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Applied math
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internals (developer)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internals (developer)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compile-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compile pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizer-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimizer & cost model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numerics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-fp16-only-compute-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The fp16-only compute model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-wide-accumulator-and-where-fp16-actually-bites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The WIDE accumulator and where fp16 actually bites
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The WIDE accumulator and where fp16 actually bites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-reduce_sum-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The reduce_sum trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reduce_sum-as-matmul" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reduce_sum-as-matmul
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compensated-paired-fp16-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compensated / paired-fp16 arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-graph-rewrites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric graph rewrites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fft-complex-as-real-pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FFT: complex as real pairs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FFT: complex as real pairs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dynamic-range-walls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dynamic-range walls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-fp16-envelope-in-linear-algebra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The fp16 envelope in linear algebra
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-functions-fp16-shapes-the-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Special functions: fp16 shapes the math
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accuracy-gated-compression-and-int8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accuracy-gated compression and int8
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accuracy-gated compression and int8">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#precision-aware-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precision-aware tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-chip-fp16-divergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip fp16 divergence
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bridges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../op-quirks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Op quirks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capabilities-and-targets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities & targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autograd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autograd internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribute
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reproducibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-fp16-only-compute-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The fp16-only compute model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-wide-accumulator-and-where-fp16-actually-bites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The WIDE accumulator and where fp16 actually bites
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The WIDE accumulator and where fp16 actually bites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-reduce_sum-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The reduce_sum trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reduce_sum-as-matmul" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reduce_sum-as-matmul
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compensated-paired-fp16-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compensated / paired-fp16 arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-graph-rewrites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric graph rewrites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fft-complex-as-real-pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FFT: complex as real pairs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FFT: complex as real pairs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dynamic-range-walls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dynamic-range walls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-fp16-envelope-in-linear-algebra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The fp16 envelope in linear algebra
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-functions-fp16-shapes-the-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Special functions: fp16 shapes the math
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accuracy-gated-compression-and-int8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accuracy-gated compression and int8
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accuracy-gated compression and int8">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#precision-aware-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precision-aware tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-chip-fp16-divergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-chip fp16 divergence
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="numerics">Numerics<a class="headerlink" href="#numerics" title="Permanent link">&para;</a></h1>
+<p>ANEForge computes in fp16 only, fed through a wide (fp32-class) accumulator. This
+page is the model for reasoning about accuracy on the ANE: where the fp16 limit
+actually bites, why every reduction is a matmul, and the compensated-arithmetic
+and accuracy-gated-compression machinery built on top.</p>
+<h2 id="the-fp16-only-compute-model">The fp16-only compute model<a class="headerlink" href="#the-fp16-only-compute-model" title="Permanent link">&para;</a></h2>
+<p>The ANE computes in fp16 and nothing else. fp32, int32, and bf16 are not
+implemented on the backend, so the graph builder rejects them at construction
+rather than failing cryptically at compile time. Every value in flight is a
+16-bit float with roughly 3-4 significant decimal digits.</p>
+<p>That single dtype constraint is the root of everything below. The headroom is real
+but narrow:</p>
+<ul>
+<li>The fp16 range ceiling is 65504. Any intermediate that crosses it saturates
+  to infinity, silently corrupting the result. Several modules pre-scale to keep
+  intermediates inside this envelope (see the dynamic-range walls below).</li>
+<li>The fp16 precision floor is ~1e-3 relative error. A polynomial that is exact
+  in fp64 is capped at ~1e-3..1e-4 relerr once its operands and products round to
+  fp16.</li>
+</ul>
+<h2 id="the-wide-accumulator-and-where-fp16-actually-bites">The WIDE accumulator and where fp16 actually bites<a class="headerlink" href="#the-wide-accumulator-and-where-fp16-actually-bites" title="Permanent link">&para;</a></h2>
+<p>The crucial asymmetry: reductions and matmuls accumulate in a wide,
+fp32-class accumulator fed by radix-4 fp16-rounded input tiles. The inputs and
+products round to fp16, but the running sum does not.</p>
+<p>So representable sums are near-exact where a naive fp16 running sum would have
+stalled long ago:</p>
+<ul>
+<li>A sum (or dot) of 16384 ones is bit-exact, where naive fp16 saturation of the
+  running sum stalls at ~2048.</li>
+<li>A <code>+1</code> survives next to a 16000 partial that an fp16 running sum would simply
+  swallow.</li>
+</ul>
+<p>So the fp16 limit lives at the products and the I/O cast, not the running sum:</p>
+<table>
+<thead>
+<tr>
+<th>Source of error</th>
+<th>Affected by the wide accumulator?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rounding of operands to fp16 (storage / I/O cast)</td>
+<td>No - irreducible</td>
+</tr>
+<tr>
+<td>Rounding of each product to fp16</td>
+<td>No - irreducible</td>
+</tr>
+<tr>
+<td>Accumulating the products into the sum</td>
+<td><strong>Yes - near-exact</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Cancellation-heavy reductions still lose precision, because the loss happens in the
+fp16-rounded operands feeding the sum, not in the summation itself. A tiny result
+formed by subtracting large, nearly-equal quantities is the wall - what the
+compensated-arithmetic path (below) exists to climb.</p>
+<h3 id="the-reduce_sum-trap">The reduce_sum trap<a class="headerlink" href="#the-reduce_sum-trap" title="Permanent link">&para;</a></h3>
+<p>One catch every numerically careful kernel must respect:</p>
+<blockquote>
+<p>On this ANE, <code>matmul</code> accumulates <strong>wide</strong> but <code>reduce_sum</code> accumulates
+<strong>narrow</strong> (fp16). They are not interchangeable for accuracy.</p>
+</blockquote>
+<p>This is the single most important numerics rule in the codebase. Every dot product
+and accumulation in the math modules is written as <code>(u * v) @ ones</code> - a matmul -
+never <code>(u * v).sum()</code>. A narrow <code>reduce_sum</code> re-injects exactly the rounding error
+a careful kernel is trying to avoid.</p>
+<h3 id="reduce_sum-as-matmul">reduce_sum-as-matmul<a class="headerlink" href="#reduce_sum-as-matmul" title="Permanent link">&para;</a></h3>
+<p>The optimizer makes this rule mechanical. The <code>reduce_sum_to_matmul</code> rewrite
+rebuilds a single-axis <code>reduce_sum</code> node as a contraction against a ones-vector:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>x[..., K].sum(-1, keepdims) == x @ ones[K, 1]
+</code></pre></div>
+<p>This is mathematically identical (<code>sum_k x_k == x @ 1</code>) and strictly &gt;= accuracy
+under cancellation, because it routes the sum through the wide accumulator. It is
+therefore classed lossless-or-better: always safe, and the precision-aware tuner
+offers it as the flagship cheap accuracy win (one matmul vs one reduce). Only the
+single last-axis case is rewritten directly; a non-last axis is transposed to the
+end first, and multi-axis sums are left alone.</p>
+<p>The same identity powers <code>cumsum</code>: no native cumsum, but a last-axis cumulative sum
+is exactly <code>x @ triu_ones</code> - a matmul against a baked upper-triangular ones weight,
+made exact by the wide accumulator.</p>
+<h2 id="compensated-paired-fp16-arithmetic">Compensated / paired-fp16 arithmetic<a class="headerlink" href="#compensated-paired-fp16-arithmetic" title="Permanent link">&para;</a></h2>
+<p>When cancellation is the wall - a tiny result from large nearly-equal operands,
+where the fp16 rounding of the operands and products (not the accumulation) swamps
+the signal - ANEForge offers paired-fp16 ("double-fp16") extended precision, with
+no fp32 anywhere in the compute path.</p>
+<p>A value is carried as an unevaluated pair <code>(hi, lo)</code> with <code>hi = fp16(x)</code> and
+<code>lo = fp16(x - hi)</code>, so the pair represents <code>hi + lo</code> to roughly twice the fp16
+significand (~22 effective bits). Both limbs are ordinary fp16 tensors, so every
+paired operation compiles to a pure-fp16 graph that runs on the ANE.</p>
+<p>The arithmetic is the classic error-free transforms, every intermediate rounded
+to fp16:</p>
+<ul>
+<li>TwoSum (Knuth) - add/sub: <code>a + b = s + e</code> exactly, <code>s = fl(a + b)</code>.</li>
+<li>TwoProduct (Dekker) - mul: <code>a * b = p + e</code> exactly via a Veltkamp split (the
+  split constant is <code>2^ceil(11/2)+1</code> for fp16's 11-bit significand). The
+  <code>hi*lo + lo*hi</code> cross terms are captured; <code>lo*lo</code> is dropped (below fp16 ulp).</li>
+<li>Compensated dot - TwoProduct each element, then accumulate the product and
+  the error streams. Crucially, the accumulation is again via <code>@ ones</code> (the wide
+  matmul accumulator), never <code>reduce_sum</code> - a narrow sum would re-inject the very
+  error the compensation just removed.</li>
+</ul>
+<p>The <code>lo</code> terms capture exactly the operand/product rounding that plain fp16 loses,
+so carrying the pair recovers it. Paired-fp16 recovers the most when its inputs
+already carry sub-ulp information (a residual, or a value produced upstream in
+higher working precision) - the "regime B" recovering case. A genuine fp16 input
+has no sub-ulp bits, so there the win comes from the compensated ops capturing
+each operation's own rounding.</p>
+<p>Approximate op cost per element:</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>fp16 ops/elem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TwoSum / compensated add-sub</td>
+<td>~6</td>
+</tr>
+<tr>
+<td>TwoProduct / compensated mul</td>
+<td>~17</td>
+</tr>
+<tr>
+<td>Compensated dot of length K</td>
+<td>~17 + 2 matmul-accumulates</td>
+</tr>
+</tbody>
+</table>
+<p>Because it is markedly more expensive than plain fp16, the optimizer gates it
+behind the error budget. The single-subtract entry point <code>paired_subtract</code> carries
+one <code>a - b</code> through a compensated TwoSum and returns a plain fp16 tensor (the best-
+fp16 result), dropping straight into an existing graph at a cancellation hotspot.</p>
+<blockquote>
+<p><strong>Compiler caveat.</strong> An aggressive algebraic simplifier could in principle
+collapse <code>hi + lo</code> back to <code>hi</code> (since <code>lo</code> is "just the rounding of <code>hi</code>"),
+defeating the trick. On this ANE / e5rt it does not happen - the transforms are
+opaque fp16 add/sub/mul chains with no fp32 island for the compiler to see
+through, and <code>to_tensor()</code> writes the result as an explicit <code>hi + lo</code> add so a
+dead-code pass cannot drop the <code>lo</code> computation. The tell that a future toolchain
+has fused them away is the on-device relerr jumping back to the plain-fp16 value;
+the demo asserts against that.</p>
+</blockquote>
+<h2 id="numeric-graph-rewrites">Numeric graph rewrites<a class="headerlink" href="#numeric-graph-rewrites" title="Permanent link">&para;</a></h2>
+<p>The optimizer distinguishes lossless rewrites (always-on canonicalization) from
+numeric ones (accuracy-affecting, tuner-gated):</p>
+<ul>
+<li><code>reduce_sum_to_matmul</code> (above) - lossless-or-better, the safe accuracy lever.</li>
+<li>Scalar-chain folding - <code>muls(b) after muls(a) -&gt; muls(a*b)</code>, likewise for <code>adds</code>.
+  The fold is done in fp16 to match device semantics, but because the fp16 NumPy
+  kernels are never assumed bit-identical to the engine, const-folding is gated as
+  a numeric (not lossless) rewrite.</li>
+<li>SDPA / bridge decompositions - <code>sdpa -&gt; ((q @ k^T) * scale).softmax(-1) @ v</code>,
+  and the bridge-elimination family (<code>minmax_norm</code>, <code>flatten</code>, <code>lrn</code>). These are
+  metamorphic-proven bit-identical (or within fp16 op-noise), so they are lossless
+  and chosen purely by speed.</li>
+</ul>
+<h2 id="fft-complex-as-real-pairs">FFT: complex as real pairs<a class="headerlink" href="#fft-complex-as-real-pairs" title="Permanent link">&para;</a></h2>
+<p>The ANE has no complex dtype - compute is fp16 real only - but it is a matmul
+machine, and the DFT is a matmul against a twiddle matrix. The FFT modules exploit
+the wide accumulator: the naive O(N^2) DFT-as-twiddle-matmul is fp16-clean to
+N=2048+.</p>
+<p>Every value is carried as a <code>(re, im)</code> tensor pair. A complex matmul <code>C = A @ B</code>
+becomes four real matmuls:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Cre = Are@Bre - Aim@Bim
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Cim = Are@Bim + Aim@Bre
+</code></pre></div>
+<p>This is the straight 4-matmul form, not Karatsuba: on the ANE matmul is cheap,
+and the wide accumulator keeps the straight form cleanest - Karatsuba's <code>(a+b)(c+d)</code>
+sums would lose a bit of fp16 headroom for no real op savings. The twiddle matrices
+ride in as small fp16 constants folded into the graph.</p>
+<p>The staged Cooley-Tukey FFT keeps the "every stage is a matmul" property while
+cutting MACs to sub-quadratic. Its accuracy is ~5e-4..8e-4, flat in N (the wide
+accumulator means per-stage sums don't compound) - about 3x the naive single-DFT
+floor (~2.5e-4) from the extra cross-twiddle multiplies, but still fp16-clean to
+N=2048+. Staged is not more accurate than the dense DFT, just far cheaper at the
+same precision class.</p>
+<p>The DFT butterfly contains exact-by-construction subtracts that trip the generic
+cancellation precision heuristic; these kernels are numerically verified against
+<code>np.fft</code> and skip the check (<code>_check_precision=False</code>).</p>
+<h3 id="the-dynamic-range-walls">The dynamic-range walls<a class="headerlink" href="#the-dynamic-range-walls" title="Permanent link">&para;</a></h3>
+<p>Several places must actively defend the 65504 ceiling, because the accumulator
+holds the unscaled sum before any normalization:</p>
+<ul>
+<li>2-D FFT folds the <code>1/(M*N)</code> normalization into the twiddles (<code>1/N</code> on the
+  row pass, <code>1/M</code> on the column pass), never as one scale at the end. A real
+  spectrum is O(M*N) at the dominant modes, so an unscaled first-axis transform
+  would push intermediates past 65504 and shred precision.</li>
+<li>iFFT for convolution spectra pre-scales <code>Y</code> so the unscaled inverse-DFT sum
+  stays well within range (<code>s = 30000 / peak</code>), runs the linear iFFT, then undoes
+  the scale on the host. Products of two transforms can otherwise peak past 65504
+  and saturate.</li>
+<li>The max usable FFT length is bounded by this fp16 dynamic range (normalize by
+  <code>1/sqrt(N)</code> for power spectra), not by stage error.</li>
+</ul>
+<p>The same crop-DMA saturation surfaces in direct linear-algebra factorizations: a
+width-offset slice rides the A13/A14 x16 fixed-point crop-DMA, which saturates any
+sliced <code>|value| &gt; 4094</code> (= 65504/16) to +/-infinity. Element-recurrence kernels
+(Cholesky / LU) route the accessor off the width axis to keep the usable entry range
+at the full fp16 span.</p>
+<h2 id="the-fp16-envelope-in-linear-algebra">The fp16 envelope in linear algebra<a class="headerlink" href="#the-fp16-envelope-in-linear-algebra" title="Permanent link">&para;</a></h2>
+<p>The wide accumulator makes a single <code>A @ x</code> clean even at cond ~1e4 - but iterates
+and residuals are stored and re-fed as fp16, and the residual <code>b - A x</code> is a
+catastrophic-cancellation subtract. That subtract, not the matmul, is the wall:</p>
+<ul>
+<li>Iterative refinement recovers about one order of magnitude of accuracy for
+  moderate conditioning. By cond ~1e3 the fp16 approximate solve barely converges
+  and refinement only nibbles.</li>
+<li>Conjugate gradient uses symmetric Jacobi (diagonal) preconditioning to keep
+  the fp16 dot products in range: scaling <code>A</code> so its entries are ~1 stops raw
+  cond ~1e2 GEMV products from blowing past 65504. Without a convergence test to
+  stop early, the unrolled iterates can overflow fp16 at high cond - reported as a
+  finite large relerr rather than a NaN.</li>
+<li>Least squares via normal equations squares the condition number; refinement
+  buys back roughly the order of magnitude the squaring cost.</li>
+<li>LSQR / GMRES Krylov envelopes: ~1e-3 at cond &lt;= 1e1, ~1e-2 at cond &lt;= 1e2 for
+  overdetermined least squares.</li>
+<li>Power iteration (dominant SVD) normalizes between the <code>A</code> and <code>A^T</code>
+  applications: <code>A^T(A v)</code> has magnitude ~sigma^2, which overflows fp16 for sigma &gt; ~250.
+  Likewise, extra <code>A^T A</code> power steps hurt trailing singular values in fp16 - each
+  step squares the spectrum and crushes the small values toward the dominant one.</li>
+</ul>
+<p>Every dot/norm in these kernels is <code>(z*z) @ ones</code>, never <code>reduce_sum</code> - the same
+wide-accumulator rule.</p>
+<h2 id="special-functions-fp16-shapes-the-math">Special functions: fp16 shapes the math<a class="headerlink" href="#special-functions-fp16-shapes-the-math" title="Permanent link">&para;</a></h2>
+<p>Special functions are long, dependent chains of fused fp16 mul/add (Horner /
+Clenshaw evaluation of minimax or rational approximations). Two fp16 constraints
+shape every one:</p>
+<ol>
+<li>fp16 compute (~3-4 digits). Where a function's output leaves the fp16 range
+   (gamma &gt; 65504 past x~8, I0 past x~12) that is a hard wall, not a coefficient
+   problem.</li>
+<li>No scalar-add op and no in-graph branch. A constant <code>c</code> is added with a
+   <code>exp(0) == 1</code> ones tensor scaled by <code>c</code> (built on <code>exp</code>, an F0 native unary on
+   every ANE family including M1, rather than <code>cos</code>, which is A15+). Only fixed,
+   smooth range reduction is used - never a data-dependent step count.</li>
+</ol>
+<p>Several functions exist because the naive fp16 form cancels or centers badly:</p>
+<ul>
+<li>erfc is evaluated directly (A&amp;S 7.1.26), not as <code>1 - erf</code>: in fp16,
+  <code>1 - erf(x)</code> cancels to 0 for x &gt; ~2 (<code>fp16(1 - erf(3)) == 0</code>, but
+  <code>erfc(3) = 2.2e-5</code>).</li>
+<li>erf is the mirror case, and gets its own polynomial for the same reason:
+  <code>x * P(x^2)</code>, a deg-5 minimax of <code>erf(x)/x</code> on [0, 2], not <code>1 - erfc</code>. Near 0
+  <code>erf</code> is small while <code>erfc -&gt; 1</code>, so the subtraction cancels exactly where <code>erf</code>
+  is wanted: on <code>geomspace(1e-3, 1)</code> the naive form is off by 187% against
+  0.10% for the direct one, and it returns <code>-0.000977</code> at <code>x = 0</code> - a negative
+  value for a function that is odd through the origin. Past |x| ~ 2 the two swap
+  roles and <code>1 - erfc(|x|)</code> is the accurate path, since there <code>erfc</code> is small.</li>
+<li>lgamma / gamma evaluate in a centered variable (<code>x - 4.5</code>, <code>x - 1.5</code>). A raw
+  Horner in <code>x</code> has terms up to ~1e7 with alternating large coefficients that cancel
+  catastrophically (abserr ~8); centering keeps the powers small and the chain
+  fp16-clean (abserr ~3e-3).</li>
+<li>sin / cos use half-period [-pi/2, pi/2] minimax polynomials. Over the full
+  [-pi, pi] the alternating terms reach ~5 in magnitude, a cancellation that loses
+  ~2 fp16 digits (abserr ~0.2 at +/-pi); on the half-period the terms stay O(1) and the
+  error is fp16-rounding-limited (~1e-3). These polynomial forms also give a portable
+  path on M1/H13, where native trig is unavailable.</li>
+</ul>
+<p>A negative result: <code>exp_wide</code> / <code>log_wide</code> range-reduction recipes do not reliably
+beat the native fp16 <code>exp</code> / <code>log</code> here - the re-rounding from repeated squaring/sqrt
+usually costs more than the small-argument benefit. They are documented recipes, not
+the default.</p>
+<h2 id="accuracy-gated-compression-and-int8">Accuracy-gated compression and int8<a class="headerlink" href="#accuracy-gated-compression-and-int8" title="Permanent link">&para;</a></h2>
+<p>Weight compression is a deliberate accuracy/bandwidth trade, and the optimizer never
+makes it silently. Weights can stream as fp16 (default), per-channel int8, per-tensor
+int4 LUT palettization, or unstructured sparse bitmask - each halving or better the
+DRAM bytes during the tile DMA.</p>
+<p>The numeric contract:</p>
+<ul>
+<li>Default tune is accuracy-preserving. The default tolerance is fp16 noise
+  (<code>_ACCURACY_TOL = 5e-3</code>). A lossy rewrite like int8 (~1-2% quantization error,
+  well above fp16 noise) is rejected at this default, so <code>tune()</code> returns the
+  lossless baseline. int8 is opt-in: <code>tune(out, atol=0.1)</code> admits it within a stated
+  budget, and even then a lossy variant must beat the baseline by at least 1.10x to
+  be chosen, so a measurement-noise "win" never costs accuracy.</li>
+<li><code>compress='auto'</code> chooses per weight: sparse if the weight is &gt;=50% zeros,
+  else int4 if it stays within <code>compress_atol</code>, else int8, else fp16. int4 carries an
+  accuracy-gated fallback to int8/fp16.</li>
+<li>An encoding only helps if the per-family lowering streams it natively. Encodings
+  the device folds back to dense fp16 (e.g. blockwise on A14) pay an accuracy cost
+  for zero bandwidth win - <code>native_streams</code> records which formats stream per family.</li>
+</ul>
+<h3 id="precision-aware-tuning">Precision-aware tuning<a class="headerlink" href="#precision-aware-tuning" title="Permanent link">&para;</a></h3>
+<p>Beyond preserving accuracy, the precision-aware path can improve it. Given an
+explicit <code>target_error=E</code>, the tuner selects the numerics-aware rewrite set
+(<code>reduce_sum -&gt; matmul</code>, paired-fp16, +/-int8) that meets the budget at minimum
+predicted cost - measuring accuracy against an fp32-faithful reference where one can
+be emulated (products fp16-rounded, accumulation wide, so the reference is the
+achievable target, not an unreachable fp64 ideal), else against the fp16 baseline's
+own output. <code>reduce_sum -&gt; matmul</code> is auto-detected (structurally visible); the
+CFG-style paired-fp16 cancellation fix stays opt-in, because near-equal cancellation
+is data-dependent and can't be confirmed at graph-build time.</p>
+<h2 id="cross-chip-fp16-divergence">Cross-chip fp16 divergence<a class="headerlink" href="#cross-chip-fp16-divergence" title="Permanent link">&para;</a></h2>
+<p>The MAC accumulator width and the compiler <code>__TEXT</code> are uniform across chips, so a
+graph's fp16 values are largely chip-independent. The remaining divergence comes
+only from HAL-data-selected codegen routes that reorder or saturate fp16 ops; the
+target table predicts it statically into one of:</p>
+<ul>
+<li><code>saturation</code> - a width-offset slice on A13 (family 2) routes through the Q.4
+  x16 crop-DMA that clamps <code>|value| &gt; 4094</code> to +/-infinity, while A14+ takes a clean
+  route. Magnitude-gated: only flagged when values can exceed 4094.</li>
+<li><code>ulp1</code> - a reduction/softmax/norm whose route threshold differs (192 on
+  A13/A14 vs 384 on A15+): a partial-sum reorder, &lt;= 1 ULP.</li>
+<li><code>round1</code> - a reduce-then-square fusion difference; currently never returned
+  (A13/A14/A16 silicon all compute <code>fp16(sum)^2</code>, a measured no-op).</li>
+<li><code>none</code> - no HAL field selects a differing route.</li>
+</ul>
+<p>The native fused-attention layer carries a numeric reliability envelope: reliable
+to ~3e-3 up to S=2048, but garbage (~1.0) at S=4096 and once both query and key
+axes exceed 512. Above those bounds <code>af.sdpa</code> emits the accurate decomposed form,
+where the wide matmul accumulator holds (~5e-3).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

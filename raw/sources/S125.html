@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<html lang="en" class="coal sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>References - Apple Neural Engine: A Complete Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "coal";
+            const default_dark_theme = "coal";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="ane-guide" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/references.html" /><meta name="readthedocs-http-status" content="200" /></head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Apple Neural Engine: A Complete Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/sbryngelson/ane-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="references"><a class="header" href="#references">References</a></h1>
+<p>This guide is archived on arXiv as <a href="https://arxiv.org/abs/2606.22283">arXiv:2606.22283</a>. To cite it:</p>
+<pre><code class="language-bibtex">@misc{bryngelson2026ane,
+  author        = {Bryngelson, Spencer H.},
+  title         = {Apple Neural Engine: Architecture, Programming, and Performance},
+  year          = {2026},
+  archivePrefix = {arXiv},
+  eprint        = {2606.22283},
+  doi           = {10.48550/arXiv.2606.22283},
+  url           = {https://arxiv.org/abs/2606.22283},
+}
+</code></pre>
+<hr />
+<ol>
+<li><a id="ref-libane"></a>AmiraniLabs. "libane: a native Apple Neural Engine runtime." Repository, <a href="https://github.com/AmiraniLabs/libane">https://github.com/AmiraniLabs/libane</a>.</li>
+<li><a id="ref-appleaccelerate"></a>Apple. Accelerate and BNNS documentation. <a href="https://developer.apple.com/documentation/accelerate">https://developer.apple.com/documentation/accelerate</a>.</li>
+<li><a id="ref-appleactivedevices2026"></a>Apple. Active installed base of 2.5 billion devices, reported by T. Cook on the first-quarter fiscal 2026 earnings call, January 29, 2026. apple.com.</li>
+<li><a id="ref-appleane"></a>Apple. Apple silicon technical specifications. <a href="https://www.apple.com/mac/compare/">https://www.apple.com/mac/compare/</a>.</li>
+<li><a id="ref-applecoreml"></a>Apple. Core ML framework documentation. <a href="https://developer.apple.com/documentation/coreml">https://developer.apple.com/documentation/coreml</a>.</li>
+<li><a id="ref-applecoremltools"></a>Apple. Core ML Tools (coremltools) documentation. <a href="https://apple.github.io/coremltools">https://apple.github.io/coremltools</a>.</li>
+<li><a id="ref-applevision"></a>Apple. Vision framework documentation. <a href="https://developer.apple.com/documentation/vision">https://developer.apple.com/documentation/vision</a>.</li>
+<li><a id="ref-appleanetransformers"></a>Apple Machine Learning Research. "Deploying Transformers on the Apple Neural Engine." Apple Machine Learning Research article, 2022.</li>
+<li><a id="ref-benazir2026"></a>Benazir, A., and Lin, F. X. "Efficient Mixture-of-Experts LLM Inference with Apple Silicon NPUs." Preprint, <a href="https://arxiv.org/abs/2604.18788">arXiv:2604.18788</a>, 2026.</li>
+<li><a id="ref-bi2026"></a>Bi, Z., Chen, X., Sun, L., Yao, Y., Shen, Q., Lou, J., and Deng, C. "RooflineBench: A Benchmarking Framework for On-Device LLMs via Roofline Analysis." Preprint, <a href="https://arxiv.org/abs/2602.11506">arXiv:2602.11506</a>, 2026.</li>
+<li><a id="ref-aneforge2026"></a>Bryngelson, S. H. "ANEForge: Python for direct computation on the Apple Neural Engine." Preprint, <a href="https://arxiv.org/abs/2606.17090">arXiv:2606.17090</a>, 2026.</li>
+<li><a id="ref-chen2025"></a>Chen, L., Feng, D., Feng, E., Wang, Y., Zhao, R., Xia, Y., Xu, P., and Chen, H. "Characterizing Mobile SoC for Accelerating Heterogeneous LLM Inference." ACM SIGOPS Symposium on Operating Systems Principles (SOSP), 2025. <a href="https://arxiv.org/abs/2501.14794">arXiv:2501.14794</a>, DOI 10.1145/3731569.3764808.</li>
+<li><a id="ref-choi2013"></a>Choi, J. W., Bedard, D., Fowler, R., and Vuduc, R. "A Roofline Model of Energy." IEEE International Symposium on Parallel and Distributed Processing (IPDPS), 661-672, 2013. DOI 10.1109/IPDPS.2013.77.</li>
+<li><a id="ref-communityane"></a>Community Apple Neural Engine reverse-engineering repositories. johnmai-dev/ANE-LM, mechramc/Orion, skyfallsin/apple-neural-engine-field-guide, and dmaynor/apple-vuln-research. Repositories.</li>
+<li><a id="ref-ding2019"></a>Ding, N., and Williams, S. "An Instruction Roofline Model for GPUs." IEEE/ACM Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS), 7-18, 2019. DOI 10.1109/PMBS49563.2019.00007.</li>
+<li><a id="ref-fanariotis2025"></a>Fanariotis, A., Orphanoudakis, T., and Fotopoulos, V. "Evaluating the Energy Efficiency of NPU-Accelerated Machine Learning Inference on Embedded Microcontrollers." Preprint, <a href="https://arxiv.org/abs/2509.17533">arXiv:2509.17533</a>, 2025.</li>
+<li><a id="ref-whispercpp"></a>Gerganov, G. "whisper.cpp: Whisper inference in C/C++ with Core ML Neural Engine support." Repository, <a href="https://github.com/ggml-org/whisper.cpp">https://github.com/ggml-org/whisper.cpp</a>.</li>
+<li><a id="ref-handley"></a>Handley, M. "Apple Neural Engine." AArch64-Explore, vol. 7. Patent-based architectural analysis of the engine, <a href="https://github.com/name99-org/AArch64-Explore">https://github.com/name99-org/AArch64-Explore</a>.</li>
+<li><a id="ref-hollemans"></a>Hollemans, M. "The Neural Engine: What Do We Know About It?" Community-maintained repository, <a href="https://github.com/hollance/neural-engine">https://github.com/hollance/neural-engine</a>.</li>
+<li><a id="ref-tinygrad"></a>Hotz, G., and the tinygrad authors. "tinygrad." Repository, <a href="https://github.com/tinygrad/tinygrad">https://github.com/tinygrad/tinygrad</a>.</li>
+<li><a id="ref-hubner2025"></a>Hübner, P., Hu, A., Peng, I., and Markidis, S. "Apple vs. Oranges: Evaluating the Apple Silicon M-Series SoCs for HPC Performance and Efficiency." Preprint, <a href="https://arxiv.org/abs/2502.05317">arXiv:2502.05317</a>, 2025.</li>
+<li><a id="ref-ignatov2019"></a>Ignatov, A., Timofte, R., Kulik, A., Yang, S., Wang, K., Baum, F., Wu, M., Xu, L., and Van Gool, L. "AI Benchmark: All About Deep Learning on Smartphones in 2019." Preprint, <a href="https://arxiv.org/abs/1910.06663">arXiv:1910.06663</a>, 2019.</li>
+<li><a id="ref-ilic2014"></a>Ilic, A., Pratas, F., and Sousa, L. "Cache-Aware Roofline Model: Upgrading the Loft." IEEE Computer Architecture Letters, 13(1), 21-24, 2014. DOI 10.1109/L-CA.2013.6.</li>
+<li><a id="ref-jayanth2024"></a>Jayanth, R., Gupta, N., and Prasanna, V. "Benchmarking Edge AI Platforms for High-Performance ML Inference." Preprint, <a href="https://arxiv.org/abs/2409.14803">arXiv:2409.14803</a>, 2024.</li>
+<li><a id="ref-jouppi2017"></a>Jouppi, N. P., Young, C., Patil, N., Patterson, D. A., et al. "In-Datacenter Performance Analysis of a Tensor Processing Unit." International Symposium on Computer Architecture (ISCA), 1-12, 2017. Also <a href="https://arxiv.org/abs/1704.04760">arXiv:1704.04760</a>.</li>
+<li><a id="ref-orion2026"></a>Kumaresan, R. "Orion: Characterizing and Programming Apple's Neural Engine for LLM Training and Inference." Preprint, <a href="https://arxiv.org/abs/2603.06728">arXiv:2603.06728</a>, 2026.</li>
+<li><a id="ref-zeus2025"></a>ML.ENERGY / Zeus. "Programmatic Energy Consumption Measurement on Apple Silicon (macOS)." Project issue report (#159), 2025.</li>
+<li><a id="ref-moon2025"></a>Moon, S., Cha, J., Park, H., and Kim, J. "Hybe: GPU-NPU Hybrid System for Efficient LLM Inference with Million-Token Context Window." International Symposium on Computer Architecture (ISCA), 808-820, 2025. DOI 10.1145/3695053.3731051.</li>
+<li><a id="ref-plyenkov2019"></a>Plyenkov, B. "Decoupling Machine Intelligence from Application in IoT Devices." Master's thesis, Aalto University, 2019.</li>
+<li><a id="ref-prashanthi2025"></a>Prashanthi, S. K., Sahoo, K. K., Saikia, A. R., Gupta, P., Joshi, A. V., Pansari, P., and Simmhan, Y. "Pagoda: An Energy and Time Roofline Study for DNN Workloads on Edge Accelerators." Preprint, <a href="https://arxiv.org/abs/2509.20189">arXiv:2509.20189</a>, 2025.</li>
+<li><a id="ref-singh2026"></a>Singh, M. "Inside the M4 Apple Neural Engine, Part 1: Reverse Engineering." Blog post and repository, 2026, <a href="https://github.com/maderix/ANE">https://github.com/maderix/ANE</a>.</li>
+<li><a id="ref-tummalapalli2026"></a>Tummalapalli, P., Arayakandy, S., Pal, R., and Kundan, K. "LLM Inference at the Edge: Mobile, NPU, and GPU Performance Efficiency Trade-offs Under Sustained Load." Preprint, <a href="https://arxiv.org/abs/2603.23640">arXiv:2603.23640</a>, 2026.</li>
+<li><a id="ref-verhelst2025"></a>Verhelst, M., Benini, L., and Verma, N. "How to Keep Pushing ML Accelerator Performance? Know Your Rooflines!" IEEE Journal of Solid-State Circuits, 2025. DOI 10.1109/JSSC.2025.3553765.</li>
+<li><a id="ref-williams2009"></a>Williams, S., Waterman, A., and Patterson, D. A. "Roofline: An Insightful Visual Performance Model for Multicore Architectures." Communications of the ACM, 52(4), 65-76, 2009. DOI 10.1145/1498765.1498785.</li>
+<li><a id="ref-xu2025"></a>Xu, D., Zhang, H., Yang, L., Liu, R., Huang, G., Xu, M., and Liu, X. "Fast On-device LLM Inference with NPUs." ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS), 2025. <a href="https://arxiv.org/abs/2407.05858">arXiv:2407.05858</a>, DOI 10.1145/3669940.3707239.</li>
+<li><a id="ref-yang2020"></a>Yang, C., Kurth, T., and Williams, S. "Hierarchical Roofline Analysis for GPUs: Accelerating Performance Optimization for the NERSC-9 Perlmutter System." Concurrency and Computation: Practice and Experience, 32(20), e5547, 2020. DOI 10.1002/cpe.5547.</li>
+<li><a id="ref-eilnane"></a>Yoon, E. "ane: a reverse-engineered Linux driver for the Apple Neural Engine, with anecc." Repository, 2022, <a href="https://github.com/eiln/ane">https://github.com/eiln/ane</a>.</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendices/f-provenance.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendices/f-provenance.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+        <script src="home-link.js"></script>
+        <script src="highlight-extra.js"></script>
+
+
+    </div>
+    </body>
+</html>

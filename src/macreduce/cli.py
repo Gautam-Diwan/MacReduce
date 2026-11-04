@@ -10,10 +10,12 @@ import time
 from pathlib import Path
 
 from .ane import placement_probe, rank_decoder, rank_qwen_forward
+from .ane_forge import prove_engine
 from .benchmark import accelerate_matmul
 from .cluster import Coordinator, make_server
+from .curve import render_saved, run_curve
+from .feasibility import run_feasibility
 from .federated import study as federated_study
-from .finetune import run_lora
 from .lora_client import execute_federated
 from .observe import capabilities, collect_mactop, report
 from .placement import CostTable, EngineCost, choose
@@ -254,6 +256,24 @@ def main():
         help="convert a small convolution and read its Core ML compute plan",
     )
     ane.add_argument("--output", required=True)
+    feasible = sub.add_parser(
+        "feasibility",
+        help="one-Mac GPU, Neural Engine, and combined traces with mactop energy",
+    )
+    feasible.add_argument("--output", required=True)
+    feasible.add_argument("--data", default="data/wikitext-2-raw-v1")
+    feasible.add_argument("--iters", type=int, default=4)
+    feasible.add_argument("--batch-size", type=int, default=2)
+    feasible.add_argument("--seq", type=int, default=256)
+    feasible.add_argument("--train-examples", type=int, default=64)
+    feasible.add_argument("--eval-batches", type=int, default=2)
+    feasible.add_argument("--prometheus-port", type=int, default=9096)
+    forge = sub.add_parser(
+        "ane-forge",
+        help="train a tiny linear map on the Neural Engine with import aneforge as af",
+    )
+    forge.add_argument("--output", required=True)
+    forge.add_argument("--seconds", type=int, default=4)
     workload = sub.add_parser(
         "ane-workload",
         help="time one decoder block on CPU, GPU, and the Neural Engine",
@@ -277,6 +297,12 @@ def main():
     lora.add_argument("--grad-accumulation", type=int, default=2)
     lora.add_argument("--train-examples", type=int, default=4096)
     lora.add_argument("--test-batches", type=int, default=-1)
+    lora.add_argument("--prometheus-port", type=int, default=9096)
+    figures = sub.add_parser(
+        "figures",
+        help="redraw loss, energy, memory, and latency figures from a saved run",
+    )
+    figures.add_argument("directory")
     plan = sub.add_parser(
         "train-plan",
         help="write the distributed QLoRA comparisons and which Neural Engine stacks import",
@@ -418,6 +444,29 @@ def main():
             )
         elif args.command == "bench-trial":
             _bench_trial(args)
+        elif args.command == "feasibility":
+            report_body = run_feasibility(
+                Path(args.output),
+                Path(args.data),
+                iters=args.iters,
+                batch_size=args.batch_size,
+                max_seq_length=args.seq,
+                train_examples=args.train_examples,
+                eval_batches=args.eval_batches,
+                port=args.prometheus_port,
+            )
+            print(json.dumps(report_body["cases"], indent=2))
+            if report_body.get("status") == "error":
+                raise SystemExit(1)
+        elif args.command == "ane-forge":
+            report_body = prove_engine(seconds=args.seconds)
+            text = json.dumps(report_body, indent=2)
+            destination = Path(args.output)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(text + "\n")
+            print(text)
+            if report_body.get("status") != "ok":
+                raise SystemExit(1)
         elif args.command == "ane":
             import tempfile
 
@@ -445,10 +494,14 @@ def main():
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_text(text + "\n")
             print(text)
+        elif args.command == "figures":
+            written = render_saved(Path(args.directory))
+            print("\n".join(str(path) for path in written))
         elif args.command == "lora":
-            report_body = run_lora(
+            report_body = run_curve(
                 Path(args.output).parent,
                 Path(args.data),
+                port=args.prometheus_port,
                 iters=args.iters,
                 epochs=args.epochs,
                 test_batches=args.test_batches,
