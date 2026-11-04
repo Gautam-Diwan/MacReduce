@@ -25,17 +25,38 @@ See [evidence](evidence/README.md) for measured results and [the profiling guide
 
 ## Install on each Mac
 
-Use Python 3.12 or newer. From this folder:
+Use Python 3.12 or newer on Apple Silicon for MLX and Neural Engine work. [uv](https://docs.astral.sh/uv/) is the supported installer; it creates `.venv` and installs from the pinned `uv.lock`.
+
+Install uv if needed:
+
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+From this folder:
+
+```sh
+uv sync --extra cpu --extra mlx --extra serve --extra ane --extra dev
+uv run macreduce doctor --smoke --output runs/hardware.json
+uv run pytest -q
+```
+
+`cpu` is the PyTorch CPU reference backend. `mlx` pins MLX on arm64 macOS. `serve` pins `mlx-lm` and `coremltools`. `ane` pins `aneforge` for `placement.mode: gpu_ane` training. `dev` adds pytest and ruff.
+
+Use `uv run` before commands (`uv run python main.py ...`, `uv run macreduce demo ...`) or activate the environment:
+
+```sh
+source .venv/bin/activate
+macreduce doctor --smoke
+```
+
+Without uv, use a normal venv and pip (no lockfile):
 
 ```sh
 python3.12 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[cpu,mlx,serve,dev]'
-macreduce doctor --smoke --output runs/hardware.json
-pytest -q
+python -m pip install -e '.[cpu,mlx,serve,ane,dev]'
 ```
-
-If `python3.12 -m venv` fails because a uv-managed interpreter looks for its standard library under `/install`, use `uv venv .venv --python 3.12` and `uv pip install --python .venv/bin/python -e '.[cpu,mlx,serve,dev]'` instead.
 
 `serve` pins `mlx-lm==0.32.2` and `coremltools==9.0`. Placement math does not need either. `macreduce equivalence` downloads the pinned Qwen3 1.7B and 0.6B 4-bit MLX models on first use. `macreduce ane` converts a small convolution and reads its compute plan. `macreduce ane-workload` times one decoder block on CPU, GPU, and the Neural Engine and ranks those measured times. `macreduce infer` times a 28-layer forward at the Qwen3-0.6B widths on those same devices, then generates with the pinned Qwen3 pair. Train from the repo root with a YAML config:
 
