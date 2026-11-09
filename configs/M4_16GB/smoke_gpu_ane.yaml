@@ -1,0 +1,63 @@
+# Short replay of the GPU plus Neural Engine baseline on an M4 MacBook Pro with 16 GB (Mac16,1).
+# Baseline: evidence/qwen3-0.6b-curve/2026-10-29T00-07-18 (M4 MacBook Air, 24 GB, macOS 26.5).
+# Everything matches configs/M4_16GB/qlora_gpu_ane.yaml except three fields:
+#   training.iters: 500 stops after 500 of the baseline's 12,288 steps.
+#   training.epochs: 1 makes iters 500 one evaluation period, so validation runs at steps 1 and 500
+#     and the checkpoint is written at step 500 (epochs only sets those two intervals when iters is set).
+#   training.lr_schedule.arguments pins the cosine to the baseline's resolved values
+#     [peak 1e-4, 11,988 decay steps, end 1e-6], so the learning rate at every step equals the baseline's.
+# The seed and data are unchanged, so the first epoch draws batches in the same order.
+# Validation and test stay the full splits so the untrained numbers (validation loss 4.191 at step 1,
+# test perplexity 64.24) and the step-500 validation can be compared with the baseline.
+# This checks that the pipeline reproduces the baseline on this Mac. It is not a finished result.
+
+data:
+  dataset: Salesforce/wikitext
+  config: wikitext-2-raw-v1
+  revision: b08601e04326c79dfdd32d625aee71d232d685c3
+  path: data/wikitext-2-raw-v1
+  train_examples: 4096
+
+model:
+  name: mlx-community/Qwen3-0.6B-4bit
+  revision: 73e3e38d981303bc594367cd910ea6eb48349da8
+  max_seq_length: 512
+  lora_rank: 8
+  lora_scale: 2.0
+  lora_dropout: 0.0
+  num_layers: -1
+
+training:
+  batch_size: 1
+  grad_accumulation_steps: 1
+  grad_checkpoint: false
+  epochs: 1
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  lr_schedule:
+    name: cosine_decay
+    arguments: [0.0001, 11988, 1.0e-6]
+    warmup: 300
+    warmup_init: 1.0e-7
+    end: 1.0e-6
+  optimizer: adamw
+  iters: 500
+  steps_per_report: 10
+  val_batches: -1
+  test_batches: -1
+
+placement:
+  mode: gpu_ane
+
+infrastructure:
+  seed: 0
+  memory_limit_bytes: auto
+  prometheus_port: 9096
+
+checkpoint:
+  save_every: epoch
+  resume: null
+
+logging:
+  dir: evidence/M4_16GB/smoke_gpu_ane
