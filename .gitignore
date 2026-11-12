@@ -1,10 +1,74 @@
+# Python environments, bytecode, packaging, and tool caches.
 .venv/
-data/
+venv/
+env/
 __pycache__/
+*.py[cod]
+*$py.class
 *.egg-info/
+.eggs/
+/build/
+/dist/
+/pip-wheel-metadata/
 .pytest_cache/
 .ruff_cache/
-runs/
-*.gputrace/
+.mypy_cache/
+.pytype/
+.tox/
+.nox/
+.coverage
+.coverage.*
+/htmlcov/
+/coverage.xml
+.ipynb_checkpoints/
+
+# Local credentials; keep sanitized environment examples eligible for tracking.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Downloaded datasets/models and disposable output directories at the repo root.
+# Keep source, configs, tests, uv.lock, raw/sources, and reference code tracked.
+/data/
+/models/
+/runs/
+/outputs/
+/.cache/
+/wandb/
+/mlruns/
+/lightning_logs/
+
+# Model weights and compiled model bundles (MLX, PyTorch, Core ML, ONNX).
+# Avoid broad *.bin, *.json, *.jsonl, *.yaml, or *.png rules: those can be sources
+# or deliberately retained evidence. Put other model downloads under /models/.
 *.safetensors
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.mlmodel
+*.mlpackage/
+*.mlmodelc/
+
+# main.py creates YYYY-MM-DDTHH-MM-SS run directories, with an optional collision
+# suffix. Ignore the whole run so checkpoint metadata, repeated histories,
+# telemetry, figures, and logs do not enter a diff just because weights do not.
+# This covers evidence/M4_16GB/{gpu,gpu_ane,smoke_gpu_ane}/<timestamp>/ too.
+/evidence/**/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]-[0-9][0-9]-[0-9][0-9]*/
+/evidence/**/latest
+/evidence/**/checkpoints/
+/evidence/**/*.pid
+
+# Reports and curated evidence outside run directories remain eligible for Git.
+# For a reported experiment, retain its required raw measurements deliberately
+# with `git add -f <specific-file>`, or link a durable archive with hashes from
+# its report. Do not force-add entire run directories or private dataset content.
+# Ignore rules do not untrack existing files. Preserve historical evidence;
+# any cleanup of a published branch must also preserve report links/provenance.
+
+# Profiling captures and macOS filesystem metadata.
+*.gputrace/
+*.trace/
 .DS_Store
+._*
