@@ -17,6 +17,8 @@ from pathlib import Path
 import numpy as np
 from tqdm import tqdm
 
+from .randomness import isolated_batches, numpy_seed
+
 
 def resolve_save_every(value: int | str | None, steps: int, epochs: int) -> int:
     """``epoch`` saves once per epoch. An integer saves every that many steps."""
@@ -69,7 +71,10 @@ def load_checkpoint(path: Path, model, optimizer) -> dict:
             value = value.astype(mx.uint64)
         pairs.append((key, value))
     optimizer.state = tree_unflatten(pairs)
-    optimizer._initialized = True
+    # Flattening tensors omits empty containers for frozen modules. Rebuild
+    # those against the trainable tree while preserving the loaded moments
+    # and step. Marking the optimizer initialized skips this necessary work.
+    optimizer.init(model.trainable_parameters())
     mx.eval(optimizer.state)
     return meta
 
@@ -173,13 +178,13 @@ def train_checked(
 
     train_dataset = CacheDataset(train_set)
     val_dataset = CacheDataset(valid_set) if valid_set is not None else None
-    batches = iterate_batches(
+    batches = isolated_batches(iterate_batches(
         dataset=train_dataset,
         batch_size=args.batch_size,
         max_seq_length=args.max_seq_length,
         loop=True,
         comm_group=world,
-    )
+    ), args.seed)
     if completed:
         for _ in tqdm(range(completed), desc="resume", unit="step", leave=False):
             next(batches)
@@ -273,16 +278,17 @@ def _validate(model, dataset, args, evaluate, iterate_batches, default_loss) -> 
     tic = time.perf_counter()
     bar = tqdm(total=total, desc="valid", unit="batch", leave=False)
     try:
-        loss = evaluate(
-            model=model,
-            dataset=dataset,
-            loss=default_loss,
-            batch_size=args.batch_size,
-            num_batches=args.val_batches,
-            max_seq_length=args.max_seq_length,
-            iterate_batches=iterate_batches,
-            progress_callback=bar.update,
-        )
+        with numpy_seed(args.seed):
+            loss = evaluate(
+                model=model,
+                dataset=dataset,
+                loss=default_loss,
+                batch_size=args.batch_size,
+                num_batches=args.val_batches,
+                max_seq_length=args.max_seq_length,
+                iterate_batches=iterate_batches,
+                progress_callback=bar.update,
+            )
     finally:
         bar.close()
     return float(loss), time.perf_counter() - tic

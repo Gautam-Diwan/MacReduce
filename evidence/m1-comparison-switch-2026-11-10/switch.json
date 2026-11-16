@@ -1,0 +1,29 @@
+{
+  "reason": "user explicitly chose switch to 4096-record comparison",
+  "old_run": "runs/M1_8GB/gpu-full-baseline/2026-11-10T04-44-55",
+  "old_last_reported_training": {
+    "kind": "train",
+    "iteration": 800,
+    "train_loss": 2.9338723754882814,
+    "learning_rate": 9.99879848677665e-05,
+    "iterations_per_second": 2.0897041535236034,
+    "tokens_per_second": 221.0071112766563,
+    "trained_tokens": 85201,
+    "peak_memory": 2.185534194
+  },
+  "old_checkpoint_exists": false,
+  "new_run": "runs/M1_8GB/gpu-m4-comparison/2026-11-10T05-08-42",
+  "new_status": "launched_not_completed",
+  "provisional_m4_match": true,
+  "fresh_initialization": true,
+  "planned_updates": 12288,
+  "recipe": {
+    "train_examples": 4096,
+    "epochs": 3,
+    "batch_size": 1,
+    "grad_accumulation_steps": 1,
+    "grad_checkpoint": false,
+    "max_seq_length": 512
+  },
+  "m4_saved_config_inspected": false
+}

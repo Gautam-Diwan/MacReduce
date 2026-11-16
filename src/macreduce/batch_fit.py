@@ -56,7 +56,7 @@ def choose_batch(
     *,
     memory_limit_bytes: int,
     max_seq_length: int = 512,
-    train_examples: int = 4096,
+    train_examples: int | None = 4096,
     grad_accumulation_steps: int = 1,
     learning_rate: float = 1e-4,
     seed: int = 0,
@@ -138,9 +138,11 @@ def run_probe(spec: dict) -> dict:
     apply_memory_limit(limit)
     data_dir = Path(spec["data_dir"])
     prepare_dataset(data_dir)
-    examples = max(int(spec["train_examples"]), batch_size)
-    train_dir = data_dir.parent / f"{data_dir.name}-curve-{examples}"
-    write_curve_split(data_dir, train_dir, examples)
+    train_dir = data_dir
+    if spec["train_examples"] is not None:
+        examples = max(int(spec["train_examples"]), batch_size)
+        train_dir = data_dir.parent / f"{data_dir.name}-curve-{examples}"
+        write_curve_split(data_dir, train_dir, examples)
     model, tokenizer = load(TRAIN_MODEL, revision=MODEL_REVISIONS[TRAIN_MODEL])
     try:
         with tempfile.TemporaryDirectory(prefix="macreduce-batch-") as tmp:

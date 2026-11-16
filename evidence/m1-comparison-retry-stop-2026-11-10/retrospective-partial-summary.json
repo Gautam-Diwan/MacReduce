@@ -1,0 +1,27 @@
+{
+  "name": "local_gpu",
+  "status": "stopped",
+  "reason": "system swap grew more than 512 MiB",
+  "exit_code": 1,
+  "run_directory": "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/runs/baseline-suites/comparison-retry-1/local_gpu/logs/2026-11-10T11-54-27",
+  "steps": null,
+  "train_examples": null,
+  "initial_test_perplexity": null,
+  "final_test_perplexity": null,
+  "last_reported_step": 200,
+  "last_reported_train_loss": 3.452822570800781,
+  "last_reported_tokens": 21329,
+  "peak_mlx_bytes": 2185501596,
+  "seconds": null,
+  "validation": [
+    {
+      "kind": "validation",
+      "iteration": 0,
+      "val_loss": 4.191198825836182,
+      "val_time": 440.43161316700207,
+      "val_perplexity": 66.10198825038368
+    }
+  ],
+  "energy_joules": null,
+  "energy_note": "power channel validity requires review; no automatic energy ranking"
+}

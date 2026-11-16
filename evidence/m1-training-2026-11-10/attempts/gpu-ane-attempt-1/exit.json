@@ -1,0 +1,5 @@
+{
+  "returncode": -15,
+  "stop_reason": "free disk below 15 GiB",
+  "elapsed_s": 6.069458999999824
+}

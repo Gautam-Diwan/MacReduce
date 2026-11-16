@@ -1,0 +1,3 @@
+name,status,initial_test_perplexity,final_test_perplexity,last_reported_step,last_reported_train_loss,peak_mlx_bytes,seconds,reason
+local_gpu,completed,64.23330458183396,23.3233570957286,,,2185616352,7353.948538875004,
+local_gpu_ane,completed,64.23330458183396,23.323607329545595,12288,1.9698682264848189,4259897919,9431.139596666995,

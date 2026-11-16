@@ -1,0 +1,25 @@
+{
+  "launcher_pid": 71325,
+  "suite": "runs/baseline-suites/comparison-hybrid-resume-2",
+  "exit_record_present": false,
+  "progress": [
+    "train:   5%|5         | 625/12288 [01:01<51:13,  3.79step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 626/12288 [01:01<59:33,  3.26step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 627/12288 [01:01<1:00:24,  3.22step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 628/12288 [01:03<2:15:10,  1.44step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 629/12288 [01:03<1:48:36,  1.79step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 630/12288 [01:03<1:29:23,  2.17step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 631/12288 [01:04<1:15:46,  2.56step/s, loss=2.922, tok_s=200]",
+    "train:   5%|5         | 632/12288 [01:05<1:41:02,  1.92step/s, loss=2.922, tok_s=200]"
+  ],
+  "resource_sample": {
+    "elapsed_s": 506.981434375004,
+    "available_bytes": 2849406976,
+    "swap_used_bytes": 2973827072,
+    "pressure_level": 1,
+    "disk_free_bytes": 12876992512,
+    "battery_percent": 100,
+    "power_plugged": true
+  },
+  "scope": "restart and initial resumed updates, not completion"
+}

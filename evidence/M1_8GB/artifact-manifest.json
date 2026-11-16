@@ -1,0 +1,122 @@
+[
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/result.json",
+    "copy": "gpu/2026-11-10T15-15-52/result.json",
+    "sha256": "d93b56c068e61aabddaa94ea7cd40e8d3dc7e4e3fab03f3c8ab89bc878af4505"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/config.yaml",
+    "copy": "gpu/2026-11-10T15-15-52/config.yaml",
+    "sha256": "28651476d7721d9cd614b069f949bf10f8efe87a03be29196d8ef18bafeaf9db"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/history.jsonl",
+    "copy": "gpu/2026-11-10T15-15-52/history.jsonl",
+    "sha256": "7b1c3491ed14455b784186ac987e5f56851f4b09d5acc8e4a852701dc2b99479"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/checkpoints/0012288/state.json",
+    "copy": "gpu/2026-11-10T15-15-52/checkpoints/0012288/state.json",
+    "sha256": "e219005a897c904c4d0379553defce5cce11fc0c0543ba7bccbfdd58114ec801"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/checkpoints/latest.json",
+    "copy": "gpu/2026-11-10T15-15-52/checkpoints/latest.json",
+    "sha256": "9d836deeb61afd748b4163944a68c345e7114b5d170a22daba909f097db13c1a"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/figures/loss.png",
+    "copy": "gpu/2026-11-10T15-15-52/figures/loss.png",
+    "sha256": "ee8fb35e738236a2de4bbe710153f8cb9ba9eb274c55fa8856b8c7cda48569e3"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/figures/perplexity.png",
+    "copy": "gpu/2026-11-10T15-15-52/figures/perplexity.png",
+    "sha256": "3f6bddf8f70ca795f1650f4ec132192c32705b9fc3764f52fbbd2de7167521da"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/figures/memory.png",
+    "copy": "gpu/2026-11-10T15-15-52/figures/memory.png",
+    "sha256": "8f87366f9e2f58238abc55c50ed64d73a4644254864546977bb93cc5f9a8cb58"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52/figures/latency.png",
+    "copy": "gpu/2026-11-10T15-15-52/figures/latency.png",
+    "sha256": "74edf528edc8177f426e7ed31dfcb60ddd2c571c3d8cffaba3ee335981522f0c"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/job/exit.json",
+    "copy": "gpu/2026-11-10T15-15-52/supervisor/exit.json",
+    "sha256": "e4ee4697c60acbdf8052a12edeefa72e2ece40d500670043ece9601f78064070"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-resume-2/local_gpu/job/guard_policy.json",
+    "copy": "gpu/2026-11-10T15-15-52/supervisor/guard_policy.json",
+    "sha256": "e47428c7d0f6fd947f3ce058c955aa60c637c196216a5c5b27a1d1fccd8783be"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/result.json",
+    "copy": "gpu_ane/2026-11-10T22-28-06/result.json",
+    "sha256": "242e7edc8e8379fbe09608f77c248c0bb7dfb459f68d779c9b5634851b49a05a"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/config.yaml",
+    "copy": "gpu_ane/2026-11-10T22-28-06/config.yaml",
+    "sha256": "054aed3e62f6578f8be172b60704ee2c42d87255b0755b713b4ccbc94d2ff1c0"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/history.jsonl",
+    "copy": "gpu_ane/2026-11-10T22-28-06/history.jsonl",
+    "sha256": "b97875ce484092594d102bb5244016f65cf633f72065e66a01a491a97f36582b"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/checkpoints/0012288/state.json",
+    "copy": "gpu_ane/2026-11-10T22-28-06/checkpoints/0012288/state.json",
+    "sha256": "d23cee02117a2c4a4cd60402cf84cf7544587be505c0e1fec7b8dae0f287f220"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/checkpoints/latest.json",
+    "copy": "gpu_ane/2026-11-10T22-28-06/checkpoints/latest.json",
+    "sha256": "60331d6b6e6f962ea20df833c5980322db054dc21590a8713ae7cd16bc7493c6"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/figures/loss.png",
+    "copy": "gpu_ane/2026-11-10T22-28-06/figures/loss.png",
+    "sha256": "8c558a4075a577b66886cd885dc0afa34f20cf63b912489beb2da17958479bb5"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/figures/perplexity.png",
+    "copy": "gpu_ane/2026-11-10T22-28-06/figures/perplexity.png",
+    "sha256": "ba374c0dde3ef48762cb302c2a74a3fa3f4bd13336e9160b920d5ac41f2aef14"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/figures/memory.png",
+    "copy": "gpu_ane/2026-11-10T22-28-06/figures/memory.png",
+    "sha256": "2736c3820f2fade8875092b4d676573889e12894a315d60a0bedd6153a392744"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06/figures/latency.png",
+    "copy": "gpu_ane/2026-11-10T22-28-06/figures/latency.png",
+    "sha256": "eb5d3f8d91b200495c2e72af4416b6f0a01a2737e3ed3f8ce3d49c0f0874d771"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/job/exit.json",
+    "copy": "gpu_ane/2026-11-10T22-28-06/supervisor/exit.json",
+    "sha256": "01ec0b1fe2e38a268dc2d7bc9379ee81f8f3ea3bafaedb8836bc000c57cddefa"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/job/guard_policy.json",
+    "copy": "gpu_ane/2026-11-10T22-28-06/supervisor/guard_policy.json",
+    "sha256": "6afb47967f5137d1a8f3b79cc1bcf26b9521592c05716628add1f47421f44895"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/summary.json",
+    "copy": "summary.json",
+    "sha256": "1d46cc6d29028d078e8ba2b1b80c5175236af4e1328fb2766fc3d032c2aa6e13"
+  },
+  {
+    "source": "runs/baseline-suites/comparison-hybrid-resume-2/summary.csv",
+    "copy": "summary.csv",
+    "sha256": "df13264e8742c137f3f7817319951aa285236db86036be26b7df4acd376e20b1"
+  }
+]

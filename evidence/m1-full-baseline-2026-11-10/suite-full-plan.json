@@ -1,0 +1,216 @@
+{
+  "scope": "full",
+  "proposal": "docs/proposal.md",
+  "arms": [
+    {
+      "name": "local_gpu",
+      "kind": "local_training",
+      "config": {
+        "data": {
+          "dataset": "Salesforce/wikitext",
+          "config": "wikitext-2-raw-v1",
+          "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+          "path": "runs/M1_8GB/data/wikitext-2-raw-v1",
+          "train_examples": null
+        },
+        "model": {
+          "name": "mlx-community/Qwen3-0.6B-4bit",
+          "revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+          "max_seq_length": 512,
+          "lora_rank": 8,
+          "lora_scale": 2.0,
+          "lora_dropout": 0.0,
+          "num_layers": -1
+        },
+        "training": {
+          "batch_size": 1,
+          "grad_accumulation_steps": 1,
+          "grad_checkpoint": false,
+          "epochs": 3,
+          "learning_rate": 0.0001,
+          "weight_decay": 0.01,
+          "max_grad_norm": 1.0,
+          "lr_schedule": {
+            "name": "cosine_decay",
+            "warmup": 300,
+            "warmup_init": 1e-07,
+            "end": 1e-06
+          },
+          "optimizer": "adamw",
+          "iters": null,
+          "steps_per_report": 100,
+          "val_batches": -1,
+          "test_batches": -1
+        },
+        "placement": {
+          "mode": "gpu"
+        },
+        "infrastructure": {
+          "seed": 0,
+          "memory_limit_bytes": 2147483648,
+          "prometheus_port": 9096,
+          "telemetry_interval_ms": 30000
+        },
+        "checkpoint": {
+          "save_every": 5000,
+          "resume": null
+        },
+        "logging": {
+          "dir": "runs/M1_8GB/gpu-full-baseline"
+        },
+        "safety": {
+          "min_free_disk_bytes": 10737418240,
+          "reserve_memory_bytes": 4294967296,
+          "profile": "baseline"
+        }
+      },
+      "readiness": {
+        "status": "ready",
+        "placement": "gpu",
+        "scope": "baseline readiness only; no accelerator execution or residency verified",
+        "host": {
+          "system": "Darwin",
+          "architecture": "arm64",
+          "macos": "27.2.1",
+          "python": [
+            3,
+            12,
+            0
+          ],
+          "memory_total_bytes": 8589934592,
+          "disk_free_bytes": 16752640000,
+          "packages": {
+            "mlx": "0.32.4",
+            "mlx-lm": "0.32.2",
+            "aneforge": "0.4.0"
+          },
+          "mactop": true
+        },
+        "blockers": []
+      }
+    },
+    {
+      "name": "local_gpu_ane",
+      "kind": "local_training",
+      "config": {
+        "data": {
+          "dataset": "Salesforce/wikitext",
+          "config": "wikitext-2-raw-v1",
+          "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+          "path": "runs/M1_8GB/data/wikitext-2-raw-v1",
+          "train_examples": null
+        },
+        "model": {
+          "name": "mlx-community/Qwen3-0.6B-4bit",
+          "revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+          "max_seq_length": 512,
+          "lora_rank": 8,
+          "lora_scale": 2.0,
+          "lora_dropout": 0.0,
+          "num_layers": -1
+        },
+        "training": {
+          "batch_size": 1,
+          "grad_accumulation_steps": 1,
+          "grad_checkpoint": false,
+          "epochs": 3,
+          "learning_rate": 0.0001,
+          "weight_decay": 0.01,
+          "max_grad_norm": 1.0,
+          "lr_schedule": {
+            "name": "cosine_decay",
+            "warmup": 300,
+            "warmup_init": 1e-07,
+            "end": 1e-06
+          },
+          "optimizer": "adamw",
+          "iters": null,
+          "steps_per_report": 100,
+          "val_batches": -1,
+          "test_batches": -1
+        },
+        "placement": {
+          "mode": "gpu_ane",
+          "validation_report": "runs/M1_8GB/ane-probe/qwen-norm-parity.json"
+        },
+        "infrastructure": {
+          "seed": 0,
+          "memory_limit_bytes": 2147483648,
+          "prometheus_port": 9096,
+          "telemetry_interval_ms": 30000
+        },
+        "checkpoint": {
+          "save_every": 5000,
+          "resume": null
+        },
+        "logging": {
+          "dir": "runs/M1_8GB/gpu-full-baseline"
+        },
+        "safety": {
+          "min_free_disk_bytes": 10737418240,
+          "reserve_memory_bytes": 4294967296,
+          "profile": "baseline"
+        }
+      },
+      "readiness": {
+        "status": "blocked",
+        "placement": "gpu_ane",
+        "scope": "baseline readiness only; no accelerator execution or residency verified",
+        "host": {
+          "system": "Darwin",
+          "architecture": "arm64",
+          "macos": "27.2.1",
+          "python": [
+            3,
+            12,
+            0
+          ],
+          "memory_total_bytes": 8589934592,
+          "disk_free_bytes": 16752640000,
+          "packages": {
+            "mlx": "0.32.4",
+            "mlx-lm": "0.32.2",
+            "aneforge": "0.4.0"
+          },
+          "mactop": true
+        },
+        "blockers": [
+          "hybrid Qwen3 training requires a passing real-block gradient report"
+        ]
+      }
+    }
+  ],
+  "proposal_coverage": [
+    {
+      "name": "one_gpu_fedavg_star_uncompressed",
+      "status": "blocked",
+      "reason": "federated executor lacks M1 config/budget plumbing; local curve is not FedAvg"
+    },
+    {
+      "name": "combined_gpu_ane_federated_client",
+      "status": "blocked",
+      "reason": "real-Qwen3 ANE correctness failed; federated hybrid executor also missing"
+    },
+    {
+      "name": "separate_gpu_ane_clients",
+      "status": "blocked",
+      "reason": "independent full-Qwen3 ANE trainer is not implemented"
+    },
+    {
+      "name": "per_step_allreduce_control",
+      "status": "blocked",
+      "reason": "requires configured federated clients; local curve does not measure all-reduce"
+    },
+    {
+      "name": "ring_tree_int8_error_feedback_fednova_variants",
+      "status": "blocked",
+      "reason": "requires validated clients and an explicit unequal-step schedule for FedNova"
+    },
+    {
+      "name": "multiple_physical_macs",
+      "status": "blocked",
+      "reason": "no second connected Mac or physical peer executor"
+    }
+  ],
+  "recipe_note": "User-requested M1 adaptation: full training split, batch 1, accumulation 1, checkpointing off, three epochs; differs from proposal's 4096/batch8/accum2."
+}

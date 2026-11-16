@@ -1,0 +1,3 @@
+{"kind": "validation", "iteration": 0, "val_loss": 4.191198825836182, "val_time": 440.43161316700207, "val_perplexity": 66.10198825038368}
+{"kind": "train", "iteration": 100, "train_loss": 4.327424621582031, "learning_rate": 3.306700091343373e-05, "iterations_per_second": 2.7423950667005452, "tokens_per_second": 267.87715011530923, "trained_tokens": 9768, "peak_memory": 1.742333154}
+{"kind": "train", "iteration": 200, "train_loss": 3.452822570800781, "learning_rate": 6.636699981754646e-05, "iterations_per_second": 2.4886858533133145, "tokens_per_second": 287.7169715015523, "trained_tokens": 21329, "peak_memory": 2.185501596}

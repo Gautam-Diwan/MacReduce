@@ -81,6 +81,7 @@ def run_curve(
     port: int = 9096,
     refresh_s: float = 60,
     memory_limit_bytes: int | None = None,
+    telemetry_interval_ms: int = 1000,
     **lora_kwargs,
 ) -> dict:
     """Train the curve, trace the machine, and write figures under ``output``."""
@@ -101,7 +102,7 @@ def run_curve(
 
     refresher = threading.Thread(target=_refresh, daemon=True)
     started = time.perf_counter()
-    with SystemTrace(output, port=port) as trace:
+    with SystemTrace(output, port=port, interval_ms=telemetry_interval_ms) as trace:
         refresher.start()
         _limit_memory(memory_limit_bytes)
         kwargs = dict(lora_kwargs)
