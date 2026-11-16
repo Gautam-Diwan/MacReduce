@@ -1,0 +1,52 @@
+{
+  "scope": "10-step Qwen3 pilots and ANE correctness gates; not the three-epoch course result",
+  "hardware": {
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "27.2.1",
+    "python": "3.12.0"
+  },
+  "packages": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "aneforge": "0.4.0",
+    "numpy": "2.5.4",
+    "pyarrow": "26.0.1",
+    "transformers": "5.22.2",
+    "psutil": "7.2.2"
+  },
+  "arms": {
+    "gpu": {
+      "execution_status": "ok",
+      "acceptance": "pilot_only",
+      "source_run": "runs/M1_8GB/gpu/2026-11-10T04-21-52",
+      "steps": 10,
+      "tokens": 1086,
+      "baseline_sampled_perplexity": 97.52205931883003,
+      "final_sampled_perplexity": 73.5956478654567,
+      "peak_mlx_bytes": 687620656,
+      "median_step_ms": 497.4577709999721,
+      "energy_joules": null,
+      "energy_note": "system channels unvalidated; ANE/CPU/DRAM reported zero; no energy ranking"
+    },
+    "gpu_ane": {
+      "execution_status": "ok",
+      "acceptance": "failed_correctness_gate",
+      "source_run": "runs/M1_8GB/gpu_ane/2026-11-10T04-23-24",
+      "steps": 10,
+      "tokens": 1086,
+      "baseline_sampled_perplexity": 97.52205931883003,
+      "final_sampled_perplexity": 112.59489392418345,
+      "peak_mlx_bytes": 1362022595,
+      "median_step_ms": 627.3006459998669,
+      "energy_joules": null,
+      "energy_note": "system channels unvalidated; ANE/CPU/DRAM reported zero; no energy ranking"
+    }
+  },
+  "telemetry_tool": {
+    "tag": "v2.1.6",
+    "url": "https://github.com/metaspartan/mactop/releases/tag/v2.1.6",
+    "archive_sha256": "b8edd49c5f8a469ec5ff5e4ac5fb3cd4b2e735e8f3496fb62ff2cd52eacb0456"
+  }
+}

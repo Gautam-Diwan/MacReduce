@@ -1,0 +1,60 @@
+{
+  "scope": "comparison",
+  "proposal": "docs/proposal.md",
+  "proposal_coverage": [
+    {
+      "name": "one_gpu_fedavg_star_uncompressed",
+      "status": "blocked",
+      "reason": "federated executor lacks M1 config/budget plumbing; local curve is not FedAvg"
+    },
+    {
+      "name": "combined_gpu_ane_federated_client",
+      "status": "blocked",
+      "reason": "real-Qwen3 ANE correctness failed; federated hybrid executor also missing"
+    },
+    {
+      "name": "separate_gpu_ane_clients",
+      "status": "blocked",
+      "reason": "independent full-Qwen3 ANE trainer is not implemented"
+    },
+    {
+      "name": "per_step_allreduce_control",
+      "status": "blocked",
+      "reason": "requires configured federated clients; local curve does not measure all-reduce"
+    },
+    {
+      "name": "ring_tree_int8_error_feedback_fednova_variants",
+      "status": "blocked",
+      "reason": "requires validated clients and an explicit unequal-step schedule for FedNova"
+    },
+    {
+      "name": "multiple_physical_macs",
+      "status": "blocked",
+      "reason": "no second connected Mac or physical peer executor"
+    }
+  ],
+  "recipe_note": "Provisional M4 comparison: first 4096 records, batch 1, accumulation 1, checkpointing off, three epochs. Verify the M4 saved recipe; not FedAvg.",
+  "results": [
+    {
+      "name": "local_gpu",
+      "status": "failed",
+      "reason": "system swap grew more than 512 MiB",
+      "exit_code": 1,
+      "run_directory": "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/runs/baseline-suites/comparison-retry-1/local_gpu/logs/2026-11-10T11-54-27",
+      "steps": null,
+      "train_examples": null,
+      "initial_test_perplexity": null,
+      "final_test_perplexity": null,
+      "peak_mlx_bytes": null,
+      "seconds": null,
+      "validation": [],
+      "energy_joules": null,
+      "energy_note": "power channel validity requires review; no automatic energy ranking"
+    },
+    {
+      "name": "local_gpu_ane",
+      "status": "blocked",
+      "reason": "hybrid Qwen3 training requires a passing real-block gradient report"
+    }
+  ]
+}

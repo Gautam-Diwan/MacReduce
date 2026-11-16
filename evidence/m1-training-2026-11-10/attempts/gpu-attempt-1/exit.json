@@ -1,0 +1,5 @@
+{
+  "returncode": -15,
+  "stop_reason": "system swap grew more than 512 MiB",
+  "elapsed_s": 80.55871575000015
+}

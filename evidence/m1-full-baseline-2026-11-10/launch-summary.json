@@ -1,0 +1,16 @@
+{
+  "status": "launched_not_completed",
+  "run_directory": "runs/M1_8GB/gpu-full-baseline/2026-11-10T04-44-55",
+  "training_records": 23767,
+  "epochs": 3,
+  "planned_steps": 71301,
+  "batch_size": 1,
+  "grad_checkpoint": false,
+  "sequence_cap": 512,
+  "long_records": "truncated by existing loader",
+  "fit_steps": 10,
+  "fit_peak_bytes": 1194827554,
+  "max_length_peak_bytes": 2185500166,
+  "preliminary_training_hours": 7.3813930221339,
+  "estimate_scope": "nine warm sampled steps, excludes evaluation, checkpoints and thermal effects"
+}

@@ -1,0 +1,12 @@
+....                                                                     [100%]
+=============================== warnings summary ===============================
+tests/test_ane_stack.py::test_suffix_matches_mlx_on_one_block
+  /Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/src/macreduce/ane_stack.py:167: DispatchFloorWarning: aneforge.compile: dispatch-floor-bound program (predicted ~63us, ~all of it the fixed per-call cost). Every ANE call pays a fixed dispatch + firmware round-trip (~0.2 ms on M1) regardless of how small the work is, and dispatch is single-in-flight (threads/concurrency do NOT amortize it). To amortize, do more work per call: increase batch N (per-sample cost falls ~linearly toward the compute rate) or chain more ops into one program (share_buffer keeps state resident). Silence: filter aneforge.DispatchFloorWarning.
+    program = af.compile(out)
+
+tests/test_ane_stack.py::test_suffix_matches_mlx_on_one_block
+  /Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/.venv/lib/python3.12/site-packages/aneforge/_compile.py:1316: UserWarning: aneforge: last-axis-offset slice_by_size(begin=[0, 0, 0, 8]) on a pre-A16 ANE (family 2) saturates any sliced |value| > 4094 (=65504/16) to +/-inf via the Q.4 crop-DMA. Safe if the data stays under 4094; otherwise slice with a zero last-axis begin or on the host.
+    out = _retarget_for(out, target)  # gate ops/shapes for the target ANE family
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 2 warnings in 5.59s

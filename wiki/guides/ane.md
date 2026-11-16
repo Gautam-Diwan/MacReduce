@@ -2,11 +2,28 @@
 title: "Integrate ANE training through falsifiable gates"
 type: implementation
 status: proposed
-updated: 2026-10-29
+updated: 2026-11-10
 sources: ["S10", "S11", "S12", "S16", "S37"]
 ---
 
 # Integrate ANE training through falsifiable gates
+
+**Later M1 repair, 2026-11-10:** the corrected forward normalization and LoRA
+factor scaling passed real-block forward/gradient gates at sequence cap 512,
+including the gradient to the GPU prefix and later trained adapter states.
+A 20-step hybrid pilot passed, and the matched long comparison was launched.
+[New evidence and limits](../../evidence/m1-hybrid-validation-2026-11-10/README.md).
+This supersedes the old implementation's launch blocker below; it does not
+establish long-run completion, a standalone ANE trainer, or M4 validation.
+
+**M1 experiments, 2026-11-10:** GPU and hybrid 10-step Qwen3 pilots ran. The
+hybrid failed real-model forward/gradient agreement; an isolated input RMSNorm
+returned zeros on the same real inputs. Tiny linear and decoder checks passed,
+so those checks alone are insufficient. The M1 hybrid profile now requires a
+passing real-block report before another launch. Longer hybrid work stops at
+Gate B until corrected. The separate full-Qwen3 ANE client still rejects
+execution. [Measured scope](../experiments/2026-11-10-m1-training.md),
+[bounded workflow](single-machine.md).
 
 **Scope note 2026-10-28:** [S37](../sources/S37.md) is Bryngelson's ANE reference, read in the scope on that card. It says the engine has no native backward op and that a host-built backward graph still trains, including transformers whose ops are in the registered set. The silicon numbers in the chapters that were read are M1 and M5. They are not a measurement of Qwen3 QLoRA on this M4.
 

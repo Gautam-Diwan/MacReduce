@@ -55,7 +55,8 @@ def test_select_trial_prefers_tokens_per_second():
 
 
 @pytest.mark.skipif(os.environ.get("MACREDUCE_TEST_MLX") != "1", reason="opt-in Metal hardware test")
-def test_checkpoint_restores_adapter_and_adamw(tmp_path):
+@pytest.mark.parametrize("frozen_embedding", [False, True])
+def test_checkpoint_restores_adapter_and_adamw(tmp_path, frozen_embedding):
     import mlx.core as mx
     import mlx.nn as nn
     import mlx.optimizers as optim
@@ -64,10 +65,20 @@ def test_checkpoint_restores_adapter_and_adamw(tmp_path):
 
     from macreduce.train_loop import load_checkpoint, save_checkpoint
 
+    class NestedAdapter(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.model = {"embed_tokens": nn.Embedding(8, 4), "layers": [nn.Linear(4, 3)]}
+            self.model["embed_tokens"].freeze()
+
+        def __call__(self, sample):
+            return self.model["layers"][0](self.model["embed_tokens"](sample))
+
+    make_model = NestedAdapter if frozen_embedding else lambda: nn.Linear(4, 3)
     mx.random.seed(0)
-    model = nn.Linear(4, 3)
+    model = make_model()
     opt = optim.AdamW(learning_rate=1e-2)
-    data = mx.random.normal((8, 4))
+    data = mx.arange(8) if frozen_embedding else mx.random.normal((8, 4))
 
     def loss_fn(module, sample):
         return (module(sample) ** 2).mean()
@@ -80,7 +91,10 @@ def test_checkpoint_restores_adapter_and_adamw(tmp_path):
     step = int(np.array(opt.step))
     destination = save_checkpoint(tmp_path, 4, model, opt, {"train_loss": float(loss), "seed": 0})
 
-    blank = nn.Linear(4, 3)
+    blank = make_model()
+    # Both instances use the same frozen base; only adapters are checkpointed.
+    if frozen_embedding:
+        blank.model["embed_tokens"].update(model.model["embed_tokens"].parameters())
     fresh = optim.AdamW(learning_rate=1e-2)
     meta = load_checkpoint(destination, blank, fresh)
     mx.eval(blank.parameters(), fresh.state)
@@ -89,6 +103,28 @@ def test_checkpoint_restores_adapter_and_adamw(tmp_path):
         np.testing.assert_allclose(restored[name], value)
     assert meta["step"] == 4
     assert int(np.array(fresh.step)) == step
+
+    # A restored state must support the next compiled update and match an
+    # uninterrupted optimizer, including AdamW moments and the step counter.
+    def update(module, optimizer):
+        value_and_grad = nn.value_and_grad(module, loss_fn)
+
+        def step():
+            _, gradients = value_and_grad(module, data)
+            optimizer.update(module, gradients)
+
+        state = [module.state, optimizer.state]
+        mx.compile(step, inputs=state, outputs=state)()
+        mx.eval(state)
+
+    update(model, opt)
+    update(blank, fresh)
+    for expected_tree, actual_tree in [(model.parameters(), blank.parameters()), (opt.state, fresh.state)]:
+        expected = dict(tree_flatten(expected_tree))
+        actual = dict(tree_flatten(actual_tree))
+        assert expected.keys() == actual.keys()
+        for name, value in expected.items():
+            np.testing.assert_allclose(np.array(actual[name]), np.array(value), rtol=1e-6, atol=1e-7)
 
 
 def test_resume_identity_checks_the_recipe():

@@ -1,0 +1,19 @@
+{
+  "scope": "comparison",
+  "override_mib": 1024,
+  "arm_policies": {
+    "local_gpu": {
+      "max_swap_growth_bytes": 1073741824,
+      "min_free_disk_bytes": 10737418240,
+      "reserve_memory_bytes": 4294967296,
+      "profile": "baseline"
+    },
+    "local_gpu_ane": {
+      "max_swap_growth_bytes": 1073741824,
+      "min_free_disk_bytes": 10737418240,
+      "reserve_memory_bytes": 4294967296,
+      "profile": "baseline"
+    }
+  },
+  "execution_started": false
+}

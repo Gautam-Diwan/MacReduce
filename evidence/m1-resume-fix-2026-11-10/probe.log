@@ -1,0 +1,26 @@
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1245.30it/s]
+trainable parameters: 5046272
+resumed at step 2000 from runs/baseline-suites/comparison-no-swap-1/local_gpu/logs/2026-11-10T12-18-28/checkpoints/0002000
+resume:   0%|          | 0/2000 [00:00<?, ?step/s]resume:  15%|█▌        | 302/2000 [00:00<00:00, 3016.14step/s]resume:  31%|███       | 612/2000 [00:00<00:00, 3064.04step/s]resume:  47%|████▋     | 932/2000 [00:00<00:00, 3125.26step/s]resume:  62%|██████▏   | 1245/2000 [00:00<00:00, 3041.81step/s]resume:  78%|███████▊  | 1559/2000 [00:00<00:00, 3075.67step/s]resume:  95%|█████████▍| 1899/2000 [00:00<00:00, 3177.36step/s]                                                               [WARNING] Some sequences are longer than 512 tokens. The longest sentence 593 will be truncated to 512. Consider pre-splitting your data to save memory.
+[WARNING] Some sequences are longer than 512 tokens. The longest sentence 559 will be truncated to 512. Consider pre-splitting your data to save memory.
+train:  16%|█▋        | 2000/12288 [00:00<?, ?step/s]train:  16%|█▋        | 2001/12288 [00:00<1:16:02,  2.25step/s]train:  16%|█▋        | 2001/12288 [00:00<1:51:16,  1.54step/s, loss=2.663, tok_s=126]
+{
+  "status": "ok",
+  "checkpoint": "runs/baseline-suites/comparison-no-swap-1/local_gpu/logs/2026-11-10T12-18-28/checkpoints/0002000",
+  "checkpoint_sha256": {
+    "state.json": "46c8429a424742b60b38ccc624affd2a7688d410ad4562f3d80966effad18657",
+    "adapters.safetensors": "e894fb6ef951db704e7a0b9c3bf18f0355e0fb75b0cb710a1a1beaaba574e1a5",
+    "optimizer.safetensors": "8501dbd893dc69aebe922cfaba62855dafed308afe3cc36c370b4981d045695a"
+  },
+  "scope": "normal trainer, same seed/order/recipe, one compiled update; no evaluation or long run",
+  "source_checkpoint_unchanged": true,
+  "report": {
+    "iteration": 2001,
+    "train_loss": 2.663269281387329,
+    "learning_rate": 9.517405851511285e-05,
+    "iterations_per_second": 2.256262962955814,
+    "tokens_per_second": 126.3507259255256,
+    "trained_tokens": 56,
+    "peak_memory": 0.679633674
+  }
+}

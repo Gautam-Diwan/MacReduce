@@ -1,0 +1,37 @@
+{
+  "shape": [
+    128,
+    1024
+  ],
+  "hidden_peak": 6624.0,
+  "cases": [
+    {
+      "scale": 1.0,
+      "input": "real",
+      "forward": {
+        "finite": true,
+        "relative_l2": 0.0004635318250431641,
+        "peak": 243.125
+      },
+      "backward": {
+        "finite": true,
+        "relative_l2": 0.0005112662450824601,
+        "peak": 1.1318359375
+      }
+    },
+    {
+      "scale": 1.0,
+      "input": "zero",
+      "forward": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "peak": 0.0
+      },
+      "backward": {
+        "finite": true,
+        "relative_l2": 0.006506327178976973,
+        "peak": 19184.0
+      }
+    }
+  ]
+}

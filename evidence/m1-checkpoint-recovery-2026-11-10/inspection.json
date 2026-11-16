@@ -1,0 +1,16 @@
+{
+  "inspected_checkpoint": "runs/baseline-suites/comparison-no-swap-1/local_gpu/logs/2026-11-10T12-18-28/checkpoints/0002000",
+  "step": 2000,
+  "files_sha256": {
+    "state.json": "46c8429a424742b60b38ccc624affd2a7688d410ad4562f3d80966effad18657",
+    "adapters.safetensors": "e894fb6ef951db704e7a0b9c3bf18f0355e0fb75b0cb710a1a1beaaba574e1a5",
+    "optimizer.safetensors": "8501dbd893dc69aebe922cfaba62855dafed308afe3cc36c370b4981d045695a"
+  },
+  "recipe_checked_sections": [
+    "data",
+    "model",
+    "training"
+  ],
+  "large_model_restoration_attempted": false,
+  "baseline_resume_started": false
+}

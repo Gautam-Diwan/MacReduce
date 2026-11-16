@@ -1,0 +1,115 @@
+{
+  "scope": "comparison",
+  "proposal": "docs/proposal.md",
+  "proposal_coverage": [
+    {
+      "name": "one_gpu_fedavg_star_uncompressed",
+      "status": "blocked",
+      "reason": "federated executor lacks M1 config/budget plumbing; local curve is not FedAvg"
+    },
+    {
+      "name": "combined_gpu_ane_federated_client",
+      "status": "blocked",
+      "reason": "local hybrid validated on M1; federated hybrid executor still missing"
+    },
+    {
+      "name": "separate_gpu_ane_clients",
+      "status": "blocked",
+      "reason": "independent full-Qwen3 ANE trainer is not implemented"
+    },
+    {
+      "name": "per_step_allreduce_control",
+      "status": "blocked",
+      "reason": "requires configured federated clients; local curve does not measure all-reduce"
+    },
+    {
+      "name": "ring_tree_int8_error_feedback_fednova_variants",
+      "status": "blocked",
+      "reason": "requires validated clients and an explicit unequal-step schedule for FedNova"
+    },
+    {
+      "name": "multiple_physical_macs",
+      "status": "blocked",
+      "reason": "no second connected Mac or physical peer executor"
+    }
+  ],
+  "recipe_note": "Provisional M4 comparison: first 4096 records, batch 1, accumulation 1, checkpointing off, three epochs. Verify the M4 saved recipe; not FedAvg.",
+  "swap_growth_guard_disabled": true,
+  "output_directory": "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/runs/baseline-suites/comparison-hybrid-resume-2",
+  "results": [
+    {
+      "name": "local_gpu",
+      "status": "completed",
+      "imported": true,
+      "run_directory": "runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52",
+      "steps": 12288,
+      "train_examples": 4096,
+      "initial_test_perplexity": 64.23330458183396,
+      "final_test_perplexity": 23.3233570957286,
+      "peak_mlx_bytes": 2185616352,
+      "seconds": 7353.948538875004,
+      "validation": [
+        {
+          "iteration": 4095,
+          "val_loss": 3.0583245754241943,
+          "val_time": 491.68004112500057,
+          "val_perplexity": 21.29185436563861
+        },
+        {
+          "iteration": 8191,
+          "val_loss": 3.0925943851470947,
+          "val_time": 556.1980144170011,
+          "val_perplexity": 22.034169006478827
+        },
+        {
+          "iteration": 12287,
+          "val_loss": 3.1668684482574463,
+          "val_time": 548.3894868749994,
+          "val_perplexity": 23.733046600979737
+        }
+      ],
+      "energy_joules": null,
+      "reason": null
+    },
+    {
+      "name": "local_gpu_ane",
+      "status": "completed",
+      "reason": null,
+      "exit_code": 0,
+      "run_directory": "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/runs/baseline-suites/comparison-hybrid-resume-2/local_gpu_ane/logs/2026-11-10T22-28-06",
+      "steps": 12288,
+      "train_examples": 4096,
+      "resumed_step": 500,
+      "timing_scope": "this invocation only; resumed-run time excludes earlier segments",
+      "initial_test_perplexity": 64.23330458183396,
+      "final_test_perplexity": 23.323607329545595,
+      "last_reported_step": 12288,
+      "last_reported_train_loss": 1.9698682264848189,
+      "last_reported_tokens": 1198443,
+      "peak_mlx_bytes": 4259897919,
+      "seconds": 9431.139596666995,
+      "validation": [
+        {
+          "iteration": 4095,
+          "val_loss": 3.05886173248291,
+          "val_time": 532.0591112499969,
+          "val_perplexity": 21.30329450780574
+        },
+        {
+          "iteration": 8191,
+          "val_loss": 3.093071937561035,
+          "val_time": 538.7697247920005,
+          "val_perplexity": 22.04469398999266
+        },
+        {
+          "iteration": 12287,
+          "val_loss": 3.1669535636901855,
+          "val_time": 536.5161361670034,
+          "val_perplexity": 23.73506673548249
+        }
+      ],
+      "energy_joules": null,
+      "energy_note": "power channel validity requires review; no automatic energy ranking"
+    }
+  ]
+}

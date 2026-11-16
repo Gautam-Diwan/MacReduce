@@ -1,0 +1,40 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "main.py",
+    "--config",
+    "configs/M1_8GB/gpu_smoke.yaml",
+    "--preflight"
+  ],
+  "exit_code": 1,
+  "report": {
+    "status": "blocked",
+    "placement": "gpu",
+    "scope": "smoke readiness only; no accelerator execution or residency verified",
+    "host": {
+      "system": "Darwin",
+      "architecture": "arm64",
+      "macos": "13.4.1",
+      "python": [
+        3,
+        12,
+        0
+      ],
+      "memory_total_bytes": 8589934592,
+      "disk_free_bytes": 9287663616,
+      "packages": {
+        "mlx": null,
+        "mlx-lm": null,
+        "aneforge": null
+      },
+      "mactop": false
+    },
+    "blockers": [
+      "macOS 14 or newer is required; exact pinned wheels may require newer",
+      "mlx==0.32.4 is required (found None)",
+      "mlx-lm==0.32.2 is required (found None)",
+      "mactop is missing; this runner requires it for system telemetry",
+      "free disk is below the configured 15 GiB reserve"
+    ]
+  }
+}
