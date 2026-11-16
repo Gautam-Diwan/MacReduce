@@ -1,0 +1,529 @@
+{
+  "status": "pass",
+  "cases": [
+    {
+      "record_index": 1,
+      "adapter_step": 0,
+      "tokens": 165,
+      "hidden_abs_max": 6592.0,
+      "cotangent_abs_max": 0.000576019287109375,
+      "ane_delta_norm": 4072.9619140625,
+      "reference_delta_norm": 4069.942138671875,
+      "input_normalization": {
+        "reference_norm": 4889.994414243804,
+        "ane_norm": 4889.805435676707,
+        "cosine": 0.9999972338379018,
+        "relative_l2": 0.0023523613467272904,
+        "max_abs_error": 1.0
+      },
+      "forward": {
+        "reference_norm": 8683.714831704256,
+        "ane_norm": 8685.47384437054,
+        "cosine": 0.9999933374717942,
+        "relative_l2": 0.003656335322026983,
+        "max_abs_error": 2.0
+      },
+      "hidden_gradient": {
+        "reference_norm": 0.013498991899577538,
+        "ane_norm": 0.01350344008658321,
+        "cosine": 0.9999422851675172,
+        "relative_l2": 0.010750641131268657,
+        "max_abs_error": 1.52587890625e-05
+      },
+      "factors": {
+        "self_attn.q_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.q_proj.lora_b": {
+          "reference_norm": 0.3109854033274629,
+          "ane_norm": 0.3147981629343194,
+          "cosine": 0.9998850500373606,
+          "relative_l2": 0.019571212298180696,
+          "max_abs_error": 0.0024930089712142944
+        },
+        "self_attn.k_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.k_proj.lora_b": {
+          "reference_norm": 0.13245771407292603,
+          "ane_norm": 0.13332178814477008,
+          "cosine": 0.9997478541508733,
+          "relative_l2": 0.023454979917414884,
+          "max_abs_error": 0.00037159770727157593
+        },
+        "self_attn.v_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.v_proj.lora_b": {
+          "reference_norm": 0.17691037847053986,
+          "ane_norm": 0.17705199558705595,
+          "cosine": 0.9997528442109271,
+          "relative_l2": 0.022256416581772562,
+          "max_abs_error": 0.00021461467258632183
+        },
+        "self_attn.o_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.o_proj.lora_b": {
+          "reference_norm": 0.1323883688420463,
+          "ane_norm": 0.1329215371704207,
+          "cosine": 0.9999235659732388,
+          "relative_l2": 0.01302700597432086,
+          "max_abs_error": 0.0005356390029191971
+        },
+        "mlp.gate_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "mlp.gate_proj.lora_b": {
+          "reference_norm": 0.3572171066669102,
+          "ane_norm": 0.35802610474942653,
+          "cosine": 0.9999582333603207,
+          "relative_l2": 0.009426103810450202,
+          "max_abs_error": 0.0005716308951377869
+        },
+        "mlp.up_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "mlp.up_proj.lora_b": {
+          "reference_norm": 0.40825795373436813,
+          "ane_norm": 0.40863773040100715,
+          "cosine": 0.9999745453629724,
+          "relative_l2": 0.007198747993955629,
+          "max_abs_error": 0.0007302244193851948
+        },
+        "mlp.down_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "mlp.down_proj.lora_b": {
+          "reference_norm": 0.32818181640183824,
+          "ane_norm": 0.3284129854889704,
+          "cosine": 0.9999902925565218,
+          "relative_l2": 0.0044637128779639,
+          "max_abs_error": 0.0001264438033103943
+        }
+      }
+    },
+    {
+      "record_index": 873,
+      "adapter_step": 0,
+      "tokens": 512,
+      "hidden_abs_max": 6400.0,
+      "cotangent_abs_max": 0.00016021728515625,
+      "ane_delta_norm": 6236.71435546875,
+      "reference_delta_norm": 6235.10009765625,
+      "input_normalization": {
+        "reference_norm": 8432.374703339834,
+        "ane_norm": 8432.953606662511,
+        "cosine": 0.9999972275343817,
+        "relative_l2": 0.002355849118905799,
+        "max_abs_error": 1.125
+      },
+      "forward": {
+        "reference_norm": 14203.796612289716,
+        "ane_norm": 14206.040263001174,
+        "cosine": 0.9999929699762414,
+        "relative_l2": 0.0037532945854960352,
+        "max_abs_error": 2.0
+      },
+      "hidden_gradient": {
+        "reference_norm": 0.006639749922292858,
+        "ane_norm": 0.006641507838754464,
+        "cosine": 0.9999490914100752,
+        "relative_l2": 0.010095257924768617,
+        "max_abs_error": 5.7220458984375e-06
+      },
+      "factors": {
+        "self_attn.q_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.q_proj.lora_b": {
+          "reference_norm": 0.2231176163414257,
+          "ane_norm": 0.22534087666137378,
+          "cosine": 0.9999573580590011,
+          "relative_l2": 0.013617099064288707,
+          "max_abs_error": 0.0016310885548591614
+        },
+        "self_attn.k_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.k_proj.lora_b": {
+          "reference_norm": 0.09788704330362855,
+          "ane_norm": 0.0984541558906883,
+          "cosine": 0.99990215268568,
+          "relative_l2": 0.015178718964582928,
+          "max_abs_error": 0.00034420378506183624
+        },
+        "self_attn.v_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.v_proj.lora_b": {
+          "reference_norm": 0.10256971338918176,
+          "ane_norm": 0.10244203100007203,
+          "cosine": 0.9994092608923905,
+          "relative_l2": 0.03437378483986805,
+          "max_abs_error": 0.00032713444670662284
+        },
+        "self_attn.o_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "self_attn.o_proj.lora_b": {
+          "reference_norm": 0.041164405752321054,
+          "ane_norm": 0.041246071739246784,
+          "cosine": 0.9999210882279486,
+          "relative_l2": 0.012730769877011158,
+          "max_abs_error": 0.00010680640116333961
+        },
+        "mlp.gate_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "mlp.gate_proj.lora_b": {
+          "reference_norm": 0.2351906596371307,
+          "ane_norm": 0.23558314439048442,
+          "cosine": 0.9999786431837239,
+          "relative_l2": 0.00675053968957136,
+          "max_abs_error": 0.00023265555500984192
+        },
+        "mlp.up_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "mlp.up_proj.lora_b": {
+          "reference_norm": 0.25696914139301097,
+          "ane_norm": 0.25731827515204414,
+          "cosine": 0.9999854641326087,
+          "relative_l2": 0.005563918680187076,
+          "max_abs_error": 0.0004343222826719284
+        },
+        "mlp.down_proj.lora_a": {
+          "reference_norm": 0.0,
+          "ane_norm": 0.0,
+          "cosine": null,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        },
+        "mlp.down_proj.lora_b": {
+          "reference_norm": 0.2311139071296589,
+          "ane_norm": 0.23113963130776724,
+          "cosine": 0.9999950600320933,
+          "relative_l2": 0.0031453814312985134,
+          "max_abs_error": 6.440747529268265e-05
+        }
+      }
+    },
+    {
+      "record_index": 873,
+      "adapter_step": 2500,
+      "tokens": 512,
+      "hidden_abs_max": 5024.0,
+      "cotangent_abs_max": 0.00014591217041015625,
+      "ane_delta_norm": 6471.87353515625,
+      "reference_delta_norm": 6473.7490234375,
+      "input_normalization": {
+        "reference_norm": 9057.447664595846,
+        "ane_norm": 9058.503025457507,
+        "cosine": 0.9999971991275943,
+        "relative_l2": 0.0023698046535419377,
+        "max_abs_error": 1.0
+      },
+      "forward": {
+        "reference_norm": 15307.84767060812,
+        "ane_norm": 15307.969585178525,
+        "cosine": 0.9999929186834229,
+        "relative_l2": 0.0037633508175842177,
+        "max_abs_error": 2.0
+      },
+      "hidden_gradient": {
+        "reference_norm": 0.005233981132425952,
+        "ane_norm": 0.005234914963779302,
+        "cosine": 0.9999405040172571,
+        "relative_l2": 0.010910775788841762,
+        "max_abs_error": 2.86102294921875e-06
+      },
+      "factors": {
+        "self_attn.q_proj.lora_a": {
+          "reference_norm": 0.04085202690349996,
+          "ane_norm": 0.04102884706344641,
+          "cosine": 0.9995568057733532,
+          "relative_l2": 0.030148951339280416,
+          "max_abs_error": 0.0002512284554541111
+        },
+        "self_attn.q_proj.lora_b": {
+          "reference_norm": 0.06046040173025488,
+          "ane_norm": 0.06045748139320442,
+          "cosine": 0.9997517395783307,
+          "relative_l2": 0.0222822618603449,
+          "max_abs_error": 0.00024916406255215406
+        },
+        "self_attn.k_proj.lora_a": {
+          "reference_norm": 0.020057015654322673,
+          "ane_norm": 0.02005770026535992,
+          "cosine": 0.9995770641285096,
+          "relative_l2": 0.02908439066592583,
+          "max_abs_error": 0.00011620228178799152
+        },
+        "self_attn.k_proj.lora_b": {
+          "reference_norm": 0.053807092952213656,
+          "ane_norm": 0.05381693082835288,
+          "cosine": 0.9997357616781504,
+          "relative_l2": 0.022991448351498193,
+          "max_abs_error": 0.00017413042951375246
+        },
+        "self_attn.v_proj.lora_a": {
+          "reference_norm": 0.027809338556776943,
+          "ane_norm": 0.026598460471219266,
+          "cosine": 0.9955063576461575,
+          "relative_l2": 0.10242986370267441,
+          "max_abs_error": 0.0007351064123213291
+        },
+        "self_attn.v_proj.lora_b": {
+          "reference_norm": 0.14329571584126197,
+          "ane_norm": 0.14167093445354245,
+          "cosine": 0.9988314416761777,
+          "relative_l2": 0.04938807634696712,
+          "max_abs_error": 0.0005794510943815112
+        },
+        "self_attn.o_proj.lora_a": {
+          "reference_norm": 0.02636775634193756,
+          "ane_norm": 0.02628808859372203,
+          "cosine": 0.9999018222920821,
+          "relative_l2": 0.014314015925971755,
+          "max_abs_error": 2.6192807126790285e-05
+        },
+        "self_attn.o_proj.lora_b": {
+          "reference_norm": 0.12342263249815362,
+          "ane_norm": 0.12332380337564995,
+          "cosine": 0.9999178860219603,
+          "relative_l2": 0.012835015896042237,
+          "max_abs_error": 0.0008734626462683082
+        },
+        "mlp.gate_proj.lora_a": {
+          "reference_norm": 0.052570783560774076,
+          "ane_norm": 0.052975316406224,
+          "cosine": 0.9998582294842655,
+          "relative_l2": 0.01857245549876469,
+          "max_abs_error": 0.0003185756504535675
+        },
+        "mlp.gate_proj.lora_b": {
+          "reference_norm": 0.28193970898810583,
+          "ane_norm": 0.28349059421399886,
+          "cosine": 0.9999317891063073,
+          "relative_l2": 0.012939500465682376,
+          "max_abs_error": 0.0013792440295219421
+        },
+        "mlp.up_proj.lora_a": {
+          "reference_norm": 0.08274022939132024,
+          "ane_norm": 0.0828170128843271,
+          "cosine": 0.9999591106848686,
+          "relative_l2": 0.009094818192268966,
+          "max_abs_error": 0.0002274615690112114
+        },
+        "mlp.up_proj.lora_b": {
+          "reference_norm": 0.36660859384031963,
+          "ane_norm": 0.36681099864630334,
+          "cosine": 0.9999804867644995,
+          "relative_l2": 0.006273183605923162,
+          "max_abs_error": 0.0004021786153316498
+        },
+        "mlp.down_proj.lora_a": {
+          "reference_norm": 0.17103074709883534,
+          "ane_norm": 0.17116196706910788,
+          "cosine": 0.9999910519408894,
+          "relative_l2": 0.0043009872108954305,
+          "max_abs_error": 0.00028168782591819763
+        },
+        "mlp.down_proj.lora_b": {
+          "reference_norm": 0.2189537239376856,
+          "ane_norm": 0.21903167395830425,
+          "cosine": 0.9999918988598253,
+          "relative_l2": 0.004041632425134342,
+          "max_abs_error": 9.827408939599991e-05
+        }
+      }
+    },
+    {
+      "record_index": 1490,
+      "adapter_step": 12288,
+      "tokens": 512,
+      "hidden_abs_max": 4288.0,
+      "cotangent_abs_max": 0.00012683868408203125,
+      "ane_delta_norm": 6616.10302734375,
+      "reference_delta_norm": 6604.36279296875,
+      "input_normalization": {
+        "reference_norm": 9340.570430128368,
+        "ane_norm": 9341.371074811455,
+        "cosine": 0.9999971629229999,
+        "relative_l2": 0.002383692043201087,
+        "max_abs_error": 1.25
+      },
+      "forward": {
+        "reference_norm": 13994.68182675641,
+        "ane_norm": 13994.463805209816,
+        "cosine": 0.9999894992067532,
+        "relative_l2": 0.004582739575182757,
+        "max_abs_error": 24.0
+      },
+      "hidden_gradient": {
+        "reference_norm": 0.006034835423557484,
+        "ane_norm": 0.006036275276792959,
+        "cosine": 0.9999465394361882,
+        "relative_l2": 0.010344252670114242,
+        "max_abs_error": 3.5762786865234375e-06
+      },
+      "factors": {
+        "self_attn.q_proj.lora_a": {
+          "reference_norm": 0.08757445747623847,
+          "ane_norm": 0.08811358739913072,
+          "cosine": 0.9997677650773913,
+          "relative_l2": 0.02247729083942727,
+          "max_abs_error": 0.00035200826823711395
+        },
+        "self_attn.q_proj.lora_b": {
+          "reference_norm": 0.078140449224832,
+          "ane_norm": 0.07864454614684492,
+          "cosine": 0.9996231193099359,
+          "relative_l2": 0.028288540920788936,
+          "max_abs_error": 0.0005971137434244156
+        },
+        "self_attn.k_proj.lora_a": {
+          "reference_norm": 0.05344397166937773,
+          "ane_norm": 0.05386296736564489,
+          "cosine": 0.999697826653934,
+          "relative_l2": 0.02589495769503563,
+          "max_abs_error": 0.0003804722800850868
+        },
+        "self_attn.k_proj.lora_b": {
+          "reference_norm": 0.08312393422542512,
+          "ane_norm": 0.08377790743304099,
+          "cosine": 0.9995912456363243,
+          "relative_l2": 0.02976301678786528,
+          "max_abs_error": 0.0003626188263297081
+        },
+        "self_attn.v_proj.lora_a": {
+          "reference_norm": 0.05402158853259935,
+          "ane_norm": 0.05354859220562,
+          "cosine": 0.9995536965914076,
+          "relative_l2": 0.031007314454184507,
+          "max_abs_error": 0.0004904349334537983
+        },
+        "self_attn.v_proj.lora_b": {
+          "reference_norm": 0.19418478323356878,
+          "ane_norm": 0.19359157363849863,
+          "cosine": 0.9992502006340355,
+          "relative_l2": 0.038785949662424234,
+          "max_abs_error": 0.000622325052972883
+        },
+        "self_attn.o_proj.lora_a": {
+          "reference_norm": 0.03899709948535761,
+          "ane_norm": 0.03897806248086834,
+          "cosine": 0.9999011917680402,
+          "relative_l2": 0.014062656194870972,
+          "max_abs_error": 3.08214221149683e-05
+        },
+        "self_attn.o_proj.lora_b": {
+          "reference_norm": 0.1558286013818595,
+          "ane_norm": 0.15597375522526322,
+          "cosine": 0.9999457635487211,
+          "relative_l2": 0.010461435418135004,
+          "max_abs_error": 0.00047158682718873024
+        },
+        "mlp.gate_proj.lora_a": {
+          "reference_norm": 0.11033020116238097,
+          "ane_norm": 0.11078051429309758,
+          "cosine": 0.999950934772181,
+          "relative_l2": 0.010732644054044458,
+          "max_abs_error": 0.000377558171749115
+        },
+        "mlp.gate_proj.lora_b": {
+          "reference_norm": 0.3680413495240755,
+          "ane_norm": 0.3691604621992492,
+          "cosine": 0.9999537377333435,
+          "relative_l2": 0.010102073346293032,
+          "max_abs_error": 0.0008562654256820679
+        },
+        "mlp.up_proj.lora_a": {
+          "reference_norm": 0.09641512883671809,
+          "ane_norm": 0.0964568826161806,
+          "cosine": 0.9999728351768379,
+          "relative_l2": 0.007385168759838426,
+          "max_abs_error": 0.00016865506768226624
+        },
+        "mlp.up_proj.lora_b": {
+          "reference_norm": 0.4330808000548907,
+          "ane_norm": 0.4333308820760928,
+          "cosine": 0.999983047153982,
+          "relative_l2": 0.005853094740744809,
+          "max_abs_error": 0.0005143992602825165
+        },
+        "mlp.down_proj.lora_a": {
+          "reference_norm": 0.1889015631902291,
+          "ane_norm": 0.18843245596560332,
+          "cosine": 0.999982984650126,
+          "relative_l2": 0.0063334965371593345,
+          "max_abs_error": 0.0003010407090187073
+        },
+        "mlp.down_proj.lora_b": {
+          "reference_norm": 0.2596116410484409,
+          "ane_norm": 0.2599268447158954,
+          "cosine": 0.9999883517916182,
+          "relative_l2": 0.004979842004060632,
+          "max_abs_error": 9.446125477552414e-05
+        }
+      }
+    }
+  ],
+  "sequence": 512,
+  "criterion": "forward/hidden/LoRA cosine >=0.99; forward relative L2 <=0.02; gradient relative L2 <=0.15",
+  "reference": "GPU quantized block; not an independent float64 full-block oracle",
+  "scope": "real batches and saved adapter states; includes gradient to GPU prefix; not ANE-only"
+}

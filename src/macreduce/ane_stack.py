@@ -208,7 +208,9 @@ class SuffixEngine:
         if len(loras) != len(self.lora_shapes):
             raise RuntimeError(f"expected {len(self.lora_shapes)} LoRA tensors, got {len(loras)}")
         padded = _pad(host, self.max_seq)
-        factors = [_host(value) for value in loras]
+        from .ane_numerics import restore_lora_gradients, scale_lora_factors
+
+        factors = scale_lora_factors([_host(value) for value in loras])
         mask = _attention_mask(length, self.max_seq)
         upstream = None if cotangent is None else _pad(_host(cotangent), self.max_seq)
         rows = []
@@ -233,7 +235,8 @@ class SuffixEngine:
         hidden_out = mx.array(stacked).astype(hidden.dtype)
         if cotangent is None:
             return hidden_out, batch
-        grads = [mx.array(value).astype(source.dtype) for value, source in zip(accumulated, loras)]
+        grads = [mx.array(value).astype(source.dtype)
+                 for value, source in zip(restore_lora_gradients(accumulated), loras)]
         return (hidden_out, *grads), batch
 
     def _run_backward(self, row, mask, factors, upstream):
@@ -364,20 +367,22 @@ def _stack(hidden, mask, loras, specs, cfg, cos, sin):
 def _block(hidden, mask, loras, cursor, spec, cfg, cos, sin):
     import aneforge as af
 
+    from .ane_numerics import scaled_rms_norm
+
     heads = cfg["heads"]
     kv_heads = cfg["kv_heads"]
     head_dim = cfg["head_dim"]
     seq = hidden.shape[0]
     groups = heads // kv_heads
-    normed = hidden.rms_norm(spec["attn_norm"], cfg["eps"])
+    normed = scaled_rms_norm(hidden, spec["attn_norm"], cfg["eps"])
     query, cursor = _project(normed, spec["weights"]["q"], spec["scales"][0], loras, cursor)
     key, cursor = _project(normed, spec["weights"]["k"], spec["scales"][1], loras, cursor)
     value, cursor = _project(normed, spec["weights"]["v"], spec["scales"][2], loras, cursor)
     query = query.reshape(seq, heads, head_dim)
     key = key.reshape(seq, kv_heads, head_dim)
     value = value.reshape(seq, kv_heads, head_dim)
-    query = query.reshape(seq * heads, head_dim).rms_norm(spec["q_norm"], cfg["eps"]).reshape(seq, heads, head_dim)
-    key = key.reshape(seq * kv_heads, head_dim).rms_norm(spec["k_norm"], cfg["eps"]).reshape(seq, kv_heads, head_dim)
+    query = scaled_rms_norm(query.reshape(seq * heads, head_dim), spec["q_norm"], cfg["eps"]).reshape(seq, heads, head_dim)
+    key = scaled_rms_norm(key.reshape(seq * kv_heads, head_dim), spec["k_norm"], cfg["eps"]).reshape(seq, kv_heads, head_dim)
     query = query.transpose((1, 0, 2)).reshape(1, heads, seq, head_dim)
     key = key.transpose((1, 0, 2)).reshape(1, kv_heads, seq, head_dim)
     value = value.transpose((1, 0, 2)).reshape(1, kv_heads, seq, head_dim)
@@ -390,7 +395,7 @@ def _block(hidden, mask, loras, cursor, spec, cfg, cos, sin):
     mixed = mixed.transpose((1, 0, 2)).reshape(seq, heads * head_dim)
     attended, cursor = _project(mixed, spec["weights"]["o"], spec["scales"][3], loras, cursor)
     hidden = hidden + attended
-    normed = hidden.rms_norm(spec["mlp_norm"], cfg["eps"])
+    normed = scaled_rms_norm(hidden, spec["mlp_norm"], cfg["eps"])
     gate, cursor = _project(normed, spec["weights"]["gate"], spec["scales"][4], loras, cursor)
     up, cursor = _project(normed, spec["weights"]["up"], spec["scales"][5], loras, cursor)
     down, cursor = _project(gate.silu() * up, spec["weights"]["down"], spec["scales"][6], loras, cursor)

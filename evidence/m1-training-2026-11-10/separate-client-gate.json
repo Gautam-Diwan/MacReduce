@@ -1,0 +1,17 @@
+{
+  "status": "blocked",
+  "reason": "aneforge imports, and no Qwen3 LoRA step is compiled for it",
+  "requested_clients": [
+    {
+      "name": "m0-gpu",
+      "mac": 0,
+      "device": "gpu"
+    },
+    {
+      "name": "m0-ane",
+      "mac": 0,
+      "device": "ane"
+    }
+  ],
+  "scope": "readiness gate only; no federated training executed"
+}

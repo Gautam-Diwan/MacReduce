@@ -1,0 +1,221 @@
+{
+  "status": "ok",
+  "mlx_lm": "0.32.2",
+  "dataset": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "counts": {
+      "train": 23767,
+      "validation": 2461,
+      "test": 2891
+    },
+    "source_sha256": {
+      "train": "e83889baabc497075506f91975be5fac0d45c5290b6b20582c8cd1e853d0c9f7",
+      "validation": "204929b7ff9d6184953f867dedb860e40aa69c078fc1e54b3baaa8fb28511c4c",
+      "test": "5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91"
+    },
+    "train_examples": 32,
+    "source": "runs/M1_8GB/data/wikitext-2-raw-v1"
+  },
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "model_revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+  "fine_tune_type": "lora",
+  "quantized_base": true,
+  "lora": {
+    "rank": 8,
+    "scale": 2.0,
+    "dropout": 0.0,
+    "num_layers": -1
+  },
+  "optimizer": "adamw",
+  "learning_rate": 0.0001,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "lr_schedule": {
+    "name": "cosine_decay",
+    "arguments": [
+      0.0001,
+      8,
+      1e-06
+    ],
+    "warmup": 2,
+    "warmup_init": 1e-07
+  },
+  "batch_size": 1,
+  "grad_accumulation_steps": 1,
+  "max_seq_length": 128,
+  "epochs": null,
+  "iters": 10,
+  "train_examples": 32,
+  "seed": 0,
+  "grad_checkpoint": true,
+  "save_every": 5,
+  "resumed_step": 0,
+  "checkpoint": "runs/M1_8GB/gpu/2026-11-10T04-21-52/checkpoints/0000010",
+  "ane_lora": false,
+  "ane": null,
+  "val_batches": 2,
+  "test_batches": 2,
+  "seconds": 7.758715209000002,
+  "trainable_parameters": 5046272,
+  "baseline_test": {
+    "loss": 4.580078601837158,
+    "perplexity": 97.52205931883003,
+    "batches": 2
+  },
+  "adapted_test": {
+    "loss": 4.298585891723633,
+    "perplexity": 73.5956478654567,
+    "batches": 2
+  },
+  "history": {
+    "train": [
+      {
+        "iteration": 1,
+        "train_loss": 4.930397987365723,
+        "learning_rate": 1.0000000116860974e-07,
+        "iterations_per_second": 1.4581010110615729,
+        "tokens_per_second": 185.17882840481974,
+        "trained_tokens": 127,
+        "peak_memory": 0.662390186
+      },
+      {
+        "iteration": 2,
+        "train_loss": 5.311906814575195,
+        "learning_rate": 5.004999911761843e-05,
+        "iterations_per_second": 1.4663698171071389,
+        "tokens_per_second": 186.22896677260664,
+        "trained_tokens": 254,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 3,
+        "train_loss": 4.7059149742126465,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 2.0373765198037126,
+        "tokens_per_second": 258.7468180150715,
+        "trained_tokens": 381,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 4,
+        "train_loss": 4.404640197753906,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 2.018856625596614,
+        "tokens_per_second": 222.07422881562755,
+        "trained_tokens": 491,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 5,
+        "train_loss": 3.8187570571899414,
+        "learning_rate": 9.623203368391842e-05,
+        "iterations_per_second": 1.9950864372799706,
+        "tokens_per_second": 253.37597753455626,
+        "trained_tokens": 618,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 6,
+        "train_loss": 3.5697433948516846,
+        "learning_rate": 8.550178608857095e-05,
+        "iterations_per_second": 2.0045576946760084,
+        "tokens_per_second": 254.5788272238531,
+        "trained_tokens": 745,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 7,
+        "train_loss": 4.202559471130371,
+        "learning_rate": 6.944283086340874e-05,
+        "iterations_per_second": 2.015916162078285,
+        "tokens_per_second": 256.02135258394213,
+        "trained_tokens": 872,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 8,
+        "train_loss": 4.990842342376709,
+        "learning_rate": 5.049999526818283e-05,
+        "iterations_per_second": 1.7914731264338861,
+        "tokens_per_second": 145.10932324114478,
+        "trained_tokens": 953,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 9,
+        "train_loss": 9.486979484558105,
+        "learning_rate": 3.155716694891453e-05,
+        "iterations_per_second": 2.920485756683762,
+        "tokens_per_second": 17.522914540102573,
+        "trained_tokens": 959,
+        "peak_memory": 0.687604075
+      },
+      {
+        "iteration": 10,
+        "train_loss": 2.9849741458892822,
+        "learning_rate": 1.549821172375232e-05,
+        "iterations_per_second": 2.0168128253273676,
+        "tokens_per_second": 256.1352288165757,
+        "trained_tokens": 1086,
+        "peak_memory": 0.687620656
+      }
+    ],
+    "validation": [
+      {
+        "iteration": 0,
+        "val_loss": 4.015721797943115,
+        "val_time": 0.26054883400001927,
+        "val_perplexity": 55.46331426414461
+      },
+      {
+        "iteration": 9,
+        "val_loss": 3.8762624263763428,
+        "val_time": 0.26728316700018695,
+        "val_perplexity": 48.243563811340394
+      }
+    ]
+  },
+  "adapter_path": "runs/M1_8GB/gpu/2026-11-10T04-21-52/adapters",
+  "mlx_peak_bytes": 687620656,
+  "seconds_wall": 15.689774500000112,
+  "energy": {
+    "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+    "scope": "system",
+    "gpu_joules": 41.02158488757501,
+    "gpu_sram_joules": 0.0,
+    "ane_joules": 0.0,
+    "cpu_joules": 0.0,
+    "dram_joules": 0.0,
+    "prometheus_gpu_joules": 31.36775493014152,
+    "prometheus_ane_joules": 0.0,
+    "sample_span_s": 12.0,
+    "gpu_watts_avg": 3.4184654072979175,
+    "gpu_sram_watts_avg": 0.0,
+    "ane_watts_avg": 0.0,
+    "cpu_watts_avg": 0.0,
+    "dram_watts_avg": 0.0
+  },
+  "mactop_status": "available",
+  "headless_samples": 11,
+  "prometheus_samples": 11,
+  "prometheus_port": 9096,
+  "memory_limit_bytes": 2147483648,
+  "placement": "gpu",
+  "log": "runs/M1_8GB/gpu/2026-11-10T04-21-52/run.log",
+  "figures": [
+    "runs/M1_8GB/gpu/2026-11-10T04-21-52/figures/loss.png",
+    "runs/M1_8GB/gpu/2026-11-10T04-21-52/figures/perplexity.png",
+    "runs/M1_8GB/gpu/2026-11-10T04-21-52/figures/energy.png",
+    "runs/M1_8GB/gpu/2026-11-10T04-21-52/figures/memory.png",
+    "runs/M1_8GB/gpu/2026-11-10T04-21-52/figures/latency.png"
+  ],
+  "latency": {
+    "median_iteration_ms": 497.4577709999721,
+    "median_tokens_per_second": 237.7251031750919,
+    "median_validation_s": 0.2639160005001031,
+    "reports": 10
+  },
+  "run_dir": "runs/M1_8GB/gpu/2026-11-10T04-21-52"
+}

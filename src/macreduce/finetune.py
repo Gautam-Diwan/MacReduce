@@ -11,14 +11,12 @@ stays complete. Perplexity is ``exp(mean token loss)``.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import threading
 import time
 import traceback
-import urllib.parse
-import urllib.request
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -32,7 +30,11 @@ CURVE_TRAIN_EXAMPLES = 4096
 CURVE_EPOCHS = 3
 CURVE_BATCH_SIZE = 8
 CURVE_ACCUMULATION = 2
-PAGE_ROWS = 100
+DATASET_SHA256 = {
+    "train": "e83889baabc497075506f91975be5fac0d45c5290b6b20582c8cd1e853d0c9f7",
+    "validation": "204929b7ff9d6184953f867dedb860e40aa69c078fc1e54b3baaa8fb28511c4c",
+    "test": "5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91",
+}
 
 # The LoRA recipe. mlx-lm pairs scale 20 with learning rate 1e-5; the
 # LLaMA-Factory and ms-swift Qwen3 LoRA configs use alpha = 2r (mlx-lm scale 2
@@ -238,6 +240,7 @@ def prepare_dataset(destination: Path) -> dict:
         "config": DATASET_CONFIG,
         "revision": DATASET_REVISION,
         "counts": counts,
+        "source_sha256": DATASET_SHA256,
     }
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest
@@ -444,21 +447,22 @@ def _run_lora(
 def _measure(model, dataset, args, evaluate, cache_dataset, label: str) -> dict:
     from tqdm import tqdm
 
+    from .randomness import numpy_seed
+
     scored = len(dataset) // args.batch_size
     if args.test_batches >= 0:
         scored = min(scored, args.test_batches)
     bar = tqdm(total=scored, desc=label, unit="batch", leave=False)
     try:
-        loss = float(
-            evaluate(
+        with numpy_seed(args.seed):
+            loss = float(evaluate(
                 model=model,
                 dataset=cache_dataset(dataset),
                 batch_size=args.batch_size,
                 num_batches=args.test_batches,
                 max_seq_length=args.max_seq_length,
                 progress_callback=bar.update,
-            )
-        )
+            ))
     finally:
         bar.close()
     return {"loss": loss, "perplexity": perplexity(loss), "batches": scored}
@@ -532,40 +536,28 @@ def _manifest_matches(path: Path) -> bool:
     manifest = json.loads(path.read_text())
     if manifest.get("revision") != DATASET_REVISION:
         return False
+    if manifest.get("source_sha256") != DATASET_SHA256:
+        return False
     return all((path.parent / name).is_file() for name in SPLITS.values())
 
 
 def _fetch_split(split: str) -> list[str]:
-    first = _page(split, 0)
-    total = int(first["num_rows_total"])
-    texts = [_row_text(row) for row in first["rows"]]
-    offsets = list(range(PAGE_ROWS, total, PAGE_ROWS))
-    if not offsets:
-        return texts
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        pages = pool.map(lambda offset: _page(split, offset), offsets)
-    for page in pages:
-        texts.extend(_row_text(row) for row in page["rows"])
-    return texts
+    """Read the immutable parquet snapshot, never the dataset server's latest rows."""
 
+    import pyarrow.parquet as pq
+    from huggingface_hub import hf_hub_download
 
-def _page(split: str, offset: int) -> dict:
-    query = urllib.parse.urlencode(
-        {
-            "dataset": DATASET_ID,
-            "config": DATASET_CONFIG,
-            "split": split,
-            "offset": offset,
-            "length": PAGE_ROWS,
-        }
-    )
-    url = f"https://datasets-server.huggingface.co/rows?{query}"
-    with urllib.request.urlopen(url, timeout=60) as response:
-        return json.load(response)
-
-
-def _row_text(row: dict) -> str:
-    return str(row["row"]["text"])
+    if split not in DATASET_SHA256:
+        raise ValueError(f"unknown WikiText split {split}")
+    path = Path(hf_hub_download(
+        DATASET_ID,
+        filename=f"{DATASET_CONFIG}/{split}-00000-of-00001.parquet",
+        repo_type="dataset",
+        revision=DATASET_REVISION,
+    ))
+    if hashlib.sha256(path.read_bytes()).hexdigest() != DATASET_SHA256[split]:
+        raise ValueError(f"pinned WikiText {split} checksum mismatch")
+    return pq.read_table(path, columns=["text"]).column("text").to_pylist()
 
 
 def _write_jsonl(path: Path, records: list[dict]) -> None:

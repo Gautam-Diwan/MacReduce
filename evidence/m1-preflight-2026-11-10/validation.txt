@@ -1,0 +1,48 @@
+Validation on Python 3.12.0, project .venv with system-site packages visible.
+Hardware execution tests were not opted in.
+
+Command:
+PYTHONPATH=src MPLCONFIGDIR=/private/tmp/macreduce-mpl-tests .venv/bin/python -m pytest -q
+Result (outside sandbox to permit localhost HTTP tests):
+109 passed, 5 skipped, 1 warning in 13.53s
+Warning: inherited SciPy requires NumPy <2.5.0; inherited NumPy is 2.5.4.
+This is not a pinned uv accelerator environment.
+
+Earlier sandbox run after psutil installation:
+7 failed, 102 passed, 5 skipped in 8.48s
+Six failures were PermissionError on localhost socket.bind; the remaining
+failure was missing seaborn. Seaborn was installed only into .venv before rerun.
+Initial collection also required installing the missing psutil dependency.
+
+Command:
+.venv/bin/ruff check main.py src tests
+Result:
+All checks passed!
+
+Command:
+.venv/bin/ruff check . --output-format concise
+Exit code: 1
+raw/sources/S159.py:2:1: E401
+raw/sources/S159.py:2:1: I001
+raw/sources/S159.py:5:1: I001
+raw/sources/S159.py:21:29: E702
+raw/sources/S159.py:33:24: E702
+raw/sources/S160.py:2:1: E401
+raw/sources/S160.py:2:1: I001
+raw/sources/S160.py:5:1: I001
+raw/sources/S161.py:2:1: I001
+raw/sources/S161.py:42:5: E731
+raw/sources/S161.py:43:5: E731
+raw/sources/S161.py:50:48: E702
+raw/sources/S32.py:1267:39: E741
+13 pre-existing errors in immutable source snapshots. No snapshots edited.
+
+Command:
+.venv/bin/python tools/wiki.py lint
+Result:
+ok: true; pages: 162; sources: 129; errors: []; warnings: []
+Structural validation only; no factual or hardware verification.
+
+Command:
+git diff --check
+Exit code: 0

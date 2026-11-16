@@ -1,0 +1,24 @@
+{
+  "resumed_step": 0,
+  "checkpoint": "runs/M1_8GB/full-length-no-checkpoint-probe-2/checkpoints/0000003",
+  "trainable_parameters": 5046272,
+  "ane_lora": false,
+  "status": "ok",
+  "max_record_tokens": 512,
+  "grad_checkpoint": false,
+  "mlx_peak_bytes": 2185500166,
+  "history": {
+    "train": [
+      {
+        "iteration": 3,
+        "train_loss": 3.081101099650065,
+        "learning_rate": 9.999999747378752e-05,
+        "iterations_per_second": 0.6269516208512231,
+        "tokens_per_second": 320.372278254975,
+        "trained_tokens": 1533,
+        "peak_memory": 2.185500166
+      }
+    ],
+    "validation": []
+  }
+}

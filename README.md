@@ -6,6 +6,10 @@ A working research prototype for observable local-SGD training across heterogene
 
 ## Research wiki
 
+To run and review baselines from a normal terminal without keeping Codex open,
+use the [standalone baseline runner](wiki/guides/baseline-suite.md). It prints
+progress, saves JSON/CSV results, and lists blocked proposal cases explicitly.
+
 Start with the [knowledge index](wiki/index.md), [implementation roadmap](wiki/project/roadmap.md), and [research contribution candidates](wiki/research/novelty.md). The wiki includes 22 source snapshots, source notes with reading scope, implementation gates, experiment plans, and maintenance instructions. The active [proposal](docs/proposal.md) is retained alongside historical artifacts under `docs/archive/`.
 
 ```sh
@@ -24,6 +28,10 @@ On 2026-10-24 the same M4 ran `macreduce doctor --smoke` (Metal matmul result 40
 See [evidence](evidence/README.md) for measured results and [the profiling guide](docs/profiling.md) for measurement methods and limitations.
 
 ## Install on each Mac
+
+For an 8GB M1, start with the [bounded machine profiles and read-only preflight](configs/M1_8GB/README.md)
+before installing or launching training. Both local comparison arms have
+[completed results](evidence/M1_8GB/README.md). ANE-only Qwen3 training remains unavailable.
 
 Use Python 3.12 or newer on Apple Silicon for MLX and Neural Engine work. [uv](https://docs.astral.sh/uv/) is the supported installer; it creates `.venv` and installs from the pinned `uv.lock`.
 
@@ -188,3 +196,6 @@ Each worker samples random windows from its local corpus. The synthetic default 
 The default trainer is still local SGD with token-weighted averaging of the 29,888-parameter model. The next milestones are a second physical Mac over Wi-Fi, the remaining MLX gradient and capture checks, a real corpus, calibrated batch selection, and an ANE adapter with independent gradient checks. Automatic memory admission, compression, LoRA, dynamic membership, and sharded large-model inference are not implemented. Artifacts larger than 64 MiB are rejected. Do not treat a wider model as finished scaling until memory and a real data split are measured.
 
 The hardware inventory distinguishes M5 GPU neural accelerators from ANE and detects CPU SME/SME2 features where permitted. It also records media engines as a future preprocessing opportunity. Inferred presence never counts as verified execution, and unknown future chip generations are not automatically declared supported.
+
+Completed M1 8GB local GPU and GPU+ANE results, reproduction commands and proposal
+coverage limits: [M1 baseline report](evidence/M1_8GB/README.md).

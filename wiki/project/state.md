@@ -2,11 +2,119 @@
 title: "Current implementation and evidence"
 type: status
 status: measured
-updated: 2026-10-28
+updated: 2026-11-16
 sources: []
 ---
 
 # Current implementation and evidence
+
+
+**Completion audit, 2026-11-16:** both M1 local comparison arms completed all
+12,288 updates with full validation/test and exit 0. GPU test PPL is 23.323357;
+hybrid is 23.323607. Final checkpoints are present. This supersedes the incomplete
+M1 launch statuses below; earlier entries describe historical attempts. The
+adapted recipe is 4,096 records, batch/accumulation 1/1, checkpointing off, three
+epochs. The M4 PR configs match these core settings, but implementation changes
+and resumed timing prevent a hardware-only comparison. FedAvg, separate ANE,
+all-reduce and multi-Mac proposal requirements remain unmeasured. ANE device mask
+and backward calls are recorded; the M1 power channel does not independently
+satisfy the proposal's placement criterion. [Completed results and exact scope](../../evidence/M1_8GB/README.md).
+
+
+**Hybrid retry, 2026-11-10 22:28 America/New_York:** after the user closed other
+memory-heavy apps, restarted from hybrid checkpoint 500 as
+`comparison-hybrid-resume-2` (launcher PID 71325). Initial evaluation completed
+and resumed training passed step 578 with normal memory pressure observed.
+Retained the 5 GiB disk reserve and other selected policies. The previous
+`comparison-hybrid-resume-1` stopped at step 501 under critical memory pressure.
+The new job was left running; no completed result yet.
+[Progress snapshot and log paths](../../evidence/m1-hybrid-retry-2026-11-10/README.md).
+
+**Hybrid resume, 2026-11-10 18:04 America/New_York:** the first long hybrid
+attempt stopped around update 607 for free disk below 10 GiB, preserving
+checkpoint 500. At the user's request, launched `comparison-hybrid-resume-1`
+from that checkpoint with a 5 GiB disk reserve, the existing disabled swap-growth
+stop, and other memory checks retained. Launcher PID 61013. Saved guard policy
+confirms 5368709120 bytes; initial evaluation was observed progressing. Completion
+of resumed training is not yet established. [Command and restart details](../guides/baseline-suite.md).
+
+**Hybrid repair and launch, 2026-11-10 17:33 America/New_York:** the GPU comparison
+completed 12,288 updates with final test PPL 23.3234. A corrected ANE normalization
+forward and equivalent LoRA factor scaling now pass real-block forward, adapter
+gradient and GPU-prefix gradient checks at the 512-token cap, including trained
+adapters and full-length sequences. A 20-update hybrid pilot completed with 20
+ANE backwards and sampled PPL 117.18 -> 59.51. The long comparison was launched
+as `comparison-hybrid-1`, importing the completed GPU arm and training the hybrid
+fresh from the base model. Launcher PID 57790. It was observed in initial
+evaluation; long-run completion is not yet established. [Measured scope, limitations,
+validation and log paths](../../evidence/m1-hybrid-validation-2026-11-10/README.md).
+The earlier failed hybrid gate below is historical for the old implementation.
+
+**Resumed GPU launch, 2026-11-10 15:15 America/New_York:** at the user's request,
+started `comparison-resume-2` from checkpoint 2,000 with the swap-growth stop
+disabled and the other configured checks retained. Initial full evaluation
+completed and resumed training advanced past step 2,054. The job was left
+running independently of Codex; launcher PID 43583. This is launch/recovery
+evidence, not a finished baseline. [Observation and log paths](../../evidence/m1-resume-launch-2026-11-10/README.md).
+
+**Real checkpoint recovery correction, 2026-11-10:** the user's first manual
+resume failed at the first update with `KeyError: 'embed_tokens'`. Optimizer
+restore now rebuilds frozen-layer containers omitted by tensor serialization,
+preserving saved AdamW moments and step. A bounded normal-trainer probe restored
+the actual Qwen checkpoint at 2,000 and completed update 2,001 (loss 2.6632693).
+Source checkpoint hashes are unchanged; no long run was launched. Nested frozen
+layer regression includes the next compiled update versus uninterrupted AdamW.
+Default tests: 133 passed, 6 skipped; separately enabled checkpoint tests: 8 passed.
+[Recovery evidence and scope](../../evidence/m1-resume-fix-2026-11-10/README.md).
+
+**Comparison switch, 2026-11-10:** at the user's request, stopped the full-data
+GPU job cleanly (last report: update 800; no saved checkpoint yet) and retained
+its logs. A fresh supervised GPU job started at 05:08:41 America/New_York:
+first 4,096 records, three epochs, batch 1, accumulation 1, checkpointing off,
+sequence cap 512, full validation/test evaluation; 12,288 planned updates.
+That job subsequently stopped at update 3,131 after swap growth exceeded the
+512 MiB policy. No checkpoint had been written before the epoch boundary, so
+it cannot resume. The guard is now configurable (default unchanged), and
+future comparison attempts save every 500 updates. No restart is active.
+[Stop/restart record](../../evidence/m1-comparison-stop-2026-11-10/README.md).
+No final result exists. The M4 match is
+provisional until the actual M4 saved config is inspected. This is local AdamW,
+not FedAvg. [Switch report](../experiments/2026-11-10-m1-comparison-switch.md),
+[historical full-run launch/fit](../experiments/2026-11-10-full-gpu-baseline.md).
+A [standalone baseline runner](../guides/baseline-suite.md) now plans/executes
+available arms sequentially, reports proposal coverage gaps, and writes compact
+JSON/CSV summaries; it needs no live Codex process. ANE correctness remains blocked.
+
+**Later manual retry:** `comparison-retry-1` stopped at progress-bar update 232
+with the same 512 MiB allowance still present in its saved config/policy.
+No OOM exception was observed. The runner now supports an explicit
+`--max-swap-growth-mib` override and preserves partial metrics in stopped-run
+summaries. Default remains unchanged; no new run was launched by this fix.
+[Diagnostic record](../../evidence/m1-comparison-retry-stop-2026-11-10/README.md).
+
+**User-selected policy change:** comparison config now explicitly disables
+the swap-growth stop with `max_swap_growth_bytes: null`. The standalone runner
+also accepts `--no-swap-growth-guard`; other resource checks and the MLX budget
+remain unchanged. This code/policy change has not launched a new training run.
+
+**Later interrupted no-swap run:** the user's `comparison-no-swap-1` run has
+an interrupted exit record and a complete checkpoint at update 2,000 (last
+periodic report 2,100). No supervised trainer is active at inspection. The
+standalone runner now preserves colliding output directories with automatic
+suffixes and supports `--resume-gpu` for matching incomplete checkpoints.
+[Restart/review workflow](../guides/baseline-suite.md). No resume was launched.
+
+**M1 experiments, 2026-11-10:** after upgrading to macOS 27.2.1 and installing
+the pinned runtimes plus local telemetry, GPU Qwen3 QLoRA completed a matched
+10-step pilot (two-batch perplexity 97.52 to 73.60; peak MLX ~656 MiB). The
+hybrid pilot executed but failed real-model correctness: suffix output cosine
+0.914–0.920, zero LoRA gradients, and isolated input RMSNorm returning zeros
+on real inputs. It is not an accepted training result. Tiny ANE linear and
+decoder gates passed. Full ANE Qwen3 and split clients remain unavailable;
+no three-epoch study ran. The user selected a 10 GiB disk reserve for smoke
+runs; memory/swap guards stayed unchanged. [Report](../experiments/2026-11-10-m1-training.md),
+[GPU verification](../experiments/2026-11-10-m1-mlx.md),
+[initial preflight](../experiments/2026-11-10-m1-preflight.md).
 
 **Scope as of 2026-10-25:** [decision 0003](../decisions/0003-build-target.md) makes the deliverable a per-request phase-placement scheduler for LLM serving plus its benchmark. The scheduler and a one-M4 Qwen2.5 study now exist. The serving pin is Qwen3 1.7B/0.6B 4-bit; that pair has an equivalence check, not a new speed sweep. The local-SGD trainer remains a measured prototype, not the research claim. The joint hypothesis, better time-to-first-token and better decode rate than the hindsight depth, was not met on the Qwen2.5 study.
 

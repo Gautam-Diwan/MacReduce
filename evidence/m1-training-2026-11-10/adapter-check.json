@@ -1,0 +1,28 @@
+{
+  "gpu": {
+    "all_adapter_values_finite": true,
+    "adapter_tensors": 392,
+    "block_27_lora_b_norms": {
+      "model.layers.27.mlp.up_proj.lora_b": 0.21963286910042154,
+      "model.layers.27.mlp.down_proj.lora_b": 0.141616277245574,
+      "model.layers.27.self_attn.v_proj.lora_b": 0.13410241279068424,
+      "model.layers.27.self_attn.k_proj.lora_b": 0.1271887341979589,
+      "model.layers.27.mlp.gate_proj.lora_b": 0.21337365725287033,
+      "model.layers.27.self_attn.q_proj.lora_b": 0.16994432453016753,
+      "model.layers.27.self_attn.o_proj.lora_b": 0.12385291913238455
+    }
+  },
+  "gpu_ane": {
+    "all_adapter_values_finite": true,
+    "adapter_tensors": 392,
+    "block_27_lora_b_norms": {
+      "model.layers.27.mlp.up_proj.lora_b": 0.0,
+      "model.layers.27.mlp.down_proj.lora_b": 0.0,
+      "model.layers.27.self_attn.v_proj.lora_b": 0.0,
+      "model.layers.27.self_attn.k_proj.lora_b": 0.0,
+      "model.layers.27.mlp.gate_proj.lora_b": 0.0,
+      "model.layers.27.self_attn.q_proj.lora_b": 0.0,
+      "model.layers.27.self_attn.o_proj.lora_b": 0.0
+    }
+  }
+}

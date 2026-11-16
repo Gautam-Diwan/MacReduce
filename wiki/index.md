@@ -2,7 +2,7 @@
 title: "MacReduce knowledge index"
 type: index
 status: active
-updated: 2026-10-29
+updated: 2026-11-16
 sources: []
 ---
 
@@ -26,6 +26,18 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 
 ## Implementation guides
 
+- [Completed M1 8GB GPU and hybrid comparison, audited November 16](../evidence/M1_8GB/README.md)
+
+- [Stage single-machine experiments on memory-constrained Macs](guides/single-machine.md)
+- [M1 8GB read-only preflight, 2026-11-10](experiments/2026-11-10-m1-preflight.md)
+- [M1 GPU verification after macOS upgrade, 2026-11-10](experiments/2026-11-10-m1-mlx.md)
+- [M1 training pilots and failed real-model ANE gate, 2026-11-10](experiments/2026-11-10-m1-training.md)
+- [Full-data GPU baseline launched, 2026-11-10](experiments/2026-11-10-full-gpu-baseline.md)
+- [Switch to a provisional 4,096-record M4 comparison](experiments/2026-11-10-m1-comparison-switch.md)
+- [Run baselines without a live assistant](guides/baseline-suite.md)
+- [M1 hybrid numerical repair, validation and comparison launch](../evidence/m1-hybrid-validation-2026-11-10/README.md)
+- [Real M1 Qwen checkpoint recovery fix and bounded validation](../evidence/m1-resume-fix-2026-11-10/README.md)
+- [Resumed M1 GPU baseline launch and initial progress](../evidence/m1-resume-launch-2026-11-10/README.md)
 - [Validate the MLX path on the M4](guides/mlx-validation.md)
 - [Run and characterize a physical WiFi cluster](guides/wifi.md)
 - [Move beyond the synthetic Transformer](guides/model-scaling.md)

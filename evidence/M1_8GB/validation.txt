@@ -1,0 +1,7 @@
+Validation inspected 2026-11-16 (America/New_York)
+PYTHONPATH=src .venv/bin/python -m pytest -q: 135 passed, 7 skipped; one existing SciPy/NumPy compatibility warning.
+MACREDUCE_TEST_MLX=1 PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_ane_numerics.py tests/test_ane_stack.py tests/test_checkpoint.py: 14 passed; dispatch-floor and pre-A16 slice warnings.
+.venv/bin/ruff check main.py src tests tools: passed.
+.venv/bin/ruff check .: 13 existing errors in immutable raw/sources/S159.py, S160.py, S161.py, S32.py.
+Both completed result/config/checkpoint/supervisor records checked: status ok, exit 0, 12288 updates, 4096 records, batch/accumulation 1/1, gradient checkpointing off, full validation/test, final checkpoint 12288.
+No long training rerun was needed.

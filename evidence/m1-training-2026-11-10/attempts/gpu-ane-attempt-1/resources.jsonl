@@ -1,0 +1,4 @@
+{"elapsed_s": 0.0046464170000035665, "available_bytes": 2656813056, "swap_used_bytes": 1523318784, "pressure_level": 1, "disk_free_bytes": 16165216256}
+{"elapsed_s": 2.0133562500000153, "available_bytes": 2668232704, "swap_used_bytes": 1523318784, "pressure_level": 1, "disk_free_bytes": 16134148096}
+{"elapsed_s": 4.022762999999941, "available_bytes": 2518368256, "swap_used_bytes": 1523318784, "pressure_level": 1, "disk_free_bytes": 16110096384}
+{"elapsed_s": 6.032157041999881, "available_bytes": 2322415616, "swap_used_bytes": 1523318784, "pressure_level": 1, "disk_free_bytes": 15781888000}
