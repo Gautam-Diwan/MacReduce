@@ -1,0 +1,118 @@
+{
+  "status": "ok",
+  "mlx_lm": "0.32.2",
+  "dataset": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "counts": {
+      "train": 23767,
+      "validation": 2461,
+      "test": 2891
+    },
+    "train_examples": 4096,
+    "source": "data/wikitext-2-raw-v1"
+  },
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "model_revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+  "fine_tune_type": "lora",
+  "quantized_base": true,
+  "lora": {
+    "rank": 8,
+    "scale": 2.0,
+    "dropout": 0.0,
+    "num_layers": -1
+  },
+  "optimizer": "adamw",
+  "learning_rate": 0.0001,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "lr_schedule": {
+    "name": "cosine_decay",
+    "arguments": [
+      0.0001,
+      11988,
+      1e-06
+    ],
+    "warmup": 300,
+    "warmup_init": 1e-07
+  },
+  "batch_size": 1,
+  "grad_accumulation_steps": 1,
+  "max_seq_length": 512,
+  "epochs": 3,
+  "iters": 12288,
+  "train_examples": 4096,
+  "seed": 0,
+  "grad_checkpoint": false,
+  "save_every": 4096,
+  "resumed_step": 0,
+  "checkpoint": "evidence/M4_16GB/gpu/2026-11-10T01-09-44/checkpoints/0012288",
+  "ane_lora": false,
+  "ane": null,
+  "val_batches": -1,
+  "test_batches": -1,
+  "seconds": 2940.2641717907973,
+  "trainable_parameters": 5046272,
+  "baseline_test": {
+    "loss": 4.162571430206299,
+    "perplexity": 64.23649005876646,
+    "batches": 2891
+  },
+  "adapted_test": {
+    "loss": 3.1488351821899414,
+    "perplexity": 23.308898142349527,
+    "batches": 2891
+  },
+  "adapter_path": "evidence/M4_16GB/gpu/2026-11-10T01-09-44/adapters",
+  "mlx_peak_bytes": 2206027662,
+  "seconds_wall": 2950.0567872920074,
+  "energy": {
+    "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+    "scope": "system",
+    "gpu_joules": 38429.68539934445,
+    "gpu_sram_joules": 0.05335591990306201,
+    "ane_joules": 0.04180744802896947,
+    "cpu_joules": 2196.271826477664,
+    "dram_joules": 4027.744576555122,
+    "prometheus_gpu_joules": 38413.17775236843,
+    "prometheus_ane_joules": 0.05254381736479839,
+    "sample_span_s": 2939.0,
+    "gpu_watts_avg": 13.075769104914752,
+    "gpu_sram_watts_avg": 1.8154447057863903e-05,
+    "ane_watts_avg": 1.4225058873415947e-05,
+    "cpu_watts_avg": 0.7472854122074393,
+    "dram_watts_avg": 1.370447287021137
+  },
+  "mactop_status": "available",
+  "headless_samples": 2266,
+  "prometheus_samples": 2900,
+  "prometheus_port": 9096,
+  "memory_limit_bytes": 11453251584,
+  "placement": "gpu",
+  "log": "evidence/M4_16GB/gpu/2026-11-10T01-09-44/run.log",
+  "figures": [
+    "evidence/M4_16GB/gpu/2026-11-10T01-09-44/figures/loss.png",
+    "evidence/M4_16GB/gpu/2026-11-10T01-09-44/figures/perplexity.png",
+    "evidence/M4_16GB/gpu/2026-11-10T01-09-44/figures/energy.png",
+    "evidence/M4_16GB/gpu/2026-11-10T01-09-44/figures/memory.png",
+    "evidence/M4_16GB/gpu/2026-11-10T01-09-44/figures/latency.png"
+  ],
+  "latency": {
+    "median_iteration_ms": 148.6070455983281,
+    "median_tokens_per_second": 674.3674866313326,
+    "median_validation_s": 177.54526950011496,
+    "reports": 1229
+  },
+  "run_dir": "evidence/M4_16GB/gpu/2026-11-10T01-09-44",
+  "_retention": {
+    "source_result": "evidence/M4_16GB/gpu/2026-11-10T01-09-44/result.json",
+    "source_commit": "30471852690b55476b25f8dafb7f8b6635ba7c4e",
+    "source_url": "https://github.com/Gautam-Diwan/MacReduce/blob/30471852690b55476b25f8dafb7f8b6635ba7c4e/evidence/M4_16GB/gpu/2026-11-10T01-09-44/result.json",
+    "source_sha256": "09b9b9a6ee869d5607e595a12b633dcec03fd6898b9e04c6683aa6b50e9b774a",
+    "omitted_fields": [
+      "history"
+    ],
+    "scope": "All other result fields are copied unchanged. Embedded original run paths are provenance; raw files are available at the pinned source commit. Adapter weights were never committed."
+  }
+}

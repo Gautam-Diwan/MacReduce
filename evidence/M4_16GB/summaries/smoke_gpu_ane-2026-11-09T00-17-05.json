@@ -1,0 +1,127 @@
+{
+  "status": "ok",
+  "mlx_lm": "0.32.2",
+  "dataset": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "counts": {
+      "train": 23767,
+      "validation": 2461,
+      "test": 2891
+    },
+    "train_examples": 4096,
+    "source": "data/wikitext-2-raw-v1"
+  },
+  "model": "mlx-community/Qwen3-0.6B-4bit",
+  "model_revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+  "fine_tune_type": "lora",
+  "quantized_base": true,
+  "lora": {
+    "rank": 8,
+    "scale": 2.0,
+    "dropout": 0.0,
+    "num_layers": -1
+  },
+  "optimizer": "adamw",
+  "learning_rate": 0.0001,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "lr_schedule": {
+    "name": "cosine_decay",
+    "arguments": [
+      0.0001,
+      11988,
+      1e-06
+    ],
+    "warmup": 300,
+    "warmup_init": 1e-07
+  },
+  "batch_size": 1,
+  "grad_accumulation_steps": 1,
+  "max_seq_length": 512,
+  "epochs": null,
+  "iters": 500,
+  "train_examples": 4096,
+  "seed": 0,
+  "grad_checkpoint": false,
+  "save_every": 500,
+  "resumed_step": 0,
+  "checkpoint": "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/checkpoints/0000500",
+  "ane_lora": true,
+  "ane": {
+    "status": "ok",
+    "qwen_suffix_blocks": 1,
+    "gpu_blocks": 27,
+    "sequence": 512,
+    "device_mask": "0x4",
+    "forward_calls": 5422,
+    "backward_calls": 500,
+    "summary": "qwen blocks 0-26 on the gpu, block 27 on the neural engine, sequence 512"
+  },
+  "val_batches": -1,
+  "test_batches": -1,
+  "seconds": 944.5050409999676,
+  "trainable_parameters": 5046272,
+  "baseline_test": {
+    "loss": 4.162574768066406,
+    "perplexity": 64.23670447154191,
+    "batches": 2891
+  },
+  "adapted_test": {
+    "loss": 3.1393094062805176,
+    "perplexity": 23.087916981450228,
+    "batches": 2891
+  },
+  "adapter_path": "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/adapters",
+  "mlx_peak_bytes": 4260406834,
+  "seconds_wall": 949.2469427080359,
+  "energy": {
+    "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
+    "scope": "system",
+    "gpu_joules": 9380.238433356872,
+    "gpu_sram_joules": 0.10331022657322665,
+    "ane_joules": 62.01885929980082,
+    "cpu_joules": 1807.43986288413,
+    "dram_joules": 1138.853713575523,
+    "prometheus_gpu_joules": 9384.463146187292,
+    "prometheus_ane_joules": 61.924751679769116,
+    "sample_span_s": 945.0,
+    "gpu_watts_avg": 9.926178236356478,
+    "gpu_sram_watts_avg": 0.00010932299108277952,
+    "ane_watts_avg": 0.06562842253947176,
+    "cpu_watts_avg": 1.9126347755387618,
+    "dram_watts_avg": 1.2051362048418233
+  },
+  "mactop_status": "available",
+  "headless_samples": 761,
+  "prometheus_samples": 937,
+  "prometheus_port": 9096,
+  "memory_limit_bytes": 11453251584,
+  "placement": "gpu_ane",
+  "log": "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/run.log",
+  "figures": [
+    "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/figures/loss.png",
+    "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/figures/perplexity.png",
+    "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/figures/energy.png",
+    "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/figures/memory.png",
+    "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/figures/latency.png"
+  ],
+  "latency": {
+    "median_iteration_ms": 233.7848373921588,
+    "median_tokens_per_second": 430.86753561563705,
+    "median_validation_s": 201.67823506239802,
+    "reports": 50
+  },
+  "run_dir": "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05",
+  "_retention": {
+    "source_result": "evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/result.json",
+    "source_commit": "30471852690b55476b25f8dafb7f8b6635ba7c4e",
+    "source_url": "https://github.com/Gautam-Diwan/MacReduce/blob/30471852690b55476b25f8dafb7f8b6635ba7c4e/evidence/M4_16GB/smoke_gpu_ane/2026-11-09T00-17-05/result.json",
+    "source_sha256": "a7e2e2afd28406f42efe035b00b27c2dea555548abd750357faa84d2f6bc471c",
+    "omitted_fields": [
+      "history"
+    ],
+    "scope": "All other result fields are copied unchanged. Embedded original run paths are provenance; raw files are available at the pinned source commit. Adapter weights were never committed."
+  }
+}

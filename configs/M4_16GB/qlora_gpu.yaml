@@ -1,0 +1,56 @@
+# Qwen3-0.6B 4-bit QLoRA, GPU only, on an M4 MacBook Pro with 16 GB (Mac16,1).
+# The control for configs/M4_16GB/qlora_gpu_ane.yaml: identical recipe, data, seed, batch size,
+# and step count. The only difference is placement.mode, so all 28 blocks train on the GPU.
+# Batch size 1 matches the GPU plus Neural Engine baseline even if a larger batch would be
+# faster on the GPU alone; the comparison needs the same number of updates.
+# Runs land under logging.dir, separate from the baseline directory.
+
+data:
+  dataset: Salesforce/wikitext
+  config: wikitext-2-raw-v1
+  revision: b08601e04326c79dfdd32d625aee71d232d685c3
+  path: data/wikitext-2-raw-v1
+  train_examples: 4096
+
+model:
+  name: mlx-community/Qwen3-0.6B-4bit
+  revision: 73e3e38d981303bc594367cd910ea6eb48349da8
+  max_seq_length: 512
+  lora_rank: 8
+  lora_scale: 2.0
+  lora_dropout: 0.0
+  num_layers: -1
+
+training:
+  batch_size: 1
+  grad_accumulation_steps: 1
+  grad_checkpoint: false
+  epochs: 3
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  lr_schedule:
+    name: cosine_decay
+    warmup: 300
+    warmup_init: 1.0e-7
+    end: 1.0e-6
+  optimizer: adamw
+  iters: null
+  steps_per_report: 10
+  val_batches: -1
+  test_batches: -1
+
+placement:
+  mode: gpu
+
+infrastructure:
+  seed: 0
+  memory_limit_bytes: auto
+  prometheus_port: 9096
+
+checkpoint:
+  save_every: epoch
+  resume: null
+
+logging:
+  dir: evidence/M4_16GB/gpu
