@@ -262,3 +262,13 @@ S126–S157 were GitHub directory pages (fonts, badges, workflows, folder listin
 
 Four files from commit `896c4943c5ebf811c0e815f8d1381fd1e157fa7d` were read and saved: [S158](sources/S158.md), [S159](sources/S159.md), [S160](sources/S160.md), [S161](sources/S161.md). The paper PDF [S38](sources/S38.md) is still not text-extracted. The architecture-guide chapters were extracted into their cards and were not rewritten as call rules, except the sentences cited in the guide.
 
+
+## 2026-11-17 Clean the M4 16 GB baseline review diff
+
+At the user's request, removed 69 generated files from the index on `edmund/m4-16gb-baseline`. The branch already contains current `main` and its root ignore rules. Added experiment-local runtime-directory exclusions, retained all three source configs and the comparison report, and copied four compact result summaries without the repeated embedded histories. Updated the report's local links to the retained summaries. No training code or measured value changed.
+
+The [artifact manifest](../evidence/M4_16GB/artifact-manifest.json) preserves original paths, sizes, SHA-256 checksums, and Git blob IDs for 114,848,054 bytes of generated files. The [report](../evidence/M4_16GB/README.md) links the unchanged published source tree at commit `30471852690b55476b25f8dafb7f8b6635ba7c4e`. Raw logs, histories, telemetry, figures, and metadata remain in those earlier commits and in ignored local files. Adapter weights were never committed. This cleanup does not claim a new experiment or rewrite earlier evidence bytes.
+
+The unrelated federation/research work remains in a branch-labelled stash for `gautam/tailscale`; it was not applied to this branch.
+
+Verification checked all 69 original Git blobs against their recorded SHA-256/size and unchanged local copies, every retained summary against all non-history source fields, and every local report link. All 18 positive/negative ignore cases passed. Configs, code, tests, dependencies, and raw research snapshots are unchanged from the original PR head. Wiki lint passed with 160 pages, 129 sources, and no errors or warnings. Diff whitespace checks passed. No training tests were rerun because training code did not change.

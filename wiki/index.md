@@ -2,7 +2,7 @@
 title: "MacReduce knowledge index"
 type: index
 status: active
-updated: 2026-10-29
+updated: 2026-11-17
 sources: []
 ---
 
@@ -22,6 +22,7 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 - [Training architecture and extension points](project/architecture.md)
 - [Wiki schema and evidence rules](schema.md)
 - [MacReduce wiki change log](log.md)
+- [M4 Pro 16 GB GPU and GPU+ANE baseline report](../evidence/M4_16GB/README.md)
 - [One-Mac feasibility probe, 2026-10-28](experiments/2026-10-28-one-mac-feasibility.md)
 
 ## Implementation guides

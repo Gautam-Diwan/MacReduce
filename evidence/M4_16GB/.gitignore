@@ -1,0 +1,5 @@
+# Runtime output roots from configs/M4_16GB/*.yaml.
+# Retain reports, configs, summaries, and provenance outside these directories.
+/gpu/
+/gpu_ane/
+/smoke_gpu_ane/

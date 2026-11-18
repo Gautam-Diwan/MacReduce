@@ -33,10 +33,10 @@ Software on this Mac: Python 3.12.16, mlx 0.32.4, mlx-lm 0.32.2, aneforge 0.4.0,
 
 | Run | Config | Conditions |
 |---|---|---|
-| [smoke_gpu_ane/2026-11-09T00-17-05](smoke_gpu_ane/2026-11-09T00-17-05/result.json) | [smoke_gpu_ane.yaml](../../configs/M4_16GB/smoke_gpu_ane.yaml), first 500 steps | No `caffeinate`. Chrome played a YouTube live stream throughout |
-| [gpu_ane/2026-11-09T01-14-02](gpu_ane/2026-11-09T01-14-02/result.json) | [qlora_gpu_ane.yaml](../../configs/M4_16GB/qlora_gpu_ane.yaml) | `caffeinate -i`. YouTube live stream from 9.3 minutes after launch to the end |
-| [gpu/2026-11-10T01-09-44](gpu/2026-11-10T01-09-44/result.json) | [qlora_gpu.yaml](../../configs/M4_16GB/qlora_gpu.yaml) | Clean pair, run back to back with a 300 s pause under one `caffeinate -di` |
-| [gpu_ane/2026-11-10T02-03-55](gpu_ane/2026-11-10T02-03-55/result.json) | [qlora_gpu_ane.yaml](../../configs/M4_16GB/qlora_gpu_ane.yaml) | Second run of the clean pair |
+| [smoke_gpu_ane/2026-11-09T00-17-05](summaries/smoke_gpu_ane-2026-11-09T00-17-05.json) | [smoke_gpu_ane.yaml](../../configs/M4_16GB/smoke_gpu_ane.yaml), first 500 steps | No `caffeinate`. Chrome played a YouTube live stream throughout |
+| [gpu_ane/2026-11-09T01-14-02](summaries/gpu_ane-2026-11-09T01-14-02.json) | [qlora_gpu_ane.yaml](../../configs/M4_16GB/qlora_gpu_ane.yaml) | `caffeinate -i`. YouTube live stream from 9.3 minutes after launch to the end |
+| [gpu/2026-11-10T01-09-44](summaries/gpu-2026-11-10T01-09-44.json) | [qlora_gpu.yaml](../../configs/M4_16GB/qlora_gpu.yaml) | Clean pair, run back to back with a 300 s pause under one `caffeinate -di` |
+| [gpu_ane/2026-11-10T02-03-55](summaries/gpu_ane-2026-11-10T02-03-55.json) | [qlora_gpu_ane.yaml](../../configs/M4_16GB/qlora_gpu_ane.yaml) | Second run of the clean pair |
 
 All runs were plugged in with Low Power Mode off, and `pmset` logged no sleep during any of them. For the clean pair, `pmset` shows `caffeinate` holding its assertions from 01:09:44 to 03:11:16. It shows no browser video wake lock and no audio assertion in that window, and the last keyboard activity timed out at 01:21:27. The CPU rail averaged 0.75 W (GPU only) and 1.30 W (GPU plus Neural Engine), against 2.20 W in the first full run with the stream playing. Which other applications were open during the clean pair was not recorded.
 
@@ -153,16 +153,13 @@ The extra 2 GB of MLX memory is consistent with the dequantized fp16 copy of blo
 
 ## Files
 
-Each run directory holds:
+The three reproducible configs above, this report, and [compact result summaries](summaries/) remain in the current tree. Each summary copies every original result field except the embedded `history`. Original run paths inside the JSON describe the source run; they are not current-tree artifact links.
 
-- `config.yaml`: the resolved config
-- `run.log`
-- `history.jsonl`: train reports every 10 steps, plus the validation reports
-- `result.json`: summary, energy, and latency
-- `mactop.raw.json` and `prometheus.jsonl`: raw telemetry
-- `figures/`
+The complete logs, training/validation histories, raw telemetry, resolved configs, figures, and checkpoint metadata remain in the [published source tree at `3047185`](https://github.com/Gautam-Diwan/MacReduce/tree/30471852690b55476b25f8dafb7f8b6635ba7c4e/evidence/M4_16GB). [artifact-manifest.json](artifact-manifest.json) records all 69 original paths, sizes, SHA-256 checksums, and Git blob IDs. Construct a source-file URL by appending its recorded path to `source_blob_url_prefix`. The previous commits remain unchanged, so the measurements behind this report remain inspectable.
 
-Adapter and checkpoint weights (`*.safetensors`) are git-ignored, so `checkpoints/` holds only `state.json`. The committed runs cannot be resumed from the repository.
+The cleanup removes 114,848,054 bytes of generated files from the current tracked tree and leaves the local copies intact. The experiment-local [.gitignore](.gitignore) excludes `gpu/`, `gpu_ane/`, and `smoke_gpu_ane/` runtime directories. Keep future reviewable summaries under `summaries/`; preserve raw evidence through a versioned archive with checksums when reporting a new result. Do not force-add complete run directories.
+
+Adapter and checkpoint weights were never committed. The source checkpoint metadata alone cannot resume training. No experiment was rerun and no measurement value changed during this cleanup.
 
 ## Open items
 
