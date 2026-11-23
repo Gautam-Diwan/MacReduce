@@ -1,0 +1,10 @@
+{"elapsed_s": 0.005899499999941327, "available_bytes": 2451865600, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14617796608}
+{"elapsed_s": 2.014198542000031, "available_bytes": 2432368640, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14612406272}
+{"elapsed_s": 4.0285499589999745, "available_bytes": 2169569280, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14616805376}
+{"elapsed_s": 6.045660083999792, "available_bytes": 1779499008, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14608068608}
+{"elapsed_s": 8.060421291999774, "available_bytes": 1808121856, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14523809792}
+{"elapsed_s": 10.071043375000045, "available_bytes": 1862336512, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14540763136}
+{"elapsed_s": 12.080576625000049, "available_bytes": 2269233152, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14483271680}
+{"elapsed_s": 14.095223416999943, "available_bytes": 2370240512, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14482042880}
+{"elapsed_s": 16.104005458999836, "available_bytes": 2325397504, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14465912832}
+{"elapsed_s": 18.113251124999806, "available_bytes": 2299854848, "swap_used_bytes": 1498152960, "pressure_level": 1, "disk_free_bytes": 14471086080}

@@ -262,3 +262,373 @@ S126–S157 were GitHub directory pages (fonts, badges, workflows, folder listin
 
 Four files from commit `896c4943c5ebf811c0e815f8d1381fd1e157fa7d` were read and saved: [S158](sources/S158.md), [S159](sources/S159.md), [S160](sources/S160.md), [S161](sources/S161.md). The paper PDF [S38](sources/S38.md) is still not text-extracted. The architecture-guide chapters were extracted into their cards and were not rewritten as call rules, except the sentences cited in the guide.
 
+## 2026-11-10 — Stage bounded M1 single-machine experiments
+
+Created `research/m1-8gb-single-machine` from local main `d67f2e3` after the
+sandbox denied writing Git metadata; remote freshness was not checked. Added
+machine-specific GPU and hybrid smoke profiles, shared read-only preflight,
+and checks before run allocation for profiles with a safety section. Explicit
+MLX budgets now bound the process wired allowance and cache as well as MLX
+allocations. These are software limits, not a bound on total process or ANE
+compiler memory. No system memory/security settings changed.
+
+**Inspected scope:** shared training/memory runners, Qwen3 suffix implementation,
+federated ANE rejection, and host metadata. `sysctl` memory retrieval was denied;
+selected `system_profiler` fields recovered 8 GiB RAM and Apple M1 without
+retaining serial identifiers. [Preflight measurements](experiments/2026-11-10-m1-preflight.md)
+blocked both arms on macOS 13.4.1, absent accelerator/telemetry packages, and a
+proposed disk reserve. No accelerator or research training ran. ANE-only Qwen3
+and separate-client ANE training remain unavailable, not GPU fallbacks.
+
+The MLX installation guide's OS requirement and wired/cache API pages were
+inspected online as implementation references, not ingested as source cards.
+The wired API is documented as useful on macOS 15+. An ANEForge PyPI open failed
+with a cache miss; no new compatibility claim relies on that failed retrieval.
+Existing source snapshots and historical evidence were untouched.
+
+**Validation:** 109 tests passed, 5 opt-in hardware tests skipped; one inherited
+SciPy/NumPy compatibility warning. The required suite first hit sandbox socket
+restrictions and missing dependencies, then passed with localhost access and
+small dependencies installed only in the project environment. Code/test Ruff
+passed. Whole-tree Ruff found 13 existing violations in immutable snapshots.
+[Validation record](../evidence/m1-preflight-2026-11-10/validation.txt).
+The [workflow](guides/single-machine.md) and [project state](project/state.md)
+describe the scope. Structural lint is recorded after this appended entry;
+passing it does not validate hardware, facts, or novelty.
+
+## 2026-11-10 — M1 GPU verified after macOS upgrade
+
+**Measured follow-up:** macOS now reports 27.2.1; disk space is about 28 GiB,
+clearing the OS and proposed disk-reserve gates. Installed MLX and mlx-metal
+0.32.4 into the existing project virtual environment only. An explicit GPU
+float32 16×16 matrix probe returned 4096.0. Both existing opt-in MLX/CPU parity
+tests passed (forward and one SGD step on two small architectures), no skips,
+with unchanged tolerances. [Report](experiments/2026-11-10-m1-mlx.md),
+[raw evidence](../evidence/m1-mlx-2026-11-10/README.md).
+
+The commands ran outside the restricted sandbox with Metal access. No model
+or dataset was downloaded; no QLoRA, ANE, throughput, or power result exists.
+GPU QLoRA still needs mlx-lm and mactop; hybrid also needs ANEForge. ANE-only
+Qwen3 remains unavailable. Preserved the earlier preflight evidence and added
+new reports instead. Updated state, index, machine README and relevant guides.
+Probe Ruff and structural wiki lint pass; these checks do not establish
+large-model fit or ANE correctness.
+
+## 2026-11-10 — M1 training pilots; real-model ANE gate failed
+
+**Measured:** GPU and hybrid Qwen3-0.6B 4-bit pilots each completed 10 updates,
+batch 1, sequence 128, 32 training records, seed 0, checkpointing, two fixed
+evaluation batches. Both processed 1,086 training tokens. Sampled test
+perplexity: 97.5221 to 73.5956 (GPU), 97.5221 to 112.5949 (hybrid). The hybrid
+is rejected as correct training: three real batches gave forward cosine
+0.914–0.920 and zero LoRA gradients where GPU gradients were nonzero. The
+ANE suffix equaled its input; isolated input RMSNorm returned zeros. Input
+peaks 5,760–6,624. Overflow is a hypothesis; this does not revise M4 evidence.
+Tiny ANE linear/SGD/100-update checks and the tiny decoder finite difference
+passed. [Report](experiments/2026-11-10-m1-training.md),
+[raw evidence](../evidence/m1-training-2026-11-10/README.md).
+
+**Corrections before comparison:** the WikiText helper had recorded a pinned
+revision while requesting unversioned dataset-server rows. It now downloads
+the immutable parquet revision and verifies the three source SHA-256 values.
+PyArrow was added to the serving extra and lockfile. Training and evaluation
+RNG are isolated from setup and each other; tests cover repeatability and
+resume batch order. Earlier uncontrolled pilots remain retained, superseded
+for comparison. No old source snapshots or historical evidence were edited.
+
+**Resources and authorization:** first GPU attempt stopped above 512 MiB swap
+growth; the user saved work and closed heavy apps before retry. First hybrid
+attempt stopped below 15 GiB disk; the user explicitly selected 10 GiB for
+later smoke runs. Memory/swap/time guards stayed unchanged. No unrelated
+apps/files were closed/deleted. ANEForge initially used its default cache
+(~139 MiB); later cache writes go under ignored runs. The precise shared-volume
+disk change is not attributed to this experiment. No system security/memory/
+fan settings changed. Telemetry zeros on ANE/CPU/DRAM are unvalidated for
+comparison; accepted energy is unavailable. Program masks were 0x4.
+
+**Stop decision:** the M1 hybrid config requires a passing real-block gradient
+report and is now blocked. No longer hybrid or three-epoch run was launched.
+The independent full-Qwen3 ANE client still rejects execution, so split-client
+training was not substituted with a CPU or linear workload. Next prerequisite
+is correct real-model normalization/backward, followed by a full ANE executor.
+
+**Retrieval/validation scope:** the web fetch of the mactop latest release timed
+out and the dataset-tree URL was inaccessible via web; explicit HTTPS requests
+recovered the official release metadata/archive and pinned dataset tree. The
+mactop archive SHA-256 matched release metadata before execution. Installed
+ANEForge norm lowering/backward code was inspected; no private API settings
+were changed. New code/tests pass Ruff; whole-tree Ruff retains 13 immutable-
+source violations. Full-suite and structural checks are recorded alongside
+the experiment; they do not establish scientific correctness or novelty.
+
+## 2026-11-10 — Full GPU baseline launched; standalone user-run harness
+
+The user explicitly selected three full epochs, batch 1, checkpointing off,
+over the whole training split (23,767 nonempty records). The model retains the
+512-token cap, so long records are truncated. This is an M1 local baseline,
+not the proposal's 4,096/batch8/accum2 FedAvg recipe. A ten-step full-split fit
+and three maximum-length updates completed. Peaks: 1,194,827,554 and
+2,185,500,166 bytes. The latter exceeds the nominal 2 GiB allocator setting
+slightly; no strict total-process bound is claimed. The initial maximum-length
+diagnostic had a dataset-wrapper interface error, fixed before the measured run.
+The full supervised job launched at 04:44:55 America/New_York; initial test
+evaluation completed and initial validation was in progress at inspection.
+No final result exists. [Record](experiments/2026-11-10-full-gpu-baseline.md).
+
+Added nullable full-split handling through main/batch fitting, a separate
+baseline admission profile (removing smoke-only step/checkpoint restrictions),
+30-second telemetry, and supervisor interruption/low-battery handling. Resource
+guards remain; a 48-hour ceiling allows the requested sustained run. No ANE
+gate was bypassed, no other apps were closed, and no system settings changed.
+
+At the user's request, [the standalone runner](guides/baseline-suite.md) plans
+without training by default, runs supported local arms sequentially, prints
+progress, refuses overlapping supervised jobs, and saves JSON/CSV summaries.
+It can import a completed matching GPU run instead of repeating it. Exact
+proposal data/batch settings and the full-data M1 recipe are distinct scopes.
+FedAvg, all-reduce, combined/split clients, topology/payload/FedNova variants,
+and multi-Mac requirements remain explicit coverage gaps; local curves are
+not relabeled as those methods. Current ANE correctness failures remain gated.
+
+Validation: 120 passed, 5 hardware tests skipped; project-code Ruff and wiki
+structural checks pass. Whole-tree Ruff retains 13 immutable-source violations.
+The inherited SciPy/NumPy pair emits one warning. A launched job and a planned
+suite are not completed research results.
+
+## 2026-11-10 — User-selected switch to the 4,096-record comparison
+
+The user reported that M4 runs likely use about 4K records, batch 1, and
+checkpointing false, then explicitly selected stopping the full-data job and
+starting a fresh 4,096-record comparison. Verified supervisor identity before
+signaling only that job. Its exit record reports `interrupted`, elapsed
+1,340.24 seconds; last periodic training report 800, no checkpoint yet. All
+existing artifacts were retained. No unsaved state was resumed or relabeled
+as a completed full-data result.
+
+The new supervised GPU job launched 05:08:41 America/New_York, with 4,096
+records, three epochs, batch 1, accumulation 1, checkpointing false, a 512-token
+cap and full evaluation. Planned updates 12,288; checkpoints every epoch.
+Other optimizer/model settings and resource guards remain. Initial evaluation
+was progressing with normal pressure and AC power at inspection. The actual
+M4 config has not been inspected, so matching remains provisional. This is
+local AdamW, not a measured FedAvg baseline. [Report](experiments/2026-11-10-m1-comparison-switch.md).
+
+The standalone runner now defaults to `comparison`, with `full` and exact
+`proposal` scopes retained explicitly. Added a recipe regression check.
+Validation: 121 passed, 5 skipped; project-code Ruff, wiki structural lint and
+whitespace checks pass. No scientific completion or exact M4 equivalence is
+claimed. Earlier evidence snapshots and personal files were not modified.
+
+## 2026-11-10 — Comparison resource stop and configurable swap policy
+
+The independent supervisor stopped the comparison at progress-bar update
+3,131/12,288 after 3,015.81 seconds. Last training report: update 3,100. System
+swap rose by 636,354,560 bytes from launch; the 512 MiB growth guard fired.
+Pressure was Warning with 991,772,672 bytes available; no OOM exception was
+observed. System telemetry cannot attribute all growth to this job. The first
+checkpoint had been scheduled at update 4,096, so no resumable state exists.
+[Raw record](../evidence/m1-comparison-stop-2026-11-10/README.md).
+
+In response to the user's question, added positive-integer
+`safety.max_swap_growth_bytes`, preserving the prior 512 MiB default and other
+guards. The supervisor records its resolved policy per attempt. Tests cover
+custom thresholds, boundary behavior, preexisting swap, and invalid policies.
+Changed future comparison state saves to every 500 updates; gradient
+checkpointing remains false. Model/optimizer saves do not change effective
+batch or optimizer math, but their I/O cadence matters for wall-time comparison.
+No old artifacts were rewritten, no limit was raised automatically, and no
+new training job was launched. Updated status and standalone restart guidance
+to avoid importing the incomplete run as if it had finished.
+
+Validation of this change: 128 passed, 5 hardware tests skipped; project-code
+Ruff, wiki lint and whitespace checks passed. The inherited SciPy/NumPy warning
+remains. No larger swap allowance has been tested in a hardware run.
+
+## 2026-11-10 — Diagnose unchanged retry policy; expose a CLI override
+
+The user-run comparison-retry-1 reached update 232, then stopped after 963.06
+seconds. Both its copied config and guard-policy record still used 512 MiB;
+the previously documented 1 GiB example had not been applied. System swap rose
+by 710,475,776 bytes; pressure was Warning with 1,388,331,008 bytes available.
+No OOM exception or saved checkpoint was observed. Last periodic training
+report: update 200, loss 3.4528. [Record](../evidence/m1-comparison-retry-stop-2026-11-10/README.md).
+
+Added `--max-swap-growth-mib` to remove ambiguity about which config to edit.
+The runner prints the selected allowance and persists the override in its
+plan/per-arm configs. A read-only plan verifies 1024 MiB without changing the
+training recipe or other guards. Default stays 512 MiB; no restart or larger-
+allowance hardware run was initiated. Stopped runs now retain partial history
+metrics in JSON/CSV/console output without claiming final quality. Original
+run artifacts and summaries were preserved rather than rewritten.
+
+Validation: 130 passed, 5 skipped; project-code Ruff, wiki lint and whitespace
+checks passed. The inherited SciPy/NumPy compatibility warning remains.
+
+## 2026-11-10 — User-requested removal of swap-growth stop
+
+The user explicitly requested removing the guard that had stopped the GPU
+retries. Made `safety.max_swap_growth_bytes: null` disable that specific check,
+and set the comparison profile to null. Omitting the field still preserves
+the older 512 MiB supervisor default in other profiles. Added the explicit
+`--no-swap-growth-guard` CLI flag, mutually exclusive with a numeric allowance.
+The runner prints the disabled policy; the supervisor records null and an
+enabled/disabled boolean. All other checks and the 2 GiB MLX allocator setting
+remain unchanged. Periodic model/optimizer saves remain every 500 updates.
+
+Tests cover disabled behavior at arbitrarily large swap growth, omitted-field
+defaults, retained recipe/other policies, and contradictory CLI/API overrides.
+A read-only plan verifies the selected config. No new training was launched,
+no kernel/system settings changed, and historical run evidence was preserved.
+Updated user-run instructions. An OOM is not guaranteed to be a clean, isolated
+Python cancellation; the final user response links the Python exception and
+Apple memory/swap documentation inspected as implementation references.
+
+Validation: 131 passed, 5 hardware tests skipped; project-code Ruff, structural
+wiki lint and whitespace checks pass. The inherited SciPy/NumPy warning remains.
+No test establishes that an unguarded hardware run will fit or complete.
+
+## 2026-11-10 — Non-overwriting reruns and checkpoint resume
+
+The user's repeated output name raised an uncaught FileExistsError before
+training. Inspection found `comparison-no-swap-1` marked interrupted, not
+running, with a complete update-2,000 checkpoint and a last periodic report
+at 2,100. Verified that the adapter/optimizer/state files exist and that the
+saved data/model/training config matches the current comparison recipe.
+No inference was made about unsaved progress beyond the logged reports.
+
+The runner now allocates a distinct sibling output directory atomically on
+collision, preserving original files, and prints/persists the actual path.
+Added `--resume-gpu CHECKPOINT_DIRECTORY`, mutually exclusive with importing a
+completed run. Resume requires matching recipe sections and complete checkpoint
+files, then delegates to the trainer's identity/restore checks. Segment timing
+is labeled as such rather than presented as the full resumed experiment time.
+Other filesystem errors get a concise CLI error. Tests cover collisions,
+preserved sentinel files, incomplete/mismatched checkpoints, and the existing
+tiny adapter/AdamW restoration invariant. No large training or resume was
+launched; the user-run command is in the standalone guide.
+
+Validation: 133 passed, 5 skipped in the default suite. The separately enabled
+tiny MLX adapter/AdamW recovery test passed (1 test, 1.11 seconds). Project-code
+Ruff, structural wiki lint and whitespace checks pass. The real Qwen3 checkpoint
+was inspected for completeness/recipe match, not restored in a new hardware
+run. [Inspection and validation record](../evidence/m1-checkpoint-recovery-2026-11-10/README.md).
+
+
+## 2026-11-10 — Correct real Qwen optimizer recovery
+
+The user's `comparison-resume-1` reached checkpoint restoration then failed at
+its first update with `KeyError: 'embed_tokens'`. Inspected the actual traceback,
+restore function and installed MLX optimizer initialization: tensor flattening
+omits frozen-layer empty containers, and setting `_initialized` directly skipped
+rebuilding them. Replaced that private flag assignment with public initialization
+against trainable parameters, preserving loaded moments/step. Extended hardware
+regression to frozen nested modules and a compiled next update matching
+uninterrupted AdamW. The earlier linear-only validation missed this failure.
+
+Measured a bounded real-Qwen normal-trainer resume from checkpoint 2,000 through
+update 2,001: loss 2.6632693, source hashes unchanged. No long run or full evaluation
+was started. [New evidence](../evidence/m1-resume-fix-2026-11-10/README.md) extends,
+without rewriting, the prior inspection-only evidence. Updated standalone retry
+instructions, project state and index. Validation: default suite 133 passed,
+6 skipped; Metal checkpoint tests 8 passed; project code/probe Ruff clean.
+Whole-tree Ruff retains 13 preexisting immutable-source errors. Full-suite retry
+with loopback access passed after sandbox socket restrictions. Wiki lint checks
+structure; this one-update recovery establishes neither full-run success nor
+ANE correctness nor a hardware-comparison result.
+
+## 2026-11-10 — Launch the requested GPU resume
+
+At the user's request, ran the standalone comparison command with `--resume-gpu`
+pointing to checkpoint 2,000 and `--no-swap-growth-guard`. No supervised trainer
+was active before launch; free disk was 15.72 GiB. `comparison-resume-2` passed
+preflight, completed initial evaluation and advanced beyond step 2,054. Left it
+running independently of Codex (launcher PID 43583). No training code changed.
+The latest user-reported error was unspecified and did not reproduce here.
+[Observation](../evidence/m1-resume-launch-2026-11-10/README.md) records exact scope
+and log paths; project state and index link it. This confirms launch and resumed
+updates only, not final perplexity, all epochs, or proposal/ANE coverage.
+
+## 2026-11-10 — Repair and validate hybrid numerics; launch comparison
+
+At the user's request to proceed with ANE+GPU, inspected the installed ANEForge
+RMSNorm emitter/VJP, real activation failures and suffix bridge. A bounded
+scaling sweep fixed the large-input forward but exposed zero-input backward
+errors. Added an explicitly pinned local forward lowering that preserves the
+original backward coordinates/epsilon; retained the backend epsilon-floor
+approximation. Normalization alone still failed small adapter gradients.
+Equivalent A/16, B*16 upload plus the gradient chain rule passed those cases.
+No installed dependency or historical evidence was modified.
+
+Real-block gates passed at 128 and 512, with full-length and padded inputs,
+trained adapters and gradients to the GPU prefix. A short-heading boundary
+attempt failed in the MLX reference VJP; the successful longer padded retry is
+reported separately. A 20-update supervised hybrid pilot exited 0 with sampled
+PPL 117.18 -> 59.51, 24 ANE forwards / 20 backwards and peak MLX 1.846 GB.
+[Report and raw results](../evidence/m1-hybrid-validation-2026-11-10/README.md)
+extend and supersede the earlier failed implementation's launch blocker.
+
+Wired the validated report into the runner and require matching sequence caps.
+Added a matching M1 hybrid machine config; full default tests 134 passed,
+7 skipped; separate numerical/decoder device tests 6 passed. Project Ruff and
+whitespace checks pass; whole-tree Ruff retains 13 preexisting immutable-source
+errors. Updated the standalone/ANE guides, index and state. Structural wiki lint
+is separate from the numerical evidence.
+
+Launched `comparison-hybrid-1` at 17:33:30 America/New_York, PID 57790, with
+`--existing-gpu` reusing the successful GPU comparison and a fresh hybrid arm.
+Observed preflight and initial evaluation; the long run is not yet a result.
+User-selected disabled swap-growth stop and other configured guards remain.
+Standalone ANE, federated and multi-Mac coverage are still blocked. No M4 or
+energy-efficiency claim follows from these M1 measurements.
+
+## 2026-11-10 — Resume hybrid with a 5 GiB disk reserve
+
+The hybrid stopped near update 607 at the configured 10 GiB disk floor; checkpoint
+500 contains adapter, optimizer and state files. At the user's request, added
+`--min-free-disk-gib` and `--resume-gpu-ane` to the standalone runner and launched
+`comparison-hybrid-resume-1` with 5 GiB, reusing the completed GPU result. Resume
+checks placement mode as well as recipe; original outputs are preserved. Launcher
+PID 61013 at 18:04:50 America/New_York. The actual saved guard policy confirms
+5368709120 bytes. Initial evaluation was observed advancing; resumed training
+completion is unknown. Log: `runs/baseline-suites/launch-hybrid-resume-20261110T180450/stdout.log`.
+
+The existing default disk threshold is unchanged; this invocation explicitly
+overrides it. Memory-pressure checks remain and swap-growth stop remains disabled.
+Updated the standalone guide and state. Default suite: 134 passed, 7 skipped;
+then the newly added hybrid-routing regression and related runner tests passed
+(11 tests). Project Ruff passes; whole-tree Ruff has the existing 13 errors in
+immutable raw source snapshots. No hardware backend code changed in this turn.
+
+## 2026-11-10 — Retry hybrid after the user closed memory-heavy apps
+
+User requested another restart after closing other apps. Confirmed no active
+supervised trainer, complete checkpoint 500 and 13.05 GiB free disk. Started
+`comparison-hybrid-resume-2`, launcher PID 71325 at 22:28:06 America/New_York,
+with the same 5 GiB reserve and memory checks. Initial evaluation completed;
+observed actual resumed training past 578 and normal system memory pressure,
+beyond the prior retry's stop at 501. Left the job running independently.
+[Observation](../evidence/m1-hybrid-retry-2026-11-10/README.md) records scope and
+log paths. No code/config changes and no final training result claimed.
+
+
+## 2026-11-16 — Audit completed M1 comparison and prepare baseline PR
+
+Inspected both original result/config/history records, supervisor exits, and final
+checkpoint metadata. Both local arms completed 12,288 updates with full evaluation;
+GPU test PPL 23.323357, hybrid 23.323607. Copied selected raw artifacts without
+modification into evidence/M1_8GB and recorded SHA-256 provenance. Prior evidence
+and log entries remain unchanged. Updated state/index/baseline guide with the
+[completion report](../evidence/M1_8GB/README.md).
+
+Read PR #1 metadata/file listing, pinned M4 GPU/hybrid configs and its evidence
+README at head 30471852690b55476b25f8dafb7f8b6635ba7c4e. Initial web retrieval
+failed (cache miss) and sandbox curl failed DNS; direct GitHub API retrieval with
+network permission succeeded. Core recipes match, but changed numerics, RNG/data
+handling, resource settings and resumed segments limit cross-Mac claims. No
+M4 raw telemetry audit or new M4 execution was performed. Local ANE mask/call
+counts are retained; positive power/compute-plan evidence remains unestablished.
+The complete federated proposal is not claimed complete.
+
+Validation: 135 default tests passed, 7 skipped; 14 enabled hardware/checkpoint
+tests passed. Maintained code Ruff passed; whole-tree Ruff retains 13 preexisting
+errors in immutable raw source snapshots. No long training rerun was needed.

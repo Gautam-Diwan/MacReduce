@@ -1,0 +1,21 @@
+{
+  "observed_at": "2026-11-10T15:24:20.081847-05:00",
+  "scope": "launch and first resumed training updates only; job left running",
+  "suite": "runs/baseline-suites/comparison-resume-2",
+  "run": "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/runs/baseline-suites/comparison-resume-2/local_gpu/logs/2026-11-10T15-15-52",
+  "launcher_pid": 43583,
+  "supervisor_pid": 43585,
+  "exit_record_exists": false,
+  "recent_progress": [
+    "train:  17%|#7        | 2119/12288 [00:52<1:37:52,  1.73step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2120/12288 [00:53<1:16:00,  2.23step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2121/12288 [00:53<1:00:02,  2.82step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2122/12288 [00:53<48:47,  3.47step/s, loss=2.879, tok_s=245]  ",
+    "train:  17%|#7        | 2123/12288 [00:53<49:27,  3.43step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2124/12288 [00:54<1:02:33,  2.71step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2125/12288 [00:54<1:07:59,  2.49step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2126/12288 [00:55<1:08:07,  2.49step/s, loss=2.879, tok_s=245]",
+    "train:  17%|#7        | 2127/12288 [00:55<57:29,  2.95step/s, loss=2.879, tok_s=245]  ",
+    "train:  17%|#7        | 2128/12288 [00:55<50:04,  3.38step/s, loss=2.879, tok_s=245]"
+  ]
+}

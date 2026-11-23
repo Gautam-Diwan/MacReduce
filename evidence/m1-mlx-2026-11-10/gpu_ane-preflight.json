@@ -1,0 +1,28 @@
+{
+  "status": "blocked",
+  "placement": "gpu_ane",
+  "scope": "smoke readiness only; no accelerator execution or residency verified",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "macos": "27.2.1",
+    "python": [
+      3,
+      12,
+      0
+    ],
+    "memory_total_bytes": 8589934592,
+    "disk_free_bytes": 27811840000,
+    "packages": {
+      "mlx": "0.32.4",
+      "mlx-lm": null,
+      "aneforge": null
+    },
+    "mactop": false
+  },
+  "blockers": [
+    "mlx-lm==0.32.2 is required (found None)",
+    "aneforge==0.4.0 is required (found None)",
+    "mactop is missing; this runner requires it for system telemetry"
+  ]
+}

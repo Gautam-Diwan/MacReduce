@@ -1,8 +1,8 @@
 """MLX memory budget for this Mac.
 
 ``auto`` is the GPU's recommended working set. That is the resident budget
-MLX reports for the device, not a fixed 8 GB cap. The wired limit is raised
-to the same recommendation so those pages stay in unified memory.
+MLX reports for the device, not a fixed 8 GB cap. An explicit smaller budget
+also bounds the per-process wired allowance and cache.
 """
 
 from __future__ import annotations
@@ -31,15 +31,18 @@ def resolve_memory_limit(value: int | str | None) -> int:
 
 
 def apply_memory_limit(limit: int) -> int:
-    """Raise the wired limit to the recommendation and cap the MLX allocator."""
+    """Cap MLX allocations, wired allowance, and cache to the selected budget.
+
+    This does not cap total process memory or ANE compiler allocations.
+    """
 
     import mlx.core as mx
-    from mlx_lm.utils import maybe_set_recommended_wired_limit
 
     if limit < 1:
         raise ValueError("memory limit must be positive")
-    maybe_set_recommended_wired_limit()
+    mx.set_wired_limit(min(limit, recommended_working_set_bytes()))
     mx.set_memory_limit(limit)
+    mx.set_cache_limit(min(limit // 8, 256 * 1024**2))
     mx.clear_cache()
     mx.reset_peak_memory()
     return limit

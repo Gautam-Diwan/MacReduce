@@ -17,10 +17,9 @@ from pathlib import Path
 
 import yaml
 
-from macreduce.batch_fit import choose_batch
-from macreduce.curve import allocate_run, bind_run_log, latest_checkpoint, run_curve
 from macreduce.finetune import recipe_from_config
 from macreduce.memory import resolve_memory_limit
+from macreduce.preflight import check_config
 
 
 def load_config(path: Path) -> dict:
@@ -41,10 +40,13 @@ def parse_args() -> argparse.Namespace:
         help="choose the batch for tokens per second and exit",
     )
     parser.add_argument("--resume", default=None, help="checkpoint directory, or latest")
+    parser.add_argument("--preflight", action="store_true", help="check readiness without training")
     return parser.parse_args()
 
 
 def resolve_batch(config: dict, override: int | None) -> dict:
+    from macreduce.batch_fit import choose_batch
+
     training = config["training"]
     infra = config["infrastructure"]
     infra["memory_limit_bytes"] = resolve_memory_limit(infra.get("memory_limit_bytes"))
@@ -61,7 +63,7 @@ def resolve_batch(config: dict, override: int | None) -> dict:
         Path(data["path"]),
         memory_limit_bytes=int(infra["memory_limit_bytes"]),
         max_seq_length=int(config["model"]["max_seq_length"]),
-        train_examples=int(data["train_examples"]),
+        train_examples=None if data.get("train_examples") is None else int(data["train_examples"]),
         grad_accumulation_steps=int(training["grad_accumulation_steps"]),
         learning_rate=float(training["learning_rate"]),
         seed=int(infra["seed"]),
@@ -82,6 +84,8 @@ def resolve_batch(config: dict, override: int | None) -> dict:
 
 
 def train(config: dict, output: Path) -> dict:
+    from macreduce.curve import run_curve
+
     data = config["data"]
     training = config["training"]
     infra = config["infrastructure"]
@@ -93,6 +97,7 @@ def train(config: dict, output: Path) -> dict:
         Path(data["path"]),
         port=int(infra["prometheus_port"]),
         memory_limit_bytes=int(infra["memory_limit_bytes"]),
+        telemetry_interval_ms=int(infra.get("telemetry_interval_ms", 1000)),
         placement=str(config.get("placement", {}).get("mode", "gpu")),
         iters=training.get("iters"),
         epochs=int(training["epochs"]),
@@ -101,7 +106,7 @@ def train(config: dict, output: Path) -> dict:
         max_seq_length=int(config["model"]["max_seq_length"]),
         learning_rate=float(training["learning_rate"]),
         seed=int(infra["seed"]),
-        train_examples=int(data["train_examples"]),
+        train_examples=None if data.get("train_examples") is None else int(data["train_examples"]),
         grad_accumulation_steps=int(training["grad_accumulation_steps"]),
         val_batches=int(training["val_batches"]),
         steps_per_report=int(training["steps_per_report"]),
@@ -118,6 +123,19 @@ def train(config: dict, output: Path) -> dict:
 def main() -> None:
     args = parse_args()
     config = load_config(Path(args.config))
+    if args.batch_size is not None:
+        config["training"]["batch_size"] = args.batch_size
+    if args.preflight or config.get("safety"):
+        readiness = check_config(config)
+        print(json.dumps(readiness, indent=2), flush=True)
+        if readiness["status"] != "ready":
+            raise SystemExit(1)
+        if args.preflight:
+            return
+    elif config.get("placement", {}).get("mode", "gpu") not in {"gpu", "gpu_ane"}:
+        raise SystemExit("unsupported placement; ANE-only Qwen3 training is not implemented")
+    from macreduce.curve import allocate_run, bind_run_log, latest_checkpoint
+
     if args.resume is not None:
         config.setdefault("checkpoint", {})["resume"] = args.resume
     resume = (config.get("checkpoint") or {}).get("resume")

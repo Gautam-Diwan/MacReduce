@@ -1,0 +1,22 @@
+{
+  "started": "2026-11-10T05:08:41.928242-05:00",
+  "launcher_pid": 12012,
+  "command": [
+    "/usr/bin/caffeinate",
+    "-i",
+    "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/.venv/bin/python",
+    "tools/bounded_smoke.py",
+    "--config",
+    "configs/M1_8GB/gpu_m4_comparison.yaml",
+    "--output",
+    "/Users/shreyanagunuri/Desktop/CMU_Class_Folder/Large_Datasets/final_project/MacReduce/runs/M1_8GB/comparison-supervisor-1",
+    "--seconds",
+    "172800"
+  ],
+  "supervisor_directory": "runs/M1_8GB/comparison-supervisor-1",
+  "launch_log": "runs/M1_8GB/comparison-launch-1.log",
+  "status": "launched_not_completed",
+  "provisional_m4_match": true,
+  "fresh_base_model": true,
+  "planned_updates": 12288
+}

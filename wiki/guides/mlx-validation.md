@@ -2,11 +2,17 @@
 title: "Validate the MLX path on the M4"
 type: implementation
 status: active
-updated: 2026-10-24
+updated: 2026-11-10
 sources: ["S02", "S15"]
 ---
 
 # Validate the MLX path on the M4
+
+**M1 verification, 2026-11-10:** on an 8GB M1 MacBook Air running macOS
+27.2.1 and MLX 0.32.4, an explicit GPU matrix probe returned 4096.0 and both
+existing small-model parity tests passed with hardware enabled. This covers
+one forward and one SGD update per model, not QLoRA, ANE, or multi-step
+stability. [Report and evidence](../experiments/2026-11-10-m1-mlx.md).
 
 **Measured on 2026-10-24** from this project on the M4: `doctor --smoke` initialized Metal and a 16×16 matmul returned 4096.0. The opt-in test passed for the default model and for a 2-layer config (forward loss and one SGD step against CPU, existing tolerances). A loopback `mlx-gpu` demo of 3 rounds and 4 steps reduced validation loss from 6.058713912963867 to 3.713829755783081. Details and versions are in [the evidence record](../../evidence/mlx-validation/README.md). `xctrace` was not available, so there is no saved GPU trace. The gradient audit and 100-step check below are still open. An unavailable device remains a failure, not a pass.
 

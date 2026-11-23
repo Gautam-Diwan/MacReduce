@@ -1,0 +1,13 @@
+{
+  "status": "stopped_incomplete",
+  "last_progress_bar_step": 3131,
+  "planned_updates": 12288,
+  "checkpoint_exists": false,
+  "initial_swap_used_bytes": 1407975424,
+  "last_swap_used_bytes": 2044329984,
+  "swap_growth_bytes": 636354560,
+  "pressure_at_stop": 2,
+  "available_bytes_at_stop": 991772672,
+  "reason": "system-wide swap growth exceeded supervisor policy; no out-of-memory exception observed",
+  "restart_started": false
+}
