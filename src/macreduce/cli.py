@@ -14,8 +14,11 @@ from .ane_forge import prove_engine
 from .benchmark import accelerate_matmul
 from .cluster import Coordinator, make_server
 from .curve import render_saved, run_curve
+from .envfile import load_project_env
 from .feasibility import run_feasibility
 from .federated import study as federated_study
+from .federation_cli import add_parser as add_federation_parser
+from .federation_cli import execute as execute_federation
 from .lora_client import execute_federated
 from .observe import capabilities, collect_mactop, report
 from .placement import CostTable, EngineCost, choose
@@ -67,9 +70,13 @@ def _bench_trial(args):
 
 
 def token():
+    load_project_env()
     value = os.environ.get("MACREDUCE_TOKEN", "")
     if len(value) < 24:
-        raise ValueError("set MACREDUCE_TOKEN to a shared random secret of at least 24 characters")
+        raise ValueError(
+            "set MACREDUCE_TOKEN in .env (copy .env.example) or the environment; "
+            "it must be a shared random secret of at least 24 characters"
+        )
     return value
 
 
@@ -165,8 +172,10 @@ def demo(args):
 
 
 def main():
+    load_project_env()
     p = argparse.ArgumentParser(description="MacReduce: observable local SGD research prototype")
     sub = p.add_subparsers(dest="command", required=True)
+    add_federation_parser(sub)
     doctor = sub.add_parser("doctor", help="inventory hardware and runtime availability")
     doctor.add_argument("--smoke", action="store_true", help="attempt an MLX GPU matmul")
     doctor.add_argument("--output")
@@ -333,7 +342,9 @@ def main():
     once.add_argument("--mode", choices=["generate", "prefix", "cpu"], default="generate")
     args = p.parse_args()
     try:
-        if args.command == "doctor":
+        if args.command == "federation":
+            execute_federation(args, token)
+        elif args.command == "doctor":
             text = json.dumps(capabilities(args.smoke), indent=2)
             if args.output:
                 Path(args.output).parent.mkdir(parents=True, exist_ok=True)

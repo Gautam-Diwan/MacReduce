@@ -22,6 +22,7 @@ serve = ["mlx-lm==0.32.2", "coremltools==9.0"]
 ane = ["aneforge==0.4.0"]
 cpu = ["torch>=2.8,<3"]
 dev = ["pytest>=8,<10", "ruff>=0.12"]
+federation = ["flwr==1.43.0"]
 
 [project.scripts]
 macreduce = "macreduce.cli:main"
@@ -34,6 +35,8 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 100
+# Immutable third-party research snapshots are data, not maintained Python code.
+extend-exclude = ["raw/sources"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]
