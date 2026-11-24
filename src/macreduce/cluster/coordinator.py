@@ -14,6 +14,8 @@ from urllib.parse import parse_qs, urlsplit
 
 import numpy as np
 
+from macreduce.observe.events import Events
+
 from .artifacts import (
     CONTROL_RESPONSE_BYTES,
     MAX_CHUNK_SIZE,
@@ -32,7 +34,6 @@ from .model import (
     initial_weights,
     weighted_average,
 )
-from .observe import Events
 
 
 class ConflictError(ValueError):

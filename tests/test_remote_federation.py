@@ -17,15 +17,15 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from macreduce.federation_backend import ResidentLoraClient, collate, sample_indices
-from macreduce.federation_plan import bind_address, fingerprint, load_plan, shard_indices
-from macreduce.federation_state import RunState, pack_adapter, unpack_adapter
-from macreduce.lora_client import BackendUnavailable
+from macreduce.federation.backend import ResidentLoraClient, collate, sample_indices
+from macreduce.federation.lora_client import BackendUnavailable
+from macreduce.federation.plan import bind_address, fingerprint, load_plan, shard_indices
+from macreduce.federation.state import RunState, pack_adapter, unpack_adapter
 
 flwr = pytest.importorskip("flwr", reason="install the federation extra to test Flower transport")
 from flwr.common import FitIns, GetPropertiesIns, Parameters, ndarrays_to_parameters  # noqa: E402
 
-from macreduce.flower_federation import (  # noqa: E402
+from macreduce.federation.flower import (  # noqa: E402
     FixedCohort,
     PersistentClient,
     client_session,
@@ -212,7 +212,7 @@ def test_incomplete_cohort_and_changed_identity_never_commit(tmp_path):
 
 
 def test_commit_failure_replays_exact_prepared_results(tmp_path, monkeypatch):
-    import macreduce.federation_state as persistence
+    import macreduce.federation.state as persistence
 
     config = plan(rounds=1)
     state = RunState(tmp_path / "server", config, DATA_HASH, {"adapter": np.zeros(2, np.float32)})

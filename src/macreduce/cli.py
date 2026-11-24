@@ -9,24 +9,24 @@ import threading
 import time
 from pathlib import Path
 
-from .ane import placement_probe, rank_decoder, rank_qwen_forward
-from .ane_forge import prove_engine
-from .benchmark import accelerate_matmul
-from .cluster import Coordinator, make_server
-from .curve import render_saved, run_curve
+from .ane.forge import prove_engine
+from .ane.rank import placement_probe, rank_decoder, rank_qwen_forward
+from .cluster.coordinator import Coordinator, make_server
+from .cluster.worker import run_worker
 from .envfile import load_project_env
-from .feasibility import run_feasibility
-from .federated import study as federated_study
-from .federation_cli import add_parser as add_federation_parser
-from .federation_cli import execute as execute_federation
-from .lora_client import execute_federated
-from .observe import capabilities, collect_mactop, report
-from .placement import CostTable, EngineCost, choose
-from .serving import DRAFT_MODEL, TARGET_MODEL, MlxLmExecutor, builtin_trace, sweep_order
-from .study import execute as execute_study
-from .train_plan import probe_backends
-from .train_plan import report as train_plan_report
-from .worker import run_worker
+from .federation.cli import add_parser as add_federation_parser
+from .federation.cli import execute as execute_federation
+from .federation.federated import study as federated_study
+from .federation.lora_client import execute_federated
+from .observe.benchmark import accelerate_matmul
+from .observe.events import capabilities, collect_mactop, report
+from .serve.placement import CostTable, EngineCost, choose
+from .serve.serving import DRAFT_MODEL, TARGET_MODEL, MlxLmExecutor, builtin_trace, sweep_order
+from .serve.study import execute as execute_study
+from .train.curve import render_saved, run_curve
+from .train.feasibility import run_feasibility
+from .train.plan import probe_backends
+from .train.plan import report as train_plan_report
 
 
 def _dump_trial(path, payload):
@@ -57,7 +57,7 @@ def _bench_trial(args):
             payload = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
         _dump_trial(args.output, payload)
         return
-    from .placement import fixed
+    from .serve.placement import fixed
 
     executor.generate("Hi", max_tokens=1, placement=fixed("none", 0, "recompute"))
     result = executor.generate(

@@ -1,6 +1,6 @@
 import pytest
 
-from macreduce.train_plan import (
+from macreduce.train.plan import (
     PEER,
     Seat,
     TrainPlan,

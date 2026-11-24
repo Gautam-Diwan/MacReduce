@@ -11,9 +11,10 @@ from pathlib import Path
 
 import numpy as np
 
-from .artifacts import MAX_ARTIFACT_BYTES
-from .cluster import atomic_write
-from .federation_plan import fingerprint
+from macreduce.cluster.artifacts import MAX_ARTIFACT_BYTES
+from macreduce.cluster.coordinator import atomic_write
+
+from .plan import fingerprint
 
 
 def pack_adapter(state: dict) -> bytes:

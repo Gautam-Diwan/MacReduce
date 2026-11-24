@@ -7,10 +7,10 @@ import urllib.request
 import numpy as np
 import pytest
 
-from macreduce.cluster import Conflict, Coordinator, make_server
-from macreduce.model import encode_weights
-from macreduce.observe import Events
-from macreduce.worker import Client
+from macreduce.cluster.coordinator import Conflict, Coordinator, make_server
+from macreduce.cluster.model import encode_weights
+from macreduce.cluster.worker import Client
+from macreduce.observe.events import Events
 
 
 @pytest.fixture

@@ -13,8 +13,8 @@ from pathlib import Path
 
 import yaml
 
-from .finetune import DATASET_REVISION, DEFAULT_RECIPE, TRAIN_MODEL, validate_recipe
-from .serving import MODEL_REVISIONS
+from macreduce.serve.serving import MODEL_REVISIONS
+from macreduce.train.finetune import DATASET_REVISION, DEFAULT_RECIPE, TRAIN_MODEL, validate_recipe
 
 MODES = {"gpu": ("gpu",), "gpu_ane": ("gpu_ane",), "split": ("gpu", "ane")}
 
@@ -27,7 +27,7 @@ def fingerprint(value) -> str:
 def implementation_hash() -> str:
     root = Path(__file__).parent
     digest = hashlib.sha256()
-    files = [*sorted(root.glob("federation_*.py")), root / "flower_federation.py"]
+    files = sorted(path for path in root.glob("*.py") if path.name != "__init__.py")
     for path in files:
         digest.update(path.name.encode())
         digest.update(path.read_bytes())

@@ -34,10 +34,11 @@ from flwr.compat.server.grpc_bidi.grpc_server import start_grpc_server
 from flwr.server import Server, SimpleClientManager
 from flwr.server.strategy import FedAvg
 
-from .artifacts import CONTROL_RESPONSE_BYTES, MAX_ARTIFACT_BYTES
-from .cluster import atomic_write
-from .federation_plan import client_spec, fingerprint
-from .federation_state import RunState, pack_adapter, tensor_digest, unpack_adapter
+from macreduce.cluster.artifacts import CONTROL_RESPONSE_BYTES, MAX_ARTIFACT_BYTES
+from macreduce.cluster.coordinator import atomic_write
+
+from .plan import client_spec, fingerprint
+from .state import RunState, pack_adapter, tensor_digest, unpack_adapter
 
 
 def check_flower_version():

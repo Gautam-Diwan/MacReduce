@@ -1,4 +1,4 @@
-from macreduce.serving import cache_summary
+from macreduce.serve.serving import cache_summary
 
 
 def test_cache_summary_names_untrimmable_kinds():

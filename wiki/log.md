@@ -144,7 +144,7 @@ A rerun of `macreduce ane-workload` measured the decoder at 0.000170 s on CPU+Ne
 
 ## 2026-10-26 — Private ANE APIs allowed, WikiText-2 QLoRA baseline
 
-Decision 0003 no longer bars private ANE APIs. An ANE training stack is in scope when it addresses a gap ANEForge, Orion, or maderix leave open. The training baseline is QLoRA of `mlx-community/Qwen3-0.6B-4bit` on Salesforce WikiText-2 raw v1, revision `b08601e04326c79dfdd32d625aee71d232d685c3`. The reusable module is `src/macreduce/finetune.py`, command `macreduce lora`. Perplexity is the exponential of the mean token loss, reported on the test split before and after the adapter.
+Decision 0003 no longer bars private ANE APIs. An ANE training stack is in scope when it addresses a gap ANEForge, Orion, or maderix leave open. The training baseline is QLoRA of `mlx-community/Qwen3-0.6B-4bit` on Salesforce WikiText-2 raw v1, revision `b08601e04326c79dfdd32d625aee71d232d685c3`. The reusable module is `src/macreduce/train/finetune.py`, command `macreduce lora`. Perplexity is the exponential of the mean token loss, reported on the test split before and after the adapter.
 
 ## 2026-10-27 — Course proposal rewritten to one page
 
@@ -152,7 +152,7 @@ The open-ended proposal is [docs/proposal.md](../docs/proposal.md), with a one-p
 
 ## 2026-10-27 — Distributed training and explicit Neural Engine stacks
 
-The 10-805 proposal, lead Gautam Diwan (gdiwan), now asks three things on the same WikiText-2 QLoRA setup. Does an explicit ANEForge, Orion, or maderix training step beat the GPU baseline on perplexity or step time? Should the Neural Engine run inference while the GPU trains? Do a parameter server, local SGD, or a non-reducing inference seat beat ring all-reduce once a second Mac exists? `src/macreduce/train_plan.py` and `macreduce train-plan` write that list. The probe marks Orion and maderix unpinned. A missing import is not replaced with the GPU. No private stack was installed or run. Multi-Mac arms are unmeasured. The one-page proposal was rewritten to this question.
+The 10-805 proposal, lead Gautam Diwan (gdiwan), now asks three things on the same WikiText-2 QLoRA setup. Does an explicit ANEForge, Orion, or maderix training step beat the GPU baseline on perplexity or step time? Should the Neural Engine run inference while the GPU trains? Do a parameter server, local SGD, or a non-reducing inference seat beat ring all-reduce once a second Mac exists? `src/macreduce/train/plan.py` and `macreduce train-plan` write that list. The probe marks Orion and maderix unpinned. A missing import is not replaced with the GPU. No private stack was installed or run. Multi-Mac arms are unmeasured. The one-page proposal was rewritten to this question.
 
 ## 2026-10-27 — Heterogeneous all-reduce and a three-epoch curve
 
@@ -166,11 +166,11 @@ The fine-tuning curve is three epochs on the first 4,096 training lines, batch s
 
 The course question is heterogeneous federated learning. The project name stays MacReduce. A client is a GPU, a GPU and Neural Engine combined, or those devices as two clients. Every Mac in a run uses the same mode and a shard of one WikiText-2 mixture. The payload is the LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the control. Star, ring, and tree must match on uncompressed deltas. Unequal step counts use the FedNova normalization from S06, whose card is an abstract plus one equation, not a full-paper review. Int8 quantization keeps an error residual.
 
-`src/macreduce/federated.py` and `macreduce federate` implement the cohort, the shard, the averages, FedNova, and the quantizer. Tests cover those identities. No training run was started. No private stack was installed. FetchSGD and hierarchical quantized averaging were found by search on this date and are not source cards. Serving placement and speculative decoding remain in the tree as future scope. The one-page proposal was rewritten to this rubric. Multi-Mac cells are still unmeasured.
+`src/macreduce/federation/federated.py` and `macreduce federate` implement the cohort, the shard, the averages, FedNova, and the quantizer. Tests cover those identities. No training run was started. No private stack was installed. FetchSGD and hierarchical quantized averaging were found by search on this date and are not source cards. Serving placement and speculative decoding remain in the tree as future scope. The one-page proposal was rewritten to this rubric. Multi-Mac cells are still unmeasured.
 
 ## 2026-10-27 — Federated round loop, still not trained
 
-`run_federated` now runs FedAvg and per-step all-reduce on named adapter tensors, with int8 error feedback, FedNova, and star, ring, and tree means. A second Mac raises `PeerRequired` unless a relay is passed. The loopback relay was tested with synthetic payloads. It is not a second Mac. `src/macreduce/lora_client.py` holds the MLX QLoRA local step and `require_ane`, which refuses a missing or uncompiled Neural Engine stack. `macreduce federate --execute` calls that path. It was not invoked. The CPU reference in the tests is SGD toward a fixed target, not WikiText. The proposal was rewritten in the shape of a one-page NeurIPS preprint, with WikiText-2, validation perplexity, and one-Mac GPU FedAvg named in the evaluation section. The official NeurIPS style file was not fetched. The PDF uses the same text width, Times text, abstract, and numbered sections.
+`run_federated` now runs FedAvg and per-step all-reduce on named adapter tensors, with int8 error feedback, FedNova, and star, ring, and tree means. A second Mac raises `PeerRequired` unless a relay is passed. The loopback relay was tested with synthetic payloads. It is not a second Mac. `src/macreduce/federation/lora_client.py` holds the MLX QLoRA local step and `require_ane`, which refuses a missing or uncompiled Neural Engine stack. `macreduce federate --execute` calls that path. It was not invoked. The CPU reference in the tests is SGD toward a fixed target, not WikiText. The proposal was rewritten in the shape of a one-page NeurIPS preprint, with WikiText-2, validation perplexity, and one-Mac GPU FedAvg named in the evaluation section. The official NeurIPS style file was not fetched. The PDF uses the same text width, Times text, abstract, and numbered sections.
 
 ## 2026-10-27 — ANEForge step on the engine
 
@@ -190,7 +190,7 @@ Read the abstract, chapter 1 through the M1 envelope, the opening of chapter 6, 
 
 ## 2026-10-28 — Curve figures
 
-`macreduce lora` now traces mactop, including the Prometheus scrape, and writes matplotlib figures for loss, validation perplexity, power, cumulative energy, memory, and latency. `src/macreduce/plots.py` and `src/macreduce/telemetry.py` hold that code. `macreduce figures` redraws a saved run. Matplotlib and seaborn are project dependencies, added with uv. The three-epoch Qwen3-0.6B curve is the run those figures are for. The short feasibility probe is not that curve.
+`macreduce lora` now traces mactop, including the Prometheus scrape, and writes matplotlib figures for loss, validation perplexity, power, cumulative energy, memory, and latency. `src/macreduce/observe/plots.py` and `src/macreduce/observe/telemetry.py` hold that code. `macreduce figures` redraws a saved run. Matplotlib and seaborn are project dependencies, added with uv. The three-epoch Qwen3-0.6B curve is the run those figures are for. The short feasibility probe is not that curve.
 
 ## 2026-10-28 — Working set, tqdm, checkpoints
 
@@ -399,3 +399,7 @@ Updated the [README](../README.md#train-across-different-networks), [Tailscale r
 ## 2026-11-23 Load MACREDUCE_TOKEN from .env
 
 Added tracked [`.env.example`](../.env.example) at the project root. `macreduce` loads a local `.env` without overriding an already-exported token and without printing values. `.env` stays gitignored. The README and Tailscale runbook now copy the example file instead of a silent `read` prompt.
+
+## 2026-11-23 Package layout under src/macreduce
+
+Moved the flat module list into `cluster`, `train`, `federation`, `ane`, `serve`, and `observe`. `cli.py` remains the composition root. No training, transport, or recovery behavior is claimed to have changed; this is a layout refactor. Wiki links that pointed at the old file paths were updated so they resolve. Earlier log prose is otherwise unchanged.

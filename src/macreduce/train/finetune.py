@@ -23,7 +23,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
 
-from .serving import DRAFT_MODEL, MLX_LM_PIN, MODEL_REVISIONS
+from macreduce.serve.serving import DRAFT_MODEL, MLX_LM_PIN, MODEL_REVISIONS
 
 DATASET_ID = "Salesforce/wikitext"
 DATASET_CONFIG = "wikitext-2-raw-v1"
@@ -343,7 +343,7 @@ def _run_lora(
     from mlx_lm.tuner.trainer import evaluate
     from mlx_lm.utils import load
 
-    from .train_loop import resolve_save_every, train_checked
+    from .loop import resolve_save_every, train_checked
 
     output.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()

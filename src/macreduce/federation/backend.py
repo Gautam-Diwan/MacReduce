@@ -14,8 +14,8 @@ from pathlib import Path
 
 import numpy as np
 
-from .federation_plan import shard_indices
 from .lora_client import BackendUnavailable
+from .plan import shard_indices
 
 
 def sample_indices(size: int, cursor: int, count: int, seed: int) -> list[int]:
@@ -78,8 +78,8 @@ class ResidentLoraClient:
         from mlx_lm.tuner.utils import build_schedule, linear_to_lora_layers
         from mlx_lm.utils import load
 
-        from .finetune import resolve_schedule
-        from .memory import apply_memory_limit, resolve_memory_limit
+        from macreduce.train.finetune import resolve_schedule
+        from macreduce.train.memory import apply_memory_limit, resolve_memory_limit
 
         self.mx, self.optim = mx, optim
         mx.set_default_device(mx.gpu)
@@ -92,7 +92,7 @@ class ResidentLoraClient:
             "rank": recipe["rank"], "scale": recipe["scale"], "dropout": recipe["dropout"],
         }, use_dora=False)
         if self.spec["device"] == "gpu_ane":
-            from .ane_stack import enable_ane_suffix
+            from macreduce.ane.stack import enable_ane_suffix
 
             enable_ane_suffix(self.model, self.plan["max_seq_length"])
         if self.spec["grad_checkpoint"]:
@@ -201,7 +201,7 @@ class ResidentLoraClient:
                        "placement": self.placement()}
 
     def save(self, path: Path):
-        from .train_loop import _arrays
+        from macreduce.train.loop import _arrays
 
         path.mkdir(parents=True, exist_ok=True)
         adapter = _arrays(self.model.trainable_parameters())

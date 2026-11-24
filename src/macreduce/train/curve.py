@@ -16,10 +16,11 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
+from macreduce.observe.plots import write_run_figures
+from macreduce.observe.telemetry import SystemTrace, energy_summary, read_series
+
 from .finetune import MetricLog, run_lora
 from .memory import apply_memory_limit, resolve_memory_limit
-from .plots import write_run_figures
-from .telemetry import SystemTrace, energy_summary, read_series
 
 
 def allocate_run(root: Path, now: datetime | None = None) -> Path:
@@ -139,7 +140,7 @@ def render_saved(directory: Path) -> list[Path]:
     report = json.loads(report_path.read_text())
     written: list[Path] = []
     if "arms" in report:
-        from .plots import plot_energy_comparison
+        from macreduce.observe.plots import plot_energy_comparison
 
         for name, arm in report["arms"].items():
             history = (arm.get("work") or {}).get("history")

@@ -167,7 +167,7 @@ These M1/M4 instances are Mac mini configurations with 16/24 GiB, not the team's
 
 These are code-inspection findings, not new benchmark results:
 
-- `execute_federated` in [lora_client.py](../../src/macreduce/lora_client.py) raises for `n_macs > 1`. `run_federated` in [federated.py](../../src/macreduce/federated.py) invokes clients serially in one process; its relay path publishes in process. It is not an independent three-worker training service.
+- `execute_federated` in [lora_client.py](../../src/macreduce/federation/lora_client.py) raises for `n_macs > 1`. `run_federated` in [federated.py](../../src/macreduce/federation/federated.py) invokes clients serially in one process; its relay path publishes in process. It is not an independent three-worker training service.
 - `MlxLoraTrainer` hardcodes scale 20, defaults to batch 8/accumulation 2, creates fresh AdamW moments per local call and does not carry the saved schedule, clip and recipe through the same path. Its evaluation batch defaults also differ. Unify with the validated curve's recipe before drawing comparisons.
 - Each local call rewrites/reloads shard records. Sampler/RNG progress across calls needs an explicit contract; do not assume continued passes merely from increasing a round counter.
 - Reducer helpers copy states/deltas to float64. For this adapter, raw fp64 state is 40.37 MB before archive metadata, twice the proposed fp32 payload.

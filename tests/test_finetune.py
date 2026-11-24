@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-from macreduce.finetune import (
+from macreduce.train.finetune import (
     MetricLog,
     epoch_steps,
     perplexity,

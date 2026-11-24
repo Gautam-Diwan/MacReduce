@@ -513,7 +513,7 @@ def execute(
         "models": {"target": TARGET_MODEL, "draft": DRAFT_MODEL},
     }
     if measure_devices:
-        from .ane import rank_decoder
+        from macreduce.ane.rank import rank_decoder
 
         report["device_workload"] = rank_decoder()
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")

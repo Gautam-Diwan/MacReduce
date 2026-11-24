@@ -30,6 +30,14 @@ from .finetune import (
 from .memory import apply_memory_limit
 
 PROBE_STEPS = 3
+
+
+def _repo_root() -> Path:
+    here = Path(__file__).resolve()
+    for directory in (here.parent, *here.parents):
+        if (directory / "pyproject.toml").is_file() and (directory / "src" / "macreduce").is_dir():
+            return directory
+    raise RuntimeError("could not find the MacReduce repository root")
 ASCENDING = (1, 2, 4, 8, 16, 32, 48)
 DESCENDING = ()
 
@@ -268,8 +276,8 @@ def _child(batch_size: int, **kwargs) -> dict:
     }
     try:
         proc = subprocess.run(  # noqa: S603
-            [sys.executable, "-m", "macreduce.batch_fit", json.dumps(spec)],
-            cwd=str(Path(__file__).resolve().parents[2]),
+            [sys.executable, "-m", "macreduce.train.batch_fit", json.dumps(spec)],
+            cwd=str(_repo_root()),
             text=True,
             capture_output=True,
             timeout=900,

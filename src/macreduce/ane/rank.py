@@ -19,7 +19,7 @@ import time
 from importlib import metadata
 from pathlib import Path
 
-from .observe import normalize_mactop, parse_mactop
+from macreduce.observe.events import normalize_mactop, parse_mactop
 
 
 def _assignments(plan) -> list[dict]:
@@ -482,7 +482,7 @@ def _hybrid(ane_model, features: dict, module, example) -> dict:
 
 def _rank(measured: dict) -> dict:
     """Rank measured forwards. The Neural Engine stays out until placement is verified."""
-    from .placement import choose_device
+    from macreduce.serve.placement import choose_device
 
     seconds = {
         "cpu": measured["cpu_only"]["seconds_per_forward"],

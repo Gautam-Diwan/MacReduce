@@ -12,7 +12,7 @@ sources: ["S02", "S06", "S18", "S23", "S24", "S25", "S26", "S27", "S28", "S29", 
 
 **One sentence:** build a scheduler that decides, per request, which engine drafts, how much to speculate, and whether to reuse or recompute prefix KV, and measure whether those decisions beat the best fixed configuration on one M4.
 
-**Course project, amendment 2026-10-27 (evening):** 10-805 open-ended miniproject, lead Gautam Diwan (gdiwan). The project name is MacReduce. The submitted question is heterogeneous federated learning. A client is a GPU, a GPU and Neural Engine combined, or those two devices as separate clients, and every Mac in a run uses the same choice. The payload is a LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the byte-heavy control. The baseline is one-Mac GPU FedAvg. The proposal is [docs/proposal.md](../../docs/proposal.md). The aggregation checks live in [federated.py](../../src/macreduce/federated.py).
+**Course project, amendment 2026-10-27 (evening):** 10-805 open-ended miniproject, lead Gautam Diwan (gdiwan). The project name is MacReduce. The submitted question is heterogeneous federated learning. A client is a GPU, a GPU and Neural Engine combined, or those two devices as separate clients, and every Mac in a run uses the same choice. The payload is a LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the byte-heavy control. The baseline is one-Mac GPU FedAvg. The proposal is [docs/proposal.md](../../docs/proposal.md). The aggregation checks live in [federated.py](../../src/macreduce/federation/federated.py).
 
 ## Context and evidence
 
@@ -113,10 +113,10 @@ The course question is heterogeneous federated learning. The name stays MacReduc
 
 Clients share one WikiText-2 mixture, in disjoint shards. Heterogeneity is the device. The intra-Mac modes are GPU, GPU and Neural Engine as one client, and GPU and Neural Engine as two clients. Every Mac in a run uses the same mode. Two Macs in split mode are therefore two GPUs and two Neural Engines.
 
-The network payload is the LoRA adapter delta. Base weights stay on each client. FedAvg reduces rounds by taking local steps before the average. The per-step all-reduce is the control that moves more bytes. Int8 quantization keeps an error residual. Unequal local step counts use the FedNova normalization already noted on [S06](../sources/S06.md). Star, ring, and tree averages are required to match on uncompressed deltas. `src/macreduce/federated.py` implements those checks. It does not train, and it does not fill a missing Neural Engine stack with the GPU.
+The network payload is the LoRA adapter delta. Base weights stay on each client. FedAvg reduces rounds by taking local steps before the average. The per-step all-reduce is the control that moves more bytes. Int8 quantization keeps an error residual. Unequal local step counts use the FedNova normalization already noted on [S06](../sources/S06.md). Star, ring, and tree averages are required to match on uncompressed deltas. `src/macreduce/federation/federated.py` implements those checks. It does not train, and it does not fill a missing Neural Engine stack with the GPU.
 
 FetchSGD and hierarchical quantized averaging were identified by search on 2026-10-27, abstracts only, and are not source cards. A second Mac is still required before a multi-Mac number is reported. The curve has not been run.
 
 ## Amendment 2026-10-27 (later)
 
-The round loop is implemented in `src/macreduce/federated.py`. The MLX QLoRA client and the Neural Engine refusal live in `src/macreduce/lora_client.py`. `macreduce federate --execute` is the training entry. It has not been run. Tests cover the CPU reference, the relay, and the refusal. They do not cover a WikiText perplexity.
+The round loop is implemented in `src/macreduce/federation/federated.py`. The MLX QLoRA client and the Neural Engine refusal live in `src/macreduce/federation/lora_client.py`. `macreduce federate --execute` is the training entry. It has not been run. Tests cover the CPU reference, the relay, and the refusal. They do not cover a WikiText perplexity.

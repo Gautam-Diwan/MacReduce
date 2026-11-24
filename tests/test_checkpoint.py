@@ -4,9 +4,9 @@ from datetime import UTC, datetime
 
 import pytest
 
-from macreduce.batch_fit import select_trial, steady_tokens_per_second
-from macreduce.curve import allocate_run, bind_run_log
-from macreduce.train_loop import resolve_save_every
+from macreduce.train.batch_fit import select_trial, steady_tokens_per_second
+from macreduce.train.curve import allocate_run, bind_run_log
+from macreduce.train.loop import resolve_save_every
 
 
 def test_each_launch_gets_its_own_directory(tmp_path):
@@ -62,7 +62,7 @@ def test_checkpoint_restores_adapter_and_adamw(tmp_path):
     from mlx import nn
     from mlx.utils import tree_flatten
 
-    from macreduce.train_loop import load_checkpoint, save_checkpoint
+    from macreduce.train.loop import load_checkpoint, save_checkpoint
 
     mx.random.seed(0)
     model = nn.Linear(4, 3)
@@ -94,7 +94,7 @@ def test_checkpoint_restores_adapter_and_adamw(tmp_path):
 def test_resume_identity_checks_the_recipe():
     import pytest
 
-    from macreduce.train_loop import _check_resume
+    from macreduce.train.loop import _check_resume
 
     identity = {
         "seed": 0,

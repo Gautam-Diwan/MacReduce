@@ -1,4 +1,4 @@
-from macreduce.plots import write_run_figures
+from macreduce.observe.plots import write_run_figures
 
 
 def test_run_figures_cover_loss_energy_memory_and_latency(tmp_path):

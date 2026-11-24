@@ -25,8 +25,8 @@ from urllib.parse import parse_qs, urlsplit
 
 import numpy as np
 
-from .artifacts import MAX_ARTIFACT_BYTES
-from .finetune import (
+from macreduce.cluster.artifacts import MAX_ARTIFACT_BYTES
+from macreduce.train.finetune import (
     CURVE_ACCUMULATION,
     CURVE_BATCH_SIZE,
     CURVE_EPOCHS,

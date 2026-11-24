@@ -8,7 +8,7 @@ import os
 import socket
 from pathlib import Path
 
-from .federation_plan import MODES, bind_address, client_spec, data_identity, load_plan
+from .plan import MODES, bind_address, client_spec, data_identity, load_plan
 
 
 def add_parser(sub):
@@ -48,7 +48,7 @@ def _records(args, plan):
 
 
 def _backend(plan, name, records):
-    from .federation_backend import ResidentLoraClient
+    from .backend import ResidentLoraClient
 
     backend = ResidentLoraClient(plan, client_spec(plan, name), records)
     backend.setup()
@@ -88,7 +88,7 @@ def execute(args, get_token):
             "ane": "unavailable: standalone Qwen3 trainer is not implemented",
         }}
     elif action == "prepare":
-        from .finetune import prepare_dataset
+        from macreduce.train.finetune import prepare_dataset
 
         prepare_dataset(Path(args.data))
         result = {"data_sha256": data_identity(_records(args, plan)),
@@ -114,14 +114,14 @@ def execute(args, get_token):
         # Keep optional upstream analytics off the critical training/network path.
         os.environ.setdefault("FLWR_TELEMETRY_ENABLED", "0")
         try:
-            from .flower_federation import PersistentClient, connect, serve
+            from .flower import PersistentClient, connect, serve
         except ModuleNotFoundError as exc:
             if exc.name == "flwr":
                 raise RuntimeError("install the federation extra: uv sync --extra federation") from exc
             raise
         if action == "coordinator":
-            from .federation_backend import ResidentLoraClient
-            from .federation_state import RunState
+            from .backend import ResidentLoraClient
+            from .state import RunState
 
             host = bind_address(args.host)
             if not 1 <= args.port <= 65535:

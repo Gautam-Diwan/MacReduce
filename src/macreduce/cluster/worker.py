@@ -10,6 +10,8 @@ from urllib.parse import urlencode
 
 import numpy as np
 
+from macreduce.observe.events import Events, Sampler, capabilities
+
 from .artifacts import (
     CONTROL_RESPONSE_BYTES,
     MAX_CHUNK_SIZE,
@@ -27,7 +29,6 @@ from .model import (
     encode_weights,
     initial_weights,
 )
-from .observe import Events, Sampler, capabilities
 
 
 class Client:

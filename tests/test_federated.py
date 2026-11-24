@@ -4,7 +4,7 @@ import urllib.request
 
 import numpy as np
 
-from macreduce.federated import (
+from macreduce.federation.federated import (
     AdapterRelay,
     LocalResult,
     PeerRequired,

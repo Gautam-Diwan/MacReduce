@@ -102,7 +102,7 @@ def train_checked(
     model.freeze()
     linear_to_lora_layers(model, args.num_layers, args.lora_parameters, use_dora=False)
     if ane_lora:
-        from .ane_stack import enable_ane_suffix
+        from macreduce.ane.stack import enable_ane_suffix
 
         placed = enable_ane_suffix(model, int(args.max_seq_length))
         tqdm.write(placed["summary"])
@@ -260,7 +260,7 @@ def train_checked(
         "ane_lora": ane_lora,
     }
     if ane_lora:
-        from .ane_stack import ane_stats
+        from macreduce.ane.stack import ane_stats
 
         report["ane"] = ane_stats()
     return report

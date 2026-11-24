@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from .ane_forge import ANE_MASK
+from .forge import ANE_MASK
 
 _ENGINE = None
 _FN = None

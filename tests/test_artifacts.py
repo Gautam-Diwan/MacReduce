@@ -5,11 +5,11 @@ import urllib.error
 
 import pytest
 
-from macreduce.artifacts import MAX_ARTIFACT_BYTES, build_manifest, plan_sha256
-from macreduce.cluster import Coordinator, make_server
-from macreduce.model import ModelConfig, decode_weights
-from macreduce.observe import Events
-from macreduce.worker import Client
+from macreduce.cluster.artifacts import MAX_ARTIFACT_BYTES, build_manifest, plan_sha256
+from macreduce.cluster.coordinator import Coordinator, make_server
+from macreduce.cluster.model import ModelConfig, decode_weights
+from macreduce.cluster.worker import Client
+from macreduce.observe.events import Events
 
 
 @pytest.fixture

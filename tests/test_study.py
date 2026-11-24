@@ -1,4 +1,4 @@
-from macreduce.study import (
+from macreduce.serve.study import (
     acceptance_from_counts,
     annotate_exact,
     assign_passes,

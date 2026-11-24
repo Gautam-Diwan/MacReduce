@@ -17,10 +17,11 @@ import threading
 import time
 from pathlib import Path
 
-from .federated import payload_bytes
+from macreduce.federation.federated import payload_bytes
+from macreduce.observe.plots import plot_energy_comparison, write_run_figures
+from macreduce.observe.telemetry import SystemTrace, energy_summary
+
 from .finetune import run_lora
-from .plots import plot_energy_comparison, write_run_figures
-from .telemetry import SystemTrace, energy_summary
 
 MEMORY_LIMIT_BYTES = 8 * 1024**3
 
@@ -41,7 +42,7 @@ def run_ane_window(
     import aneforge as af
     import numpy as np
 
-    from .ane_forge import run_linear
+    from macreduce.ane.forge import run_linear
 
     trained = run_linear(steps=4, seed=seed)
     rng = np.random.default_rng(seed)

@@ -1,7 +1,14 @@
 import pytest
 
-from macreduce.placement import CostTable, EngineCost, choose, choose_device, expected_tokens, fixed
-from macreduce.serving import (
+from macreduce.serve.placement import (
+    CostTable,
+    EngineCost,
+    choose,
+    choose_device,
+    expected_tokens,
+    fixed,
+)
+from macreduce.serve.serving import (
     Prompt,
     Trial,
     abba,

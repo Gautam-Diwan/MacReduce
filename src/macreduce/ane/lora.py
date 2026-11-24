@@ -13,7 +13,7 @@ import threading
 import mlx.core as mx
 import numpy as np
 
-from .ane_forge import ANE_MASK
+from .forge import ANE_MASK
 
 _CACHE: dict[tuple, object] = {}
 _LOCK = threading.Lock()

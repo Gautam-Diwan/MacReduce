@@ -25,7 +25,7 @@ def test_qlora_config_points_at_the_curve():
 
 
 def test_yaml_recipe_reaches_the_training_namespace():
-    from macreduce.finetune import _namespace, recipe_from_config, resolve_schedule
+    from macreduce.train.finetune import _namespace, recipe_from_config, resolve_schedule
 
     config = yaml.safe_load(Path("configs/qlora_m4.yaml").read_text())
     recipe = recipe_from_config(config)
@@ -55,7 +55,7 @@ def test_yaml_recipe_reaches_the_training_namespace():
 def test_recipe_rejects_bad_values():
     import pytest
 
-    from macreduce.finetune import resolve_schedule, validate_recipe
+    from macreduce.train.finetune import resolve_schedule, validate_recipe
 
     with pytest.raises(ValueError):
         validate_recipe({"scale": 0})
@@ -75,7 +75,7 @@ def test_schedule_hits_warmup_peak_and_end():
         pytest.skip("MLX test is opt-in")
     from mlx_lm.tuner.utils import build_schedule
 
-    from macreduce.finetune import DEFAULT_RECIPE, resolve_schedule
+    from macreduce.train.finetune import DEFAULT_RECIPE, resolve_schedule
 
     total = 6144
     schedule = build_schedule(resolve_schedule(DEFAULT_RECIPE["lr_schedule"], 1e-4, total))

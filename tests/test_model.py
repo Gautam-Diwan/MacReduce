@@ -6,7 +6,7 @@ import json
 import numpy as np
 import pytest
 
-from macreduce.model import (
+from macreduce.cluster.model import (
     CONFIG_KEY,
     MODEL,
     ModelConfig,

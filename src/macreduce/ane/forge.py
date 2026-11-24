@@ -47,7 +47,7 @@ def prove_engine(seconds: int = 4, seed: int = 0) -> dict:
 
     thread = threading.Thread(target=burn)
     thread.start()
-    from .observe import collect_mactop
+    from macreduce.observe.events import collect_mactop
 
     with tempfile.TemporaryDirectory(prefix="macreduce-ane-forge-") as directory:
         status = collect_mactop(directory, seconds=seconds, interval_ms=500)
@@ -122,7 +122,7 @@ def run_linear(steps: int = 20, seed: int = 0, sample_seconds: int = 0) -> dict:
         holder = {}
 
         def _sample():
-            from .observe import collect_mactop
+            from macreduce.observe.events import collect_mactop
 
             with tempfile.TemporaryDirectory(prefix="macreduce-ane-forge-") as directory:
                 holder["status"] = collect_mactop(directory, seconds=sample_seconds)

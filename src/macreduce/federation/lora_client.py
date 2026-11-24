@@ -14,8 +14,8 @@ from pathlib import Path
 
 import numpy as np
 
-from .federated import Client, LocalResult, PeerRequired, run_federated
-from .finetune import (
+from macreduce.serve.serving import MODEL_REVISIONS
+from macreduce.train.finetune import (
     CURVE_ACCUMULATION,
     CURVE_BATCH_SIZE,
     CURVE_EPOCHS,
@@ -26,7 +26,8 @@ from .finetune import (
     perplexity,
     prefix_records,
 )
-from .serving import MODEL_REVISIONS
+
+from .federated import Client, LocalResult, PeerRequired, run_federated
 
 LORA = {"rank": 8, "dropout": 0.0, "scale": 20.0}
 ANE_STACKS = ("coreml", "aneforge", "orion", "maderix")
@@ -58,7 +59,7 @@ def load_curve_records(data_dir: Path, train_examples: int = CURVE_TRAIN_EXAMPLE
 
 def require_ane(stack: str) -> None:
     """Reject a Neural Engine step that would silently become a GPU step."""
-    from .train_plan import probe_backends
+    from macreduce.train.plan import probe_backends
 
     if stack not in ANE_STACKS:
         msg = f"unknown Neural Engine stack {stack}"
@@ -168,7 +169,7 @@ class MlxLoraTrainer:
         from mlx_lm.tuner.datasets import load_dataset
         from mlx_lm.tuner.trainer import TrainingArgs, train
 
-        from .finetune import MetricLog, _namespace
+        from macreduce.train.finetune import MetricLog, _namespace
 
         if steps < 1:
             raise ValueError("local steps must be positive")
@@ -218,7 +219,7 @@ class MlxLoraTrainer:
         from mlx_lm.tuner.datasets import CacheDataset, load_dataset
         from mlx_lm.tuner.trainer import evaluate
 
-        from .finetune import _namespace
+        from macreduce.train.finetune import _namespace
 
         self.load_state(state)
         args = _namespace(

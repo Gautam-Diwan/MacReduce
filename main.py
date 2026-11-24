@@ -18,10 +18,10 @@ from pathlib import Path
 
 import yaml
 
-from macreduce.batch_fit import choose_batch
-from macreduce.curve import allocate_run, bind_run_log, latest_checkpoint, run_curve
-from macreduce.finetune import recipe_from_config
-from macreduce.memory import resolve_memory_limit
+from macreduce.train.batch_fit import choose_batch
+from macreduce.train.curve import allocate_run, bind_run_log, latest_checkpoint, run_curve
+from macreduce.train.finetune import recipe_from_config
+from macreduce.train.memory import resolve_memory_limit
 
 
 def load_config(path: Path) -> dict:
