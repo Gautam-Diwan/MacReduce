@@ -1,6 +1,6 @@
 import json
 
-from macreduce.observe import Events, normalize_mactop, parse_mactop, report
+from macreduce.observe.events import Events, normalize_mactop, parse_mactop, report
 
 
 def test_missing_power_is_not_zero_and_zero_is_preserved():

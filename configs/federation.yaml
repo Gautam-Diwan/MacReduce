@@ -1,0 +1,41 @@
+# Connectivity pilot only. TODO: calibrate each device's batches, objective
+# weights/data allocation, and sync frequency before the proposal experiments.
+# Tokens/credentials/Tailscale IPs do not belong in this shared file.
+# The coordinator process runs on m4-air (M4 MacBook Air 24 GB) together with
+# that machine's training worker. The Pro and M1 are workers only.
+schema: 1
+mode: gpu
+coordinator: m4-air
+machines:
+  m4-pro:
+    microbatch: 1
+    accumulation: 1
+    grad_checkpoint: false
+    weight: 1.0
+  m4-air:
+    microbatch: 1
+    accumulation: 1
+    grad_checkpoint: false
+    weight: 1.0
+  m1-air:
+    microbatch: 1
+    accumulation: 1
+    grad_checkpoint: true
+    weight: 1.0
+training:
+  rounds: 3
+  local_steps: 2
+  max_seq_length: 512
+  learning_rate: 0.0001
+  seed: 1
+  round_timeout: 1800
+data:
+  train_examples: 4096
+recipe:
+  rank: 8
+  scale: 2.0
+  dropout: 0.0
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  # A fixed learning rate for this short transport pilot. Study schedule is TODO.
+  lr_schedule: null

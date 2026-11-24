@@ -8,7 +8,7 @@ import hashlib
 import json
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -27,14 +27,15 @@ def metadata(text: str) -> dict:
         if not sep or not key.strip():
             raise ValueError("frontmatter requires key: value fields")
         if key in result:
-            raise ValueError(f"duplicate metadata field: {key}")
+            msg = f"duplicate metadata field: {key}"
+            raise ValueError(msg)
         value = value.strip()
-        result[key] = json.loads(value) if value.startswith(('"', '[')) else value
+        result[key] = json.loads(value) if value.startswith(('"', "[")) else value
     return result
 
 
 def frontmatter(title: str, kind: str, status: str, sources: list[str]) -> str:
-    date = datetime.now(timezone.utc).date().isoformat()
+    date = datetime.now(UTC).date().isoformat()
     return (
         f"---\ntitle: {json.dumps(title, ensure_ascii=False)}\ntype: {kind}\n"
         f"status: {status}\nupdated: {date}\nsources: {json.dumps(sources)}\n---\n\n"
@@ -101,7 +102,7 @@ def lint(root: Path = ROOT) -> dict:
                     errors.append(f"{label}: missing {key}")
             if meta.get("status") not in STATUSES:
                 errors.append(f"{label}: invalid status")
-            datetime.strptime(str(meta.get("updated")), "%Y-%m-%d")
+            datetime.strptime(str(meta.get("updated")), "%Y-%m-%d").replace(tzinfo=UTC)
             sources = meta.get("sources")
             if not isinstance(sources, list) or any(not isinstance(s, str) for s in sources):
                 raise ValueError("sources must be an inline JSON array of IDs")
@@ -166,7 +167,8 @@ def intake(source: Path, ident: str, title: str, url: str, root: Path = ROOT) ->
     manifest_path = root / "raw/manifest.json"
     records = json.loads(manifest_path.read_text())
     if any(record["id"] == ident for record in records):
-        raise ValueError(f"{ident} already exists; revisions require a new ID")
+        msg = f"{ident} already exists; revisions require a new ID"
+        raise ValueError(msg)
     suffix = source.suffix.lower()
     if not re.fullmatch(r"\.[a-z0-9]{1,10}", suffix):
         suffix = ".bin"
@@ -175,12 +177,13 @@ def intake(source: Path, ident: str, title: str, url: str, root: Path = ROOT) ->
     index, log = root / "wiki/index.md", root / "wiki/log.md"
     for path in (destination, note):
         if path.exists():
-            raise ValueError(f"refusing to overwrite {path}")
+            msg = f"refusing to overwrite {path}"
+            raise ValueError(msg)
     # Validate required existing files before mutating anything.
     index_text, log_text = index.read_text(), log.read_text()
     data = source.read_bytes()
     record = {"id": ident, "title": title.strip(), "url": url,
-              "scope": "unread; intake only", "retrieved_at": datetime.now(timezone.utc).isoformat(),
+              "scope": "unread; intake only", "retrieved_at": datetime.now(UTC).isoformat(),
               "mutable_url": True, "path": str(destination.relative_to(root)),
               "status": "retrieved", "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data)}
     note_text = frontmatter(f"{ident} — {title.strip()}", "source", "unread", [ident])
@@ -204,7 +207,7 @@ def intake(source: Path, ident: str, title: str, url: str, root: Path = ROOT) ->
         stream.write(note_text)
     temporary = manifest_path.with_suffix(".json.tmp")
     with temporary.open("x") as stream:
-        stream.write(json.dumps(records + [record], indent=2) + "\n")
+        stream.write(json.dumps([*records, record], indent=2) + "\n")
     temporary.replace(manifest_path)
     safe_title = title.strip().replace("[", "(").replace("]", ")").replace("\n", " ")
     index.write_text(index_text.rstrip() + f"\n\n- [{ident} — {safe_title}](sources/{ident}.md)\n")
@@ -228,15 +231,18 @@ def main() -> int:
         if args.command == "lint":
             report = lint()
             print(json.dumps(report, indent=2))
-            return 0 if report["ok"] else 1
-        if args.command == "search":
+            code = 0 if report["ok"] else 1
+        elif args.command == "search":
             print(json.dumps(search(args.query), indent=2, ensure_ascii=False))
+            code = 0
         else:
             print(intake(args.source, args.id, args.title, args.url))
-        return 0
+            code = 0
     except (OSError, ValueError, KeyError) as exc:
         print(f"wiki: {exc}", file=sys.stderr)
         return 2
+    else:
+        return code
 
 
 if __name__ == "__main__":

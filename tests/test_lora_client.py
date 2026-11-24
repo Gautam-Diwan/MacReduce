@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from macreduce.lora_client import BackendUnavailable, require_ane, write_client_shard
+from macreduce.federation.lora_client import BackendUnavailable, require_ane, write_client_shard
 
 
 def test_client_shard_keeps_text_and_leaves_eval_empty(tmp_path: Path):

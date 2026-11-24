@@ -5,7 +5,7 @@ import os
 import numpy as np
 import pytest
 
-from macreduce.model import (
+from macreduce.cluster.model import (
     MODEL,
     MLXBackend,
     ModelConfig,

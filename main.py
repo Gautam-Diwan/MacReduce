@@ -1,4 +1,5 @@
-"""Train Qwen3 QLoRA from a YAML config.
+"""
+Train Qwen3 QLoRA from a YAML config.
 
     python main.py --config configs/qlora_m4.yaml
 
@@ -17,17 +18,18 @@ from pathlib import Path
 
 import yaml
 
-from macreduce.batch_fit import choose_batch
-from macreduce.curve import allocate_run, bind_run_log, latest_checkpoint, run_curve
-from macreduce.finetune import recipe_from_config
-from macreduce.memory import resolve_memory_limit
+from macreduce.train.batch_fit import choose_batch
+from macreduce.train.curve import allocate_run, bind_run_log, latest_checkpoint, run_curve
+from macreduce.train.finetune import recipe_from_config
+from macreduce.train.memory import resolve_memory_limit
 
 
 def load_config(path: Path) -> dict:
     with path.open() as handle:
         config = yaml.safe_load(handle)
     if not isinstance(config, dict):
-        raise ValueError(f"{path} did not contain a mapping")
+        msg = f"{path} did not contain a mapping"
+        raise ValueError(msg)
     return config
 
 

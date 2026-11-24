@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pytest
 
-from macreduce.ane_stack import (
+from macreduce.ane.stack import (
     _BACKWARD_PEAKS,
     _attention_mask,
     _candidate_scales,
@@ -43,7 +43,7 @@ def test_suffix_matches_mlx_on_one_block():
     from mlx_lm.models.qwen3 import Model, ModelArgs
     from mlx_lm.tuner.utils import linear_to_lora_layers
 
-    from macreduce.ane_stack import enable_ane_suffix
+    from macreduce.ane.stack import enable_ane_suffix
 
     mx.random.seed(0)
     args = ModelArgs(
@@ -91,7 +91,7 @@ def test_suffix_matches_mlx_on_one_block():
 def _assert_output_gradient(model, tokens) -> None:
     """A ones cotangent of the block output must match a finite difference on the output projection."""
 
-    from macreduce import ane_stack
+    from macreduce.ane import stack as ane_stack
 
     engine = ane_stack._ENGINE
     hidden = _host(model.model.embed_tokens(tokens))[0]

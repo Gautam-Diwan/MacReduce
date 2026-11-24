@@ -9,21 +9,24 @@ import threading
 import time
 from pathlib import Path
 
-from .ane import placement_probe, rank_decoder, rank_qwen_forward
-from .ane_forge import prove_engine
-from .benchmark import accelerate_matmul
-from .cluster import Coordinator, make_server
-from .curve import render_saved, run_curve
-from .feasibility import run_feasibility
-from .federated import study as federated_study
-from .lora_client import execute_federated
-from .observe import capabilities, collect_mactop, report
-from .placement import CostTable, EngineCost, choose
-from .serving import DRAFT_MODEL, TARGET_MODEL, MlxLmExecutor, builtin_trace, sweep_order
-from .study import execute as execute_study
-from .train_plan import probe_backends
-from .train_plan import report as train_plan_report
-from .worker import run_worker
+from .ane.forge import prove_engine
+from .ane.rank import placement_probe, rank_decoder, rank_qwen_forward
+from .cluster.coordinator import Coordinator, make_server
+from .cluster.worker import run_worker
+from .envfile import load_project_env
+from .federation.cli import add_parser as add_federation_parser
+from .federation.cli import execute as execute_federation
+from .federation.federated import study as federated_study
+from .federation.lora_client import execute_federated
+from .observe.benchmark import accelerate_matmul
+from .observe.events import capabilities, collect_mactop, report
+from .serve.placement import CostTable, EngineCost, choose
+from .serve.serving import DRAFT_MODEL, TARGET_MODEL, MlxLmExecutor, builtin_trace, sweep_order
+from .serve.study import execute as execute_study
+from .train.curve import render_saved, run_curve
+from .train.feasibility import run_feasibility
+from .train.plan import probe_backends
+from .train.plan import report as train_plan_report
 
 
 def _dump_trial(path, payload):
@@ -50,11 +53,11 @@ def _bench_trial(args):
     if args.mode == "cpu":
         try:
             payload = executor.cpu_draft_trial(prompt.text, args.max_tokens, args.depth)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             payload = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
         _dump_trial(args.output, payload)
         return
-    from .placement import fixed
+    from .serve.placement import fixed
 
     executor.generate("Hi", max_tokens=1, placement=fixed("none", 0, "recompute"))
     result = executor.generate(
@@ -67,9 +70,13 @@ def _bench_trial(args):
 
 
 def token():
+    load_project_env()
     value = os.environ.get("MACREDUCE_TOKEN", "")
     if len(value) < 24:
-        raise ValueError("set MACREDUCE_TOKEN to a shared random secret of at least 24 characters")
+        raise ValueError(
+            "set MACREDUCE_TOKEN in .env (copy .env.example) or the environment; "
+            "it must be a shared random secret of at least 24 characters"
+        )
     return value
 
 
@@ -114,7 +121,7 @@ def demo(args):
             if args.torch_trace and node == "small":
                 cmd.extend(["--torch-trace", str(directory / "small.operators.trace.json")])
             children.append(
-                subprocess.Popen(
+                subprocess.Popen(  # noqa: S603
                     cmd,
                     env=dict(os.environ, MACREDUCE_TOKEN=secret),
                     stdout=log,
@@ -124,7 +131,8 @@ def demo(args):
         deadline = time.monotonic() + 300
         while any(p.poll() is None for p in children):
             if any(p.poll() not in (None, 0) for p in children):
-                raise RuntimeError(f"worker failed; inspect logs in {directory}")
+                msg = f"worker failed; inspect logs in {directory}"
+                raise RuntimeError(msg)
             if time.monotonic() > deadline:
                 raise TimeoutError("demo did not finish within 300 seconds")
             time.sleep(0.2)
@@ -165,8 +173,10 @@ def demo(args):
 
 
 def main():
+    load_project_env()
     p = argparse.ArgumentParser(description="MacReduce: observable local SGD research prototype")
     sub = p.add_subparsers(dest="command", required=True)
+    add_federation_parser(sub)
     doctor = sub.add_parser("doctor", help="inventory hardware and runtime availability")
     doctor.add_argument("--smoke", action="store_true", help="attempt an MLX GPU matmul")
     doctor.add_argument("--output")
@@ -333,8 +343,10 @@ def main():
     once.add_argument("--mode", choices=["generate", "prefix", "cpu"], default="generate")
     args = p.parse_args()
     try:
-        if args.command == "doctor":
-            text = json.dumps(capabilities(args.smoke), indent=2)
+        if args.command == "federation":
+            execute_federation(args, token)
+        elif args.command == "doctor":
+            text = json.dumps(capabilities(smoke=args.smoke), indent=2)
             if args.output:
                 Path(args.output).parent.mkdir(parents=True, exist_ok=True)
                 Path(args.output).write_text(text)
@@ -350,8 +362,8 @@ def main():
                 args.lr,
                 args.backend,
                 args.round_timeout,
-                args.resume,
-                args.validation_text,
+                resume=args.resume,
+                validation_text=args.validation_text,
             )
             server = make_server(c, args.host, args.port, token())
             if bool(args.tls_cert) != bool(args.tls_key):
@@ -569,5 +581,5 @@ def main():
                 raise SystemExit(2)
     except KeyboardInterrupt:
         pass
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         p.exit(1, f"{type(exc).__name__}: {exc}\n")

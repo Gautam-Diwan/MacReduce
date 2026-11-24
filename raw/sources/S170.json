@@ -1,0 +1,102 @@
+{
+  "original_url": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/dedicatedhost-ondemand.json",
+  "derivation": "Subset of decompressed AWS JSON: manifest and all Mac rows in US East (N. Virginia); no price transformations",
+  "decompressed_response_sha256": "ce93efcee2d5830d2b6fc28434e70ca0afc33cc690d5577bae26b295cd941da0",
+  "manifest": {
+    "serviceId": "ec2",
+    "accessType": "publish",
+    "esIndex": "plc-ec2-usd-20261110173852",
+    "hawkFilePublicationDate": "2026-11-10T17:38:52Z",
+    "ETLIngestionTriggerDate": "2026-11-10T17:38:52Z",
+    "currencyCode": "USD",
+    "source": "dedicatedhost-ondemand",
+    "isMapped": "true"
+  },
+  "region": "US East (N. Virginia)",
+  "rows": {
+    "NqWZEw1iA888x7eYGl8Fbh2QzOVD6Yc2HrmeFTp4Kmw": {
+      "rateCode": "FSSPDFFURC6QU4KU.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.8780000000",
+      "RegionlessRateCode": "NqWZEw1iA888x7eYGl8Fbh2QzOVD6Yc2HrmeFTp4Kmw",
+      "Instance Type": "mac2-m2"
+    },
+    "OUm8Pq3lBTSX4e26OagTY0z7ChPjg-K5f16TTuxPwWg": {
+      "rateCode": "J55GDGNX36ANHZ9M.JRTCKXETXF.6YS6EN2CT7",
+      "price": "1.2300000000",
+      "RegionlessRateCode": "OUm8Pq3lBTSX4e26OagTY0z7ChPjg-K5f16TTuxPwWg",
+      "Instance Type": "mac-m4"
+    },
+    "TUkNOyZtt3wiAuvPwR4_gxKKG9N730Wzz7DyVJrZPXg": {
+      "rateCode": "QCVJQ8WS4YT5ZP5U.JRTCKXETXF.6YS6EN2CT7",
+      "price": "1.9700000000",
+      "RegionlessRateCode": "TUkNOyZtt3wiAuvPwR4_gxKKG9N730Wzz7DyVJrZPXg",
+      "Instance Type": "mac-m4pro"
+    },
+    "YwII5mAy0gjDeMeyG_7kQrNUcG_0cb6cvnw2aZymiPE": {
+      "rateCode": "UKMYK5WUDUDA367S.JRTCKXETXF.6YS6EN2CT7",
+      "price": "6.2500000000",
+      "RegionlessRateCode": "YwII5mAy0gjDeMeyG_7kQrNUcG_0cb6cvnw2aZymiPE",
+      "Instance Type": "mac-m4max"
+    },
+    "ZhK_YhUJQ5fn5EdwXNe8DrOdBkrkx6WSZeLyJDkP2BQ": {
+      "rateCode": "EA95TXRKRYDRC3N5.JRTCKXETXF.6YS6EN2CT7",
+      "price": "5.0000000000",
+      "RegionlessRateCode": "ZhK_YhUJQ5fn5EdwXNe8DrOdBkrkx6WSZeLyJDkP2BQ",
+      "Instance Type": "mac2-m1ultra"
+    },
+    "fTdqVqRz-3Zf57Q0IF6M295QBwxNH2d6NG6MQ44PirY": {
+      "rateCode": "MQBARYMM69JEH2F7.JRTCKXETXF.6YS6EN2CT7",
+      "price": "1.0830000000",
+      "RegionlessRateCode": "fTdqVqRz-3Zf57Q0IF6M295QBwxNH2d6NG6MQ44PirY",
+      "Instance Type": "mac1"
+    },
+    "nW29lAuyTRpDBcOq5dIULUXJgdybQSVdCd-kXkEbLM0": {
+      "rateCode": "V6UR2G74QTABQPH7.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.6500000000",
+      "RegionlessRateCode": "nW29lAuyTRpDBcOq5dIULUXJgdybQSVdCd-kXkEbLM0",
+      "Instance Type": "mac2"
+    },
+    "zZhVjtdPOhPinamAkYkX7urEqvNohi4doqMdW5HrI7c": {
+      "rateCode": "6J2UY6UW69BHXQNQ.JRTCKXETXF.6YS6EN2CT7",
+      "price": "12.5000000000",
+      "RegionlessRateCode": "zZhVjtdPOhPinamAkYkX7urEqvNohi4doqMdW5HrI7c",
+      "Instance Type": "mac-m3ultra"
+    },
+    "zugGgK8budhykGVwhjLkhvJbB9OW36cgpPbvwyBpk3M": {
+      "rateCode": "KPV8DP6YRM492QZT.JRTCKXETXF.6YS6EN2CT7",
+      "price": "1.5600000000",
+      "RegionlessRateCode": "zugGgK8budhykGVwhjLkhvJbB9OW36cgpPbvwyBpk3M",
+      "Instance Type": "mac2-m2pro"
+    },
+    "OnDemand Dedicated Host mac2-m2 General purpose": {
+      "rateCode": "FSSPDFFURC6QU4KU.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.8780000000",
+      "RegionlessRateCode": "NqWZEw1iA888x7eYGl8Fbh2QzOVD6Yc2HrmeFTp4Kmw",
+      "Instance Type": "mac2-m2"
+    },
+    "OnDemand Dedicated Host mac2-m1ultra General purpose": {
+      "rateCode": "EA95TXRKRYDRC3N5.JRTCKXETXF.6YS6EN2CT7",
+      "price": "5.0000000000",
+      "RegionlessRateCode": "ZhK_YhUJQ5fn5EdwXNe8DrOdBkrkx6WSZeLyJDkP2BQ",
+      "Instance Type": "mac2-m1ultra"
+    },
+    "OnDemand Dedicated Host mac1 General purpose": {
+      "rateCode": "MQBARYMM69JEH2F7.JRTCKXETXF.6YS6EN2CT7",
+      "price": "1.0830000000",
+      "RegionlessRateCode": "fTdqVqRz-3Zf57Q0IF6M295QBwxNH2d6NG6MQ44PirY",
+      "Instance Type": "mac1"
+    },
+    "OnDemand Dedicated Host mac2 General purpose": {
+      "rateCode": "V6UR2G74QTABQPH7.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.6500000000",
+      "RegionlessRateCode": "nW29lAuyTRpDBcOq5dIULUXJgdybQSVdCd-kXkEbLM0",
+      "Instance Type": "mac2"
+    },
+    "OnDemand Dedicated Host mac2-m2pro General purpose": {
+      "rateCode": "KPV8DP6YRM492QZT.JRTCKXETXF.6YS6EN2CT7",
+      "price": "1.5600000000",
+      "RegionlessRateCode": "zugGgK8budhykGVwhjLkhvJbB9OW36cgpPbvwyBpk3M",
+      "Instance Type": "mac2-m2pro"
+    }
+  }
+}

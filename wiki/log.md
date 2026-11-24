@@ -2,7 +2,7 @@
 title: "MacReduce wiki change log"
 type: log
 status: active
-updated: 2026-10-27
+updated: 2026-11-23
 sources: ["S01"]
 ---
 
@@ -144,7 +144,7 @@ A rerun of `macreduce ane-workload` measured the decoder at 0.000170 s on CPU+Ne
 
 ## 2026-10-26 — Private ANE APIs allowed, WikiText-2 QLoRA baseline
 
-Decision 0003 no longer bars private ANE APIs. An ANE training stack is in scope when it addresses a gap ANEForge, Orion, or maderix leave open. The training baseline is QLoRA of `mlx-community/Qwen3-0.6B-4bit` on Salesforce WikiText-2 raw v1, revision `b08601e04326c79dfdd32d625aee71d232d685c3`. The reusable module is `src/macreduce/finetune.py`, command `macreduce lora`. Perplexity is the exponential of the mean token loss, reported on the test split before and after the adapter.
+Decision 0003 no longer bars private ANE APIs. An ANE training stack is in scope when it addresses a gap ANEForge, Orion, or maderix leave open. The training baseline is QLoRA of `mlx-community/Qwen3-0.6B-4bit` on Salesforce WikiText-2 raw v1, revision `b08601e04326c79dfdd32d625aee71d232d685c3`. The reusable module is `src/macreduce/train/finetune.py`, command `macreduce lora`. Perplexity is the exponential of the mean token loss, reported on the test split before and after the adapter.
 
 ## 2026-10-27 — Course proposal rewritten to one page
 
@@ -152,7 +152,7 @@ The open-ended proposal is [docs/proposal.md](../docs/proposal.md), with a one-p
 
 ## 2026-10-27 — Distributed training and explicit Neural Engine stacks
 
-The 10-805 proposal, lead Gautam Diwan (gdiwan), now asks three things on the same WikiText-2 QLoRA setup. Does an explicit ANEForge, Orion, or maderix training step beat the GPU baseline on perplexity or step time? Should the Neural Engine run inference while the GPU trains? Do a parameter server, local SGD, or a non-reducing inference seat beat ring all-reduce once a second Mac exists? `src/macreduce/train_plan.py` and `macreduce train-plan` write that list. The probe marks Orion and maderix unpinned. A missing import is not replaced with the GPU. No private stack was installed or run. Multi-Mac arms are unmeasured. The one-page proposal was rewritten to this question.
+The 10-805 proposal, lead Gautam Diwan (gdiwan), now asks three things on the same WikiText-2 QLoRA setup. Does an explicit ANEForge, Orion, or maderix training step beat the GPU baseline on perplexity or step time? Should the Neural Engine run inference while the GPU trains? Do a parameter server, local SGD, or a non-reducing inference seat beat ring all-reduce once a second Mac exists? `src/macreduce/train/plan.py` and `macreduce train-plan` write that list. The probe marks Orion and maderix unpinned. A missing import is not replaced with the GPU. No private stack was installed or run. Multi-Mac arms are unmeasured. The one-page proposal was rewritten to this question.
 
 ## 2026-10-27 — Heterogeneous all-reduce and a three-epoch curve
 
@@ -166,11 +166,11 @@ The fine-tuning curve is three epochs on the first 4,096 training lines, batch s
 
 The course question is heterogeneous federated learning. The project name stays MacReduce. A client is a GPU, a GPU and Neural Engine combined, or those devices as two clients. Every Mac in a run uses the same mode and a shard of one WikiText-2 mixture. The payload is the LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the control. Star, ring, and tree must match on uncompressed deltas. Unequal step counts use the FedNova normalization from S06, whose card is an abstract plus one equation, not a full-paper review. Int8 quantization keeps an error residual.
 
-`src/macreduce/federated.py` and `macreduce federate` implement the cohort, the shard, the averages, FedNova, and the quantizer. Tests cover those identities. No training run was started. No private stack was installed. FetchSGD and hierarchical quantized averaging were found by search on this date and are not source cards. Serving placement and speculative decoding remain in the tree as future scope. The one-page proposal was rewritten to this rubric. Multi-Mac cells are still unmeasured.
+`src/macreduce/federation/federated.py` and `macreduce federate` implement the cohort, the shard, the averages, FedNova, and the quantizer. Tests cover those identities. No training run was started. No private stack was installed. FetchSGD and hierarchical quantized averaging were found by search on this date and are not source cards. Serving placement and speculative decoding remain in the tree as future scope. The one-page proposal was rewritten to this rubric. Multi-Mac cells are still unmeasured.
 
 ## 2026-10-27 — Federated round loop, still not trained
 
-`run_federated` now runs FedAvg and per-step all-reduce on named adapter tensors, with int8 error feedback, FedNova, and star, ring, and tree means. A second Mac raises `PeerRequired` unless a relay is passed. The loopback relay was tested with synthetic payloads. It is not a second Mac. `src/macreduce/lora_client.py` holds the MLX QLoRA local step and `require_ane`, which refuses a missing or uncompiled Neural Engine stack. `macreduce federate --execute` calls that path. It was not invoked. The CPU reference in the tests is SGD toward a fixed target, not WikiText. The proposal was rewritten in the shape of a one-page NeurIPS preprint, with WikiText-2, validation perplexity, and one-Mac GPU FedAvg named in the evaluation section. The official NeurIPS style file was not fetched. The PDF uses the same text width, Times text, abstract, and numbered sections.
+`run_federated` now runs FedAvg and per-step all-reduce on named adapter tensors, with int8 error feedback, FedNova, and star, ring, and tree means. A second Mac raises `PeerRequired` unless a relay is passed. The loopback relay was tested with synthetic payloads. It is not a second Mac. `src/macreduce/federation/lora_client.py` holds the MLX QLoRA local step and `require_ane`, which refuses a missing or uncompiled Neural Engine stack. `macreduce federate --execute` calls that path. It was not invoked. The CPU reference in the tests is SGD toward a fixed target, not WikiText. The proposal was rewritten in the shape of a one-page NeurIPS preprint, with WikiText-2, validation perplexity, and one-Mac GPU FedAvg named in the evaluation section. The official NeurIPS style file was not fetched. The PDF uses the same text width, Times text, abstract, and numbered sections.
 
 ## 2026-10-27 — ANEForge step on the engine
 
@@ -190,7 +190,7 @@ Read the abstract, chapter 1 through the M1 envelope, the opening of chapter 6, 
 
 ## 2026-10-28 — Curve figures
 
-`macreduce lora` now traces mactop, including the Prometheus scrape, and writes matplotlib figures for loss, validation perplexity, power, cumulative energy, memory, and latency. `src/macreduce/plots.py` and `src/macreduce/telemetry.py` hold that code. `macreduce figures` redraws a saved run. Matplotlib and seaborn are project dependencies, added with uv. The three-epoch Qwen3-0.6B curve is the run those figures are for. The short feasibility probe is not that curve.
+`macreduce lora` now traces mactop, including the Prometheus scrape, and writes matplotlib figures for loss, validation perplexity, power, cumulative energy, memory, and latency. `src/macreduce/observe/plots.py` and `src/macreduce/observe/telemetry.py` hold that code. `macreduce figures` redraws a saved run. Matplotlib and seaborn are project dependencies, added with uv. The three-epoch Qwen3-0.6B curve is the run those figures are for. The short feasibility probe is not that curve.
 
 ## 2026-10-28 — Working set, tqdm, checkpoints
 
@@ -262,3 +262,144 @@ S126–S157 were GitHub directory pages (fonts, badges, workflows, folder listin
 
 Four files from commit `896c4943c5ebf811c0e815f8d1381fd1e157fa7d` were read and saved: [S158](sources/S158.md), [S159](sources/S159.md), [S160](sources/S160.md), [S161](sources/S161.md). The paper PDF [S38](sources/S38.md) is still not text-extracted. The architecture-guide chapters were extracted into their cards and were not rewritten as call rules, except the sentences cited in the guide.
 
+## 2026-11-12T18:26:46.854115+00:00 — Intake S162
+
+Added [S162](sources/S162.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.859173+00:00 — Intake S163
+
+Added [S163](sources/S163.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.862555+00:00 — Intake S164
+
+Added [S164](sources/S164.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.864761+00:00 — Intake S165
+
+Added [S165](sources/S165.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.867073+00:00 — Intake S166
+
+Added [S166](sources/S166.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.868934+00:00 — Intake S167
+
+Added [S167](sources/S167.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.870906+00:00 — Intake S168
+
+Added [S168](sources/S168.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.872527+00:00 — Intake S169
+
+Added [S169](sources/S169.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.874138+00:00 — Intake S170
+
+Added [S170](sources/S170.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.875653+00:00 — Intake S171
+
+Added [S171](sources/S171.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.877993+00:00 — Intake S172
+
+Added [S172](sources/S172.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.879807+00:00 — Intake S173
+
+Added [S173](sources/S173.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.881384+00:00 — Intake S174
+
+Added [S174](sources/S174.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.882790+00:00 — Intake S175
+
+Added [S175](sources/S175.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.884394+00:00 — Intake S176
+
+Added [S176](sources/S176.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.885849+00:00 — Intake S177
+
+Added [S177](sources/S177.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.887640+00:00 — Intake S178
+
+Added [S178](sources/S178.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.889033+00:00 — Intake S179
+
+Added [S179](sources/S179.md) as unread; source synthesis is pending.
+
+## 2026-11-12T18:26:46.890396+00:00 — Intake S180
+
+Added [S180](sources/S180.md) as unread; source synthesis is pending.
+
+## 2026-11-12 — Three-Mac wireless federation and AWS research
+
+Added [the proposed study](research/three-mac-wireless-federation.md) for the user-reported M4 Air 24 GB, M4 Pro 16 GB and M1 Air 8 GB. Inspected the proposal, successful saved curve/config, current federated/LoRA/transport code and the collaborator M4 16 GB report at remote ref a80a4ac. Added S162–S180 primary-source snapshots/cards with exact reading scopes, including targeted publisher-paper readings, federated LoRA methods, SSH/Tailscale/MLX/Flower docs and official AWS prices. HTML snapshots are labeled text extractions; the Mac-price JSON is a documented regional subset retaining rate codes and response hash.
+
+The study distinguishes historical batch-1 evidence from a proposed matched centralized control, fixes aggregate data exposure, and identifies recipe drift, in-process client execution, float64 payloads and reconstructed-float quantization. All networking, M1 feasibility, cloud performance and convergence remain unmeasured. No training code changed, no cloud resources allocated, and historical snapshots/evidence were preserved. New source scopes supplement S20/S06/S19/S02 without replacing their bytes. Index, state, relevant guides, related work and gaps link the synthesis.
+
+Retrieval failures and recoveries: obsolete Tailscale connection URL recovered through the reference/Markdown URL; unavailable arXiv HTML revisions recovered through FLoRA v1 and the FedNova publisher PDF; obsolete Flower single-machine URL recovered through current deployment/TLS guides. Legacy AWS price endpoints returned 403 and guessed endpoints returned 404; inspecting AWS's pricing-page JavaScript revealed the dedicated-host feed, fetched with urllib and gzip decoding after the web reader failed. No verified Linux/CUDA hourly quote was obtained; the report does not present one. Validation outcome will be appended after checks.
+
+## 2026-11-12 — Wireless research validation
+
+`python tools/wiki.py lint` passed: 180 pages, 148 sources, no errors or warnings. `git diff --check` passed. Verified all previously retrieved source snapshots still match their prior manifest hashes. Independently recalculated payload, chunk count, bandwidth floors, K-dependent communication shares, AWS egress and minimum-day host costs. Read back the report, all source-card generation inputs, price extract and companion canvas. Canvas TypeScript validation passed with the system `tsc --noEmit --project tsconfig.json`; the first attempt used a nonexistent canvas-local compiler and was recovered with the installed compiler. No tests or hardware benchmarks were claimed from these structural/arithmetic checks.
+
+## 2026-11-12 — Constrain the active study to the three owned Macs
+
+The user ruled out a separate AWS coordinator and asked to assume only the M4 Air 24 GB, M4 Pro 16 GB and M1 Air 8 GB. Updated [the study](research/three-mac-wireless-federation.md), state, Wi-Fi guide and index: the M4 Pro hosts both a GPU client and the coordinator; the Airs connect over SSH on a reachable LAN or optionally Tailscale across networks. Coordinator failure pauses/replays from a committed checkpoint; no fourth host, rented workers or automatic election is proposed. The earlier AWS research remains explicitly background, and source snapshots/prior log entries are unchanged. The companion calculator now fixes two remote clients and shows aggregate Mac-to-Mac traffic instead of cloud egress.
+
+## 2026-11-12 — Specify the first federated pilot recipe
+
+Clarified [the proposed study](research/three-mac-wireless-federation.md): microbatch 1, accumulation 1 and local effective batch 1 on all clients; K=32 initial synchronization, with K=8/128 comparisons and K=1 control. Distinguished 96 example presentations per full round from one global minibatch. With 1,366/1,365/1,365 shards and explicit epoch-boundary tails, calculated 43 rounds/epoch and 129 total at K=32 (rather than the balanced idealization of 128). Updated the companion recipe view. No training configuration/code was changed and no optimum or hardware fit is claimed.
+
+## 2026-11-12 — Correct the uniform-work recommendation
+
+The user identified that equal microbatch/accumulation/local work behind a barrier would leave faster M4s idle. Revised [the study](research/three-mac-wireless-federation.md) and [heterogeneity guide](guides/heterogeneity.md): uniform batch-1 settings are a control only. The proposed main arm profiles actual device throughput/memory, chooses per-device microbatch/accumulation settings to balance effective-update times, keeps common K initially, and allocates proportional random shards of the shared public corpus with objective-based weights. The 1/2/4 batch ratio is explicitly illustrative and unmeasured. Larger total batches require new round counts, data-progress schedule mapping and a matched centralized control; old batch-3/96-example/129-round figures apply only to the uniform arm. No training code or historical evidence changed.
+
+## 2026-11-12T21:41:09.411536+00:00 — Intake S181
+
+Added [S181](sources/S181.md) as unread; source synthesis is pending.
+
+## 2026-11-12T21:41:09.415232+00:00 — Intake S182
+
+Added [S182](sources/S182.md) as unread; source synthesis is pending.
+
+## 2026-11-12T21:41:09.418408+00:00 — Intake S183
+
+Added [S183](sources/S183.md) as unread; source synthesis is pending.
+
+## 2026-11-12 — Implement remote federation with a reused Flower transport
+
+The user deferred hardware batch/accumulation, shard/weight and synchronization calibration; pinned it in [the roadmap](project/roadmap.md). Added the [Tailscale runbook](guides/tailscale-federation.md), explicit pilot config, resident local trainer, signed bounded fp32 exchange, stable logical identities, fixed-cohort commits and process-restart recovery. The Pro runs coordinator plus its own worker. GPU/combined execution is implemented with preflight; split plans have six identities, but actual split training is rejected until standalone ANE Qwen training exists. No AWS coordinator, silent fallback, physical cluster or convergence claim.
+
+At the user's explicit request, an independent sub-agent inspected existing libraries. Adopted published `flwr==1.43.0` for concurrent RPC/array transport instead of retaining a newly drafted custom HTTP service. The compatibility boundary preserves resident models; modern lifecycle and default aggregation/recovery behavior did not establish our required semantics. Added S181 CLI reference, S182 published metadata and S183 exact source excerpts from the verified wheel; updated source reading scopes, index/backlinks and architecture/transport/state. Failed Tailscale setup-page and Flower GitHub release-tag lookups were recovered through the official CLI reference and published wheel respectively. The first local Tailscale status parser mishandled a null peer list; the corrected read reported Running/online and zero listed peers. No account/network policy was changed.
+
+[Validation record](../evidence/tailscale-federation-2026-11-12/README.md): `python -m pytest -q` passed 106 tests with 8 opt-in skips; the targeted MLX/ANE suite passed three tests. Cached pinned Qwen3 GPU and GPU+ANE forward/backward preflights passed on local Mac16,12 / M4 / 24 GiB / macOS 26.5; combined program mask was 0x4 with one suffix forward and backward. No independent new power attribution. The new tests exposed an optimizer restore bug (empty frozen-module containers), fixed using the public optimizer init API; they also exposed macOS fork/gRPC interference in upstream wrapper analytics, bypassed via the pinned core client session. Raw logs retain the final successful scope and explain failures/recovery. Ruff and lock checks pass; immutable Python research snapshots are excluded from style lint rather than edited. Wiki lint result is appended after structural validation.
+
+## 2026-11-12 — Remote federation structural verification
+
+Wiki lint passed with 184 pages, 151 sources and no errors/warnings. Diff whitespace and ruff checks passed. All previously retrieved source snapshots still match their original hashes; no tracked historical evidence was edited. The retained cached full-Qwen GPU/combined preflight plans match the current implementation/config hashes. GPU, combined and split plan commands emit 3/3/6 identities; actual split startup is rejected before creating a run directory. Dependency lock remains consistent. These checks do not establish M1 readiness or a physical three-Mac training result.
+
+## 2026-11-12 README setup for Tailscale federation
+
+Expanded the [README](../README.md#train-across-different-networks) into a complete three-Mac Tailscale setup. It covers tailnet access, TCP 8765, identical checkouts and dependencies, private token entry, per-Mac GPU checks, coordinator and worker commands, combined-mode changes, blocked split training, outputs, troubleshooting, and restart steps. Separated the synthetic HTTP demo's instructions and recovery semantics from the remote Flower path. Corrected stale README claims about LoRA and ANE availability against the existing [validation record](../evidence/tailscale-federation-2026-11-12/README.md). Hardware calibration remains a TODO, and no new physical training result is claimed.
+
+## 2026-11-23 Coordinator on the M4 Air 24 GB
+
+The user moved Tailscale coordination from the M4 Pro to the M4 Air 24 GB. [configs/federation.yaml](../configs/federation.yaml) now has `coordinator: m4-air`. The plan loader rejects a coordinator that is not a configured machine. Client IDs are unchanged: `m4-air-gpu` still trains on the Air; `m4-pro-gpu` and `m1-air-gpu` are workers only.
+
+Updated the [README](../README.md#train-across-different-networks), [Tailscale runbook](guides/tailscale-federation.md), [architecture](project/architecture.md), [state](project/state.md), [Wi-Fi guide](guides/wifi.md), and [three-Mac study](research/three-mac-wireless-federation.md). Earlier log entries that named the Pro as coordinator remain historical. No Tailscale account, tailnet policy, or secret was changed. No physical three-Mac run is claimed.
+
+## 2026-11-23 Load MACREDUCE_TOKEN from .env
+
+Added tracked [`.env.example`](../.env.example) at the project root. `macreduce` loads a local `.env` without overriding an already-exported token and without printing values. `.env` stays gitignored. The README and Tailscale runbook now copy the example file instead of a silent `read` prompt.
+
+## 2026-11-23 Package layout under src/macreduce
+
+Moved the flat module list into `cluster`, `train`, `federation`, `ane`, `serve`, and `observe`. `cli.py` remains the composition root. No training, transport, or recovery behavior is claimed to have changed; this is a layout refactor. Wiki links that pointed at the old file paths were updated so they resolve. Earlier log prose is otherwise unchanged.

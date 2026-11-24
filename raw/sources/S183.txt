@@ -1,0 +1,578 @@
+Published wheel: https://files.pythonhosted.org/packages/99/fc/18ed661d212d7906369ea7488cbaa36ffdd94092f8e232d31fdab49a7f05/flwr-1.43.0-py3-none-any.whl
+SHA256: 0ceb3b06b632cc92e318221a4d9214f725f6ca4d1b963181e90ff55a94931b54
+Derivation: exact numbered source excerpts from verified published wheel; not a full wheel snapshot.
+Upstream license: Apache-2.0; retain upstream source attribution below.
+
+
+## flwr/compat/client/app.py
+# Copyright 2025 Flower Labs GmbH. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Flower client app."""
+
+Lines 165-305
+165:             client_fn=client_fn,
+166:             root_certificates=Path("/crts/root.pem").read_bytes(),
+167:         )
+168:     """
+169:     msg = (
+170:         "flwr.client.start_client() is deprecated."
+171:         "\n\tInstead, use the `flower-supernode` CLI command to start a SuperNode "
+172:         "as shown below:"
+173:         "\n\n\t\t$ flower-supernode --insecure --superlink='<IP>:<PORT>'"
+174:         "\n\n\tTo view all available options, run:"
+175:         "\n\n\t\t$ flower-supernode --help"
+176:         "\n\n\tUsing `start_client()` is deprecated."
+177:     )
+178:     warn_deprecated_feature(name=msg)
+179: 
+180:     if transport is not None and transport != "grpc-bidi":
+181:         raise ValueError(
+182:             f"Transport type {transport} is not supported. "
+183:             "Use 'grpc-bidi' or None (default) instead."
+184:         )
+185: 
+186:     event(EventType.START_CLIENT_ENTER)
+187:     start_client_internal(
+188:         server_address=server_address,
+189:         node_config={},
+190:         load_client_app_fn=None,
+191:         client_fn=client_fn,
+192:         client=client,
+193:         grpc_max_message_length=grpc_max_message_length,
+194:         root_certificates=root_certificates,
+195:         insecure=insecure,
+196:         transport=transport,
+197:         authentication_keys=authentication_keys,
+198:         max_retries=max_retries,
+199:         max_wait_time=max_wait_time,
+200:     )
+201:     event(EventType.START_CLIENT_LEAVE)
+202: 
+203: 
+204: # pylint: disable=import-outside-toplevel
+205: # pylint: disable=too-many-branches
+206: # pylint: disable=too-many-locals
+207: # pylint: disable=too-many-statements
+208: def start_client_internal(
+209:     *,
+210:     server_address: str,
+211:     node_config: UserConfig,
+212:     load_client_app_fn: Callable[[str, str, str], ClientApp] | None = None,
+213:     client_fn: ClientFnExt | None = None,
+214:     client: Client | None = None,
+215:     grpc_max_message_length: int = GRPC_MAX_MESSAGE_LENGTH,
+216:     root_certificates: bytes | str | None = None,
+217:     insecure: bool | None = None,
+218:     transport: str | None = None,
+219:     authentication_keys: (
+220:         tuple[ec.EllipticCurvePrivateKey, ec.EllipticCurvePublicKey] | None
+221:     ) = None,
+222:     max_retries: int | None = None,
+223:     max_wait_time: float | None = None,
+224: ) -> None:
+225:     """Start a Flower client node which connects to a Flower server.
+226: 
+227:     Parameters
+228:     ----------
+229:     server_address : str
+230:         The IPv4 or IPv6 address of the server. If the Flower
+231:         server runs on the same machine on port 8080, then `server_address`
+232:         would be `"[::]:8080"`.
+233:     node_config: UserConfig
+234:         The configuration of the node.
+235:     load_client_app_fn : Optional[Callable[[], ClientApp]] (default: None)
+236:         A function that can be used to load a `ClientApp` instance.
+237:     client_fn : Optional[ClientFnExt]
+238:         A callable that instantiates a Client. (default: None)
+239:     client : Optional[flwr.client.Client]
+240:         An implementation of the abstract base
+241:         class `flwr.client.Client` (default: None)
+242:     grpc_max_message_length : int (default: 536_870_912, this equals 512MB)
+243:         The maximum length of gRPC messages that can be exchanged with the
+244:         Flower server. The default should be sufficient for most models.
+245:         Users who train very large models might need to increase this
+246:         value. Note that the Flower server needs to be started with the
+247:         same value (see `flwr.server.start_server`), otherwise it will not
+248:         know about the increased limit and block larger messages.
+249:     root_certificates : Optional[Union[bytes, str]] (default: None)
+250:         The PEM-encoded root certificates as a byte string or a path string.
+251:         If provided, a secure connection using the certificates will be
+252:         established to an SSL-enabled Flower server.
+253:     insecure : Optional[bool] (default: None)
+254:         Starts an insecure gRPC connection when True. Enables HTTPS connection
+255:         when False, using system certificates if `root_certificates` is None.
+256:     transport : Optional[str] (default: None)
+257:         Configure the transport layer. Allowed values:
+258:         - 'grpc-bidi': gRPC, bidirectional streaming
+259:         - 'grpc-rere': gRPC, request-response (experimental)
+260:     authentication_keys : Optional[Tuple[PrivateKey, PublicKey]] (default: None)
+261:         Tuple containing the elliptic curve private key and public key for
+262:         authentication from the cryptography library.
+263:         Source: https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ec/
+264:         Used to establish an authenticated connection with the server.
+265:     max_retries: Optional[int] (default: None)
+266:         The maximum number of times the client will try to connect to the
+267:         server before giving up in case of a connection error. If set to None,
+268:         there is no limit to the number of tries.
+269:     max_wait_time: Optional[float] (default: None)
+270:         The maximum duration before the client stops trying to
+271:         connect to the server in case of connection error.
+272:         If set to None, there is no limit to the total time.
+273:     """
+274:     if insecure is None:
+275:         insecure = root_certificates is None
+276: 
+277:     if load_client_app_fn is None:
+278:         _check_actionable_client(client, client_fn)
+279: 
+280:         if client_fn is None:
+281:             # Wrap `Client` instance in `client_fn`
+282:             def single_client_factory(
+283:                 context: Context,  # pylint: disable=unused-argument
+284:             ) -> Client:
+285:                 if client is None:  # Added this to keep mypy happy
+286:                     raise ValueError(
+287:                         "Both `client_fn` and `client` are `None`, but one is required"
+288:                     )
+289:                 return client  # Always return the same instance
+290: 
+291:             client_fn = single_client_factory
+292: 
+293:         def _load_client_app(_1: str, _2: str, _3: str) -> ClientApp:
+294:             return ClientApp(client_fn=client_fn)
+295: 
+296:         load_client_app_fn = _load_client_app
+297: 
+298:     # At this point, only `load_client_app_fn` should be used
+299:     # Both `client` and `client_fn` must not be used directly
+300: 
+301:     # Initialize connection context manager
+302:     connection, address, connection_error_type = _init_connection(
+303:         transport, server_address
+304:     )
+305: 
+
+## flwr/server/server.py
+# Copyright 2025 Flower Labs GmbH. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Flower server."""
+
+Lines 135-160
+135:                     metrics_cen,
+136:                     timeit.default_timer() - start_time,
+137:                 )
+138:                 history.add_loss_centralized(server_round=current_round, loss=loss_cen)
+139:                 history.add_metrics_centralized(
+140:                     server_round=current_round, metrics=metrics_cen
+141:                 )
+142: 
+143:             # Evaluate model on a sample of available clients
+144:             res_fed = self.evaluate_round(server_round=current_round, timeout=timeout)
+145:             if res_fed is not None:
+146:                 loss_fed, evaluate_metrics_fed, _ = res_fed
+147:                 if loss_fed is not None:
+148:                     history.add_loss_distributed(
+149:                         server_round=current_round, loss=loss_fed
+150:                     )
+151:                     history.add_metrics_distributed(
+152:                         server_round=current_round, metrics=evaluate_metrics_fed
+153:                     )
+154: 
+155:         # Bookkeeping
+156:         end_time = timeit.default_timer()
+157:         elapsed = end_time - start_time
+158:         return history, elapsed
+159: 
+160:     def evaluate_round(
+
+Lines 220-270
+220:             return None
+221:         log(
+222:             INFO,
+223:             "configure_fit: strategy sampled %s clients (out of %s)",
+224:             len(client_instructions),
+225:             self._client_manager.num_available(),
+226:         )
+227: 
+228:         # Collect `fit` results from all clients participating in this round
+229:         results, failures = fit_clients(
+230:             client_instructions=client_instructions,
+231:             max_workers=self.max_workers,
+232:             timeout=timeout,
+233:             group_id=server_round,
+234:         )
+235:         log(
+236:             INFO,
+237:             "aggregate_fit: received %s results and %s failures",
+238:             len(results),
+239:             len(failures),
+240:         )
+241: 
+242:         # Aggregate training results
+243:         aggregated_result: tuple[
+244:             Parameters | None,
+245:             dict[str, Scalar],
+246:         ] = self.strategy.aggregate_fit(server_round, results, failures)
+247: 
+248:         parameters_aggregated, metrics_aggregated = aggregated_result
+249:         return parameters_aggregated, metrics_aggregated, (results, failures)
+250: 
+251:     def disconnect_all_clients(self, timeout: float | None) -> None:
+252:         """Send shutdown signal to all clients."""
+253:         all_clients = self._client_manager.all()
+254:         clients = [all_clients[k] for k in all_clients.keys()]
+255:         instruction = ReconnectIns(seconds=None)
+256:         client_instructions = [(client_proxy, instruction) for client_proxy in clients]
+257:         _ = reconnect_clients(
+258:             client_instructions=client_instructions,
+259:             max_workers=self.max_workers,
+260:             timeout=timeout,
+261:         )
+262: 
+263:     def _get_initial_parameters(
+264:         self, server_round: int, timeout: float | None
+265:     ) -> Parameters:
+266:         """Get initial parameters from one of the available clients."""
+267:         # Server-side parameter initialization
+268:         parameters: Parameters | None = self.strategy.initialize_parameters(
+269:             client_manager=self._client_manager
+270:         )
+
+## flwr/compat/server/grpc_bidi/grpc_server.py
+# Copyright 2025 Flower Labs GmbH. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Implements utility function to create a gRPC server."""
+
+Lines 20-123
+20: from flwr.compat.common.constant import GRPC_MAX_MESSAGE_LENGTH
+21: from flwr.compat.common.grpc import generic_create_grpc_server
+22: from flwr.compat.server.grpc_bidi.flower_service_servicer import FlowerServiceServicer
+23: from flwr.proto.transport_pb2_grpc import (  # pylint: disable=E0611
+24:     add_FlowerServiceServicer_to_server,
+25: )
+26: from flwr.server.client_manager import ClientManager
+27: 
+28: 
+29: def start_grpc_server(  # pylint: disable=too-many-arguments,R0917
+30:     client_manager: ClientManager,
+31:     server_address: str,
+32:     max_concurrent_workers: int = 1000,
+33:     max_message_length: int = GRPC_MAX_MESSAGE_LENGTH,
+34:     keepalive_time_ms: int = 210000,
+35:     certificates: tuple[bytes, bytes, bytes] | None = None,
+36: ) -> grpc.Server:
+37:     """Create and start a gRPC server running FlowerServiceServicer.
+38: 
+39:     If used in a main function server.wait_for_termination(timeout=None)
+40:     should be called as otherwise the server will immediately stop.
+41: 
+42:     **SSL**
+43:     To enable SSL you have to pass all of root_certificate, certificate,
+44:     and private_key. Setting only some will make the process exit with code 1.
+45: 
+46:     Parameters
+47:     ----------
+48:     client_manager : ClientManager
+49:         Instance of ClientManager
+50:     server_address : str
+51:         Server address in the form of HOST:PORT e.g. "[::]:8080"
+52:     max_concurrent_workers : int
+53:         Maximum number of clients the server can process before returning
+54:         RESOURCE_EXHAUSTED status (default: 1000)
+55:     max_message_length : int
+56:         Maximum message length that the server can send or receive.
+57:         Int valued in bytes. -1 means unlimited. (default: GRPC_MAX_MESSAGE_LENGTH)
+58:     keepalive_time_ms : int
+59:         Flower uses a default gRPC keepalive time of 210000ms (3 minutes 30 seconds)
+60:         because some cloud providers (for example, Azure) agressively clean up idle
+61:         TCP connections by terminating them after some time (4 minutes in the case
+62:         of Azure). Flower does not use application-level keepalive signals and relies
+63:         on the assumption that the transport layer will fail in cases where the
+64:         connection is no longer active. `keepalive_time_ms` can be used to customize
+65:         the keepalive interval for specific environments. The default Flower gRPC
+66:         keepalive of 210000 ms (3 minutes 30 seconds) ensures that Flower can keep
+67:         the long running streaming connection alive in most environments. The actual
+68:         gRPC default of this setting is 7200000 (2 hours), which results in dropped
+69:         connections in some cloud environments.
+70: 
+71:         These settings are related to the issue described here:
+72:         - https://github.com/grpc/proposal/blob/master/A8-client-side-keepalive.md
+73:         - https://github.com/grpc/grpc/blob/master/doc/keepalive.md
+74:         - https://grpc.io/docs/guides/performance/
+75: 
+76:         Mobile Flower clients may choose to increase this value if their server
+77:         environment allows long-running idle TCP connections.
+78:         (default: 210000)
+79:     certificates : Tuple[bytes, bytes, bytes] (default: None)
+80:         Tuple containing root certificate, server certificate, and private key to
+81:         start a secure SSL-enabled server. The tuple is expected to have three bytes
+82:         elements in the following order:
+83: 
+84:             * CA certificate.
+85:             * server certificate.
+86:             * server private key.
+87: 
+88:     Returns
+89:     -------
+90:     server : grpc.Server
+91:         An instance of a gRPC server which is already started
+92: 
+93:     Examples
+94:     --------
+95:     Starting a TLS-enabled server::
+96: 
+97:         from pathlib import Path
+98:         start_grpc_server(
+99:             client_manager=ClientManager(),
+100:             server_address="localhost:8080",
+101:             certificates=(
+102:                 Path("/crts/root.pem").read_bytes(),
+103:                 Path("/crts/localhost.crt").read_bytes(),
+104:                 Path("/crts/localhost.key").read_bytes(),
+105:             ),
+106:         )
+107:     """
+108:     servicer = FlowerServiceServicer(client_manager)
+109:     add_servicer_to_server_fn = add_FlowerServiceServicer_to_server
+110: 
+111:     server = generic_create_grpc_server(
+112:         servicer_and_add_fn=(servicer, add_servicer_to_server_fn),
+113:         server_address=server_address,
+114:         max_concurrent_workers=max_concurrent_workers,
+115:         max_message_length=max_message_length,
+116:         keepalive_time_ms=keepalive_time_ms,
+117:         certificates=certificates,
+118:     )
+119: 
+120:     server.start()
+121: 
+122:     return server
+
+## flwr/supercore/telemetry.py
+# Copyright 2025 Flower Labs GmbH. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Flower telemetry."""
+
+Lines 190-215
+190:     RUN_SUPEREXEC_LEAVE = auto()
+191: 
+192: 
+193: state: dict[str, str | None] = {
+194:     "source": None,
+195:     "cluster": None,
+196:     "partner": None,
+197: }
+198: state_lock = Lock()
+199: 
+200: 
+201: def event(
+202:     event_type: EventType,
+203:     event_details: dict[str, Any] | None = None,
+204: ) -> Future[str]:
+205:     """Start create_event on a daemon thread to avoid blocking."""
+206:     result: Future[str] = Future()
+207: 
+208:     def run() -> None:
+209:         try:
+210:             result.set_result(create_event(event_type, event_details))
+211:         except Exception as ex:  # pylint: disable=broad-exception-caught
+212:             result.set_exception(ex)
+213: 
+214:     Thread(target=run, daemon=True).start()
+215:     return result
+
+Lines 229-290
+229: 
+230:     if event_details is None:
+231:         event_details = {}
+232: 
+233:     date = datetime.datetime.now(tz=datetime.UTC).isoformat()
+234:     context = {
+235:         "partner": state["partner"],
+236:         "source": state["source"],
+237:         "cluster": state["cluster"],
+238:         "date": date,
+239:         "flower": {
+240:             "package_name": package_name,
+241:             "package_version": package_version,
+242:         },
+243:         "hw": {
+244:             "cpu_count": os.cpu_count(),
+245:         },
+246:         "platform": {
+247:             "system": platform.system(),
+248:             "release": platform.release(),
+249:             "platform": platform.platform(),
+250:             "python_implementation": platform.python_implementation(),
+251:             "python_version": platform.python_version(),
+252:             "machine": platform.machine(),
+253:             "architecture": platform.architecture(),
+254:             "version": platform.uname().version,
+255:         },
+256:     }
+257:     payload = {
+258:         "event_type": event_type,
+259:         "event_details": event_details,
+260:         "context": context,
+261:     }
+262:     payload_json = json.dumps(payload)
+263:     if FLWR_TELEMETRY_LOGGING == "1":
+264:         log(" - ".join([date, "POST", payload_json]))
+265: 
+266:     # If telemetry is not disabled with setting FLWR_TELEMETRY_ENABLED=0
+267:     # create a request and send it to the telemetry backend
+268:     if FLWR_TELEMETRY_ENABLED == "1":
+269:         request = urllib.request.Request(
+270:             url=TELEMETRY_EVENTS_URL,
+271:             data=payload_json.encode("utf-8"),
+272:             headers={
+273:                 "User-Agent": f"{package_name}/{package_version}",
+274:                 "Content-Type": "application/json",
+275:             },
+276:             method="POST",
+277:         )
+278:         try:
+279:             with urllib.request.urlopen(request, timeout=60) as response:
+280:                 result = response.read()
+281: 
+282:             response_json: str = result.decode("utf-8")
+283: 
+284:             return response_json
+285:         except urllib.error.URLError as ex:
+286:             if FLWR_TELEMETRY_LOGGING == "1":
+287:                 log(ex)
+288: 
+289:     return "disabled"
+
+## flwr/clientapp/client_app.py
+# Copyright 2025 Flower Labs GmbH. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Flower ClientApp."""
+
+Lines 100-165
+100: 
+101:         class FlowerClient(NumPyClient):
+102:             # ...
+103: 
+104:         def client_fn(context: Context):
+105:            return FlowerClient().to_client()
+106: 
+107:         app = ClientApp(client_fn)
+108:     """
+109: 
+110:     def __init__(
+111:         self,
+112:         client_fn: ClientFnExt | None = None,  # Only for backward compatibility
+113:         mods: list[Mod] | None = None,
+114:     ) -> None:
+115:         self._mods: list[Mod] = mods if mods is not None else []
+116:         self._registered_funcs: dict[str, ClientAppCallable] = {}
+117: 
+118:         # Create wrapper function for `handle`
+119:         self._call: ClientAppCallable | None = None
+120:         if client_fn is not None:
+121: 
+122:             client_fn = _inspect_maybe_adapt_client_fn_signature(client_fn)
+123: 
+124:             def ffn(
+125:                 message: Message,
+126:                 context: Context,
+127:             ) -> Message:  # pylint: disable=invalid-name
+128:                 out_message = handle_legacy_message_from_msgtype(
+129:                     client_fn=client_fn, message=message, context=context
+130:                 )
+131:                 return out_message
+132: 
+133:             # Wrap mods around the wrapped handle function
+134:             self._call = make_ffn(ffn, mods if mods is not None else [])
+135: 
+136:         # Lifespan function
+137:         self._lifespan = _empty_lifespan
+138: 
+139:     def __call__(self, message: Message, context: Context) -> Message:
+140:         """Execute `ClientApp`."""
+141:         with self._lifespan(context):
+142:             # Execute message using `client_fn`
+143:             if self._call:
+144:                 return self._call(message, context)
+145: 
+146:             # Get the category and the action
+147:             # A valid message type is of the form "<category>" or "<category>.<action>",
+148:             # where <category> must be "train"/"evaluate"/"query", and <action> is a
+149:             # valid Python identifier
+150:             if not validate_message_type(message.metadata.message_type):
+151:                 raise ValueError(
+152:                     f"Invalid message type: {message.metadata.message_type}"
+153:                 )
+154: 
+155:             category, action = message.metadata.message_type, DEFAULT_ACTION
+156:             if "." in category:
+157:                 category, action = category.split(".")
+158: 
+159:             # Check if the function is registered
+160:             if (full_name := f"{category}.{action}") in self._registered_funcs:
+161:                 return self._registered_funcs[full_name](message, context)
+162: 
+163:             raise ValueError(f"No {category} function registered with name '{action}'")
+164: 
+165:     def train(

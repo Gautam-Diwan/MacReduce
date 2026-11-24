@@ -1,4 +1,4 @@
-from macreduce.telemetry import headless_series, integrate_joules, parse_prometheus
+from macreduce.observe.telemetry import headless_series, integrate_joules, parse_prometheus
 
 
 def test_prometheus_power_gauges():

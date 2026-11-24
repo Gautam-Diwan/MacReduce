@@ -1,0 +1,15 @@
+{
+  "mlx": "0.32.4",
+  "mlx-lm": "0.32.2",
+  "aneforge": "0.4.0",
+  "flwr": "1.43.0",
+  "numpy": "2.5.4",
+  "python": "3.12.12",
+  "system": "Darwin",
+  "machine": "arm64",
+  "macos": "26.5",
+  "scope": "one local M4 Air 24 GiB; cached pinned Qwen3 forward/backward preflights, synthetic one-block optimizer-resume tests and CPU numerical Flower loopback; no physical three-Mac run",
+  "hw.model": "Mac16,12",
+  "hw.memsize": "25769803776",
+  "machdep.cpu.brand_string": "Apple M4"
+}
