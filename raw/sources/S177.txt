@@ -1,0 +1,523 @@
+URL: https://flower.ai/docs/framework/how-to-run-flower-with-deployment-engine.html
+Snapshot: HTML text extraction; scripts/styles omitted; not original HTML bytes.
+Original decoded response SHA256: 03ccfb7d037ecb3c28f035a08fd523ad78187cf58828fa3b3201771086856101
+
+Run Flower with the Deployment Runtime - Flower Framework
+Contents
+Menu
+Expand
+Light mode
+Dark mode
+Auto light/dark, in light mode
+Auto light/dark, in dark mode
+Hide navigation sidebar
+Hide table of contents sidebar
+Skip to content
+Toggle site navigation sidebar
+Flower Framework
+Toggle Light / Dark / Auto color theme
+Toggle table of contents sidebar
+v1.43.x
+Tutorial
+What is Federated Learning?
+Get started with Flower
+Write your first Flower App
+Write your first Flower App with PyTorch
+Use a federated learning strategy
+Customize a Flower Strategy
+Communicate custom Messages
+Quickstart tutorials
+Toggle navigation of Quickstart tutorials
+Quickstart PyTorch
+Quickstart TensorFlow
+Quickstart MLX
+Quickstart 🤗 Transformers
+Quickstart JAX
+Quickstart Pandas
+Quickstart fastai
+Quickstart PyTorch Lightning
+Quickstart scikit-learn
+Quickstart XGBoost
+Quickstart Android
+Quickstart iOS
+How-to Guides
+Build
+Toggle navigation of Build
+Install Flower
+Configure pyproject.toml
+Configure a ClientApp
+Design stateful ClientApps
+Use strategies
+Implement strategies
+Aggregate evaluation results
+Save and load model checkpoints
+Use Built-in Mods
+Use Differential Privacy
+Implement FedBN
+Use CLI JSON output
+Install Flower App dependencies at runtime
+Migrate from OpenFL
+Upgrade to Flower 1.0
+Upgrade to Flower 1.13
+Upgrade to Message API
+Upgrade to Flower 1.28
+Simulate
+Toggle navigation of Simulate
+Run Flower Locally with a Managed SuperLink
+Run simulations
+Deploy
+Toggle navigation of Deploy
+Run Flower with the Deployment Runtime
+Enable TLS connections
+Authenticate SuperNodes
+Configure logging
+Run Flower on GCP
+Run Flower on Azure
+Run Flower on Red Hat OpenShift
+Run Flower on Multiple OpenShift Clusters
+Authenticate Accounts via OpenID Connect
+Configure Audit Logging
+Manage Flower Federations
+Run Flower using Docker
+Toggle navigation of Run Flower using Docker
+Quickstart with Docker
+Enable TLS for Secure Connections
+Persist the State of the SuperLink
+Set Environment Variables
+Run with Root User Privileges
+Run ServerApp or ClientApp as a Subprocess
+Pin a Docker Image to a Specific Version
+Use a Different Flower Version
+Quickstart with Docker Compose
+Run Flower Quickstart Examples with Docker Compose
+Deploy Flower on Multiple Machines with Docker Compose
+Run Flower using Helm
+Toggle navigation of Run Flower using Helm
+Deploy SuperLink
+Deploy SuperNode
+Create and Manage Federations on SuperGrid
+Connect SuperNodes to SuperGrid
+Run Flower Apps on SuperGrid
+Deploy SuperNodes using Slurm
+Explanations
+Federated evaluation
+Differential Privacy
+Secure Aggregation Protocols
+Flower Architecture
+SuperLink High Availability Mode
+Flower Strategy Abstraction
+References
+Reference
+Toggle navigation of Reference
+flwr
+Toggle navigation of flwr
+agentapp
+Toggle navigation of agentapp
+AgentApp
+AgentConnectors
+AgentEvents
+AgentGrid
+AgentSession
+LoadAgentAppError
+app
+Toggle navigation of app
+Array
+ArrayRecord
+ConfigRecord
+Context
+Error
+Message
+MessageType
+Metadata
+MetricRecord
+RecordDict
+clientapp
+Toggle navigation of clientapp
+ClientApp
+mod
+Toggle navigation of mod
+adaptiveclipping_mod
+arrays_size_mod
+fixedclipping_mod
+message_size_mod
+LocalDpMod
+serverapp
+Toggle navigation of serverapp
+GaussianPrivacyEvent
+Grid
+NeighboringRelation
+PrivacyAccountant
+PrivacyConfig
+PrivacySpent
+RdpAccountant
+SamplingMethod
+ServerApp
+strategy
+Toggle navigation of strategy
+Bulyan
+DifferentialPrivacyClientSideAdaptiveClipping
+DifferentialPrivacyClientSideFixedClipping
+DifferentialPrivacyServerSideAdaptiveClipping
+DifferentialPrivacyServerSideFixedClipping
+FedAdagrad
+FedAdam
+FedAvg
+FedAvgM
+FedMedian
+FedProx
+FedTrimmedAvg
+FedXgbBagging
+FedXgbCyclic
+FedYogi
+Krum
+MultiKrum
+QFedAvg
+Result
+Strategy
+client
+Toggle navigation of client
+start_client
+start_numpy_client
+Client
+ClientApp
+NumPyClient
+mod
+Toggle navigation of mod
+adaptiveclipping_mod
+arrays_size_mod
+fixedclipping_mod
+make_ffn
+message_size_mod
+secagg_mod
+secaggplus_mod
+LocalDpMod
+common
+Toggle navigation of common
+array_from_numpy
+bytes_to_ndarray
+configure
+event
+log
+ndarray_to_bytes
+ndarrays_to_parameters
+now
+parameters_to_ndarrays
+Array
+ArrayRecord
+ClientMessage
+Code
+ConfigRecord
+ConfigsRecord
+Context
+DisconnectRes
+Error
+EvaluateIns
+EvaluateRes
+EventType
+FitIns
+FitRes
+GetParametersIns
+GetParametersRes
+GetPropertiesIns
+GetPropertiesRes
+Message
+MessageType
+MessageTypeLegacy
+Metadata
+MetricRecord
+MetricsRecord
+Parameters
+ParametersRecord
+ReconnectIns
+RecordDict
+RecordSet
+ServerMessage
+Status
+server
+Toggle navigation of server
+start_server
+ClientManager
+Driver
+Grid
+History
+LegacyContext
+Server
+ServerApp
+ServerAppComponents
+ServerConfig
+SimpleClientManager
+strategy
+Toggle navigation of strategy
+Bulyan
+DPFedAvgAdaptive
+DPFedAvgFixed
+DifferentialPrivacyClientSideAdaptiveClipping
+DifferentialPrivacyClientSideFixedClipping
+DifferentialPrivacyServerSideAdaptiveClipping
+DifferentialPrivacyServerSideFixedClipping
+FaultTolerantFedAvg
+FedAdagrad
+FedAdam
+FedAvg
+FedAvgAndroid
+FedAvgM
+FedMedian
+FedOpt
+FedProx
+FedTrimmedAvg
+FedXgbBagging
+FedXgbCyclic
+FedXgbNnAvg
+FedYogi
+Krum
+QFedAvg
+Strategy
+workflow
+Toggle navigation of workflow
+DefaultWorkflow
+SecAggPlusWorkflow
+SecAggWorkflow
+simulation
+Toggle navigation of simulation
+run_simulation
+run_simulation_process
+start_simulation
+SimulationIoConnection
+Flower CLI reference
+Flower Configuration
+Example projects
+Telemetry
+Changelog
+Flower Runtime Comparison
+Flower Network Communication
+Exit Codes
+Toggle navigation of Exit Codes
+[0] SUCCESS
+[1] GRACEFUL_EXIT_SIGINT
+[101] SUPERLINK_LICENSE_INVALID
+[102] SUPERLINK_LICENSE_MISSING
+[103] SUPERLINK_LICENSE_URL_INVALID
+[104] SUPERLINK_INVALID_ARGS
+[105] SUPERLINK_DATABASE_SCHEMA_MISMATCH
+[2] GRACEFUL_EXIT_SIGQUIT
+[200] SERVERAPP_STRATEGY_PRECONDITION_UNMET
+[201] SERVERAPP_EXCEPTION
+[202] SERVERAPP_STRATEGY_AGGREGATION_ERROR
+[203] SERVERAPP_RUN_START_REJECTED
+[250] CLIENTAPP_COMMUNICATION_ERROR
+[3] GRACEFUL_EXIT_SIGTERM
+[302] SUPERNODE_NODE_AUTH_KEY_INVALID
+[303] SUPERNODE_STARTED_WITHOUT_TLS_BUT_NODE_AUTH_ENABLED
+[304] SUPERNODE_INVALID_TRUSTED_ENTITIES
+[305] SUPERNODE_CONNECTION_ERROR
+[400] SUPEREXEC_INVALID_PLUGIN_CONFIG
+[401] SUPEREXEC_AUTH_SECRET_LOAD_FAILED
+[402] SUPEREXEC_INVALID_EXECUTOR_CONFIG
+[500] FLWRCLI_NODE_AUTH_PUBLIC_KEY_INVALID
+[600] COMMON_ADDRESS_INVALID
+[602] COMMON_TLS_NOT_SUPPORTED
+[603] COMMON_TLS_ROOT_CERTIFICATES_INCOMPATIBLE
+[604] COMMON_PATH_INVALID
+[605] COMMON_TLS_SERVER_CERTIFICATES_INVALID
+[606] RUNTIME_VERSION_INCOMPATIBLE
+[607] COMMON_APP_IMPORT_ERROR
+[608] COMMON_RUNTIME_DEPENDENCY_INSTALLATION_ERROR
+[700] SIMULATION_EXCEPTION
+[701] SIMULATION_MISSING_EXTRA
+[800] TASK_PROC_EXCEPTION
+FAQ
+Contributor docs
+Contribute
+Toggle navigation of Contribute
+Contribute on GitHub
+Get started as a contributor
+Install development versions
+Set up a virtual env
+Develop in VSCode Dev Containers
+Write documentation
+Release Flower
+Contribute translations
+How to Build Docker Flower Images Locally
+Migrate Flower Database Schema
+Public and private APIs
+Good first contributions
+Versions
+main
+🇬🇧
+🇫🇷
+🇨🇳
+🇰🇷
+Back to top
+View this page
+Toggle Light / Dark / Auto color theme
+Toggle table of contents sidebar
+Run Flower with the Deployment Runtime¶
+This how-to guide demonstrates how to set up and run Flower with the Deployment Runtime
+using minimal configurations to illustrate the workflow. This is a complementary guide
+to the Run Flower using Docker guides.
+In this how-to guide, you will:
+Create a Flower App using PyTorch.
+Start a Flower federation consisting of one SuperLink (“the server”) and two
+SuperNodes (“the clients”).
+Run the Flower App on this federation.
+The how-to guide should take less than 10 minutes to complete.
+Prerequisites¶
+Before you start, make sure that:
+The latest flwr CLI version is installed on your machine. Follow the installation
+instructions here.
+This guide assumes all commands to be executed in the same machine in different
+terminals, each making use of the same Python environment.
+This guide also assumes that you are familiar with the basic components in a Flower
+deployment (i.e. SuperLink and SuperNode), what their roles are and how they interact
+with each other. Please refer to the Flower Architecture guide and
+the Flower Network Communication for an overview of what each component
+does and how they interact with each other.
+Note
+In a real deployment you would typically run the SuperLink the SuperNodes in
+different machines/servers from the one you develop your Flower app (i.e. from where
+you do flwr new and flwr run). The guide presented below is still valid for
+such scenarios but you will need to have setup a Python environment with the right
+set of dependencies for SuperLink and SuperNodes. An often easier way to achieve
+such deployments is by means of Docker. Check the Run Flower using Docker to gain a
+better understanding on how to do so.
+Step 1: Create a Flower App¶
+Although you could write a Flower app from scratch, it is often easier to start from one
+of the available quickstart apps via flwr new and then customize it to your use
+case. Create a new Flower app (PyTorch), and follow the instructions shown upon
+executing flwr new:
+$ flwr new @flwrlabs/quickstart-pytorch
+🔗 Requesting download link for @flwrlabs/quickstart-pytorch...
+🔽 Downloading ZIP into memory...
+📦 Unpacking into /Users/alice/quickstart-pytorch...
+🎊 Flower App creation successful.
+To run your Flower App, first install its dependencies:
+cd quickstart-pytorch && pip install -e .
+then, run the app:
+flwr run .
+💡 Check the README in your app directory to learn how to
+customize it and how to run it using the Deployment Runtime.
+Note
+If you decide to run the project with flwr run . against the default local
+profile (the one marked with address = ":local:" in the Flower configuration),
+Flower submits the run to a managed local SuperLink, which then executes it with the
+Simulation Runtime. Continue to Step 2 to instead point flwr run at a named
+SuperLink connection for the Deployment Runtime.
+Tip
+Feel free to inspect the code using your favorite code editor before proceeding.
+Just open the quickstart-pytorch that was automatically created via flwr
+new. If you would like to get an overview of the code that was generated, take a
+look at the Quickstart PyTorch tutorial.
+Step 2: Launch Flower Federation¶
+In this section you will learn how to launch a SuperLink and connect two SuperNodes to
+it.
+Start a Flower SuperLink¶
+In a new terminal, activate your environment and start the SuperLink process in insecure
+mode:
+$ flower-superlink --insecure
+Understand the command
+flower-superlink: Name of the SuperLink installed CLI executable.
+--insecure: This flag tells the SuperLink to operate in an insecure mode, allowing
+unencrypted communication. Refer to the Enable TLS connections guide to learn how to run your SuperLink with TLS.
+Note
+To enable TLS also for the SuperLink Runtime API, please refer to Launching
+the SuperLink with TLS.
+Start two Flower SuperNodes¶
+In this step, you will launch two SuperNodes and connect them to the SuperLink. You will
+need two terminals for this step.
+Note
+Note that the values passed via the --node-config argument are specific to the
+behaviour of the ClientApp. If you inspect the code generated in the first step
+via flwr new, you’d see that the ClientApp is expecting a certain set of
+key-value pairs to be present in order to partition and load some data. Typically,
+your ClientApp wouldn’t partition a dataset, instead it would access the data
+directly available. In such cases you would write your ClientApp and make it
+receive, for example, the path to a directory of images.
+Terminal 1 Start the first SuperNode after activating your environment:
+$ flower-supernode \
+--insecure \
+--superlink 127.0.0.1:8000 \
+--host 127.0.0.1 \
+--port 9094 \
+--node-config "partition-id=0 num-partitions=2"
+Understand the command
+flower-supernode: Name of the SuperNode installed CLI executable.
+--insecure: This flag tells the SuperNode to operate in an insecure mode, allowing
+unencrypted communication. Refer to the Enable TLS connections guide to learn how to run your SuperNode with TLS.
+--superlink 127.0.0.1:8000: Connect to the SuperLink’s Fleet API at the address
+127.0.0.1:8000. If you had launched the SuperLink in a different machine, you’d replace 127.0.0.1 with the public IP of that machine.
+--host 127.0.0.1: Set the host where the SuperNode listens for Runtime API requests.
+--port 9094: Set the Runtime API port used to communicate with the ClientApp.
+--node-config "partition-id=0 num-partitions=2": The ClientApp code generated via flwr new expects those two key-value pairs to be defined at run time. Set the partition ID to 0 and the number of partitions to 2 for the SuperNode configuration.
+Terminal 2 Start the second SuperNode after activating your environment:
+$ flower-supernode \
+--insecure \
+--superlink 127.0.0.1:8000 \
+--host 127.0.0.1 \
+--port 9095 \
+--node-config "partition-id=1 num-partitions=2"
+Understand the command
+--port 9095: Note that a different port is being used. This is only needed because you are running two SuperNodes on the same machine. Typically you would run one node per machine and could omit --port to use its default value.
+--node-config "partition-id=1 num-partitions=2": Note here we indicate a different partition-id. In this way, a ClientApp will use a different data partition depending on which SuperNode runs in.
+Note
+To enable TLS also for the SuperNode Runtime API, please refer to Connecting
+the SuperNodes with TLS.
+Step 3: Run a Flower App on the Federation¶
+Note
+The Flower Configuration file is automatically created for you when you first use a
+Flower CLI command. Use flwr config list to see available SuperLink connections
+as well as the path to the configuration file. Read more about it in the
+Flower Configuration guide.
+At this point, you have launched two SuperNodes that are connected to the same
+SuperLink. The system is idling waiting for a Run to be submitted. Before you can
+run your Flower App through the federation we need a way to tell flwr run that the
+App is to be executed via the SuperLink we just started. Doing this is easy: define a
+new SuperLink connection in the Flower Configuration file, indicate the address of
+the SuperLink and pass a certificate (if any) or set the insecure flag (only when
+testing locally, real deployments require TLS).
+Find the Flower Configuration TOML file in your machine. This file is automatically
+create for your when you first use a Flower CLI command. Use flwr config list to
+see available SuperLink connections as well as the path to the configuration file.
+$ flwr config list
+Flower Config file: /path/to/.flwr/config.toml
+SuperLink connections:
+supergrid
+local (default)
+Open the config.toml file and at the end add a new SuperLink connection:
+config.toml¶
+[superlink.local-deployment]
+address = "127.0.0.1:8000"
+insecure = true
+Note
+You can customize the string that follows [superlink.] to fit your needs.
+However, please note that the string cannot contain a dot (.).
+In this example, local-deployment has been used. Just remember to replace
+local-deployment with your chosen name in both the [superlink.] string
+and the corresponding flwr run . command.
+In another terminal and with your Python environment activated, run the Flower App
+and follow the ServerApp logs to track the execution of the run:
+$ flwr run . local-deployment --stream
+If you want to rerun the project or test an updated version by making changes to the
+code, simply re-run the command above.
+Tip
+You can setup your local-deployment profile as the default so you don’t have to
+specify it in every Flower CLI command that needs to connect to the SuperLink. For
+that and more details about the Flower configuration, refer to the the Flower
+Configuration guide.
+Step 4: Clean Up¶
+Use the Ctrl+C command in each terminal to stop the respective processes.
+Next
+Enable TLS connections
+Previous
+Deploy using the Flower Deployment Runtime
+Copyright © 2026 Flower Labs GmbH
+Made with Sphinx and @pradyunsg's
+Furo
+On this page
+Run Flower with the Deployment Runtime
+Prerequisites
+Step 1: Create a Flower App
+Step 2: Launch Flower Federation
+Start a Flower SuperLink
+Start two Flower SuperNodes
+Step 3: Run a Flower App on the Federation
+Step 4: Clean Up

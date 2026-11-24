@@ -1,0 +1,536 @@
+URL: https://flower.ai/docs/framework/how-to-enable-tls-connections.html
+Snapshot: HTML text extraction; scripts/styles omitted; not original HTML bytes.
+Original decoded response SHA256: 7c0c71fc690eff85db070ecad5b6ebbf9496b39bd7a3844282d84a38a8849083
+
+Enable TLS connections - Flower Framework
+Contents
+Menu
+Expand
+Light mode
+Dark mode
+Auto light/dark, in light mode
+Auto light/dark, in dark mode
+Hide navigation sidebar
+Hide table of contents sidebar
+Skip to content
+Toggle site navigation sidebar
+Flower Framework
+Toggle Light / Dark / Auto color theme
+Toggle table of contents sidebar
+v1.43.x
+Tutorial
+What is Federated Learning?
+Get started with Flower
+Write your first Flower App
+Write your first Flower App with PyTorch
+Use a federated learning strategy
+Customize a Flower Strategy
+Communicate custom Messages
+Quickstart tutorials
+Toggle navigation of Quickstart tutorials
+Quickstart PyTorch
+Quickstart TensorFlow
+Quickstart MLX
+Quickstart 🤗 Transformers
+Quickstart JAX
+Quickstart Pandas
+Quickstart fastai
+Quickstart PyTorch Lightning
+Quickstart scikit-learn
+Quickstart XGBoost
+Quickstart Android
+Quickstart iOS
+How-to Guides
+Build
+Toggle navigation of Build
+Install Flower
+Configure pyproject.toml
+Configure a ClientApp
+Design stateful ClientApps
+Use strategies
+Implement strategies
+Aggregate evaluation results
+Save and load model checkpoints
+Use Built-in Mods
+Use Differential Privacy
+Implement FedBN
+Use CLI JSON output
+Install Flower App dependencies at runtime
+Migrate from OpenFL
+Upgrade to Flower 1.0
+Upgrade to Flower 1.13
+Upgrade to Message API
+Upgrade to Flower 1.28
+Simulate
+Toggle navigation of Simulate
+Run Flower Locally with a Managed SuperLink
+Run simulations
+Deploy
+Toggle navigation of Deploy
+Run Flower with the Deployment Runtime
+Enable TLS connections
+Authenticate SuperNodes
+Configure logging
+Run Flower on GCP
+Run Flower on Azure
+Run Flower on Red Hat OpenShift
+Run Flower on Multiple OpenShift Clusters
+Authenticate Accounts via OpenID Connect
+Configure Audit Logging
+Manage Flower Federations
+Run Flower using Docker
+Toggle navigation of Run Flower using Docker
+Quickstart with Docker
+Enable TLS for Secure Connections
+Persist the State of the SuperLink
+Set Environment Variables
+Run with Root User Privileges
+Run ServerApp or ClientApp as a Subprocess
+Pin a Docker Image to a Specific Version
+Use a Different Flower Version
+Quickstart with Docker Compose
+Run Flower Quickstart Examples with Docker Compose
+Deploy Flower on Multiple Machines with Docker Compose
+Run Flower using Helm
+Toggle navigation of Run Flower using Helm
+Deploy SuperLink
+Deploy SuperNode
+Create and Manage Federations on SuperGrid
+Connect SuperNodes to SuperGrid
+Run Flower Apps on SuperGrid
+Deploy SuperNodes using Slurm
+Explanations
+Federated evaluation
+Differential Privacy
+Secure Aggregation Protocols
+Flower Architecture
+SuperLink High Availability Mode
+Flower Strategy Abstraction
+References
+Reference
+Toggle navigation of Reference
+flwr
+Toggle navigation of flwr
+agentapp
+Toggle navigation of agentapp
+AgentApp
+AgentConnectors
+AgentEvents
+AgentGrid
+AgentSession
+LoadAgentAppError
+app
+Toggle navigation of app
+Array
+ArrayRecord
+ConfigRecord
+Context
+Error
+Message
+MessageType
+Metadata
+MetricRecord
+RecordDict
+clientapp
+Toggle navigation of clientapp
+ClientApp
+mod
+Toggle navigation of mod
+adaptiveclipping_mod
+arrays_size_mod
+fixedclipping_mod
+message_size_mod
+LocalDpMod
+serverapp
+Toggle navigation of serverapp
+GaussianPrivacyEvent
+Grid
+NeighboringRelation
+PrivacyAccountant
+PrivacyConfig
+PrivacySpent
+RdpAccountant
+SamplingMethod
+ServerApp
+strategy
+Toggle navigation of strategy
+Bulyan
+DifferentialPrivacyClientSideAdaptiveClipping
+DifferentialPrivacyClientSideFixedClipping
+DifferentialPrivacyServerSideAdaptiveClipping
+DifferentialPrivacyServerSideFixedClipping
+FedAdagrad
+FedAdam
+FedAvg
+FedAvgM
+FedMedian
+FedProx
+FedTrimmedAvg
+FedXgbBagging
+FedXgbCyclic
+FedYogi
+Krum
+MultiKrum
+QFedAvg
+Result
+Strategy
+client
+Toggle navigation of client
+start_client
+start_numpy_client
+Client
+ClientApp
+NumPyClient
+mod
+Toggle navigation of mod
+adaptiveclipping_mod
+arrays_size_mod
+fixedclipping_mod
+make_ffn
+message_size_mod
+secagg_mod
+secaggplus_mod
+LocalDpMod
+common
+Toggle navigation of common
+array_from_numpy
+bytes_to_ndarray
+configure
+event
+log
+ndarray_to_bytes
+ndarrays_to_parameters
+now
+parameters_to_ndarrays
+Array
+ArrayRecord
+ClientMessage
+Code
+ConfigRecord
+ConfigsRecord
+Context
+DisconnectRes
+Error
+EvaluateIns
+EvaluateRes
+EventType
+FitIns
+FitRes
+GetParametersIns
+GetParametersRes
+GetPropertiesIns
+GetPropertiesRes
+Message
+MessageType
+MessageTypeLegacy
+Metadata
+MetricRecord
+MetricsRecord
+Parameters
+ParametersRecord
+ReconnectIns
+RecordDict
+RecordSet
+ServerMessage
+Status
+server
+Toggle navigation of server
+start_server
+ClientManager
+Driver
+Grid
+History
+LegacyContext
+Server
+ServerApp
+ServerAppComponents
+ServerConfig
+SimpleClientManager
+strategy
+Toggle navigation of strategy
+Bulyan
+DPFedAvgAdaptive
+DPFedAvgFixed
+DifferentialPrivacyClientSideAdaptiveClipping
+DifferentialPrivacyClientSideFixedClipping
+DifferentialPrivacyServerSideAdaptiveClipping
+DifferentialPrivacyServerSideFixedClipping
+FaultTolerantFedAvg
+FedAdagrad
+FedAdam
+FedAvg
+FedAvgAndroid
+FedAvgM
+FedMedian
+FedOpt
+FedProx
+FedTrimmedAvg
+FedXgbBagging
+FedXgbCyclic
+FedXgbNnAvg
+FedYogi
+Krum
+QFedAvg
+Strategy
+workflow
+Toggle navigation of workflow
+DefaultWorkflow
+SecAggPlusWorkflow
+SecAggWorkflow
+simulation
+Toggle navigation of simulation
+run_simulation
+run_simulation_process
+start_simulation
+SimulationIoConnection
+Flower CLI reference
+Flower Configuration
+Example projects
+Telemetry
+Changelog
+Flower Runtime Comparison
+Flower Network Communication
+Exit Codes
+Toggle navigation of Exit Codes
+[0] SUCCESS
+[1] GRACEFUL_EXIT_SIGINT
+[101] SUPERLINK_LICENSE_INVALID
+[102] SUPERLINK_LICENSE_MISSING
+[103] SUPERLINK_LICENSE_URL_INVALID
+[104] SUPERLINK_INVALID_ARGS
+[105] SUPERLINK_DATABASE_SCHEMA_MISMATCH
+[2] GRACEFUL_EXIT_SIGQUIT
+[200] SERVERAPP_STRATEGY_PRECONDITION_UNMET
+[201] SERVERAPP_EXCEPTION
+[202] SERVERAPP_STRATEGY_AGGREGATION_ERROR
+[203] SERVERAPP_RUN_START_REJECTED
+[250] CLIENTAPP_COMMUNICATION_ERROR
+[3] GRACEFUL_EXIT_SIGTERM
+[302] SUPERNODE_NODE_AUTH_KEY_INVALID
+[303] SUPERNODE_STARTED_WITHOUT_TLS_BUT_NODE_AUTH_ENABLED
+[304] SUPERNODE_INVALID_TRUSTED_ENTITIES
+[305] SUPERNODE_CONNECTION_ERROR
+[400] SUPEREXEC_INVALID_PLUGIN_CONFIG
+[401] SUPEREXEC_AUTH_SECRET_LOAD_FAILED
+[402] SUPEREXEC_INVALID_EXECUTOR_CONFIG
+[500] FLWRCLI_NODE_AUTH_PUBLIC_KEY_INVALID
+[600] COMMON_ADDRESS_INVALID
+[602] COMMON_TLS_NOT_SUPPORTED
+[603] COMMON_TLS_ROOT_CERTIFICATES_INCOMPATIBLE
+[604] COMMON_PATH_INVALID
+[605] COMMON_TLS_SERVER_CERTIFICATES_INVALID
+[606] RUNTIME_VERSION_INCOMPATIBLE
+[607] COMMON_APP_IMPORT_ERROR
+[608] COMMON_RUNTIME_DEPENDENCY_INSTALLATION_ERROR
+[700] SIMULATION_EXCEPTION
+[701] SIMULATION_MISSING_EXTRA
+[800] TASK_PROC_EXCEPTION
+FAQ
+Contributor docs
+Contribute
+Toggle navigation of Contribute
+Contribute on GitHub
+Get started as a contributor
+Install development versions
+Set up a virtual env
+Develop in VSCode Dev Containers
+Write documentation
+Release Flower
+Contribute translations
+How to Build Docker Flower Images Locally
+Migrate Flower Database Schema
+Public and private APIs
+Good first contributions
+Versions
+main
+🇬🇧
+🇫🇷
+🇨🇳
+🇰🇷
+Back to top
+View this page
+Toggle Light / Dark / Auto color theme
+Toggle table of contents sidebar
+Enable TLS connections¶
+Transport Layer Security (TLS) ensures the communication between endpoints is encrypted.
+This guide describes how to establish secure TLS SuperLink ↔ SuperNodes as well as User
+↔ SuperLink connections. It also explains how to enable TLS on the internal Runtime API
+connections used by SuperExec, ServerApp processes, and ClientApp processes.
+Note
+This guide builds on the Flower App setup presented in
+Run Flower with the Deployment Runtime guide and extends it to replace the
+use of --insecure in favour of TLS.
+Tip
+Checkout the Flower Authentication
+example for a complete self-contained example on how to setup TLS and (optionally)
+node authentication. Check out the Authenticate SuperNodes guide to
+learn more about adding an authentication layer to SuperLink ↔ SuperNode
+connections.
+Certificates¶
+Using TLS-enabled connections expects some certificates generated and passed when
+launching the SuperLink, the SuperNodes and when a user (e.g. a data scientist that
+wants to submit a Run) interacts with the federation via the flwr CLI. The same certificates can be used for local prototyping when
+enabling TLS on internal Runtime API connections.
+We have prepared a script that can be used to generate such set of certificates. While
+using these is fine for prototyping, we advise you to follow the standards set in your
+team/organization and to generate the certificates and share them with the corresponding
+parties. Refer to the Generate TLS certificates section in the example linked at the
+top of this guide.
+# In the example directory, generate the certificates
+$ python generate_creds.py
+This will generate the TLS certificates in a new certificates/ directory. Copy this
+directory into the directory of your app (e.g. a directory generated earlier via flwr
+new).
+Warning
+The approach for generating TLS certificates in the context of this example can
+serve as an inspiration and starting point, but it should not be used as a reference
+for production environments. Please refer to other sources regarding the issue of
+correctly generating certificates for production environments. For non-critical
+prototyping or research projects, it might be sufficient to use the self-signed
+certificates generated using the scripts mentioned in this guide. In production, do
+not reuse the same server certificate and private key for multiple services. A
+better practice is to use a unique key pair for each service, for example the
+SuperLink Fleet API, the SuperLink-hosted Runtime API, and each SuperNode-hosted
+Runtime API.
+Launching the SuperLink with TLS¶
+This section describes how to launch a SuperLink that works on TLS-enabled connections.
+The code snippet below assumes the certificates/ directory is in the same directory
+where you execute the command from. Edit the paths accordingly if that is not the case.
+The SuperLink expects three certificate paths: CA certificate, server certificate, and
+server private key.
+Note
+Since Flower 1.37, the Fleet, Control, and Runtime APIs share this TLS
+configuration.
+$ flower-superlink \
+--ssl-ca-certfile certificates/ca.crt \
+--ssl-certfile certificates/server.pem \
+--ssl-keyfile certificates/server.key
+Understand the command
+--ssl-ca-certfile: Specify the location of the CA certificate file in your file. This file is a certificate that is used to verify the identity of the SuperLink.
+--ssl-certfile: Specify the location of the SuperLink’s TLS certificate file. This file is used to identify the SuperLink and to encrypt the packages that are transmitted over the network.
+The certificate must include Subject Alternative Names (SANs) for the Runtime API
+address used by SuperExec. When using an IP address such as 127.0.0.1, the
+certificate must include a matching IP SAN.
+--ssl-keyfile: Specify the location of the SuperLink’s TLS private key file. This file is used to decrypt the packages that are transmitted over the network.
+Connecting the SuperNodes with TLS¶
+This section describes how to launch a SuperNode that works on TLS-enabled connections.
+The code snippet below assumes the certificates/ directory is in the same directory
+where you execute the command from. To secure the SuperNode ↔ SuperLink connection,
+replace --insecure with --root-certificates. The same command can also provide
+certificates for the SuperNode’s Runtime API.
+$ flower-supernode \
+--root-certificates certificates/ca.crt \
+--ssl-ca-certfile certificates/ca.crt \
+--ssl-certfile certificates/server.pem \
+--ssl-keyfile certificates/server.key \
+--superlink 127.0.0.1:8000 \
+--host 127.0.0.1 \
+--port 9094 \
+--node-config="partition-id=0 num-partitions=2"
+Understand the command
+--root-certificates: This specifies the location of the CA certificate file. The ca.crt file is used to verify the identity of the SuperLink.
+--ssl-ca-certfile: Specify the location of the CA certificate file used by SuperExec to verify the SuperNode’s Runtime API server certificate.
+--ssl-certfile: Specify the location of the Runtime API server TLS certificate file.
+The certificate must include Subject Alternative Names (SANs) for the Runtime API address used by
+SuperExec. When using an IP address such as 127.0.0.1, the certificate must include a
+matching IP SAN.
+--ssl-keyfile: Specify the location of the Runtime API server TLS private key file.
+Follow the same procedure, i.e. replacing --insecure with --root-certificates,
+to launch the second SuperNode.
+$ flower-supernode \
+--root-certificates certificates/ca.crt \
+--ssl-ca-certfile certificates/ca.crt \
+--ssl-certfile certificates/server.pem \
+--ssl-keyfile certificates/server.key \
+--superlink 127.0.0.1:8000 \
+--host 127.0.0.1 \
+--port 9095 \
+--node-config="partition-id=1 num-partitions=2"
+At this point, you have successfully launched a SuperLink and two SuperNodes with
+TLS-enabled connections.
+Note
+The --ssl-* Runtime API TLS options configure server-authenticated TLS. They do
+not configure mutual TLS. The --ssl-ca-certfile file is used by SuperExec and
+app processes to verify the Runtime API server certificate, not as a client
+certificate. If Runtime API TLS is not configured, internal Runtime API connections
+remain unencrypted and should stay inside a trusted network.
+TLS for Runtime API Connections in “Process” Isolation Mode¶
+For details about SuperExec, “process” isolation mode, and “subprocess” isolation mode,
+see Flower Network Communication.
+So far, we’ve been showing you how to enable TLS for Runtime API connections when using
+the default “subprocess” isolation mode. In this mode, SuperLink and SuperNode
+automatically start their SuperExecs with the correct Runtime API TLS options. However,
+if you want to run SuperExec separately in “process” isolation mode, you need to do a
+few things differently to enable TLS for the Runtime API connections.
+First, we need to launch the SuperLink and SuperNode with --isolation=process and
+with the Runtime API TLS options. This tells the SuperLink and SuperNode that the
+SuperExecs will be launched separately, e.g. by an operator or orchestration system.
+Next, in order for the SuperExecs to establish TLS connections to the Runtime APIs, we
+need to provide the Runtime API TLS options when launching the SuperExecs. Below is an
+example command to launch a SuperExec that can establish TLS connections to the Runtime
+API hosted by the SuperLink:
+$ flower-superexec \
+--root-certificates certificates/ca.crt \
+--runtime-api-address 127.0.0.1:8000
+Understand the command
+--root-certificates: Specify the location of the CA certificate file. The ca.crt file is used by SuperExec to verify the Runtime API server certificate.
+--runtime-api-address: Specify the address of the Runtime API that SuperExec should connect to. In this example, 127.0.0.1:8000 is the SuperLink’s Runtime API.
+Next, use the same procedure for a ClientApp SuperExec, but pass the SuperNode’s
+Runtime API address, e.g. 127.0.0.1:9094.
+Now your SuperLink-side SuperExec and SuperNode-side SuperExec can establish TLS
+connections to their respective Runtime APIs. When using “process” isolation mode, it is
+the responsibility of the process launcher (e.g. user or orchestrator) to launch the
+SuperExecs with the correct Runtime API TLS options. If you use an orchestration system
+to launch the SuperExecs, make sure to include the Runtime API TLS options in the
+commands or configuration used by your orchestration system.
+TLS-enabled Flower CLI¶
+The Flower CLI (e.g. flwr run command) is the way a user (e.g.
+a data scientist) can interact with a deployed federation. The Flower CLI commands are
+processed by the SuperLink and therefore, if it has been configured to only operate on
+TLS conenction, the requests sent by the Flower CLI need to make use of a TLS
+certificate. To do so, replace the insecure = true field in your Flower
+Configuration TOML file with a new field that reads the certificate:
+config.toml¶
+[superlink.local-deployment]
+address = "127.0.0.1:8000"
+root-certificates = "/absolute/path/to/certificates/ca.crt"
+Note that the path to the root-certificates is relative to the root of the project.
+Now, you can run the example by executing flwr run:
+$ flwr run . local-deployment --stream
+Tip
+You can setup your local-deployment profile as the default so you don’t have to
+specify it in every Flower CLI command that needs to connect to the SuperLink. For
+that and more details about the Flower configuration, refer to the the Flower
+Configuration guide.
+Conclusion¶
+You should now have learned how to generate self-signed certificates using the given
+script, start a TLS-enabled server and have two clients establish secure connections to
+it. You should also have learned how to run your Flower project using flwr run with
+TLS enabled and how to secure internal Runtime API connections. All other commands in
+the Flower CLI will also be TLS-enabled.
+Note
+Refer to the Run Flower using Docker documentation to learn how to setup a federation
+where each component runs in its own Docker container. You can make use of TLS and
+other security features in Flower such as implement a SuperNode authentication
+mechanism.
+Additional resources¶
+These additional sources might be relevant if you would like to dive deeper into the
+topic of certificates:
+Let’s Encrypt
+certbot
+Next
+Authenticate SuperNodes
+Previous
+Run Flower with the Deployment Runtime
+Copyright © 2026 Flower Labs GmbH
+Made with Sphinx and @pradyunsg's
+Furo
+On this page
+Enable TLS connections
+Certificates
+Launching the SuperLink with TLS
+Connecting the SuperNodes with TLS
+TLS for Runtime API Connections in “Process” Isolation Mode
+TLS-enabled Flower CLI
+Conclusion
+Additional resources

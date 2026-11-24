@@ -1,0 +1,1236 @@
+URL: https://arxiv.org/html/2410.09432v4
+Snapshot: HTML text extraction; scripts/styles omitted; not original HTML bytes.
+Original decoded response SHA256: 645ea0bef15e313b9916f104c64f9563a613972dd2a355aeb52d94e607bd2f3d
+
+Exact Aggregation for Federated and Efficient Fine-Tuning of Foundation Models
+Skip to main content
+Report GitHub Issue
+×
+Title:
+Content selection saved. Describe the issue below:
+Description:
+Submit without GitHub
+Submit in GitHub
+Why HTML?
+Report Issue
+Back to Abstract
+Download PDF
+Contents
+Reading mode
+Colour theme
+Abstract
+1 Introduction
+2 Related work
+3 Preliminaries and Motivation
+4 Method: FedEx-LoRA
+4.1 Noise-Free Exact Aggregation
+4.2 FedEx-LoRA: Overall Pipeline
+5 Experiments
+5.1 Instruction Tuning
+5.2 Natural Language Understanding
+5.3 Natural Language Generation
+6 Analysis
+7 Conclusion
+References
+A Dataset Details
+B Hyperparameter Details
+C Effect of Varying Rank
+D Additional Experiments for NLU
+E Additional Experiments for NLG
+F More Divergence/Deviation Plots
+F.1 Deviation/Divergence Plots Across Layers
+F.2 Deviation/Divergence Plots Across Rounds
+License: CC BY 4.0
+arXiv:2410.09432v4 [cs.DC] 30 Jun 2025
+Exact Aggregation for Federated and Efficient Fine-Tuning of Foundation Models
+Raghav Singhal‡\bm{{\ddagger}}
+Affiliation: Mohamed bin Zayed University of Artificial Intelligence, UAE
+Kaustubh Ponkshe‡\bm{{\ddagger}}
+Affiliation: Mohamed bin Zayed University of Artificial Intelligence, UAE
+Praneeth Vepakomma
+Affiliation: Mohamed bin Zayed University of Artificial Intelligence, UAE
+Affiliation: Massachusetts Institute of Technology, USA
+Abstract
+Low-Rank Adaptation (LoRA) is a popular technique for efficient fine-tuning of foundation models. However, applying LoRA in federated learning environments, where data is distributed across multiple clients, presents unique challenges. Existing methods rely on traditional federated averaging of LoRA adapters, resulting in inexact updates. To address this, we propose Federated Exact LoRA, or FedEx-LoRA, which adds a residual error term to the pretrained frozen weight matrix. Our approach achieves exact updates with minimal computational and communication overhead, preserving LoRA’s efficiency. We evaluate the method on various models across arithmetic reasoning, commonsense reasoning, natural language understanding and natural language generation tasks, showing consistent performance gains over state-of-the-art methods across multiple settings. Through extensive analysis, we quantify that the deviations in updates from the ideal solution are significant, highlighting the need for exact aggregation. Our method’s simplicity, efficiency, and broad applicability position it as a promising solution for accurate and effective federated fine-tuning of foundation models. We have released our code publicly at https://github.com/RaghavSinghal10/fedex-lora.
+$\bm{{\ddagger}}$$\bm{{\ddagger}}$footnotetext: Equal contributions. Author ordering determined by coin flip over a Google Meet.
+1 Introduction
+The introduction of large language models (LLMs) has revolutionized natural language processing, enabling unprecedented performance across a wide range of tasks [1, 48, 44, 6, 38, 55]. While these models excel at transfer learning, their true potential is often unlocked through fine-tuning — a critical process that aligns these general-purpose models with specific tasks or domains. Moreover, the sheer size of these models presents significant challenges for fine-tuning and deployment, particularly in resource-constrained or distributed environments. To address these challenges, parameter-efficient fine-tuning (PEFT) methods have gained prominence, with Low-Rank Adaptation (LoRA) emerging as a particularly effective approach [19]. LoRA’s success lies in its ability to adapt LLMs to new tasks by training only a small number of parameters, while freezing rest of the parameters. This significantly reduces computational and memory requirements without compromising performance. Although good progress in training of LLMs has been realized by entities equipped with massive computational resources, there is hoards of unreachable data in verticals such as healthcare, finance, law firms, social-media and logistics. Federated learning (FL) is a popular paradigm to learn a machine learning model in this setting with multiple distributed entities [24, 23, 4] holding siloed data.
+Federated Fine-Tuning (FFT) for foundation models addresses the challenge of leveraging distributed datasets while preserving data privacy. The current state-of-the-art, Federated Instruction Tuning (FedIT, Zhang et al. [58]), uses conventional federated aggregation to average the low-rank matrices 𝐀\mathbf{A} and 𝐁\mathbf{B} individually. The resulting update matrix which is formed post aggregation is thus the product of the averaged matrices 𝐀\mathbf{A} and 𝐁\mathbf{B}. However, the ideal update should be the average of the products of the low-rank adapters 𝐀\mathbf{A} and 𝐁\mathbf{B}. The discrepancy results from the fact that "the average of the products is not equal to the product of the averages".
+A naive adhoc intervention of modifying the aggregation to directly average the client updates is not a viable solution, since the subsequently obtained weight matrix loses its low-rank structure. The low-rank structure provides the efficiency benefits of LoRA in the first place, making this approach computationally intractable.
+((a)) FedIT
+((b)) FedEx-LoRA
+Figure 1: Comparison of federated LoRA methods: (a) FedIT averages the individual client low-rank adapters 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i}, resulting in inexact updates. (b) FedEx-LoRA sends the error residual 𝚫​𝐖r​e​s\mathbf{\Delta W}_{res} along with the individual adapters 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i}, which is added to the pretrained weight matrix 𝐖0\mathbf{W}_{0}, ensuring exact aggregation. Clients transmit low-rank adapters 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} in both methods.
+The aggregation process must be carefully designed for both accuracy and simplicity. We introduce FedEx-LoRA, a method that improves federated aggregation for LoRA by incorporating an error residual term, 𝚫​𝐖r​e​s\mathbf{\Delta W}_{res}, into the pretrained weight matrix to address inexact aggregation, as shown in Figure 1. This adjustment preserves the low-rank efficiency of LoRA without adding computational overhead. Since the average update is inherently higher rank and cannot fit into the low-rank adapters, it is absorbed into the pretrained weight matrix, which is already high rank. This error term requires no training and is added at each aggregation step, ensuring no additional training costs.
+Our key contributions are summarized as follows:
+•
+We identify a critical discrepancy in traditional federated averaging of LoRA adapters and address it by explicitly assigning the error residual to the pretrained weight matrix, ensuring ideal updates.
+•
+The error residual term is incorporated at each aggregation step, maintaining LoRA’s efficiency without any additional training. We propose a communication protocol that minimizes both communication and computational overhead.
+•
+We demonstrate the effectiveness of our approach through extensive experiments on models ranging from RoBERTa-base (125M) to Gemma-2 (9B) across arithmetic reasoning, commonsense reasoning, natural language understanding, and generation tasks. Our method consistently outperforms state-of-the-art federated fine-tuning techniques, showing clear performance gains.
+•
+We provide a detailed analysis of the deviations introduced by federated averaging compared to ideal updates, and identify notable patterns. We further show that while multiple assignment strategies exist for exact aggregation, our specific assignment approach is most effective.
+2 Related work
+Parameter-efficient Fine-tuning.
+PEFT methods aim to adapt foundation models while minimizing the number of trainable parameters. Input-based techniques like prefix tuning [29] prepend trainable prompts, and prompt tuning [27] optimizes soft prompts in the embedding space - both effective for task-specific adaptations. Architectural approaches, such as adapter layers [18], add trainable components between transformer blocks [49], facilitating multi-task learning. LoRA [19] reduces memory overhead by representing weight updates with low-rank matrices, while AdaLoRA [60] improves efficiency by dynamically adjusting the parameter budget. Optimization techniques, like QLoRA [12], enable fine-tuning on consumer hardware via quantization, and LongLoRA [7] targets long-context tasks. Recent advancements include combining multiple PEFT methods [30] and scaling these techniques for very large models [56], advancing the state of efficient fine-tuning.
+Federated Fine-Tuning of Foundation Models.
+Federated learning [24] is a decentralized approach that allows multiple clients to collaboratively train a shared model without sharing their private data. Instead, clients perform local training on their own datasets, and only the resulting model updates are securely aggregated to update the global model [23]. This iterative process of local training and global aggregation continues until the model converges. FedBERT [47] introduced federated pre-training for BERT, while recent efforts have focused on federated fine-tuning of foundation models [61, 25, 2]. The current state-of-the-art, FedIT [58]), fine-tunes LLMs by averaging LoRA parameters across clients using vanilla Federated Averaging (FedAvg, McMahan et al. [33]). However, averaging low-rank adapters independently introduces noise and results in inexact global updates. Federated Freeze A LoRA (FFA-LoRA) [43] mitigates this by keeping one set of adapters trainable, improving aggregation stability but limiting the training flexibility of other adapters. This method is particularly advantageous in privacy-sensitive settings [21, 57]. Another challenge arises from heterogeneous rank settings, where clients adjust LoRA ranks based on their capacities [62, 28]. Some methods address this by self-pruning local LoRA modules and employing sparsity-weighted aggregation [8], though this introduces substantial computational overhead.
+3 Preliminaries and Motivation
+Fine-tuning with LoRA.
+LoRA [19] leverages low-rank matrix factorization to efficiently represent the updates of pre-trained model weights. Specifically, the fine-tuned weights, 𝐖′\mathbf{W}^{\prime}, are expressed as a sum of the original weights 𝐖𝟎\mathbf{W_{0}} and a low-rank update 𝚫​𝐖\mathbf{\Delta W}:
+𝐖′=𝐖𝟎+𝚫​𝐖=𝐖𝟎+𝐁𝐀\displaystyle\mathbf{W}^{\prime}=\mathbf{W_{0}}+\mathbf{\Delta W}=\mathbf{W_{0}}+\mathbf{B}\mathbf{A}
+(1)
+where 𝐖𝟎,𝐖′∈ℝm×n\mathbf{W_{0}},\mathbf{W}^{\prime}\in\mathbb{R}^{m\times n} are the pretrained and fine-tuned weight matrices, respectively, and 𝐀∈ℝr×n\mathbf{A}\in\mathbb{R}^{r\times n}, 𝐁∈ℝm×r\mathbf{B}\in\mathbb{R}^{m\times r} represent the low-rank decomposition of 𝚫​𝐖\mathbf{\Delta W}. Here, the rank rr is significantly smaller than both mm and nn, leading to a substantial reduction in the number of trainable parameters for 𝚫​𝐖\mathbf{\Delta W}. Instead of directly updating 𝐖0\mathbf{W}_{0} during fine-tuning, LoRA optimizes the smaller matrices 𝐀\mathbf{A} and 𝐁\mathbf{B}, resulting in considerable savings in memory usage. For instance, in GPT-2, LoRA reduces the number of trainable parameters from 124.44124.44 M to just 0.410.41 M when using a rank of r=4r=4, with no observed degradation in performance [19].
+Global Updates due to Vanilla Federated Averaging are Inexact.
+The widely adopted federated learning algorithm, FedAvg [33], updates the global model by performing a weighted average of local client updates in each communication round for kk clients:
+𝐖g​l​o​b​a​l=𝐖𝟎+1k​∑i=1k𝚫​𝐖i=𝐖𝟎+𝚫​𝐖\displaystyle\mathbf{W}^{global}=\mathbf{W_{0}}+\frac{1}{k}\sum_{i=1}^{k}\mathbf{\Delta W}_{i}=\mathbf{W_{0}}+\mathbf{\Delta W}
+(2)
+where 𝐖𝟎\mathbf{W_{0}} and 𝐖g​l​o​b​a​l\mathbf{W}^{global} represent the global model parameters before and after aggregation, respectively. 𝚫​𝐖i\mathbf{\Delta W}_{i} denotes the local update from the ii-th client.
+FedIT [58] extends FedAvg by incorporating LoRA for federated fine-tuning, where clients fine-tune LoRA modules of a fixed rank.
+The global LoRA matrices 𝐀\mathbf{A} and 𝐁\mathbf{B} are updated via weighted averaging over the client-specific LoRA parameters 𝐀k\mathbf{A}_{k} and 𝐁k\mathbf{B}_{k}:
+𝐀=1k​∑i=1k𝐀i,𝐁=1k​∑i=1k𝐁i\displaystyle\mathbf{A}=\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i},\quad\mathbf{B}=\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i}
+(3)
+Although FedIT follows a similar aggregation process as FedAvg, only LoRA modules are updated and communicated. However, this independent averaging of 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} introduces deviation from the exact centralized LoRA updates, as the actual model updates depend on the product 𝐁i​𝐀i\mathbf{B}_{i}\mathbf{A}_{i}, not the individual components 𝐁\mathbf{B} and 𝐀\mathbf{A}.
+𝐖~g​l​o​b​a​l=𝐖0+1k∑i=1k𝐁i×1k∑i=1k𝐀i⏟Parameters after aggregation with LoRA + FedAvg (FedIT)≠𝐖0+1k​∑i=1k(𝐁i​𝐀i)=𝐖g​l​o​b​a​l⏟Ideal parameters following model-averaging\displaystyle\underbrace{\tilde{\mathbf{W}}^{global}=\mathbf{W}_{0}+\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i}\times\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i}}_{\text{Parameters after aggregation with LoRA + FedAvg (FedIT)}}\neq\underbrace{\mathbf{W}_{0}+\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}_{i}\mathbf{A}_{i})=\mathbf{W}^{global}}_{\text{Ideal parameters following model-averaging}}
+(4)
+There is No Free Lunch. A naive approach would be to directly average the client updates as 1k​∑i=1k(𝐁i​𝐀i)\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}_{i}\mathbf{A}_{i}) and use the result for the global update before resuming training. However, this undermines the purpose of LoRA, as it forces subsequent training on the full-rank matrix 𝐖g​l​o​b​a​l∈ℝm×n\mathbf{W}^{global}\in\mathbb{R}^{m\times n} rather than its intended low-rank adapters 𝐀∈ℝr×n\mathbf{A}\in\mathbb{R}^{r\times n} and 𝐁∈ℝm×r\mathbf{B}\in\mathbb{R}^{m\times r}.
+An alternative is to decompose the averaged update 1k​∑i=1k(𝐁i​𝐀i)\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}_{i}\mathbf{A}_{i}) into a low-rank matrix of rank (k⋅r)(k\cdot r). However, this leads to an exponential growth in the rank with each aggregation round, as the rank increases by a factor of kk in every iteration, making this approach computationally intractable.
+FFA-LoRA.
+FFA-LoRA addresses the problem of inexact aggregation, particularly in privacy-preserving settings. Motivated from previous works [59, 46], it asymmetrically freezes the 𝐀\mathbf{A} adapters while keeping only the 𝐁\mathbf{B} adapters trainable. This approach mitigates the issues of non-ideal aggregation by avoiding independent updates of 𝐀\mathbf{A} and 𝐁\mathbf{B}. However, the drawback is that the 𝐀\mathbf{A} matrix remains static, which limits expressiveness. While this method excels in privacy-sensitive scenarios where noise is amplified, it underperforms in non-private settings, even when the number of trainable parameters is equivalent.
+4 Method: FedEx-LoRA
+4.1 Noise-Free Exact Aggregation
+To tackle the problem of inexact aggregation arising from the independent averaging of the 𝐀\mathbf{A} and 𝐁\mathbf{B} matrices across clients, we introduce a novel method called FedEx-LoRA. Instead of separately averaging the low-rank adapter matrices 𝐀\mathbf{A} and 𝐁\mathbf{B}, we compute the average of their product 𝐁𝐀\mathbf{BA} across all clients. However, as previously noted in Section 3, we cannot keep this high-rank matrix or its lower-rank decomposition (with rank (k⋅r)(k\cdot r)) trainable. Consequently, we append a high-rank error term that captures the discrepancy between the average of the products and the product of the averages. This error residual is incorporated into the global frozen weight matrix, ensuring its non-trainability. The update at the jt​hj^{th} aggregation round can be expressed as follows:
+𝐁ij+1←1k​∑i=1k𝐁ij,𝐀ij+1←1k​∑i=1k𝐀ij\displaystyle\mathbf{B}^{j+1}_{i}\leftarrow\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}^{j}_{i},\quad\mathbf{A}^{j+1}_{i}\leftarrow\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}^{j}_{i}
+(5)
+𝐖𝟎j+1←𝐖𝟎j+1k∑i=1k(𝐁ji𝐀ji)−1k∑i=1k𝐁ji×1k∑i=1k𝐀ji⏟Residual\displaystyle\mathbf{W_{0}}^{j+1}\leftarrow\mathbf{W_{0}}^{j}+\underbrace{\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}^{j}_{i}\mathbf{A}^{j}_{i})-\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}^{j}_{i}\times\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}^{j}_{i}}_{\text{Residual}}
+(6)
+We now demonstrate that our formulation results in exact aggregation for every client:
+𝐖g​l​o​b​a​lj+1=𝐖𝟎j+𝐁ij​𝐀ij\displaystyle\mathbf{W}_{global}^{j+1}=\mathbf{W_{0}}^{j}+\mathbf{B}_{i}^{j}\mathbf{A}_{i}^{j}
+(7)
+𝐖g​l​o​b​a​lj+1=𝐖𝟎j+1k∑i=1k(𝐁ij𝐀ij)−1k∑i=1k𝐁ij×1k∑i=1k𝐀ij+1k∑i=1k𝐁ij×1k∑i=1k𝐀ij\displaystyle\mathbf{W}_{global}^{j+1}=\mathbf{W_{0}}^{j}+\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}_{i}^{j}\mathbf{A}_{i}^{j})-\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i}^{j}\times\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i}^{j}+\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i}^{j}\times\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i}^{j}
+(8)
+𝐖g​l​o​b​a​lj+1=𝐖𝟎j+1k​∑i=1k(𝐁ij​𝐀ij)⏟Ideal aggregation\displaystyle\mathbf{W}_{global}^{j+1}=\underbrace{\mathbf{W_{0}}^{j}+\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}_{i}^{j}\mathbf{A}_{i}^{j})}_{\text{Ideal aggregation}}
+(9)
+4.2 FedEx-LoRA: Overall Pipeline
+Initially, the server distributes the global pretrained model to all kk clients and initializes the low-rank adapters 𝐀\mathbf{A} and 𝐁\mathbf{B} according to standard LoRA settings: 𝐁\mathbf{B} is initialized to zero, while 𝐀\mathbf{A} is initialized using a random Gaussian distribution.
+𝐁i0←𝐁i​n​i​t,𝐀i0←𝐀i​n​i​t,𝐖00←𝐖p​r​e​t​r​a​i​n​e​d\displaystyle\mathbf{B}_{i}^{0}\leftarrow\mathbf{B}_{init},\quad\mathbf{A}_{i}^{0}\leftarrow\mathbf{A}_{init},\quad\mathbf{W}_{0}^{0}\leftarrow\mathbf{W}_{pretrained}
+(10)
+Each client then independently trains their low-rank adapters 𝐀\mathbf{A} and 𝐁\mathbf{B} using their local data for a specified number of epochs (referred to as “local epochs”). Upon completion of training, the clients send their updated low-rank adapters back to the server for aggregation. The server aggregates these low-rank adapters and incorporates the residual term into the global model:
+𝐁g​l​o​b​a​lj=1k​∑i=1k𝐁ij,𝐀g​l​o​b​a​lj=1k​∑i=1k𝐀ij\displaystyle\mathbf{B}_{global}^{j}=\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i}^{j},\quad\mathbf{A}_{global}^{j}=\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i}^{j}
+(11)
+𝚫𝐖r​e​sj=1k∑i=1k(𝐁ij𝐀ij)−1k∑i=1k𝐁ij×1k∑i=1k𝐀ij\displaystyle\mathbf{\Delta W}_{res}^{j}=\frac{1}{k}\sum_{i=1}^{k}(\mathbf{B}_{i}^{j}\mathbf{A}_{i}^{j})-\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i}^{j}\times\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i}^{j}
+(12)
+The server then sends the aggregated matrices back to each client. After receiving these updates, the clients proceed to update their low-rank adapters 𝐀\mathbf{A} and 𝐁\mathbf{B}, as well as the weight matrix:
+𝐁ij+1←𝐁g​l​o​b​a​lj,𝐀ij+1←𝐀g​l​o​b​a​lj\displaystyle\mathbf{B}_{i}^{j+1}\leftarrow\mathbf{B}^{j}_{global},\quad\mathbf{A}_{i}^{j+1}\leftarrow\mathbf{A}^{j}_{global}
+(13)
+𝐖0j+1←𝐖0j+𝚫​𝐖r​e​sj\displaystyle\mathbf{W}_{0}^{j+1}\leftarrow\mathbf{W}_{0}^{j}+\mathbf{\Delta W}_{res}^{j}
+(14)
+Following this, clients independently resume fine-tuning for a set number of local epochs. This process repeats across multiple aggregation rounds (also referred to as communication rounds).
+Multiple Assignment Strategies can Lead to Exact Aggregation.
+Several methods can be used for achieving exact aggregation, with our choice of assignments for 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} being particularly pivotal. Each such assignment strategy allows us to adjust the corresponding error offset within the frozen weight matrix, facilitating precise aggregation. In Section 6, we investigate various methods and empirically show that our proposed assignments for 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} deliver the best performance.
+Communication Protocol.
+At first glance, it may seem necessary for the server to transmit the high-rank update matrix 𝚫​𝐖r​e​s\mathbf{\Delta W}_{res} to the clients, which could introduce substantial communication overhead. However, the rank of this update matrix is capped at (k⋅r)(k\cdot r).
+Consequently, 𝚫​𝐖r​e​s\mathbf{\Delta W}_{res} can be decomposed into two low-rank matrices using methods such as Gram-Schmidt orthogonalization. This decomposition expresses the matrix as a product of the basis of its column (or row) space and the corresponding linear coefficients.
+The computational overhead incurred by this operation at each aggregation step is negligible compared to the numerous matrix multiplications involved in training.
+Importantly, clients are only required to transmit their low-rank adapters 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i}, avoiding the need to send any high-rank update matrices.
+In practice, the communication overhead is minimal compared to FedIT, and overall, the communication cost remains significantly lower than that of full federated fine-tuning. Detailed communication overhead analysis is provided in Section 6.
+Best Inexact Approximation.
+For exact aggregation, the communication cost scales linearly with the number of clients, becoming prohibitive in hyperclient settings. To address this, we propose relaxing the exact aggregation condition through truncated SVD of the residual matrix. This reconstruction yields a low-rank approximation which, by the Eckart-Young theorem [15], is provably optimal for the high-rank update matrix. Specifically, for a target rank r′r^{\prime}, the best low-rank approximation Δ​Wr​e​cr′\Delta W_{rec}^{r^{\prime}} is computed as:
+U,S,VT←SVD​(Δ​Wr​e​s)\displaystyle U,S,V^{T}\leftarrow\textbf{SVD}(\Delta W_{res})
+(15)
+ΔWr​e​cr′←U[1:r′]S[1:r′,1:r′]VT[1:r′]\displaystyle\Delta W_{rec}^{r^{\prime}}\leftarrow U[1:r^{\prime}]S[1:r^{\prime},1:r^{\prime}]V^{T}[1:r^{\prime}]
+(16)
+While this method introduces approximation error, it provides the theoretically optimal approximation to exact aggregation. A key advantage is that the server can control communication costs, a capability absent in previous methods - FedIT [58] and FFA-LoRA [43].
+5 Experiments
+Models and Datasets.
+We evaluate our method on four NLP benchmarks using models ranging from RoBERTa-base with 125M parameters to Gemma-2 with 9B parameters, covering both masked and autoregressive architectures. Our experiments include fine-tuning Mistral-7B [22], Gemma-2 9B [45], Llama-3.2 3B [14], RoBERTa-base, RoBERTa-large [31], and GPT-2 [37] using FedEx-LoRA. This comprehensive setup allows us to assess the effectiveness of our approach across different tasks and model architectures.
+For arithmetic reasoning, we fine-tune the decoder-only models Mistral-7B and Gemma-2 9B using 10K samples from the MetaMathQA dataset [53]. These models are evaluated on two standard arithmetic reasoning benchmarks, GSM8K [11] and MATH [17]. In the commonsense reasoning category, we use Llama-3.2 3B, which is trained on CommonSense170K—a compilation of eight commonsense reasoning datasets [20].
+We evaluate the RoBERTa models on natural language understanding tasks with the GLUE benchmark [50] and assess GPT-2 on natural language generation tasks through the E2E NLG Challenge [35]. We implement all algorithms using PyTorch [36], based on the widely-used HuggingFace Transformers codebase [52]. We run all experiments on a single NVIDIA A100/A6000 GPU, and present the results as average of 33 different random runs. Base models are loaded in torch.bfloat16 to save memory. Dataset details are presented in Appendix A.
+Implementation Details.
+The residual and product matrices are scaled by the factor α/r\alpha/r, where α\alpha is a constant in rr, consistent with the approach in LoRA [19]. We run our experiments in a three-client cross-silo federated setting, based on the settings described in FFA-LoRA [43]. For data distribution among clients, we use the common method to sample data at random for each client, as implemented in standard works [58, 16, 26].
+Baselines.
+We primarily compare FedEx-LoRA with other federated fine-tuning versions of LoRA, but include centralized LoRA as a performance benchmark or skyline. We also include other baselines, where possible. Full Fine-Tuning (FT) refers to fine-tuning the entire pretrained model. LoRA [19] represents the traditional centralized LoRA approach. FedIT [58], the current state-of-the-art federated fine-tuning method, applies vanilla federated averaging (FedAvg) to LoRA [33]. FFA-LoRA [43] freezes the 𝐀\mathbf{A} matrices and trains only the 𝐁\mathbf{B} matrices, allowing for exact aggregation in a federated setting but at the cost of losing the benefits of training 𝐀\mathbf{A}.
+5.1 Instruction Tuning
+Implementation Details.
+For arithmetic reasoning, we fine-tune Mistral-7B [22] and Gemma-2 9B [45] on 10K samples from the MetaMathQA dataset [53] and evaluate them on the GSM8K [11] and MATH [17] benchmarks. For commonsense reasoning, we use Llama-3.2 3B, training it on CommonSense170K—a dataset combining eight commonsense reasoning datasets [20]—and evaluate its performance on each of those datasets. In all instruction tuning tasks, we apply LoRA modules to the key, value, query, attention output, and all fully connected weight matrices. We fine-tune over a single local epoch within one aggregation round, using a rank of r=32r=32.
+Main Results.
+Tables 1 and 2 present the results for commonsense and arithmetic reasoning. Our method consistently surpasses state-of-the-art federated fine-tuning techniques across both arithmetic benchmarks and all eight commonsense reasoning tasks for every evaluated model. For example, on average accuracy for commonsense reasoning, FedEX-LoRA outperforms FFA-LoRA by 8.63%8.63\% and FedIT by 2.42%2.42\% respectively.
+Method
+Accuracy (↑\uparrow)
+BoolQ
+PIQA
+SIQA
+HellaS.
+WinoG.
+ARC-e
+ARC-c
+OBQA
+Avg.
+Centralized LoRAr=32\text{Centralized LoRA}_{\text{r}=32}
+73.4573.45
+89.6589.65
+82.2382.23
+94.4194.41
+87.9787.97
+93.8893.88
+82.7682.76
+86.6086.60
+86.3786.37
+FedITr=32\text{FedIT}_{\text{r}=32}
+70.7370.73
+87.5987.59
+79.1779.17
+91.0691.06
+83.4283.42
+92.7192.71
+81.3181.31
+82.6882.68
+83.5783.57
+FFA-LoRAr=32\text{FFA-LoRA}_{\text{r}=32}
+65.7865.78
+84.2284.22
+72.4172.41
+82.2782.27
+72.5372.53
+90.3690.36
+76.2876.28
+75.0075.00
+77.3577.35
+FedEx-LoRAr=32\text{FedEx-LoRA}_{\text{r}=32}
+73.21\mathbf{73.21}
+89.01\mathbf{89.01}
+81.98\mathbf{81.98}
+94.29\mathbf{94.29}
+87.29\mathbf{87.29}
+93.68\mathbf{93.68}
+82.33\mathbf{82.33}
+86.20\mathbf{86.20}
+85.99\mathbf{85.99}
+Table 1: Results for Llama-3.2 3B on eight commonsense reasoning datasets, comparing various federated LoRA methods at rank r=32r=32. Centralized LoRA (in grey) sets the benchmark skyline for its federated versions. Best results among federated methods (in blue) are highlighted in bold for each setting.
+Model
+Method
+Accuracy (↑\uparrow)
+GSM8K
+MATH
+Mistral-7B
+Centralized LoRAr=32\text{Centralized LoRA}_{\text{r}=32}
+62.7762.77
+16.2416.24
+FedITr=32\text{FedIT}_{\text{r}=32}
+56.9456.94
+14.9614.96
+FFA-LoRAr=32\text{FFA-LoRA}_{\text{r}=32}
+56.4156.41
+14.8814.88
+FedEx-LoRAr=32\text{FedEx-LoRA}_{\text{r}=32}
+62.62\mathbf{62.62}
+16.54\mathbf{16.54}
+Gemma-2 9B
+Centralized LoRAr=32\text{Centralized LoRA}_{\text{r}=32}
+76.3476.34
+39.3239.32
+FedITr=32\text{FedIT}_{\text{r}=32}
+74.5774.57
+37.1637.16
+FFA-LoRAr=32\text{FFA-LoRA}_{\text{r}=32}
+75.0475.04
+35.1835.18
+FedEx-LoRAr=32\text{FedEx-LoRA}_{\text{r}=32}
+76.19\mathbf{76.19}
+39.00\mathbf{39.00}
+Table 2: Arithmetic reasoning performance on GSM8K and MATH for Mistral-7B and Gemma-2 9B, comparing various federated LoRA methods at rank r=32r=32. Centralized LoRA (in grey) sets the benchmark skyline for its federated versions. Best results among federated methods (in blue) are highlighted in bold for each setting.
+5.2 Natural Language Understanding
+Implementation Details.
+RoBERTa [31] is a widely used pretrained model known for its competitive performance among its size. We use the pretrained RoBERTa-base (125M parameters) and RoBERTa-large (355M parameters) from the HuggingFace Transformers library [52] and evaluate them on several datasets from the GLUE benchmark: CoLA, RTE, MRPC, SST-2, QNLI, and STS-B. We apply LoRA modules only to the self-attention layers, following the setup from the original LoRA paper [19]. Models are fine-tuned at ranks r={4,1}r=\{4,1\} over local epochs of 33 and 1010. For RoBERTa-base, we run 5050 aggregation rounds for 33 local epochs and 1515 rounds for 1010 local epochs. For RoBERTa-large, we perform 1515 aggregation rounds for 33 local epochs and 55 rounds for 1010 local epochs. Detailed experimental settings are provided in Appendix B.
+Main Results.
+We present results for RoBERTa-base and RoBERTa-large in Table 3, evaluated at ranks r={4,1}r=\{4,1\}. Our method consistently outperforms state-of-the-art federated fine-tuning approaches across all datasets and settings. Notably, our method occasionally achieves performance on par with centralized LoRA. Additional results in Appendix D (Table 10) further demonstrate the robustness and superiority of our method over other federated LoRA variants across multiple settings.
+Method
+CoLA
+RTE
+MRPC
+SST-2
+QNLI
+STS-B
+All
+Mcc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Corr ↑\uparrow
+Avg ↑\uparrow
+Centralized LoRAr=4\text{Centralized LoRA}_{r=4}
+64.3164.31
+75.4575.45
+87.9987.99
+94.6194.61
+92.7592.75
+90.7390.73
+84.3184.31
+FedITr=4\text{FedIT}_{r=4}
+60.8260.82
+73.6473.64
+88.4888.48
+94.6194.61
+92.0792.07
+90.9190.91
+83.4283.42
+FFA-LoRAr=4\text{FFA-LoRA}_{r=4}
+59.3459.34
+70.0470.04
+87.5087.50
+94.2794.27
+91.3791.37
+90.2690.26
+82.1382.13
+FedEx-LoRAr=4\text{FedEx-LoRA}_{r=4}
+62.82\mathbf{62.82}
+75.09\mathbf{75.09}
+89.95\mathbf{89.95}
+94.84\mathbf{94.84}
+92.66\mathbf{92.66}
+90.95\mathbf{90.95}
+84.39\mathbf{84.39}
+Centralized LoRAr=1\text{Centralized LoRA}_{r=1}
+62.1362.13
+74.6774.67
+87.7587.75
+94.6194.61
+92.3192.31
+90.8390.83
+83.7283.72
+FedITr=1\text{FedIT}_{r=1}
+61.3361.33
+71.4871.48
+87.9987.99
+94.5294.52
+92.0192.01
+90.8190.81
+83.0283.02
+FFA-LoRAr=1\text{FFA-LoRA}_{r=1}
+57.5257.52
+71.2071.20
+87.4887.48
+94.0394.03
+91.7891.78
+90.3490.34
+82.0682.06
+FedEx-LoRAr=1\text{FedEx-LoRA}_{r=1}
+62.07\mathbf{62.07}
+73.65\mathbf{73.65}
+88.73\mathbf{88.73}
+94.84\mathbf{94.84}
+92.21\mathbf{92.21}
+90.87\mathbf{90.87}
+83.73\mathbf{83.73}
+(a) Results with RoBERTa-base on the GLUE benchmark datasets
+Method
+CoLA
+RTE
+MRPC
+SST-2
+QNLI
+STS-B
+All
+Mcc ↑\uparrow
+Acc ↑\uparrow
+F1 ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Corr ↑\uparrow
+Avg ↑\uparrow
+Centralized LoRAr=4\text{Centralized LoRA}_{r=4}
+66.0366.03
+82.6782.67
+88.8488.84
+96.2196.21
+94.5894.58
+91.9291.92
+86.7186.71
+FedITr=4\text{FedIT}_{r=4}
+64.4864.48
+78.4378.43
+88.4888.48
+95.8795.87
+94.4194.41
+91.2991.29
+85.4985.49
+FFA-LoRAr=4\text{FFA-LoRA}_{r=4}
+62.0562.05
+75.3975.39
+86.5286.52
+95.2795.27
+94.3594.35
+90.2390.23
+83.9783.97
+FedEx-LoRAr=4\text{FedEx-LoRA}_{r=4}
+65.29\mathbf{65.29}
+80.31\mathbf{80.31}
+89.95\mathbf{89.95}
+96.21\mathbf{96.21}
+94.71\mathbf{94.71}
+91.85\mathbf{91.85}
+86.39\mathbf{86.39}
+Centralized LoRAr=1\text{Centralized LoRA}_{r=1}
+65.2165.21
+83.3983.39
+92.4492.44
+96.1096.10
+94.4294.42
+92.1292.12
+87.2887.28
+FedITr=1\text{FedIT}_{r=1}
+62.8262.82
+78.1178.11
+91.2991.29
+96.1096.10
+94.3594.35
+91.6291.62
+85.7285.72
+FFA-LoRAr=1\text{FFA-LoRA}_{r=1}
+60.5860.58
+74.6774.67
+89.4789.47
+95.5895.58
+94.0194.01
+91.3491.34
+84.2884.28
+FedEx-LoRAr=1\text{FedEx-LoRA}_{r=1}
+64.35\mathbf{64.35}
+80.01\mathbf{80.01}
+91.76\mathbf{91.76}
+96.22\mathbf{96.22}
+94.71\mathbf{94.71}
+91.91\mathbf{91.91}
+86.49\mathbf{86.49}
+(b) Results with RoBERTa-large on the GLUE benchmark datasets
+Table 3: Results with RoBERTa-base and Roberta-large on the GLUE benchmark datasets, comparing various federated LoRA methods at ranks r={4,1}r=\{4,1\}. Centralized LoRA (in grey) sets the benchmark skyline for its federated versions. Best results among federated methods (in blue) are highlighted in bold for each setting. There are 33 local epochs before every aggregation round. We report Matthew’s correlation for CoLA, Pearson correlation for STS-B, and accuracy for others. Higher is better for all metrics.
+5.3 Natural Language Generation
+Implementation Details.
+We fine-tune GPT-2 (124M parameters) [37] on the E2E NLG Challenge dataset [35]. We apply LoRA modules only to the self-attention layers. The model is fine-tuned at ranks r={4,1}r=\{4,1\} with local epochs set to 33 and 1010, using 66 aggregation rounds for both settings. Detailed experimental settings are provided in Appendix B.
+Main Results.
+Table 4 presents the performance of GPT-2 fine-tuned with ranks r={4,1}r=\{4,1\}. FedEx-LoRA consistently outperforms leading federated fine-tuning methods, across all metrics and settings.
+Additional evaluations, provided in Appendix E (Table 11), further demonstrate the reliability and strength of FedEx-LoRA across different configurations.
+Method
+E2E NLG Challenge
+BLEU ↑\uparrow
+NIST ↑\uparrow
+MET ↑\uparrow
+ROUGE-L ↑\uparrow
+CIDEr ↑\uparrow
+Centralized LoRAr=4\text{Centralized LoRA}_{\text{r}=4}
+68.9168.91
+8.738.73
+46.7846.78
+71.2971.29
+2.472.47
+FedITr=4\text{FedIT}_{\text{r}=4}
+67.6067.60
+8.678.67
+46.3046.30
+68.9668.96
+2.412.41
+FFA-LoRAr=4\text{FFA-LoRA}_{\text{r}=4}
+66.7966.79
+8.618.61
+45.2445.24
+67.9867.98
+2.392.39
+FedEx-LoRAr=4\text{FedEx-LoRA}_{\text{r}=4}
+68.15\mathbf{68.15}
+8.72\mathbf{8.72}
+46.48\mathbf{46.48}
+69.49\mathbf{69.49}
+2.44\mathbf{2.44}
+Centralized LoRAr=1\text{Centralized LoRA}_{\text{r}=1}
+67.4167.41
+8.688.68
+46.0146.01
+69.5169.51
+2.412.41
+FedITr=1\text{FedIT}_{\text{r}=1}
+66.0166.01
+8.568.56
+45.2145.21
+68.1468.14
+2.282.28
+FFA-LoRAr=4\text{FFA-LoRA}_{\text{r}=4}
+65.8765.87
+8.548.54
+45.0245.02
+68.0568.05
+2.272.27
+FedEx-LoRAr=1\text{FedEx-LoRA}_{\text{r}=1}
+67.02\mathbf{67.02}
+8.61\mathbf{8.61}
+45.99\mathbf{45.99}
+69.52\mathbf{69.52}
+2.38\mathbf{2.38}
+Table 4: Results with GPT-2 on the E2E NLG Challenge, comparing various federated LoRA methods at ranks r={4,1}r=\{4,1\}. Centralized LoRA (in grey) sets the benchmark skyline for its federated versions. Best results among federated methods (in blue) are highlighted in bold for each setting. There are 33 local epochs before every aggregation round. Higher is better for all metrics.
+6 Analysis
+To fully understand the implications of our method, we performed several in-depth analyses, each targeting a specific aspect of FedEx-LoRA’s performance and efficiency.
+Assignment Strategies for 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i}.
+As discussed in Section 4, we can incorporate any high-rank update matrix 𝚫​𝐖r​e​s\mathbf{\Delta W}_{res} within the frozen full-rank matrix 𝐖0\mathbf{W}_{0}. However, assignment of the low-rank adapters 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} post-aggregation is less straightforward.
+Any selection of 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} can be offset by adjusting the residual update, by ensuring that 𝐖0+𝐁i​𝐀i\mathbf{W}_{0}+\mathbf{B}_{i}\mathbf{A}_{i} remains consistent across clients.
+We evaluate three strategies: (1) Reinitialize 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} reinitializes 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} after aggregation and appends the full update to the frozen weights (ensuring 𝐖0+𝐁i​𝐀i\mathbf{W}_{0}+\mathbf{B}_{i}\mathbf{A}_{i} is identical). (2) 𝐀i←𝐀i\mathbf{A}_{i}\leftarrow\mathbf{A}_{i} and 𝐁i←𝐁i\mathbf{B}_{i}\leftarrow\mathbf{B}_{i} leaves 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} unchanged across clients, maintaining their pre-aggregation values. (3) FedEx-LoRA aggregates 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} using the aggregation method in FedIT (FedAvg), providing the best low-rank approximation to the aggregated update with the residual 𝚫​𝐖r​e​s\mathbf{\Delta W}_{res} stored in 𝐖0\mathbf{W}_{0}. We present results for RoBERTa-base on the GLUE benchmark in Table 5. FedEx-LoRA outperforms the other strategies, leading us to adopt 𝐁i←1k​∑i=1k𝐁i\mathbf{B}_{i}\leftarrow\frac{1}{k}\sum_{i=1}^{k}\mathbf{B}_{i} and 𝐀i←1k​∑i=1k𝐀i\mathbf{A}_{i}\leftarrow\frac{1}{k}\sum_{i=1}^{k}\mathbf{A}_{i} across all clients.
+Method
+CoLA
+RTE
+MRPC
+SST-2
+QNLI
+STS-B
+All
+Mcc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Corr ↑\uparrow
+Avg ↑\uparrow
+Reinitialize 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i}
+0.000.00
+61.3761.37
+75.7475.74
+76.2676.26
+53.9853.98
+53.3853.38
+53.4653.46
+𝐀i←𝐀i\mathbf{A}_{i}\leftarrow\mathbf{A}_{i} and 𝐁i←𝐁i\mathbf{B}_{i}\leftarrow\mathbf{B}_{i}
+55.5455.54
+59.9359.93
+84.8084.80
+92.7792.77
+88.9888.98
+88.4188.41
+78.4178.41
+FedEx-LoRA
+62.82\mathbf{62.82}
+75.09\mathbf{75.09}
+89.95\mathbf{89.95}
+94.84\mathbf{94.84}
+92.66\mathbf{92.66}
+90.95\mathbf{90.95}
+84.39\mathbf{84.39}
+Table 5: Results with RoBERTa-base (r=4r=4) on the GLUE benchmark datasets, comparing various assignment strategies for 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i}. We report Matthew’s correlation for CoLA, Pearson correlation for STS-B, and accuracy for other datasets. Best results for each dataset are highlighted in bold.
+To extend our method to rank-heterogeneous settings, the assignments for 𝐀i\mathbf{A}_{i} and 𝐁i\mathbf{B}_{i} must also accommodate rank heterogeneity. Further investigation is required to develop an optimal assignment strategy that supports this.
+Scaled Frobenius Norm of Divergence/Deviation.
+We now study the deviations in updates from federated averaging (FedAvg) relative to ideal updates and analyze the findings.
+To quantify this deviation, we measure the scaled Frobenius norm of the divergence between the updates produced by FedAvg and the ideal LoRA updates, revealing several notable patterns. In Figure 2, we plot this divergence for the query (Q) and value (V) matrices across model layers, computed after the first aggregation step for local epochs ={3,10}=\{{\color[rgb]{0.3711,0.6211,0.6289}\textbf{3}},{\color[rgb]{0.8906,0.4297,0.4297}\textbf{10}}\}. We observe that (1) the deviations decrease as the model depth increases, (2) the deviation grows with a higher number of local epochs, and (3) the deviation is more pronounced in the query (Q) matrices compared to the value (V) matrices.
+These trends hold consistently across various datasets and settings, as shown by additional plots in Appendix F.1 (see Figures 4 and 5).
+Next, we examine how this deviation evolves across multiple rounds of federated aggregation. We plot the scaled Frobenius norm of the deviation between FedAvg and ideal LoRA updates over several aggregation rounds for different datasets, focusing on (a) the query matrices of the first layer, and (b) the average of the query and value matrices across all layers, as presented in Figure 3. We observe that the deviation consistently decreases as the number of aggregation rounds increases, both for the first-layer query matrix and for the average of the query and value matrices across all layers.
+These findings are further supported by detailed plots across multiple datasets and settings, as shown in Appendix F.2 (see Figures 6, 7, 8, and 9).
+Figure 2: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed after the first aggregation step. We plot for query (Q) and value (V) matrices across model layers. Results are shown for local epochs ={3,10}=\{{\color[rgb]{0.3711,0.6211,0.6289}\textbf{3}},{\color[rgb]{0.8906,0.4297,0.4297}\textbf{10}}\}. (Dataset: MRPC, model: RoBERTa-large, r=1r=1).
+((a)) Query matrices of first layer
+((b)) Avg. of query and value matrices across all layers
+Figure 3: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed across multiple aggregation rounds for various datasets. We present results for (a) query matrices from the first layer, and (b) the average of query and value matrices across all layers. (Model: RoBERTa-large, r=1r=1, local epochs =10=10).
+Communication Costs.
+As discussed in Section 4, FedEx-LoRA transmits a higher-rank update matrix (rank = k⋅rk\cdot r) along with the low-rank adapters, which raises concerns about potential communication overhead. Table 6 compares the communication costs of FFA-LoRA, FedIT, and full federated fine-tuning (FT), compared to FedEx-LoRA, for RoBERTa-base, RoBERTa-large, and GPT-2 models with rank r=4r=4 over 55 communication rounds. FedEx-LoRA incurs only a marginal increase in communication overhead relative to FedIT and FFA-LoRA, while FFA-LoRA has the lowest cost due to its reduced number of trainable parameters. FedEx-LoRA still maintains a substantially lower communication cost compared to federated full FT.
+The practical impact of communication overhead is reduced by two factors: (1) the initial transmission of full model weights dominates communication costs, and (2) in NLU tasks, most communicated parameters come from the classification head, which requires training regardless of the aggregation method. Therefore, communication cost differences between FedEx-LoRA, FedIT, and FFA-LoRA are minimal in practice. Despite this marginal overhead, FedEx-LoRA consistently outperforms other federated LoRA approaches, making it an effective choice for federated fine-tuning.
+Model
+Federated Full FT
+FedEx-LoRA
+FedIT
+FFA-LoRA
+RoBERTa-base
+7.0327.032
+11
+0.9790.979
+0.9720.972
+RoBERTa-large
+10.39610.396
+11
+0.9840.984
+0.9790.979
+GPT-2
+9.4759.475
+11
+0.9170.917
+0.8860.886
+Table 6: Ratio of # of parameters communicated in federated LoRA variants and federated full FT to FedEx-LoRA. All results are reported with rank r=4r=4 and across 55 communication rounds.
+7 Conclusion
+In our work, we identified limitations in state-of-the-art federated fine-tuning methods that struggle with inexact aggregation. We proposed a novel method, FedEx-LoRA, which appends the residual error matrix to the frozen pretrained matrix, while maintaining minimal communication and computational overhead. The strength of our approach lies in its simplicity and broad applicability. Extensive experiments demonstrate that FedEx-LoRA consistently outperforms other federated LoRA methods across various datasets and settings. Our analyses reveal that deviations in updates from federated averaging compared to the ideal solution are significant and exhibit notable patterns.
+Testing in privacy-preserving scenarios is a natural extension of our work. FFA-LoRA [43] demonstrated that noise in differential privacy leads to greater deviations from ideal updates. Given that our method achieves exact aggregation and outperforms FFA-LoRA in non-private settings, we anticipate similar success in privacy-sensitive applications. Our approach can be readily adapted for fine-tuning other models like Vision Transformers (ViTs) and Vision-Language models (VLMs).
+Acknowledgements and Discolsure of Funding
+This work was supported by Mohamed bin Zayed University of Artificial Intelligence (MBZUAI) and partially funded by the ADIA Lab Fellowship.
+References
+[1]
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Florencia Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et al.
+Gpt-4 technical report.
+arXiv preprint arXiv:2303.08774, 2023.
+[2]
+Sara Babakniya, Ahmed Roushdy Elkordy, Yahya H Ezzeldin, Qingfeng Liu, Kee-Bong Song, Mostafa El-Khamy, and Salman Avestimehr.
+Slora: Federated parameter efficient fine-tuning of language models.
+arXiv preprint arXiv:2308.06522, 2023.
+[3]
+Yonatan Bisk, Rowan Zellers, Jianfeng Gao, Yejin Choi, et al.
+Piqa: Reasoning about physical commonsense in natural language.
+In Proceedings of the AAAI conference on artificial intelligence, volume 34, pp. 7432–7439, 2020.
+[4]
+Keith Bonawitz, Hubert Eichner, Wolfgang Grieskamp, Dzmitry Huba, Alex Ingerman, Vladimir Ivanov, Chloe Kiddon, Jakub Konečný, Stefano Mazzocchi, H. Brendan McMahan, Timon Van Overveldt, David Petrou, Daniel Ramage, and Jason Roselander.
+Towards federated learning at scale: System design, 2019.
+URL https://arxiv.org/abs/1902.01046.
+[5]
+Daniel Cer, Mona Diab, Eneko Agirre, Inigo Lopez-Gazpio, and Lucia Specia.
+Semeval-2017 task 1: Semantic textual similarity-multilingual and cross-lingual focused evaluation.
+arXiv preprint arXiv:1708.00055, 2017.
+[6]
+Yupeng Chang, Xu Wang, Jindong Wang, Yuan Wu, Linyi Yang, Kaijie Zhu, Hao Chen, Xiaoyuan Yi, Cunxiang Wang, Yidong Wang, et al.
+A survey on evaluation of large language models.
+ACM Transactions on Intelligent Systems and Technology, 15(3):1–45, 2024.
+[7]
+Yukang Chen, Shengju Qian, Haotian Tang, Xin Lai, Zhijian Liu, Song Han, and Jiaya Jia.
+Longlora: Efficient fine-tuning of long-context large language models, 2024.
+URL https://arxiv.org/abs/2309.12307.
+[8]
+Yae Jee Cho, Luyang Liu, Zheng Xu, Aldi Fahrezi, and Gauri Joshi.
+Heterogeneous lora for federated fine-tuning of on-device foundation models, 2024.
+URL https://arxiv.org/abs/2401.06432.
+[9]
+Christopher Clark, Kenton Lee, Ming-Wei Chang, Tom Kwiatkowski, Michael Collins, and Kristina Toutanova.
+Boolq: Exploring the surprising difficulty of natural yes/no questions.
+arXiv preprint arXiv:1905.10044, 2019.
+[10]
+Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa Schoenick, and Oyvind Tafjord.
+Think you have solved question answering? try arc, the ai2 reasoning challenge.
+arXiv preprint arXiv:1803.05457, 2018.
+[11]
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman.
+Training verifiers to solve math word problems, 2021.
+URL https://arxiv.org/abs/2110.14168.
+[12]
+Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer.
+Qlora: efficient finetuning of quantized llms.
+In Proceedings of the 37th International Conference on Neural Information Processing Systems, NIPS ’23, Red Hook, NY, USA, 2024. Curran Associates Inc.
+[13]
+Bill Dolan and Chris Brockett.
+Automatically constructing a corpus of sentential paraphrases.
+In Third international workshop on paraphrasing (IWP2005), 2005.
+[14]
+Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan, et al.
+The llama 3 herd of models.
+arXiv preprint arXiv:2407.21783, 2024.
+[15]
+Carl Eckart and Gale Young.
+The approximation of one matrix by another of lower rank.
+Psychometrika, 1(3):211–218, 1936.
+[16]
+Chaoyang He, Songze Li, Jinhyun So, Xiao Zeng, Mi Zhang, Hongyi Wang, Xiaoyang Wang, Praneeth Vepakomma, Abhishek Singh, Hang Qiu, et al.
+Fedml: A research library and benchmark for federated machine learning.
+arXiv preprint arXiv:2007.13518, 2020.
+[17]
+Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Jacob Steinhardt.
+Measuring mathematical problem solving with the math dataset, 2021.
+URL https://arxiv.org/abs/2103.03874.
+[18]
+Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin de Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly.
+Parameter-efficient transfer learning for nlp, 2019.
+URL https://arxiv.org/abs/1902.00751.
+[19]
+Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen.
+Lora: Low-rank adaptation of large language models.
+arXiv preprint arXiv:2106.09685, 2021.
+[20]
+Zhiqiang Hu, Lei Wang, Yihuai Lan, Wanyu Xu, Ee-Peng Lim, Lidong Bing, Xing Xu, Soujanya Poria, and Roy Ka-Wei Lee.
+Llm-adapters: An adapter family for parameter-efficient fine-tuning of large language models, 2023.
+URL https://arxiv.org/abs/2304.01933.
+[21]
+Jie Huang, Hanyin Shao, and Kevin Chen-Chuan Chang.
+Are large pre-trained language models leaking your personal information?
+arXiv preprint arXiv:2205.12628, 2022.
+[22]
+Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed.
+Mistral 7b, 2023.
+URL https://arxiv.org/abs/2310.06825.
+[23]
+Peter Kairouz, H Brendan McMahan, Brendan Avent, Aurélien Bellet, Mehdi Bennis, Arjun Nitin Bhagoji, Kallista Bonawitz, Zachary Charles, Graham Cormode, Rachel Cummings, et al.
+Advances and open problems in federated learning.
+Foundations and trends® in machine learning, 14(1–2):1–210, 2021.
+[24]
+Jakub Konečný, H. Brendan McMahan, Felix X. Yu, Peter Richtárik, Ananda Theertha Suresh, and Dave Bacon.
+Federated learning: Strategies for improving communication efficiency, 2017.
+URL https://arxiv.org/abs/1610.05492.
+[25]
+Weirui Kuang, Bingchen Qian, Zitao Li, Daoyuan Chen, Dawei Gao, Xuchen Pan, Yuexiang Xie, Yaliang Li, Bolin Ding, and Jingren Zhou.
+Federatedscope-llm: A comprehensive package for fine-tuning large language models in federated learning.
+In Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining, pp. 5260–5271, 2024.
+[26]
+Fan Lai, Yinwei Dai, Sanjay Singapuram, Jiachen Liu, Xiangfeng Zhu, Harsha Madhyastha, and Mosharaf Chowdhury.
+Fedscale: Benchmarking model and system performance of federated learning at scale.
+In International conference on machine learning, pp. 11814–11827. PMLR, 2022.
+[27]
+Brian Lester, Rami Al-Rfou, and Noah Constant.
+The power of scale for parameter-efficient prompt tuning.
+In Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (eds.), Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pp. 3045–3059, Online and Punta Cana, Dominican Republic, November 2021. Association for Computational Linguistics.
+doi: 10.18653/v1/2021.emnlp-main.243.
+URL https://aclanthology.org/2021.emnlp-main.243.
+[28]
+Xiang Li, Kaixuan Huang, Wenhao Yang, Shusen Wang, and Zhihua Zhang.
+On the convergence of fedavg on non-iid data.
+arXiv preprint arXiv:1907.02189, 2019.
+[29]
+Xiang Lisa Li and Percy Liang.
+Prefix-tuning: Optimizing continuous prompts for generation.
+In Chengqing Zong, Fei Xia, Wenjie Li, and Roberto Navigli (eds.), Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers), pp. 4582–4597, Online, August 2021. Association for Computational Linguistics.
+doi: 10.18653/v1/2021.acl-long.353.
+URL https://aclanthology.org/2021.acl-long.353.
+[30]
+Tzu-Han Lin, How-Shing Wang, Hao-Yung Weng, Kuang-Chen Peng, Zih-Ching Chen, and Hung yi Lee.
+Peft for speech: Unveiling optimal placement, merging strategies, and ensemble techniques, 2024.
+URL https://arxiv.org/abs/2401.02122.
+[31]
+Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov.
+Roberta: A robustly optimized bert pretraining approach, 2019.
+URL https://arxiv.org/abs/1907.11692.
+[32]
+Ilya Loshchilov and Frank Hutter.
+Decoupled weight decay regularization, 2019.
+URL https://arxiv.org/abs/1711.05101.
+[33]
+Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson, and Blaise Aguera y Arcas.
+Communication-efficient learning of deep networks from decentralized data.
+In Artificial intelligence and statistics, pp. 1273–1282. PMLR, 2017.
+[34]
+Todor Mihaylov, Peter Clark, Tushar Khot, and Ashish Sabharwal.
+Can a suit of armor conduct electricity? a new dataset for open book question answering.
+arXiv preprint arXiv:1809.02789, 2018.
+[35]
+Jekaterina Novikova, Ondřej Dušek, and Verena Rieser.
+The e2e dataset: New challenges for end-to-end generation.
+arXiv preprint arXiv:1706.09254, 2017.
+[36]
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, et al.
+Pytorch: An imperative style, high-performance deep learning library.
+Advances in neural information processing systems, 32, 2019.
+[37]
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et al.
+Language models are unsupervised multitask learners.
+OpenAI blog, 1(8):9, 2019.
+[38]
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu.
+Exploring the limits of transfer learning with a unified text-to-text transformer.
+Journal of machine learning research, 21(140):1–67, 2020.
+[39]
+Pranav Rajpurkar, Robin Jia, and Percy Liang.
+Know what you don’t know: Unanswerable questions for squad.
+arXiv preprint arXiv:1806.03822, 2018.
+[40]
+Keisuke Sakaguchi, Ronan Le Bras, Chandra Bhagavatula, and Yejin Choi.
+Winogrande: An adversarial winograd schema challenge at scale.
+Communications of the ACM, 64(9):99–106, 2021.
+[41]
+Maarten Sap, Hannah Rashkin, Derek Chen, Ronan LeBras, and Yejin Choi.
+Socialiqa: Commonsense reasoning about social interactions.
+arXiv preprint arXiv:1904.09728, 2019.
+[42]
+Richard Socher, Alex Perelygin, Jean Wu, Jason Chuang, Christopher D Manning, Andrew Y Ng, and Christopher Potts.
+Recursive deep models for semantic compositionality over a sentiment treebank.
+In Proceedings of the 2013 conference on empirical methods in natural language processing, pp. 1631–1642, 2013.
+[43]
+Youbang Sun, Zitao Li, Yaliang Li, and Bolin Ding.
+Improving lora in privacy-preserving federated learning.
+arXiv preprint arXiv:2403.12313, 2024.
+[44]
+Gemini Team, Rohan Anil, Sebastian Borgeaud, Yonghui Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan Schalkwyk, Andrew M Dai, Anja Hauth, et al.
+Gemini: a family of highly capable multimodal models.
+arXiv preprint arXiv:2312.11805, 2023.
+[45]
+Gemma Team, Morgane Riviere, Shreya Pathak, Pier Giuseppe Sessa, Cassidy Hardin, Surya Bhupatiraju, Léonard Hussenot, Thomas Mesnard, Bobak Shahriari, Alexandre Ramé, et al.
+Gemma 2: Improving open language models at a practical size.
+arXiv preprint arXiv:2408.00118, 2024.
+[46]
+Chunlin Tian, Zhan Shi, Zhijiang Guo, Li Li, and Chengzhong Xu.
+Hydralora: An asymmetric lora architecture for efficient fine-tuning, 2024.
+URL https://arxiv.org/abs/2404.19245.
+[47]
+Yuanyishu Tian, Yao Wan, Lingjuan Lyu, Dezhong Yao, Hai Jin, and Lichao Sun.
+Fedbert: When federated learning meets pre-training.
+ACM Transactions on Intelligent Systems and Technology (TIST), 13(4):1–26, 2022.
+[48]
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et al.
+Llama 2: Open foundation and fine-tuned chat models.
+arXiv preprint arXiv:2307.09288, 2023.
+[49]
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin.
+Attention is all you need.
+In Advances in Neural Information Processing Systems, volume 30, 2017.
+URL https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf.
+[50]
+Alex Wang, Amanpreet Singh, Julian Michael, Felix Hill, Omer Levy, and Samuel R. Bowman.
+Glue: A multi-task benchmark and analysis platform for natural language understanding, 2019.
+URL https://arxiv.org/abs/1804.07461.
+[51]
+Alex Warstadt, Amanpreet Singh, and Samuel R. Bowman.
+Neural network acceptability judgments.
+Transactions of the Association for Computational Linguistics, 7:625–641, 2019.
+doi: 10.1162/tacl_a_00290.
+URL https://aclanthology.org/Q19-1040.
+[52]
+Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue, Anthony Moi, Pierric Cistac, Tim Rault, Rémi Louf, Morgan Funtowicz, et al.
+Transformers: State-of-the-art natural language processing.
+In Proceedings of the 2020 conference on empirical methods in natural language processing: system demonstrations, pp. 38–45, 2020.
+[53]
+Longhui Yu, Weisen Jiang, Han Shi, Jincheng Yu, Zhengying Liu, Yu Zhang, James T. Kwok, Zhenguo Li, Adrian Weller, and Weiyang Liu.
+Metamath: Bootstrap your own mathematical questions for large language models, 2024.
+URL https://arxiv.org/abs/2309.12284.
+[54]
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi.
+Hellaswag: Can a machine really finish your sentence?
+arXiv preprint arXiv:1905.07830, 2019.
+[55]
+Aohan Zeng, Xiao Liu, Zhengxiao Du, Zihan Wang, Hanyu Lai, Ming Ding, Zhuoyi Yang, Yifan Xu, Wendi Zheng, Xiao Xia, et al.
+Glm-130b: An open bilingual pre-trained model.
+arXiv preprint arXiv:2210.02414, 2022.
+[56]
+Biao Zhang, Zhongtao Liu, Colin Cherry, and Orhan Firat.
+When scaling meets llm finetuning: The effect of data, model and finetuning method, 2024a.
+URL https://arxiv.org/abs/2402.17193.
+[57]
+Chen Zhang, Yu Xie, Hang Bai, Bin Yu, Weihong Li, and Yuan Gao.
+A survey on federated learning.
+Knowledge-Based Systems, 216:106775, 2021.
+[58]
+Jianyi Zhang, Saeed Vahidian, Martin Kuo, Chunyuan Li, Ruiyi Zhang, Tong Yu, Guoyin Wang, and Yiran Chen.
+Towards building the federatedgpt: Federated instruction tuning.
+In ICASSP 2024-2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pp. 6915–6919. IEEE, 2024b.
+[59]
+Longteng Zhang, Lin Zhang, Shaohuai Shi, Xiaowen Chu, and Bo Li.
+Lora-fa: Memory-efficient low-rank adaptation for large language models fine-tuning, 2023a.
+URL https://arxiv.org/abs/2308.03303.
+[60]
+Qingru Zhang, Minshuo Chen, Alexander Bukharin, Nikos Karampatziakis, Pengcheng He, Yu Cheng, Weizhu Chen, and Tuo Zhao.
+Adalora: Adaptive budget allocation for parameter-efficient fine-tuning, 2023b.
+URL https://arxiv.org/abs/2303.10512.
+[61]
+Zhuo Zhang, Yuanhang Yang, Yong Dai, Lizhen Qu, and Zenglin Xu.
+When federated learning meets pre-trained language models’ parameter-efficient tuning methods.
+arXiv preprint arXiv:2212.10025, 2022.
+[62]
+Yue Zhao, Meng Li, Liangzhen Lai, Naveen Suda, Damon Civin, and Vikas Chandra.
+Federated learning with non-iid data.
+arXiv preprint arXiv:1806.00582, 2018.
+Appendix A Dataset Details
+CommonSense170K is a dataset combining eight commonsense reasoning datasets [20], as detailed below:
+1.
+WinoGrande [40] involves filling in blanks with binary choices based on sentences that demand commonsense reasoning.
+2.
+HellaSwag [54] asks the model to predict the most plausible continuation of a given context by selecting the correct ending from several options.
+3.
+ARC Challenge or ARC-c [10] consists of multiple-choice science questions designed to challenge models with more complex reasoning, making them harder for methods that rely solely on co-occurrence patterns.
+4.
+PIQA [3] tests physical commonsense reasoning, where the task is to choose the best action from a set of options in a hypothetical situation.
+5.
+BoolQ [9] focuses on yes/no question answering from naturally occurring queries.
+6.
+ARC Easy or ARC-e [10] consists of grade-school-level multiple-choice science questions, providing a simpler set of tasks for testing models’ basic reasoning abilities.
+7.
+OBQA [34] contains open-book, knowledge-intensive QA tasks requiring multi-hop reasoning to answer questions that involve integrating information from multiple sources.
+8.
+SIQA [41] focuses on understanding human actions and predicting their social consequences, evaluating models’ social commonsense reasoning.
+MetaMathQA dataset [53] generates mathematical questions by rephrasing them from various perspectives without introducing additional knowledge. We evaluate this dataset on two benchmarks: GSM8K [11], which includes grade-school math word problems that require multi-step reasoning, and MATH [17], which features challenging competition-level mathematics problems.
+GLUE Benchmark is a diverse suite of tasks for evaluating natural language understanding capabilities. It includes datasets such as SST-2 for sentiment analysis [42], MRPC for paraphrase detection [13], CoLA for linguistic acceptability [51], QNLI for inference [39], RTE for inference, and STS-B for semantic textual similarity [5]. Due to its comprehensive coverage of NLU tasks, GLUE is widely used to assess models like RoBERTa. Each dataset is released under its own license.
+The E2E NLG Challenge [35] dataset is widely used to evaluate systems for natural language generation, particularly for data-to-text tasks. It contains around 42,000 training examples, with an additional 4,600 each for validation and testing, all from the restaurant domain. Each input table has multiple reference outputs, where each data point (x,y)(x,y) includes a sequence of slot-value pairs and its corresponding reference text in natural language. The dataset is made available under the Creative Commons BY-NC-SA 4.0 license.
+Appendix B Hyperparameter Details
+We conduct experiments on a single NVIDIA A100/A6000 GPU and report the average results from three independent runs. All models are trained using the AdamW optimizer [32]. For the instruction tuning experiments, the hyperparameters and configurations for Mistral-7B, Gemma-2 9B, and Llama-3.2 3B are provided in Table 7, following most of the settings from previous works [20]. The hyperparameter configurations for GPT-2 and RoBERTa-base/large are detailed in Table 8, with most settings following the original LoRA paper [19], except for a learning rate sweep.
+Mistral-7B / Gemma-2 9B
+Llama-3.2 3B
+Optimizer
+AdamW
+AdamW
+Batch size
+11
+66
+Max. Seq. Len
+512512
+256256
+Grad Acc. Steps
+3232
+2424
+Local Epochs
+11
+11
+Rounds
+11
+11
+Dropout
+00
+00
+Learning Rate
+5​e−45e-4
+5​e−45e-4
+LR Scheduler
+Cosine
+Linear
+Warmup Ratio
+0.020.02
+0.020.02
+LoRA α\alpha
+1616
+1616
+Table 7: Hyperparameter settings for Mistral-7B, Gemma-2 9B & Llama-3.2 3B.
+GPT-2
+RoBERTa-base/large
+Training
+Optimizer
+AdamW
+AdamW
+Weight Decay
+0.010.01
+0.010.01
+Dropout Prob
+0.10.1
+0.10.1
+Batch Size
+88
+128128
+Warmup Steps
+500500
+-
+Warmup Ratio
+-
+0.60.6
+Label Smooth
+0.10.1
+-
+Max Seq. Len
+128128
+512512
+Learning Rate
+2⋅10−32\cdot 10^{-3}
+1⋅10−31\cdot 10^{-3}
+LoRA α\alpha
+3232
+88
+Inference
+Beam Size
+1010
+-
+Length Penalty
+0.90.9
+-
+no repeat ngram size
+44
+-
+Table 8: Hyperparameter settings for GPT-2 and RoBERTa-base/large.
+Appendix C Effect of Varying Rank
+We evaluate FedEx-LoRA against other federated fine-tuning methods on the CoLA dataset using RoBERTa-base, by varying the rank of the low-rank adapters across r={1,2,4,8,16,32}r=\{1,2,4,8,16,32\}, as presented in Table 9. Across all rank configurations, FedEx-LoRA consistently outperforms competing federated LoRA variants. In agreement with prior studies [19, 60], increasing the rank does not always result in performance gains. For this task, we find that the optimal performance is achieved at r=8r=8, beyond which further increases in rank yield diminishing returns.
+Method
+𝐫=𝟏\mathbf{r=1}
+𝐫=𝟐\mathbf{r=2}
+𝐫=𝟒\mathbf{r=4}
+𝐫=𝟖\mathbf{r=8}
+𝐫=𝟏𝟔\mathbf{r=16}
+𝐫=𝟑𝟐\mathbf{r=32}
+Centralized LoRA
+62.1362.13
+62.1162.11
+64.3164.31
+64.4464.44
+64.3264.32
+63.9863.98
+FedIT
+60.0560.05
+60.3260.32
+60.8260.82
+62.0962.09
+62.1562.15
+61.9861.98
+FFA-LoRA
+57.7357.73
+57.7857.78
+59.3459.34
+57.8257.82
+57.7857.78
+58.2458.24
+FedEx-LoRA
+62.07\mathbf{62.07}
+61.38\mathbf{61.38}
+62.82\mathbf{62.82}
+63.57\mathbf{63.57}
+63.56\mathbf{63.56}
+63.35\mathbf{63.35}
+Table 9: Matthew’s correlation on CoLA across different ranks for various federated LoRA methods. Centralized LoRA (in grey) sets the benchmark skyline for its federated versions. Best results among federated methods (in blue) are highlighted in bold for each rank. (Model: RoBERTa-base, local epochs =3=3).
+Appendix D Additional Experiments for NLU
+We present additonal results with the RoBERTa-base and RoBERTa-large models in Table 10, evaluated at ranks r={4,1}r=\{4,1\}, with local epochs set to 1010.
+Method
+CoLA
+RTE
+MRPC
+SST-2
+QNLI
+STS-B
+All
+Mcc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Corr ↑\uparrow
+Avg ↑\uparrow
+Centralized LoRAr=4\text{Centralized LoRA}_{r=4}
+64.3164.31
+75.4575.45
+87.9987.99
+94.6194.61
+92.7592.75
+90.7390.73
+84.3184.31
+FedITr=4\text{FedIT}_{r=4}
+58.5558.55
+70.7570.75
+87.5087.50
+94.3694.36
+92.0992.09
+90.5890.58
+82.3182.31
+FFA-LoRAr=4\text{FFA-LoRA}_{r=4}
+57.5257.52
+71.8471.84
+86.7686.76
+94.2494.24
+91.2791.27
+90.0490.04
+81.9581.95
+FedEx-LoRAr=4\text{FedEx-LoRA}_{r=4}
+61.32\mathbf{61.32}
+75.81\mathbf{75.81}
+87.75\mathbf{87.75}
+94.57\mathbf{94.57}
+92.64\mathbf{92.64}
+90.62\mathbf{90.62}
+83.79\mathbf{83.79}
+Centralized LoRAr=1\text{Centralized LoRA}_{r=1}
+62.1362.13
+74.6774.67
+87.7587.75
+94.6194.61
+92.3192.31
+90.8390.83
+83.7283.72
+FedITr=1\text{FedIT}_{r=1}
+60.0560.05
+71.8471.84
+88.7988.79
+94.6294.62
+92.2392.23
+90.5490.54
+83.0183.01
+FFA-LoRAr=1\text{FFA-LoRA}_{r=1}
+57.7357.73
+71.1871.18
+87.7487.74
+93.6993.69
+91.4191.41
+90.1890.18
+81.9981.99
+FedEx-LoRAr=1\text{FedEx-LoRA}_{r=1}
+61.31\mathbf{61.31}
+73.12\mathbf{73.12}
+89.21\mathbf{89.21}
+94.73\mathbf{94.73}
+92.40\mathbf{92.40}
+90.67\mathbf{90.67}
+83.57\mathbf{83.57}
+(a) Results with RoBERTa-base on the GLUE benchmark datasets
+Method
+CoLA
+RTE
+MRPC
+SST-2
+QNLI
+STS-B
+All
+Mcc ↑\uparrow
+Acc ↑\uparrow
+F1 ↑\uparrow
+Acc ↑\uparrow
+Acc ↑\uparrow
+Corr ↑\uparrow
+Avg ↑\uparrow
+Centralized LoRAr=4\text{Centralized LoRA}_{r=4}
+66.0366.03
+82.6782.67
+88.8488.84
+96.2196.21
+94.5894.58
+91.9291.92
+86.7186.71
+FedITr=4\text{FedIT}_{r=4}
+61.8061.80
+77.8377.83
+85.5485.54
+95.8395.83
+94.3294.32
+91.7091.70
+84.5084.50
+FFA-LoRAr=4\text{FFA-LoRA}_{r=4}
+60.1660.16
+74.6774.67
+84.3184.31
+95.6495.64
+94.2994.29
+90.2890.28
+83.2383.23
+FedEx-LoRAr=4\text{FedEx-LoRA}_{r=4}
+62.60\mathbf{62.60}
+79.19\mathbf{79.19}
+86.03\mathbf{86.03}
+96.10\mathbf{96.10}
+94.74\mathbf{94.74}
+91.91\mathbf{91.91}
+85.10\mathbf{85.10}
+Centralized LoRAr=1\text{Centralized LoRA}_{r=1}
+65.2165.21
+83.3983.39
+89.2189.21
+96.1096.10
+94.4294.42
+92.1292.12
+86.7486.74
+FedITr=1\text{FedIT}_{r=1}
+61.0661.06
+78.3378.33
+88.4888.48
+95.8695.86
+94.2594.25
+91.1791.17
+84.8584.85
+FFA-LoRAr=1\text{FFA-LoRA}_{r=1}
+60.3260.32
+72.4572.45
+85.7885.78
+95.5295.52
+93.9493.94
+91.2591.25
+83.2183.21
+FedEx-LoRAr=1\text{FedEx-LoRA}_{r=1}
+63.56\mathbf{63.56}
+79.07\mathbf{79.07}
+89.71\mathbf{89.71}
+96.22\mathbf{96.22}
+94.56\mathbf{94.56}
+91.77\mathbf{91.77}
+85.82\mathbf{85.82}
+(b) Results with RoBERTa-large on the GLUE benchmark datasets
+Table 10: Results with RoBERTa-base and Roberta-large on the GLUE benchmark datasets, comparing various federated LoRA methods at ranks r={4,1}r=\{4,1\}. There are 1010 local epochs before every aggregation round.
+Appendix E Additional Experiments for NLG
+Table 11 presents additional experiments of GPT-2 fine-tuned with ranks r={4,1}r=\{4,1\}, with local epochs set to 55. FedEx-LoRA consistently outperforms leading federated fine-tuning methods across all metrics and settings, consistent with the results presented in Table 4.
+Method
+E2E NLG Challenge
+BLEU ↑\uparrow
+NIST ↑\uparrow
+MET ↑\uparrow
+ROUGE-L ↑\uparrow
+CIDEr ↑\uparrow
+Centralized LoRAr=4\text{Centralized LoRA}_{\text{r}=4}
+68.9168.91
+8.738.73
+46.7846.78
+71.2971.29
+2.472.47
+FedITr=4\text{FedIT}_{\text{r}=4}
+67.6167.61
+8.628.62
+46.4546.45
+70.2870.28
+2.432.43
+FFA-LoRAr=4\text{FFA-LoRA}_{\text{r}=4}
+67.2167.21
+8.578.57
+46.0546.05
+69.9869.98
+2.412.41
+Exact-FedITr=4\text{Exact-FedIT}_{\text{r}=4}
+68.49\mathbf{68.49}
+8.72\mathbf{8.72}
+46.76\mathbf{46.76}
+70.71\mathbf{70.71}
+2.48\mathbf{2.48}
+Centralized LoRAr=1\text{Centralized LoRA}_{\text{r}=1}
+67.4167.41
+8.688.68
+46.0146.01
+69.5169.51
+2.412.41
+FedITr=1\text{FedIT}_{\text{r}=1}
+66.1666.16
+8.568.56
+45.5445.54
+68.2568.25
+2.292.29
+FFA-LoRAr=1\text{FFA-LoRA}_{\text{r}=1}
+65.7865.78
+8.498.49
+45.0145.01
+67.8267.82
+2.262.26
+Exact-FedITr=1\text{Exact-FedIT}_{\text{r}=1}
+66.54\mathbf{66.54}
+8.57\mathbf{8.57}
+46.07\mathbf{46.07}
+69.11\mathbf{69.11}
+2.37\mathbf{2.37}
+Table 11: Results with GPT-2 on the E2E NLG Challenge, comparing various federated LoRA methods at ranks r={4,1}r=\{4,1\}. There are 55 local epochs before every aggregation round.
+Appendix F More Divergence/Deviation Plots
+F.1 Deviation/Divergence Plots Across Layers
+As discussed in Section 6, we further quantify the deviation of conventional federated aggregation (FedAvg) from ideal updates by measuring the scaled Frobenius norm of the divergence the updates produced by FedAvg and the ideal LoRA updates. We present additional plots of this divergence for the query (Q) and value (V) matrices across model layers, computed after the first aggregation step for local epochs ={3,10}=\{{\color[rgb]{0.3711,0.6211,0.6289}\textbf{3}},{\color[rgb]{0.8906,0.4297,0.4297}\textbf{10}}\} across multiple datasets, in Figures 4 and 5. Figure 4 shows results for rank r=1r=1, while Figure 5 presents results for rank r=4r=4.
+((a)) QNLI, r=1r=1
+((b)) SST-2, r=1r=1
+((c)) CoLA, r=1r=1
+((d)) STS-B, r=1r=1
+((e)) MRPC, r=1r=1
+((f)) RTE, r=1r=1
+Figure 4: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed after the first aggregation step. We plot for query (Q) and value (V) matrices across model layers, for multiple datasets. Results are shown for local epochs ={3,10}=\{{\color[rgb]{0.3711,0.6211,0.6289}\textbf{3}},{\color[rgb]{0.8906,0.4297,0.4297}\textbf{10}}\}. (Model: RoBERTa-large, r=1r=1).
+((a)) QNLI, r=4r=4
+((b)) SST-2, r=4r=4
+((c)) CoLA, r=4r=4
+((d)) STS-B, r=4r=4
+((e)) MRPC, r=4r=4
+((f)) RTE, r=4r=4
+Figure 5: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed after the first aggregation step. We plot for query (Q) and value (V) matrices across model layers, for multiple datasets. Results are shown for local epochs ={3,10}=\{{\color[rgb]{0.3711,0.6211,0.6289}\textbf{3}},{\color[rgb]{0.8906,0.4297,0.4297}\textbf{10}}\}. (Model: RoBERTa-large, r=4r=4).
+F.2 Deviation/Divergence Plots Across Rounds
+We now examine how the deviation evolves across multiple rounds of federated aggregation. We plot the scaled Frobenius norm of the deviation between FedAvg and ideal LoRA updates over several aggregation rounds for different datasets, focusing on (a) the query matrices of the first layer and (b) the average of the query and value matrices across all layers. This is presented in Figures 6, 7, 8, and 9. We include results for ranks r={1,4}r=\{1,4\} and local epochs ={3,10}=\{3,10\}.
+((a)) Query matrices of first layer
+((b)) Avg. of query and value matrices across all layers
+Figure 6: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed across multiple aggregation rounds for various datasets. We present results for (a) query matrices from the first layer, and (b) the average of query and value matrices across all layers. (Model: RoBERTa-large, r=1r=1, local epochs = 33)
+((a)) Query matrices of first layer
+((b)) Avg. of query and value matrices across all layers
+Figure 7: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed across multiple aggregation rounds for various datasets. We present results for (a) query matrices from the first layer, and (b) the average of query and value matrices across all layers. (Model: RoBERTa-large, r=1r=1, local epochs = 1010)
+((a)) Query matrices of first layer
+((b)) Avg. of query and value matrices across all layers
+Figure 8: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed across multiple aggregation rounds for various datasets. We present results for (a) query matrices from the first layer, and (b) the average of query and value matrices across all layers. (Model: RoBERTa-large, r=4r=4, local epochs = 33)
+((a)) Query matrices of first layer
+((b)) Avg. of query and value matrices across all layers
+Figure 9: Scaled Frobenius norm of divergence/deviation of updates with conventional federated aggregation (FedAvg) versus ideal LoRA updates, computed across multiple aggregation rounds for various datasets. We present results for (a) query matrices from the first layer, and (b) the average of query and value matrices across all layers. (Model: RoBERTa-large, r=4r=4, local epochs = 1010)
+Experimental support, please
+view the build logs
+for errors. Generated by
+L
+A
+T
+E
+xml
+.
+Instructions for reporting errors
+We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+methods listed below:
+Click the "Report Issue" (
+) button, located in the page header.
+Tip: You can select the relevant text first, to include it in your report.
+Our team has already identified the following issues. We appreciate your time reviewing and reporting rendering errors we
+may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+all.
+Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a list of packages that need conversion, and welcome developer contributions.
+We gratefully acknowledge support from our major funders,
+member institutions, ,
+and all contributors.
+About ·
+Help ·
+Contact ·
+Subscribe ·
+Copyright ·
+Privacy ·
+Accessibility ·
+Operational Status (opens in new tab)
