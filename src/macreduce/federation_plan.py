@@ -7,6 +7,7 @@ import ipaddress
 import json
 import math
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -26,7 +27,7 @@ def fingerprint(value) -> str:
 def implementation_hash() -> str:
     root = Path(__file__).parent
     digest = hashlib.sha256()
-    files = sorted(root.glob("federation_*.py")) + [root / "flower_federation.py"]
+    files = [*sorted(root.glob("federation_*.py")), root / "flower_federation.py"]
     for path in files:
         digest.update(path.name.encode())
         digest.update(path.read_bytes())
@@ -35,7 +36,8 @@ def implementation_hash() -> str:
 
 def positive(value, name, maximum=1_000_000):
     if type(value) is not int or not 1 <= value <= maximum:
-        raise ValueError(f"{name} must be an integer in [1, {maximum}]")
+        msg = f"{name} must be an integer in [1, {maximum}]"
+        raise ValueError(msg)
     return value
 
 
@@ -112,7 +114,8 @@ def client_spec(plan: dict, name: str) -> dict:
     for row in plan["clients"]:
         if row["id"] == name:
             return row
-    raise ValueError(f"client {name!r} is not in this {plan['mode']} cohort")
+    msg = f"client {name!r} is not in this {plan['mode']} cohort"
+    raise ValueError(msg)
 
 
 def data_identity(records: list[dict]) -> str:
@@ -133,8 +136,12 @@ def shard_indices(plan: dict, name: str, size: int) -> list[int]:
 
 def bind_address(value: str) -> str:
     if value == "tailscale":
-        result = subprocess.run(["tailscale", "ip", "-4"], capture_output=True,
-                                text=True, timeout=10, check=True)
+        tailscale = shutil.which("tailscale")
+        if tailscale is None:
+            raise ValueError("tailscale is not on PATH")
+        result = subprocess.run(  # noqa: S603
+            [tailscale, "ip", "-4"], capture_output=True, text=True, timeout=10, check=True
+        )
         value = result.stdout.strip().splitlines()[0]
     address = ipaddress.ip_address(value)
     if address.version != 4 or not (address.is_loopback or address in ipaddress.ip_network(

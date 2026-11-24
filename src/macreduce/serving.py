@@ -1,4 +1,5 @@
-"""Serving trace, A-B-B-A comparison, and the pinned MLX-LM executor.
+"""
+Serving trace, A-B-B-A comparison, and the pinned MLX-LM executor.
 
 Unit tests use ``token_diff`` and the harness without loading a model. The
 MLX-LM path imports ``mlx_lm`` only when a command asks for generation, and it
@@ -41,7 +42,6 @@ class Trial:
 
 def builtin_trace() -> list[Prompt]:
     """Short, long, and code prompts. Token counts are assigned after tokenization."""
-
     paragraph = (
         "MacReduce places each request by measured draft cost, acceptance, "
         "and prefix-transfer cost. The placement is a hypothesis until the "
@@ -69,7 +69,6 @@ def abba(cycles: int) -> list[str]:
 
 def sweep_order(levels: tuple[int, ...] = DEPTHS, cycles: int = 1) -> list[int]:
     """Forward then reversed sweeps so a slow thermal drift does not favor one end."""
-
     if cycles < 1:
         raise ValueError("cycles must be positive")
     order: list[int] = []
@@ -81,7 +80,6 @@ def sweep_order(levels: tuple[int, ...] = DEPTHS, cycles: int = 1) -> list[int]:
 
 def noise_floor(values: list[float]) -> float | None:
     """Median absolute deviation. One sample has no floor; missing data is not zero."""
-
     if len(values) < 2:
         return None
     center = statistics.median(values)
@@ -110,7 +108,6 @@ def beats(
     decode_floor: float | None,
 ) -> dict:
     """True only when both gains clear the measured floors and every trial matches."""
-
     if not adaptive or not static:
         raise ValueError("both arms need trials")
     if any(not trial.exact_match for trial in adaptive + static):
@@ -162,7 +159,6 @@ def _public_generation(result: dict) -> dict:
 
 def run_abba(run, prompts: list[Prompt], cycles: int) -> list[Trial]:
     """``run(arm, prompt) -> Trial``. Arms alternate A, B, B, A for each prompt."""
-
     trials = []
     for prompt in prompts:
         for arm in abba(cycles):
@@ -175,7 +171,6 @@ def run_abba(run, prompts: list[Prompt], cycles: int) -> list[Trial]:
 
 def cache_summary(caches) -> dict:
     """Count cache kinds. An untrimmable kind blocks stock speculative decoding."""
-
     counts: dict[str, int] = {}
     untrimmable: set[str] = set()
     for cache in caches:
@@ -192,7 +187,6 @@ def cache_summary(caches) -> dict:
 
 def static_arms() -> list[Placement]:
     """The sweep the adaptive policy has to beat, one depth at a time on the GPU."""
-
     return [fixed("none", 0, "recompute")] + [
         fixed("gpu", depth, "recompute") for depth in DEPTHS if depth
     ]
@@ -210,7 +204,7 @@ class MlxLmExecutor:
         self.versions: dict[str, str] = {}
 
     def require_pin(self) -> dict[str, str]:
-        import importlib.metadata as metadata
+        from importlib import metadata
 
         try:
             found = metadata.version("mlx-lm")
@@ -219,7 +213,8 @@ class MlxLmExecutor:
                 "mlx-lm is not installed; install the serve extra and do not substitute another backend"
             ) from exc
         if found != MLX_LM_PIN:
-            raise RuntimeError(f"mlx-lm {found} does not match pin {MLX_LM_PIN}")
+            msg = f"mlx-lm {found} does not match pin {MLX_LM_PIN}"
+            raise RuntimeError(msg)
         self.versions = {"mlx-lm": found, "mlx": metadata.version("mlx")}
         return dict(self.versions)
 
@@ -244,13 +239,15 @@ class MlxLmExecutor:
         if max_tokens < 1:
             raise ValueError("max_tokens must be positive")
         if placement.engine in {"cpu", "ane"}:
+            msg = f"{placement.engine} drafter has no executor; GPU and no-draft are the implemented paths"
             raise NotImplementedError(
-                f"{placement.engine} drafter has no executor; GPU and no-draft are the implemented paths"
+                msg
             )
         self.load()
         from mlx_lm import stream_generate
 
-        assert self._target is not None and self._tokenizer is not None
+        if self._target is None or self._tokenizer is None:
+            raise RuntimeError("serving models are not loaded")
         draft = None if placement.engine == "none" else self._draft
         kwargs = {"max_tokens": max_tokens}
         if draft is not None:
@@ -288,7 +285,6 @@ class MlxLmExecutor:
 
     def equivalence(self, prompts: list[Prompt], max_tokens: int, depth: int = 2) -> dict:
         """Token identity of greedy speculative decoding against greedy generation."""
-
         rows = []
         for prompt in prompts:
             plain = self.generate(
@@ -316,11 +312,11 @@ class MlxLmExecutor:
         }
 
     def check(self, prompt: str, max_tokens: int = 32, depth: int = 2) -> dict:
-        """Load the pinned pair, describe caches, and try one plain and one draft run.
+        """
+        Load the pinned pair, describe caches, and try one plain and one draft run.
 
         A draft that fails to load is recorded. It does not skip the plain run.
         """
-
         self.require_pin()
         from mlx_lm import load
 
@@ -343,7 +339,7 @@ class MlxLmExecutor:
             report["target_load"] = "ok"
             if hasattr(self._target, "make_cache"):
                 report["target_cache"] = cache_summary(self._target.make_cache())
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             report["target_load"] = f"{type(exc).__name__}: {exc}"
             return report
         try:
@@ -355,7 +351,7 @@ class MlxLmExecutor:
                 "target": getattr(self._tokenizer, "vocab_size", None),
                 "draft": getattr(draft_tokenizer, "vocab_size", None),
             }
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             self._draft = None
             report["draft_load"] = f"{type(exc).__name__}: {exc}"
         try:
@@ -363,7 +359,7 @@ class MlxLmExecutor:
                 prompt, max_tokens=max_tokens, placement=fixed("none", 0, "recompute")
             )
             report["plain"] = _public_generation(plain)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             report["plain"] = {"error": f"{type(exc).__name__}: {exc}"}
             return report
         if self._draft is None:
@@ -373,7 +369,7 @@ class MlxLmExecutor:
             spec = self.generate(
                 prompt, max_tokens=max_tokens, placement=fixed("gpu", depth, "recompute")
             )
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             report["speculative"] = {"error": f"{type(exc).__name__}: {exc}"}
             return report
         diff = token_diff(plain["tokens"], spec["tokens"])
@@ -382,19 +378,20 @@ class MlxLmExecutor:
 
     def _encode(self, prompt: str):
         tokenizer = self._tokenizer
-        assert tokenizer is not None
+        if tokenizer is None:
+            raise RuntimeError("serving tokenizer is not loaded")
         add_special = tokenizer.bos_token is None or not prompt.startswith(
             tokenizer.bos_token or ""
         )
         return list(tokenizer.encode(prompt, add_special_tokens=add_special))
 
     def prefix_trial(self, prompt: str, directory, continuation_tokens: int = 4) -> dict:
-        """Time full prefill against loading a saved prefix cache, and compare tokens.
+        """
+        Time full prefill against loading a saved prefix cache, and compare tokens.
 
         The suffix is the last 8 prompt tokens. The cache holds everything before
         that suffix. This does not measure a peer transfer.
         """
-
         from pathlib import Path
 
         directory = Path(directory)
@@ -463,12 +460,12 @@ class MlxLmExecutor:
         }
 
     def cpu_draft_trial(self, prompt: str, max_tokens: int, depth: int) -> dict:
-        """Draft weights loaded on the CPU. The stock loop still uses one stream.
+        """
+        Draft weights loaded on the CPU. The stock loop still uses one stream.
 
         Token identity is the caller's job. Running this does not show that the
         CPU and GPU executed at the same time.
         """
-
         import mlx.core as mx
         from mlx_lm import load, stream_generate
 

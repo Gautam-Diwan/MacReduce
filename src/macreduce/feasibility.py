@@ -1,4 +1,5 @@
-"""One-Mac feasibility traces for the three client modes.
+"""
+One-Mac feasibility traces for the three client modes.
 
 The GPU client is a short QLoRA run of the pinned Qwen3-0.6B. The Neural
 Engine client is an ANEForge linear step plus a matmul held on device mask
@@ -27,12 +28,12 @@ MEMORY_LIMIT_BYTES = 8 * 1024**3
 def run_ane_window(
     seconds: float | None = None, stop: threading.Event | None = None, seed: int = 0
 ) -> dict:
-    """Keep the Neural Engine busy after four linear Adam steps.
+    """
+    Keep the Neural Engine busy after four linear Adam steps.
 
     The matmul loop ends at ``seconds`` or when ``stop`` is set. One of the
     two is required.
     """
-
     if seconds is None and stop is None:
         raise ValueError("the Neural Engine window needs a duration or a stop event")
     if seconds is not None and seconds <= 0:
@@ -84,7 +85,6 @@ def run_feasibility(
     port: int = 9096,
 ) -> dict:
     """Measure GPU-only, Neural Engine-only, and both at once on this Mac."""
-
     if iters < 1 or eval_batches < 1:
         raise ValueError("iters and eval batches must be positive")
     output.mkdir(parents=True, exist_ok=True)
@@ -169,7 +169,7 @@ def _combined(
     def _engine():
         try:
             holder["ane"] = run_ane_window(stop=stop)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             holder["ane"] = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
 
     thread = threading.Thread(target=_engine)
@@ -194,7 +194,7 @@ def _arm(directory: Path, port: int, work) -> dict:
             body = work()
             status = "ok" if body.get("status") == "ok" else body.get("status", "ok")
             error = None
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             body = {}
             status = "error"
             error = f"{type(exc).__name__}: {exc}"

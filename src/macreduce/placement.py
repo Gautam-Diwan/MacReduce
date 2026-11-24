@@ -1,4 +1,5 @@
-"""Per-request placement for drafter engine, speculation depth, and prefix source.
+"""
+Per-request placement for drafter engine, speculation depth, and prefix source.
 
 The cost model is a planning rule, not a measured speedup. Missing rates stay
 unavailable. An ANE engine is eligible only when the caller sets
@@ -25,7 +26,8 @@ class EngineCost:
 
 @dataclass(frozen=True)
 class CostTable:
-    """Online measurements the scheduler is allowed to use.
+    """
+    Online measurements the scheduler is allowed to use.
 
     Rates are seconds or bytes per second. ``None`` means the probe did not
     return a value. A missing link is not a zero-cost peer transfer.
@@ -53,7 +55,8 @@ class CostTable:
             raise ValueError("prefix_tokens must be non-negative")
         unknown = set(self.engines) - set(ENGINES)
         if unknown:
-            raise ValueError(f"unknown engines: {sorted(unknown)}")
+            msg = f"unknown engines: {sorted(unknown)}"
+            raise ValueError(msg)
 
 
 @dataclass(frozen=True)
@@ -67,11 +70,14 @@ class Placement:
 
     def __post_init__(self) -> None:
         if self.engine not in ENGINES:
-            raise ValueError(f"unknown engine {self.engine}")
+            msg = f"unknown engine {self.engine}"
+            raise ValueError(msg)
         if self.depth not in DEPTHS:
-            raise ValueError(f"depth must be one of {DEPTHS}")
+            msg = f"depth must be one of {DEPTHS}"
+            raise ValueError(msg)
         if self.prefix is not None and self.prefix not in PREFIX_SOURCES:
-            raise ValueError(f"unknown prefix source {self.prefix}")
+            msg = f"unknown prefix source {self.prefix}"
+            raise ValueError(msg)
         if self.engine == "none" and self.depth != 0:
             raise ValueError("engine 'none' requires depth 0")
         if self.depth == 0 and self.engine != "none":
@@ -80,9 +86,9 @@ class Placement:
 
 def expected_tokens(depth: int, acceptance: float) -> float:
     """Draft tokens accepted geometrically, plus the target's correction token."""
-
     if depth not in DEPTHS:
-        raise ValueError(f"depth must be one of {DEPTHS}")
+        msg = f"depth must be one of {DEPTHS}"
+        raise ValueError(msg)
     if not 0 <= acceptance <= 1:
         raise ValueError("acceptance must be in [0, 1]")
     if depth == 0 or acceptance == 1:
@@ -97,7 +103,8 @@ def _draft_engines(table: CostTable) -> list[tuple[str, EngineCost]]:
         if cost is None or not cost.available or cost.draft_seconds_per_token is None:
             continue
         if cost.draft_seconds_per_token <= 0:
-            raise ValueError(f"{name} draft_seconds_per_token must be positive when set")
+            msg = f"{name} draft_seconds_per_token must be positive when set"
+            raise ValueError(msg)
         if name == "ane" and not cost.placement_verified:
             continue
         chosen.append((name, cost))
@@ -116,7 +123,6 @@ def _depth_cost(depth: int, draft_seconds: float, table: CostTable) -> tuple[flo
 
 def choose(table: CostTable) -> Placement:
     """Pick the measured minimum of seconds per expected token, then the prefix source."""
-
     reasons: list[str] = []
     best: tuple[float, str, int] | None = None
     if table.acceptance is None:
@@ -135,7 +141,8 @@ def choose(table: CostTable) -> Placement:
         ane = table.engines.get("ane")
         if ane is not None and ane.available and not ane.placement_verified:
             reasons.append("ANE cost ignored until placement_verified")
-    assert best is not None
+    if best is None:
+        raise RuntimeError("no eligible engine produced a decode rate")
     prefix, prefix_seconds, prefix_reasons = choose_prefix(table)
     reasons.extend(prefix_reasons)
     return Placement(
@@ -150,7 +157,6 @@ def choose(table: CostTable) -> Placement:
 
 def choose_prefix(table: CostTable) -> tuple[str | None, float | None, tuple[str, ...]]:
     """Compare recompute, local disk, and peer transfer. Unavailable rates are omitted."""
-
     options: dict[str, float] = {}
     notes: list[str] = []
     if table.prefix_tokens == 0:
@@ -186,25 +192,26 @@ def choose_prefix(table: CostTable) -> tuple[str | None, float | None, tuple[str
 
 def fixed(engine: str, depth: int, prefix: str | None) -> Placement:
     """A static baseline. It does not consult measurements."""
-
     return Placement(engine, depth, prefix, None, None, ("static configuration",))
 
 
 def choose_device(seconds_per_forward: dict[str, float | None]) -> dict:
-    """Pick the fastest device that has a positive measured forward time.
+    """
+    Pick the fastest device that has a positive measured forward time.
 
     Omitted and null times stay out of the ranking. This is the placement rule
     for one matched workload, not the speculative depth rule.
     """
-
     measured: dict[str, float] = {}
     for name, value in seconds_per_forward.items():
         if name not in {"cpu", "gpu", "ane"}:
-            raise ValueError(f"unknown device {name}")
+            msg = f"unknown device {name}"
+            raise ValueError(msg)
         if value is None:
             continue
         if value <= 0:
-            raise ValueError(f"{name} seconds_per_forward must be positive when set")
+            msg = f"{name} seconds_per_forward must be positive when set"
+            raise ValueError(msg)
         measured[name] = float(value)
     if not measured:
         return {

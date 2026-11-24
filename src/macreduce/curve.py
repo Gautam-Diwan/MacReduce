@@ -1,4 +1,5 @@
-"""Logged QLoRA curve for the pinned Qwen3-0.6B.
+"""
+Logged QLoRA curve for the pinned Qwen3-0.6B.
 
 ``macreduce lora`` calls this. The run writes mlx-lm loss reports, a mactop
 trace, and matplotlib figures for loss, perplexity, GPU and Neural Engine
@@ -12,7 +13,7 @@ import json
 import sys
 import threading
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from .finetune import MetricLog, run_lora
@@ -23,8 +24,7 @@ from .telemetry import SystemTrace, energy_summary, read_series
 
 def allocate_run(root: Path, now: datetime | None = None) -> Path:
     """A new directory named by the local timestamp. A collision gains a suffix."""
-
-    stamp = (now or datetime.now()).strftime("%Y-%m-%dT%H-%M-%S")
+    stamp = (now or datetime.now(UTC).astimezone()).strftime("%Y-%m-%dT%H-%M-%S")
     candidate = root / stamp
     suffix = 2
     while candidate.exists():
@@ -50,7 +50,6 @@ class _Tee:
 
 def bind_run_log(run_dir: Path) -> Path:
     """Copy stdout and stderr into ``run_dir/run.log`` for this launch only."""
-
     path = run_dir / "run.log"
     handle = path.open("w", encoding="utf-8")
     sys.stdout = _Tee(sys.stdout, handle)
@@ -61,7 +60,6 @@ def bind_run_log(run_dir: Path) -> Path:
 
 def latest_checkpoint(root: Path) -> Path:
     """The newest timestamped run under ``root`` that has a checkpoint."""
-
     if not root.is_dir():
         raise FileNotFoundError(root)
     runs = sorted((path for path in root.iterdir() if path.is_dir()), key=lambda path: path.name)
@@ -72,7 +70,8 @@ def latest_checkpoint(root: Path) -> Path:
         target = Path(json.loads(pointer.read_text())["path"])
         if (target / "state.json").is_file():
             return target
-    raise FileNotFoundError(f"no checkpoint under {root}")
+    msg = f"no checkpoint under {root}"
+    raise FileNotFoundError(msg)
 
 
 def run_curve(
@@ -84,12 +83,12 @@ def run_curve(
     **lora_kwargs,
 ) -> dict:
     """Train the curve, trace the machine, and write figures under ``output``."""
-
     output.mkdir(parents=True, exist_ok=True)
     memory_limit_bytes = resolve_memory_limit(memory_limit_bytes)
     placement = lora_kwargs.pop("placement", "gpu")
     if placement not in {"gpu", "gpu_ane"}:
-        raise ValueError(f"unknown placement {placement}")
+        msg = f"unknown placement {placement}"
+        raise ValueError(msg)
     figures = output / "figures"
     print(f"qwen3 curve: figures in {figures}, refresh every {refresh_s:.0f}s", flush=True)
     log = MetricLog(output / "history.jsonl")
@@ -133,10 +132,10 @@ def run_curve(
 
 def render_saved(directory: Path) -> list[Path]:
     """Redraw figures from a saved curve directory or a feasibility result."""
-
     report_path = directory / "result.json"
     if not report_path.is_file():
-        raise FileNotFoundError(f"no result.json in {directory}")
+        msg = f"no result.json in {directory}"
+        raise FileNotFoundError(msg)
     report = json.loads(report_path.read_text())
     written: list[Path] = []
     if "arms" in report:
@@ -162,7 +161,7 @@ def _peak_memory() -> int | None:
         import mlx.core as mx
 
         return int(mx.get_peak_memory())
-    except Exception:
+    except Exception:  # noqa: BLE001
         return None
 
 

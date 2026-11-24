@@ -23,7 +23,7 @@ def plan_sha256(config):
 
 def file_sha256(path):
     digest = hashlib.sha256()
-    with open(path, "rb") as handle:
+    with Path(path).open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
@@ -117,7 +117,9 @@ def assemble_chunks(manifest, read_chunk):
     os.close(descriptor)
     final = name[: -len(".partial")] + ".complete"
     try:
-        with open(name, "wb") as out:
+        partial = Path(name)
+        complete = Path(final)
+        with partial.open("wb") as out:
             for index, expected in enumerate(manifest["chunk_hashes"]):
                 chunk = read_chunk(index)
                 if type(chunk) is not bytes or len(chunk) != chunk_length(manifest, index):
@@ -127,14 +129,13 @@ def assemble_chunks(manifest, read_chunk):
                 out.write(chunk)
             out.flush()
             os.fsync(out.fileno())
-        if os.path.getsize(name) != manifest["length"] or file_sha256(name) != manifest["sha256"]:
+        if partial.stat().st_size != manifest["length"] or file_sha256(partial) != manifest["sha256"]:
             raise ValueError("content hash mismatch")
-        os.replace(name, final)
-        return Path(final).read_bytes()
+        partial.replace(complete)
+        return complete.read_bytes()
     finally:
-        for candidate in (name, final):
-            if os.path.exists(candidate):
-                os.remove(candidate)
+        for candidate in (Path(name), Path(final)):
+            candidate.unlink(missing_ok=True)
 
 
 class IncomingArtifact:
@@ -191,7 +192,7 @@ class IncomingArtifact:
         if digest.hexdigest() != self.manifest["sha256"]:
             self._reset()
             raise ValueError("content hash mismatch")
-        os.replace(self.partial, self.final)
+        self.partial.replace(self.final)
         self.completed = True
         return self.final.read_bytes()
 

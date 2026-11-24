@@ -1,4 +1,5 @@
-"""QLoRA local steps for one federated client.
+"""
+QLoRA local steps for one federated client.
 
 The GPU path calls the installed ``mlx_lm`` trainer and returns the LoRA
 adapter. The Neural Engine path refuses to run until a stack is importable
@@ -31,13 +32,15 @@ LORA = {"rank": 8, "dropout": 0.0, "scale": 20.0}
 ANE_STACKS = ("coreml", "aneforge", "orion", "maderix")
 
 
-class BackendUnavailable(RuntimeError):
+class BackendUnavailableError(RuntimeError):
     """The requested Neural Engine stack cannot take a QLoRA step."""
+
+
+BackendUnavailable = BackendUnavailableError
 
 
 def write_client_shard(directory: Path, records: list[dict]) -> None:
     """Write one client's WikiText lines. Validation and test stay empty here."""
-
     if not records:
         raise ValueError("a client shard is empty")
     directory.mkdir(parents=True, exist_ok=True)
@@ -48,7 +51,6 @@ def write_client_shard(directory: Path, records: list[dict]) -> None:
 
 def load_curve_records(data_dir: Path, train_examples: int = CURVE_TRAIN_EXAMPLES) -> list[dict]:
     """The first training lines of a prepared WikiText directory."""
-
     path = data_dir / SPLITS["train"]
     records = [json.loads(line) for line in path.read_text().splitlines() if line]
     return prefix_records(records, train_examples)
@@ -56,20 +58,23 @@ def load_curve_records(data_dir: Path, train_examples: int = CURVE_TRAIN_EXAMPLE
 
 def require_ane(stack: str) -> None:
     """Reject a Neural Engine step that would silently become a GPU step."""
-
     from .train_plan import probe_backends
 
     if stack not in ANE_STACKS:
-        raise ValueError(f"unknown Neural Engine stack {stack}")
+        msg = f"unknown Neural Engine stack {stack}"
+        raise ValueError(msg)
     rows = {row["backend"]: row for row in probe_backends()}
     status = rows[stack]["status"]
     if status != "importable":
-        raise BackendUnavailable(f"{stack} is {status}")
-    raise BackendUnavailable(f"{stack} imports, and no Qwen3 LoRA step is compiled for it")
+        msg = f"{stack} is {status}"
+        raise BackendUnavailable(msg)
+    msg = f"{stack} imports, and no Qwen3 LoRA step is compiled for it"
+    raise BackendUnavailable(msg)
 
 
 class MlxLoraTrainer:
-    """Local AdamW on the pinned Qwen3-0.6B adapter.
+    """
+    Local AdamW on the pinned Qwen3-0.6B adapter.
 
     ``setup`` loads the model. Optimizer moments are recreated for each local
     call so they follow the broadcast adapter instead of the previous round.
@@ -262,7 +267,6 @@ def execute_federated(
     seed: int = 0,
 ) -> dict:
     """Fine-tune the pinned adapter. A second Mac raises ``PeerRequired``."""
-
     from .federated import pack_state
 
     if n_macs > 1:

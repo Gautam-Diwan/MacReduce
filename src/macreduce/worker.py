@@ -46,7 +46,7 @@ class Client:
         while True:
             attempts += 1
             try:
-                req = urllib.request.Request(
+                req = urllib.request.Request(  # noqa: S310
                     url,
                     data=data,
                     headers={
@@ -57,7 +57,7 @@ class Client:
 
                 # Do not follow redirects with a bearer token to another endpoint.
                 class NoRedirect(urllib.request.HTTPRedirectHandler):
-                    def redirect_request(self, *args, **kwargs):
+                    def redirect_request(self, *_args, **_kwargs):
                         return None
 
                 opener = urllib.request.build_opener(
@@ -65,12 +65,13 @@ class Client:
                     urllib.request.HTTPSHandler(context=self.context),
                     urllib.request.ProxyHandler({}),
                 )
-                with self.events.span("http" + endpoint, attempt=attempts):
-                    with opener.open(req, timeout=min(30, self.retry_seconds)) as response:
-                        raw = response.read(max_bytes + 1)
-                        if len(raw) > max_bytes:
-                            raise ValueError("server response exceeds transfer response cap")
-                        kind = response.headers.get("Content-Type", "")
+                with self.events.span("http" + endpoint, attempt=attempts), opener.open(
+                    req, timeout=min(30, self.retry_seconds)
+                ) as response:
+                    raw = response.read(max_bytes + 1)
+                    if len(raw) > max_bytes:
+                        raise ValueError("server response exceeds transfer response cap")
+                    kind = response.headers.get("Content-Type", "")
                 self.events.emit(
                     "transfer",
                     endpoint=endpoint,
@@ -93,7 +94,8 @@ class Client:
                 attempted_payload_bytes=len(data or b""),
             )
             if time.monotonic() >= deadline:
-                raise TimeoutError(f"coordinator unavailable for {self.retry_seconds}s: {error}")
+                msg = f"coordinator unavailable for {self.retry_seconds}s: {error}"
+                raise TimeoutError(msg)
             time.sleep(min(0.2 * 2 ** min(attempts, 4), 2))
 
     def fetch_artifact(self, version, run_id, expected_sha256):

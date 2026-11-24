@@ -91,7 +91,7 @@ def test_real_http_auth_payload_bound_and_idempotent_retry(coordinator, tmp_path
         assert error.value.code == 401
         assert client.request("/status")["state"] == "running"
         raw = client.request("/checkpoint", version=0)
-        kwargs = dict(node="a", version=0, tokens=64, run_id=coordinator.run_id)
+        kwargs = {"node": "a", "version": 0, "tokens": 64, "run_id": coordinator.run_id}
         assert client.request("/update", raw, **kwargs)["accepted"]
         # Simulates a lost response: retry the same bytes rather than running more SGD steps.
         assert client.request("/update", raw, **kwargs)["duplicate"]

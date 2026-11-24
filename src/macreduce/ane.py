@@ -1,4 +1,5 @@
-"""Core ML placement measurements.
+"""
+Core ML placement measurements.
 
 ``placement_probe`` converts a convolution. ``decoder_workload`` converts one
 fixed-shape decoder block. ``qwen_forward_workload`` converts a 28-layer
@@ -12,10 +13,10 @@ not during the CPU-only run. A missing power sample stays null.
 
 from __future__ import annotations
 
-import importlib.metadata as metadata
 import platform
 import subprocess
 import time
+from importlib import metadata
 from pathlib import Path
 
 from .observe import normalize_mactop, parse_mactop
@@ -43,7 +44,7 @@ def _convert(destination: Path):
     import coremltools as ct
     import numpy as np
     import torch
-    import torch.nn as nn
+    from torch import nn
 
     class Net(nn.Module):
         def forward(self, x):
@@ -69,7 +70,6 @@ def _convert(destination: Path):
 
 def _mactop_while(during, seconds: float = 2.0, interval_ms: int = 200) -> dict:
     """Sample system power while ``during`` runs. A zero reading stays zero."""
-
     count = max(1, int(seconds * 1000 / interval_ms))
     command = [
         "mactop",
@@ -82,7 +82,7 @@ def _mactop_while(during, seconds: float = 2.0, interval_ms: int = 200) -> dict:
         str(interval_ms),
     ]
     try:
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)  # noqa: S603
     except OSError as exc:
         return {"status": "unavailable", "reason": str(exc), "samples": []}
     try:
@@ -132,7 +132,6 @@ def _peak(reading: dict, key: str):
 
 def placement_probe(work: Path) -> dict:
     """Convert one fixed-shape network and read plans for two compute-unit constraints."""
-
     import coremltools as ct
     import numpy as np
     from coremltools.models import CompiledMLModel
@@ -185,13 +184,18 @@ def placement_probe(work: Path) -> dict:
     }
     ane_power = _peak(mactop["CPU_AND_NE"], "ane_power_w")
     power = subprocess.run(
-        ["powermetrics", "-s", "ane_power", "-n", "1", "-i", "200"],
+        ["/usr/bin/powermetrics", "-s", "ane_power", "-n", "1", "-i", "200"],
         capture_output=True,
         text=True,
+        check=False,
     )
     power_text = (power.stderr or power.stdout).strip()
-    model_name = subprocess.run(["sysctl", "-n", "hw.model"], capture_output=True, text=True)
-    memsize = subprocess.run(["sysctl", "-n", "hw.memsize"], capture_output=True, text=True)
+    model_name = subprocess.run(
+        ["/usr/sbin/sysctl", "-n", "hw.model"], capture_output=True, text=True, check=False
+    )
+    memsize = subprocess.run(
+        ["/usr/sbin/sysctl", "-n", "hw.memsize"], capture_output=True, text=True, check=False
+    )
     return {
         "coremltools": metadata.version("coremltools"),
         "torch": metadata.version("torch"),
@@ -241,7 +245,7 @@ def placement_probe(work: Path) -> dict:
 
 def _decoder():
     import torch
-    import torch.nn as nn
+    from torch import nn
 
     class Block(nn.Module):
         def forward(self, x):
@@ -302,12 +306,12 @@ def _hot(samples: list[dict], key: str, floor: float) -> int:
 
 
 def decoder_workload() -> dict:
-    """Time one decoder forward on CPU, GPU, and the Neural Engine.
+    """
+    Time one decoder forward on CPU, GPU, and the Neural Engine.
 
     The block is batch 1, 128 tokens, width 256, four heads, float16. It is a
     serving-shaped attention step. It is not the Qwen draft.
     """
-
     import tempfile
 
     import coremltools as ct
@@ -423,7 +427,6 @@ def _gpu_forward(module, example) -> dict:
 
 def _hybrid(ane_model, features: dict, module, example) -> dict:
     """Run GPU forwards while Core ML predicts, and sample both powers."""
-
     import threading
 
     import torch
@@ -479,7 +482,6 @@ def _hybrid(ane_model, features: dict, module, example) -> dict:
 
 def _rank(measured: dict) -> dict:
     """Rank measured forwards. The Neural Engine stays out until placement is verified."""
-
     from .placement import choose_device
 
     seconds = {
@@ -500,18 +502,16 @@ def _rank(measured: dict) -> dict:
 
 def rank_decoder() -> dict:
     """Measure the decoder and keep the Neural Engine out of the ranking until verified."""
-
     try:
         return _rank(decoder_workload())
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
 
 
 def _qwen_shaped():
     """28-layer network with the Qwen3-0.6B widths. Weights are random."""
-
     import torch
-    import torch.nn as nn
+    from torch import nn
 
     class Layer(nn.Module):
         def __init__(self) -> None:
@@ -602,13 +602,13 @@ def _time_mps(module, example, repeats: int) -> dict:
 
 
 def qwen_forward_workload() -> dict:
-    """Time one full-depth forward at the Qwen3-0.6B widths.
+    """
+    Time one full-depth forward at the Qwen3-0.6B widths.
 
     Input is 64 hidden states of width 1024. Output is the next-token logits
     over the 151936-word vocabulary. The weights are random. The pinned Qwen3
     checkpoint is measured separately by ``macreduce infer``.
     """
-
     import shutil
     import tempfile
 
@@ -621,9 +621,12 @@ def qwen_forward_workload() -> dict:
 
     free = shutil.disk_usage(Path.cwd()).free
     if free < 3_000_000_000:
-        raise OSError(
+        msg = (
             f"{free} bytes free; the 28-layer package needs about 3 GB "
             "for the compiler's copy of the weights"
+        )
+        raise OSError(
+            msg
         )
     network = _qwen_shaped()
     example = torch.randn(1, 64, 1024)
@@ -723,8 +726,7 @@ def qwen_forward_workload() -> dict:
 
 def rank_qwen_forward() -> dict:
     """Measure the full-depth forward and rank the devices that were verified."""
-
     try:
         return _rank(qwen_forward_workload())
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return {"status": "error", "error": f"{type(exc).__name__}: {exc}"}

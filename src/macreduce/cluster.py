@@ -5,7 +5,6 @@ import hmac
 import json
 import os
 import re
-import socket
 import threading
 import time
 import uuid
@@ -36,8 +35,11 @@ from .model import (
 from .observe import Events
 
 
-class Conflict(ValueError):
+class ConflictError(ValueError):
     pass
+
+
+Conflict = ConflictError
 
 
 def atomic_write(path, data):
@@ -47,7 +49,7 @@ def atomic_write(path, data):
         f.write(data)
         f.flush()
         os.fsync(f.fileno())
-    os.replace(temp, path)
+    temp.replace(path)
 
 
 class Coordinator:
@@ -60,6 +62,7 @@ class Coordinator:
         lr=0.05,
         evaluator="torch-cpu",
         round_timeout=120,
+        *,
         resume=False,
         validation_text=None,
         model_config=None,
@@ -70,7 +73,7 @@ class Coordinator:
             or len(set(nodes)) != len(nodes)
             or any(not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", n) for n in nodes)
         ):
-            raise ValueError("worker names must be unique, 1–40 letters, digits, _ or -")
+            raise ValueError("worker names must be unique, 1-40 letters, digits, _ or -")
         if rounds < 1 or steps < 1 or lr <= 0 or round_timeout <= 0:
             raise ValueError("rounds, steps, learning rate, and timeout must be positive")
         self.root = Path(directory)
@@ -191,7 +194,8 @@ class Coordinator:
                 previous = self.registered[node]
                 for key in ("batch_size", "backend", "data_sha256"):
                     if previous.get(key) != info.get(key):
-                        raise Conflict(f"worker {key} cannot change during a run")
+                        msg = f"worker {key} cannot change during a run"
+                        raise Conflict(msg)
             else:
                 self.registered[node] = info
                 self.save()
@@ -439,7 +443,7 @@ def make_server(coordinator, host, port, token):
         def dispatch(self, method):
             if not hmac.compare_digest(self.headers.get("Authorization", ""), "Bearer " + token):
                 self.respond({"error": "unauthorized"}, 401)
-                return
+                return None
             parsed = urlsplit(self.path)
             q = parse_qs(parsed.query)
             node = q.get("node", [""])[0]
@@ -528,9 +532,9 @@ def make_server(coordinator, host, port, token):
                 self.respond({"error": str(exc)}, 409)
             except (ValueError, KeyError, TypeError) as exc:
                 self.respond({"error": str(exc)}, 400)
-            except (BrokenPipeError, ConnectionResetError, socket.timeout):
+            except (TimeoutError, BrokenPipeError, ConnectionResetError):
                 pass
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 coordinator.events.emit("server_error", error=type(exc).__name__, detail=str(exc))
                 self.respond({"error": "internal error; see coordinator events"}, 500)
 

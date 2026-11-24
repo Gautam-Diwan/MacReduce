@@ -53,7 +53,7 @@ def _bench_trial(args):
     if args.mode == "cpu":
         try:
             payload = executor.cpu_draft_trial(prompt.text, args.max_tokens, args.depth)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             payload = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
         _dump_trial(args.output, payload)
         return
@@ -121,7 +121,7 @@ def demo(args):
             if args.torch_trace and node == "small":
                 cmd.extend(["--torch-trace", str(directory / "small.operators.trace.json")])
             children.append(
-                subprocess.Popen(
+                subprocess.Popen(  # noqa: S603
                     cmd,
                     env=dict(os.environ, MACREDUCE_TOKEN=secret),
                     stdout=log,
@@ -131,7 +131,8 @@ def demo(args):
         deadline = time.monotonic() + 300
         while any(p.poll() is None for p in children):
             if any(p.poll() not in (None, 0) for p in children):
-                raise RuntimeError(f"worker failed; inspect logs in {directory}")
+                msg = f"worker failed; inspect logs in {directory}"
+                raise RuntimeError(msg)
             if time.monotonic() > deadline:
                 raise TimeoutError("demo did not finish within 300 seconds")
             time.sleep(0.2)
@@ -345,7 +346,7 @@ def main():
         if args.command == "federation":
             execute_federation(args, token)
         elif args.command == "doctor":
-            text = json.dumps(capabilities(args.smoke), indent=2)
+            text = json.dumps(capabilities(smoke=args.smoke), indent=2)
             if args.output:
                 Path(args.output).parent.mkdir(parents=True, exist_ok=True)
                 Path(args.output).write_text(text)
@@ -361,8 +362,8 @@ def main():
                 args.lr,
                 args.backend,
                 args.round_timeout,
-                args.resume,
-                args.validation_text,
+                resume=args.resume,
+                validation_text=args.validation_text,
             )
             server = make_server(c, args.host, args.port, token())
             if bool(args.tls_cert) != bool(args.tls_key):
@@ -580,5 +581,5 @@ def main():
                 raise SystemExit(2)
     except KeyboardInterrupt:
         pass
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         p.exit(1, f"{type(exc).__name__}: {exc}\n")

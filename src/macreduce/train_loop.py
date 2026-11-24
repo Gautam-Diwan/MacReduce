@@ -1,4 +1,5 @@
-"""QLoRA step loop with a progress bar and resumable checkpoints.
+"""
+QLoRA step loop with a progress bar and resumable checkpoints.
 
 One checkpoint is the adapter, the AdamW moments, and the step number.
 Resume loads those, then skips the batches already consumed. The batch order
@@ -20,7 +21,6 @@ from tqdm import tqdm
 
 def resolve_save_every(value: int | str | None, steps: int, epochs: int) -> int:
     """``epoch`` saves once per epoch. An integer saves every that many steps."""
-
     if steps < 1 or epochs < 1:
         raise ValueError("steps and epochs must be positive")
     if value is None or value == "epoch":
@@ -33,7 +33,6 @@ def resolve_save_every(value: int | str | None, steps: int, epochs: int) -> int:
 
 def save_checkpoint(root: Path, step: int, model, optimizer, info: dict) -> Path:
     """Write ``root/0000123`` and point ``root/latest.json`` at it."""
-
     import mlx.core as mx
 
     if step < 1:
@@ -54,7 +53,6 @@ def save_checkpoint(root: Path, step: int, model, optimizer, info: dict) -> Path
 
 def load_checkpoint(path: Path, model, optimizer) -> dict:
     """Restore an adapter and AdamW state written by :func:`save_checkpoint`."""
-
     import mlx.core as mx
     from mlx.utils import tree_unflatten
 
@@ -64,10 +62,11 @@ def load_checkpoint(path: Path, model, optimizer) -> dict:
     loaded = mx.load(str(path / "optimizer.safetensors"))
     dtypes = meta.get("dtypes") or {}
     pairs = []
-    for key, value in loaded.items():
-        if dtypes.get(key) == "uint64":
-            value = value.astype(mx.uint64)
-        pairs.append((key, value))
+    for key, loaded_value in loaded.items():
+        converted = (
+            loaded_value.astype(mx.uint64) if dtypes.get(key) == "uint64" else loaded_value
+        )
+        pairs.append((key, converted))
     optimizer.state = tree_unflatten(pairs)
     optimizer._initialized = True
     mx.eval(optimizer.state)
@@ -83,13 +82,13 @@ def train_checked(
     checkpoint_root: Path,
     save_every: int,
     resume: Path | None = None,
+    *,
     ane_lora: bool = False,
 ) -> dict:
     """Train ``args.iters`` steps. ``history`` receives the mlx-lm report dicts."""
-
     import mlx.core as mx
-    import mlx.nn as nn
     import mlx.optimizers as optim
+    from mlx import nn
     from mlx.nn.utils import average_gradients
     from mlx.utils import tree_flatten, tree_map
     from mlx_lm.tuner.datasets import CacheDataset
@@ -99,7 +98,7 @@ def train_checked(
     if save_every < 1:
         raise ValueError("save_every must be positive")
     mx.random.seed(args.seed)
-    np.random.seed(args.seed)
+    np.random.seed(args.seed)  # noqa: NPY002
     model.freeze()
     linear_to_lora_layers(model, args.num_layers, args.lora_parameters, use_dora=False)
     if ane_lora:
@@ -145,7 +144,8 @@ def train_checked(
         _check_resume(meta, identity)
         tqdm.write(f"resumed at step {completed} from {resume}")
     if completed >= args.iters:
-        raise ValueError(f"checkpoint step {completed} is already at the end of {args.iters}")
+        msg = f"checkpoint step {completed} is already at the end of {args.iters}"
+        raise ValueError(msg)
 
     if args.grad_accumulation_steps < 1:
         raise ValueError("grad_accumulation_steps must be at least 1")
@@ -194,7 +194,7 @@ def train_checked(
     checkpoint_root.mkdir(parents=True, exist_ok=True)
     bar = tqdm(total=args.iters, initial=completed, desc="train", unit="step")
     try:
-        for it, batch in zip(range(completed + 1, args.iters + 1), batches):
+        for it, batch in zip(range(completed + 1, args.iters + 1), batches, strict=False):
             tic = time.perf_counter()
             if val_dataset is not None and (
                 it == 1 or it % args.steps_per_eval == 0 or it == args.iters
@@ -216,7 +216,8 @@ def train_checked(
             mx.eval(compiled_state, losses, n_tokens, grad_accum)
             step_loss = float(lvalue.item())
             if not math.isfinite(step_loss):
-                raise RuntimeError(f"training loss is not finite at step {it}")
+                msg = f"training loss is not finite at step {it}"
+                raise RuntimeError(msg)
             train_time += time.perf_counter() - tic
             bar.update(1)
 
@@ -298,17 +299,16 @@ def _publish_adapter(model, adapter_path: str) -> None:
     mx.save_safetensors(str(destination / "adapters.safetensors"), weights)
 
 
-def _arrays(tree, dtypes: bool = False):
+def _arrays(tree, *, dtypes: bool = False):
     import mlx.core as mx
     from mlx.utils import tree_flatten
 
     flat = {}
     kinds = {}
-    for key, value in tree_flatten(tree):
-        kinds[key] = str(value.dtype).split(".")[-1]
-        if value.dtype == mx.uint64:
-            value = value.astype(mx.int64)
-        flat[key] = value
+    for key, tensor in tree_flatten(tree):
+        kinds[key] = str(tensor.dtype).split(".")[-1]
+        converted = tensor.astype(mx.int64) if tensor.dtype == mx.uint64 else tensor
+        flat[key] = converted
     if dtypes:
         return flat, kinds
     return flat
@@ -318,11 +318,13 @@ def _check_resume(meta: dict, identity: dict) -> None:
     exact = ("seed", "batch_size", "max_seq_length", "grad_checkpoint", "lora_rank", "lr_schedule")
     for key in exact:
         if key in meta and meta[key] != identity[key]:
-            raise ValueError(f"checkpoint {key} is {meta[key]}, this run is {identity[key]}")
+            msg = f"checkpoint {key} is {meta[key]}, this run is {identity[key]}"
+            raise ValueError(msg)
     close = ("learning_rate", "lora_scale", "lora_dropout", "weight_decay", "max_grad_norm")
     for key in close:
         if key not in meta:
             continue
         left, right = meta[key], identity[key]
         if (left is None) != (right is None) or (left is not None and abs(float(left) - float(right)) > 1e-12):
-            raise ValueError(f"checkpoint {key} is {left}, this run is {right}")
+            msg = f"checkpoint {key} is {left}, this run is {right}"
+            raise ValueError(msg)

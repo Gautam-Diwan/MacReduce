@@ -1,6 +1,6 @@
 import os
 import sys
-from datetime import datetime
+from datetime import UTC, datetime
 
 import pytest
 
@@ -10,7 +10,7 @@ from macreduce.train_loop import resolve_save_every
 
 
 def test_each_launch_gets_its_own_directory(tmp_path):
-    when = datetime(2026, 10, 28, 20, 3, 0)
+    when = datetime(2026, 10, 28, 20, 3, 0, tzinfo=UTC)
     first = allocate_run(tmp_path, now=when)
     second = allocate_run(tmp_path, now=when)
     assert first.name == "2026-10-28T20-03-00"
@@ -20,7 +20,7 @@ def test_each_launch_gets_its_own_directory(tmp_path):
 
 def test_run_log_lives_in_the_run_directory(tmp_path):
     stdout, stderr = sys.stdout, sys.stderr
-    run = allocate_run(tmp_path, now=datetime(2026, 10, 28, 20, 40, 0))
+    run = allocate_run(tmp_path, now=datetime(2026, 10, 28, 20, 40, 0, tzinfo=UTC))
     try:
         path = bind_run_log(run)
         print("hello-run", flush=True)
@@ -57,9 +57,9 @@ def test_select_trial_prefers_tokens_per_second():
 @pytest.mark.skipif(os.environ.get("MACREDUCE_TEST_MLX") != "1", reason="opt-in Metal hardware test")
 def test_checkpoint_restores_adapter_and_adamw(tmp_path):
     import mlx.core as mx
-    import mlx.nn as nn
     import mlx.optimizers as optim
     import numpy as np
+    from mlx import nn
     from mlx.utils import tree_flatten
 
     from macreduce.train_loop import load_checkpoint, save_checkpoint

@@ -4,8 +4,10 @@ These tests never impersonate GPU/ANE execution. Physical networks and MLX
 are validated separately; the mode parametrization tests cohort orchestration.
 """
 
+import functools
 import io
 import json
+import operator
 import socket
 import threading
 import time
@@ -39,7 +41,7 @@ DATA_HASH = fingerprint(["fixed test corpus"])
 
 @pytest.fixture(autouse=True)
 def no_upstream_analytics(monkeypatch):
-    import flwr.supercore.telemetry as telemetry
+    from flwr.supercore import telemetry
 
     monkeypatch.setattr(telemetry, "FLWR_TELEMETRY_ENABLED", "0")
 
@@ -100,7 +102,7 @@ def test_modes_configurable_batches_and_disjoint_shards():
         assert len(config["clients"]) == count
         assert sum(row["weight"] for row in config["clients"]) == pytest.approx(1)
         shards = [shard_indices(config, row["id"], 31) for row in config["clients"]]
-        assert sorted(sum(shards, [])) == list(range(31))
+        assert sorted(functools.reduce(operator.iadd, shards, [])) == list(range(31))
     assert plan()["clients"][-1]["grad_checkpoint"] is True
     assert plan()["coordinator"] == "m4-air"
 
@@ -170,7 +172,7 @@ def test_cached_result_lost_ack_and_optimizer_resume(tmp_path):
     strategy, jobs = jobs_for(state, clients)
     results = [(proxy, clients[int(proxy.cid)].fit(ins)) for proxy, ins in jobs]
     # Same logical round, new RPC nonce: use exact prepared delta and saved trainer state.
-    proxy, ins = jobs[0]
+    _, ins = jobs[0]
     request = verified(ins.config["envelope"], SECRET)
     retry = FitIns(ins.parameters, {"envelope": signed({**request, "nonce": "retry"}, SECRET)})
     again = clients[0].fit(retry)

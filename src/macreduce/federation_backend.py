@@ -1,4 +1,5 @@
-"""Resident local QLoRA client; hardware imports are delayed until setup.
+"""
+Resident local QLoRA client; hardware imports are delayed until setup.
 
 A process owns one logical client, optimizer and sampler. The combined mode
 uses the existing explicit ANE suffix. Standalone ANE is deliberately gated.
@@ -68,10 +69,11 @@ class ResidentLoraClient:
             required["aneforge"] = "0.4.0"
         for package, expected in required.items():
             if version(package) != expected:
-                raise BackendUnavailable(f"{package} must be pinned to {expected}; run uv sync")
+                msg = f"{package} must be pinned to {expected}; run uv sync"
+                raise BackendUnavailable(msg)
         import mlx.core as mx
-        import mlx.nn as nn
         import mlx.optimizers as optim
+        from mlx import nn
         from mlx_lm.tuner.trainer import default_loss, grad_checkpoint
         from mlx_lm.tuner.utils import build_schedule, linear_to_lora_layers
         from mlx_lm.utils import load
@@ -174,7 +176,7 @@ class ResidentLoraClient:
                 loss, grad, tokens = self._grad(examples)
                 if tokens < 1 or not math.isfinite(float(loss)) or not self._finite(grad):
                     raise RuntimeError("nonfinite local update; refusing to publish")
-                weighted = tree_map(lambda value: value * tokens, grad)
+                weighted = tree_map(lambda value, tokens=tokens: value * tokens, grad)
                 accumulated = weighted if accumulated is None else tree_map(
                     lambda left, right: left + right, accumulated, weighted
                 )
@@ -182,7 +184,9 @@ class ResidentLoraClient:
                 tokens_total += tokens
                 loss_total += float(loss) * tokens
                 self.cursor += len(examples)
-            grad = tree_map(lambda value: value / update_tokens, accumulated)
+            grad = tree_map(
+                lambda value, update_tokens=update_tokens: value / update_tokens, accumulated
+            )
             clip = self.plan["recipe"]["max_grad_norm"]
             if clip is not None:
                 grad, _ = self.optim.clip_grad_norm(grad, clip)

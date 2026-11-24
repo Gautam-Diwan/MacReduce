@@ -1,4 +1,5 @@
-"""A linear step on the Neural Engine through ANEForge.
+"""
+A linear step on the Neural Engine through ANEForge.
 
 ``import aneforge as af`` builds the graph. The compiled forward, backward,
 and Adam programs use device mask ``0x4``, which ANEForge defines as the
@@ -18,13 +19,13 @@ ANE_MASK = 0x4
 
 
 def prove_engine(seconds: int = 4, seed: int = 0) -> dict:
-    """Compile a matmul for the Neural Engine and keep it busy while sampling.
+    """
+    Compile a matmul for the Neural Engine and keep it busy while sampling.
 
     The result is a failure when every mactop sample reports zero Neural
     Engine power and zero Neural Engine bandwidth. ``ane_active`` is recorded
     and is not treated as residency.
     """
-
     if seconds < 1:
         raise ValueError("sample window must be positive")
     trained = run_linear(steps=4, seed=seed)
@@ -89,12 +90,12 @@ def _ane_sample(row: dict) -> dict:
 
 
 def run_linear(steps: int = 20, seed: int = 0, sample_seconds: int = 0) -> dict:
-    """Train a tiny linear map for ``steps`` and return the engine masks.
+    """
+    Train a tiny linear map for ``steps`` and return the engine masks.
 
     ``sample_seconds`` collects system mactop while the steps run. A missing
     sampler does not turn a finished engine step into a failure.
     """
-
     if steps < 1:
         raise ValueError("steps must be positive")
     from importlib.metadata import version
@@ -151,7 +152,8 @@ def run_linear(steps: int = 20, seed: int = 0, sample_seconds: int = 0) -> dict:
     }
     flat = [masks["forward"], *masks["backward"], *masks["update"]]
     if any(mask != ANE_MASK for mask in flat):
-        raise RuntimeError(f"a program was compiled off the Neural Engine: {masks}")
+        msg = f"a program was compiled off the Neural Engine: {masks}"
+        raise RuntimeError(msg)
     trainer.release()
     return {
         "status": "ok",
@@ -168,7 +170,8 @@ def run_linear(steps: int = 20, seed: int = 0, sample_seconds: int = 0) -> dict:
 
 
 class ResidentEngine:
-    """Keep a compiled Neural Engine graph running until :meth:`stop`.
+    """
+    Keep a compiled Neural Engine graph running until :meth:`stop`.
 
     The Qwen adapter stays on the GPU. This graph is the ANEForge linear
     Adam step plus two 512-by-2048 matmuls in one program. Both must carry
@@ -206,7 +209,7 @@ class ResidentEngine:
     def _run(self) -> None:
         try:
             self.summary = hold_engine(self._stop, seed=self.seed, ready=self._ready)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             self.error = f"{type(exc).__name__}: {exc}"
         finally:
             self._ready.set()
@@ -214,7 +217,6 @@ class ResidentEngine:
 
 def hold_engine(stop: threading.Event, seed: int = 0, ready: threading.Event | None = None) -> dict:
     """Run the engine graph until ``stop`` is set. Signal ``ready`` after the mask check."""
-
     import aneforge as af
 
     trained = run_linear(steps=4, seed=seed)
@@ -226,7 +228,8 @@ def hold_engine(stop: threading.Event, seed: int = 0, ready: threading.Event | N
     mask = int(program._prog._device_mask)
     if mask != ANE_MASK:
         program.release()
-        raise RuntimeError(f"matmul compiled off the Neural Engine: {hex(mask)}")
+        msg = f"matmul compiled off the Neural Engine: {hex(mask)}"
+        raise RuntimeError(msg)
     if ready is not None:
         ready.set()
     batch = rng.standard_normal((batch_rows, width)).astype(np.float32)

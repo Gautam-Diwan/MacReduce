@@ -1,4 +1,5 @@
-"""Pinned Flower transport adapter with MacReduce authentication/recovery rules.
+"""
+Pinned Flower transport adapter with MacReduce authentication/recovery rules.
 
 Flower owns RPC and concurrent dispatch. MacReduce owns logical identities,
 fixed-cohort commits, finite float32 arrays and durable local trainer state.
@@ -216,7 +217,7 @@ class FixedCohort(FedAvg):
             jobs.append((proxy, FitIns(parameters, {"envelope": signed(body, self.token)})))
         return jobs
 
-    def aggregate_fit(self, server_round, results, failures):
+    def aggregate_fit(self, _server_round, results, failures):
         if failures or len(results) != len(self.expected):
             raise RuntimeError("round failed/incomplete; stop and resume the uncommitted version")
         updates = {}
@@ -276,7 +277,6 @@ def connect(client: PersistentClient, address: str, *, reconnect_seconds=60):
     while True:
         try:
             client_session(client, address)
-            return
         except grpc.RpcError:
             version = (client.meta or {}).get("prepared_version")
             if deadline is None or version != previous_version:
@@ -285,3 +285,5 @@ def connect(client: PersistentClient, address: str, *, reconnect_seconds=60):
             if time.monotonic() >= deadline:
                 raise TimeoutError("coordinator disconnected; checkpoint retained; restart explicitly") from None
             time.sleep(2)
+        else:
+            return

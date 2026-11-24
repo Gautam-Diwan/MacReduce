@@ -1,4 +1,5 @@
-"""Causal byte Transformer with a shared MLX/PyTorch parameter layout.
+"""
+Causal byte Transformer with a shared MLX/PyTorch parameter layout.
 
 The default configuration is the original one-block, 29,888-parameter model.
 The CPU backend is an explicit reference backend, never a silent GPU fallback.
@@ -40,7 +41,8 @@ class ModelConfig:
         }
         for name, (value, low, high) in checks.items():
             if type(value) is not int or not low <= value <= high:
-                raise ValueError(f"{name} must be an integer from {low} to {high}")
+                msg = f"{name} must be an integer from {low} to {high}"
+                raise ValueError(msg)
         if self.width % self.heads != 0:
             raise ValueError("width must be divisible by heads")
         if self.dtype != "float32":
@@ -76,7 +78,8 @@ class ModelConfig:
         allowed = {"vocab", "width", "heads", "layers", "context", "dtype", "tokenizer"}
         unknown = set(data) - allowed
         if unknown:
-            raise ValueError(f"unknown model config fields: {sorted(unknown)}")
+            msg = f"unknown model config fields: {sorted(unknown)}"
+            raise ValueError(msg)
         defaults = ModelConfig()
         return ModelConfig(**{key: data.get(key, getattr(defaults, key)) for key in allowed})
 
@@ -203,13 +206,16 @@ def decode_weights(raw, reference=None, config=None):
             for key, shape in expected.items():
                 value = archive[key]
                 if value.shape != shape or value.dtype != np.float32:
-                    raise ValueError(f"invalid shape or dtype: {key}")
+                    msg = f"invalid shape or dtype: {key}"
+                    raise ValueError(msg)
                 if not np.isfinite(value).all():
-                    raise ValueError(f"non-finite parameter: {key}")
+                    msg = f"non-finite parameter: {key}"
+                    raise ValueError(msg)
                 result[key] = value.copy()
-        return result
     except (zipfile.BadZipFile, OSError, EOFError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ValueError("invalid checkpoint") from exc
+    else:
+        return result
 
 
 def weighted_average(updates):
@@ -316,9 +322,9 @@ class TorchBackend:
         loss = self.loss(tokens, target)
         loss.backward()
         with self.t.no_grad():
-            for value in self.p.values():
-                value -= lr * value.grad
-                value.grad = None
+            for parameter in self.p.values():
+                parameter.sub_(lr * parameter.grad)
+                parameter.grad = None
         return loss.item()
 
     def evaluate(self, tokens, target):
@@ -339,7 +345,7 @@ class TorchBackend:
 class MLXBackend:
     def __init__(self, config, weights, device="gpu"):
         import mlx.core as mx
-        import mlx.nn as nn
+        from mlx import nn
 
         self.mx, self.nn = mx, nn
         self.config = ModelConfig.from_mapping(config)
@@ -411,4 +417,5 @@ def backend(name, config, weights):
         return TorchBackend(config, weights)
     if name in ("mlx-cpu", "mlx-gpu"):
         return MLXBackend(config, weights, name.split("-")[1])
-    raise ValueError(f"backend {name!r} is not implemented; no implicit fallback")
+    msg = f"backend {name!r} is not implemented; no implicit fallback"
+    raise ValueError(msg)

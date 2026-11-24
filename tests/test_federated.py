@@ -94,16 +94,16 @@ def test_fedavg_reaches_the_mean_and_allreduce_sends_more_rounds():
         assert shard
         return reference_update(client, state, shard, steps, targets, lr=1.0)
 
-    shared = dict(
-        records=records,
-        initial_state=initial,
-        local_update=update,
-        n_macs=1,
-        mode="split",
-        optimizer_steps=4,
-        local_steps=4,
-        trainer="reference",
-    )
+    shared = {
+        "records": records,
+        "initial_state": initial,
+        "local_update": update,
+        "n_macs": 1,
+        "mode": "split",
+        "optimizer_steps": 4,
+        "local_steps": 4,
+        "trainer": "reference",
+    }
     fedavg = run_federated(**shared, algorithm="fedavg", topology="star")
     control = run_federated(**shared, algorithm="allreduce", topology="star")
     assert np.allclose(fedavg["state"]["adapter"], np.array([1.0, 2.0]))

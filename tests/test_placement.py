@@ -15,20 +15,20 @@ from macreduce.serving import (
 
 
 def table(**overrides) -> CostTable:
-    base = dict(
-        target_seconds_per_token=1.0,
-        verify_seconds=0.2,
-        verify_seconds_per_extra_token=0.0,
-        acceptance=0.8,
-        engines={
+    base = {
+        "target_seconds_per_token": 1.0,
+        "verify_seconds": 0.2,
+        "verify_seconds_per_extra_token": 0.0,
+        "acceptance": 0.8,
+        "engines": {
             "gpu": EngineCost(0.05, available=True, placement_verified=True),
         },
-        prefix_tokens=1000,
-        kv_bytes=1_000_000,
-        prefill_tokens_per_second=100.0,
-        disk_bytes_per_second=None,
-        link_bytes_per_second=None,
-    )
+        "prefix_tokens": 1000,
+        "kv_bytes": 1_000_000,
+        "prefill_tokens_per_second": 100.0,
+        "disk_bytes_per_second": None,
+        "link_bytes_per_second": None,
+    }
     base.update(overrides)
     return CostTable(**base)
 

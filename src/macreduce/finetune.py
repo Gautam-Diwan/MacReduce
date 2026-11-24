@@ -1,4 +1,5 @@
-"""QLoRA on one pinned dataset.
+"""
+QLoRA on one pinned dataset.
 
 The dataset is Salesforce WikiText-2 raw v1, revision
 ``b08601e04326c79dfdd32d625aee71d232d685c3``. The base model is the pinned
@@ -51,7 +52,6 @@ DEFAULT_RECIPE = {
 
 def recipe_from_config(config: dict) -> dict:
     """The LoRA recipe described by a ``configs/*.yaml`` mapping."""
-
     model = config.get("model") or {}
     training = config.get("training") or {}
     recipe = {
@@ -69,7 +69,6 @@ def recipe_from_config(config: dict) -> dict:
 
 def validate_recipe(recipe: dict | None) -> dict:
     """Fill defaults and reject impossible values."""
-
     merged = {**DEFAULT_RECIPE, **(recipe or {})}
     if int(merged["rank"]) < 1:
         raise ValueError("lora rank must be positive")
@@ -95,27 +94,29 @@ def validate_recipe(recipe: dict | None) -> dict:
 
 
 def resolve_schedule(schedule: dict | None, learning_rate: float, iters: int) -> dict | None:
-    """The mlx-lm ``build_schedule`` config for ``iters`` steps.
+    """
+    The mlx-lm ``build_schedule`` config for ``iters`` steps.
 
     ``cosine_decay`` warms up linearly from ``warmup_init`` to the peak over
     ``warmup`` steps, then decays to ``end`` by the final step. The decay
     length is derived from ``iters`` so a different epoch count or batch size
     keeps the same shape.
     """
-
     if schedule is None:
         return None
     if iters < 1:
         raise ValueError("iters must be positive")
     warmup = int(schedule.get("warmup", 0))
     if warmup >= iters:
-        raise ValueError(f"warmup {warmup} must be shorter than {iters} steps")
+        msg = f"warmup {warmup} must be shorter than {iters} steps"
+        raise ValueError(msg)
     if "arguments" in schedule:
         arguments = list(schedule["arguments"])
     elif schedule["name"] == "cosine_decay":
         arguments = [float(learning_rate), iters - warmup, float(schedule.get("end", 0.0))]
     else:
-        raise ValueError(f"lr_schedule {schedule['name']} needs explicit arguments")
+        msg = f"lr_schedule {schedule['name']} needs explicit arguments"
+        raise ValueError(msg)
     resolved = {"name": schedule["name"], "arguments": arguments}
     if warmup:
         resolved["warmup"] = warmup
@@ -130,7 +131,6 @@ SPLITS = {
 
 def perplexity(loss: float) -> float:
     """Perplexity of a mean natural-log token loss."""
-
     if loss < 0:
         raise ValueError("loss must be non-negative")
     return math.exp(loss)
@@ -138,7 +138,6 @@ def perplexity(loss: float) -> float:
 
 def epoch_steps(examples: int, batch_size: int, epochs: int) -> int:
     """Optimizer steps that cover ``epochs`` passes of a split."""
-
     if examples < 1 or batch_size < 1 or epochs < 1:
         raise ValueError("examples, batch size, and epochs must be positive")
     if examples < batch_size:
@@ -148,7 +147,6 @@ def epoch_steps(examples: int, batch_size: int, epochs: int) -> int:
 
 def prefix_records(records: list[dict], count: int) -> list[dict]:
     """The first ``count`` records, in file order. This is the curve split."""
-
     if count < 1:
         raise ValueError("the training prefix must be positive")
     if count > len(records):
@@ -158,7 +156,6 @@ def prefix_records(records: list[dict], count: int) -> list[dict]:
 
 def write_curve_split(source: Path, destination: Path, train_examples: int) -> dict:
     """Write a training prefix plus the full validation and test files."""
-
     train_lines = (source / SPLITS["train"]).read_text().splitlines()
     records = [json.loads(line) for line in train_lines if line]
     prefix = prefix_records(records, train_examples)
@@ -179,7 +176,6 @@ def write_curve_split(source: Path, destination: Path, train_examples: int) -> d
 
 def records_from_texts(texts: list[str]) -> list[dict]:
     """Keep non-empty WikiText lines. Blank lines are document breaks."""
-
     records = []
     for text in texts:
         stripped = text.strip()
@@ -222,7 +218,6 @@ class MetricLog:
 
 def prepare_dataset(destination: Path) -> dict:
     """Write train, valid, and test JSONL for the pinned WikiText revision."""
-
     destination.mkdir(parents=True, exist_ok=True)
     manifest_path = destination / "manifest.json"
     if _manifest_matches(manifest_path):
@@ -258,13 +253,15 @@ def run_lora(
     val_batches: int = -1,
     steps_per_report: int | None = None,
     metric_log: MetricLog | None = None,
+    *,
     grad_checkpoint: bool = True,
     save_every: int | str | None = "epoch",
     resume: str | None = None,
     ane_lora: bool = False,
     recipe: dict | None = None,
 ) -> dict:
-    """Train a QLoRA adapter and report test perplexity before and after.
+    """
+    Train a QLoRA adapter and report test perplexity before and after.
 
     ``iters`` fixes the step count. When it is omitted, the run is
     ``epochs`` passes over the training lines. ``train_examples`` keeps the
@@ -273,7 +270,6 @@ def run_lora(
     rank, scale, dropout, weight decay, gradient clip, and learning-rate
     schedule; omitted keys take :data:`DEFAULT_RECIPE`.
     """
-
     if batch_size < 1 or max_seq_length < 2 or epochs < 1 or grad_accumulation_steps < 1:
         raise ValueError("batch size, sequence length, epochs, and accumulation must be positive")
     if iters is not None and iters < 1:
@@ -303,13 +299,13 @@ def run_lora(
             val_batches,
             steps_per_report,
             metric_log,
-            grad_checkpoint,
-            save_every,
-            resume,
-            ane_lora,
-            recipe,
+            grad_checkpoint=grad_checkpoint,
+            save_every=save_every,
+            resume=resume,
+            ane_lora=ane_lora,
+            recipe=recipe,
         )
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         traceback.print_exc()
         return {
             "status": "error",
@@ -335,6 +331,7 @@ def _run_lora(
     val_batches: int,
     steps_per_report: int | None,
     metric_log: MetricLog | None,
+    *,
     grad_checkpoint: bool,
     save_every: int | str | None,
     resume: str | None,
@@ -470,11 +467,13 @@ def _resume_path(checkpoint_root: Path, resume: str | None) -> Path | None:
     if resume == "latest":
         pointer = checkpoint_root / "latest.json"
         if not pointer.is_file():
-            raise FileNotFoundError(f"no checkpoint pointer at {pointer}")
+            msg = f"no checkpoint pointer at {pointer}"
+            raise FileNotFoundError(msg)
         resume = json.loads(pointer.read_text())["path"]
     path = Path(resume)
     if not (path / "state.json").is_file():
-        raise FileNotFoundError(f"no checkpoint state in {path}")
+        msg = f"no checkpoint state in {path}"
+        raise FileNotFoundError(msg)
     return path
 
 
@@ -574,8 +573,6 @@ def _write_jsonl(path: Path, records: list[dict]) -> None:
 
 def _plain(info: dict) -> dict:
     plain = {}
-    for key, value in info.items():
-        if hasattr(value, "item"):
-            value = value.item()
-        plain[key] = value
+    for key, raw in info.items():
+        plain[key] = raw.item() if hasattr(raw, "item") else raw
     return plain

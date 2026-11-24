@@ -1,4 +1,5 @@
-"""Depth sweep, adaptive choice, and the local prefix decision.
+"""
+Depth sweep, adaptive choice, and the local prefix decision.
 
 Records are plain dictionaries so a fresh process can write one trial and the
 parent can score it. A missing rate stays absent. The peer arm is not implied
@@ -25,7 +26,6 @@ from .serving import (
 
 def acceptance_from_counts(from_draft: int, generated: int, depth: int) -> float | None:
     """Invert the geometric draft model. Undetermined counts stay unknown."""
-
     if depth not in DEPTHS or depth == 0 or generated <= 0 or from_draft < 0:
         return None
     rounds = generated - from_draft
@@ -37,10 +37,7 @@ def acceptance_from_counts(from_draft: int, generated: int, depth: int) -> float
     low, high = 0.0, 1.0
     for _ in range(40):
         mid = (low + high) / 2
-        if mid == 1:
-            expected = float(depth)
-        else:
-            expected = mid * (1 - mid**depth) / (1 - mid)
+        expected = float(depth) if mid == 1 else mid * (1 - mid ** depth) / (1 - mid)
         if expected < per_round:
             low = mid
         else:
@@ -55,12 +52,12 @@ def draft_seconds(
     depth: int,
     target_seconds: float,
 ) -> float | None:
-    """Estimate one draft step from a fused speculative loop.
+    """
+    Estimate one draft step from a fused speculative loop.
 
     The verify pass is charged as one target step. A non-positive remainder
     means this approximation does not fit, and the caller must not invent a cost.
     """
-
     rounds = generated - from_draft
     if (
         depth not in DEPTHS
@@ -80,7 +77,6 @@ def draft_seconds(
 
 def annotate_exact(records: list[dict]) -> list[dict]:
     """Mark speculative tokens against the first no-draft token sequence of that segment."""
-
     references: dict[str, tuple[int, ...]] = {}
     for record in records:
         if record.get("engine") == "none" and record.get("depth") == 0 and "tokens" in record:
@@ -111,7 +107,6 @@ def _group(records: list[dict]):
 
 def depth_table(records: list[dict]) -> dict:
     """Median time-to-first-token and decode rate for exact GPU or no-draft trials."""
-
     table: dict[str, dict[str, dict]] = {}
     for (segment, engine, depth), rows in _group(records).items():
         if engine not in {"none", "gpu"}:
@@ -146,7 +141,6 @@ def _median(rows: list[dict], key: str) -> float | None:
 
 def hindsight_depth(table_for_segment: dict, metric: str) -> int | None:
     """Best exact depth. Decode rate is maximized. Time-to-first-token is minimized."""
-
     best_depth = None
     best_value = None
     for depth in DEPTHS:
@@ -179,7 +173,6 @@ def cost_table_for_segment(
     records: list[dict], segment: str, prefix: dict | None
 ) -> CostTable | None:
     """Fit one segment. Returns None when the no-draft decode rate was not measured."""
-
     rows = _calibration_rows(records, segment)
     base = [
         row
@@ -239,7 +232,6 @@ def cost_table_for_segment(
 
 def score_segment(records: list[dict], segment: str, prefix: dict | None) -> dict:
     """Choose from the calibration pass and score the later evaluation pass."""
-
     table = depth_table([row for row in records if row["segment"] == segment])
     segment_table = table.get(segment, {})
     fitted = cost_table_for_segment(records, segment, prefix)
@@ -318,7 +310,6 @@ def score_segment(records: list[dict], segment: str, prefix: dict | None) -> dic
 
 def assign_passes(records: list[dict]) -> list[dict]:
     """The first replicate of each setting calibrates. Later replicates are scored."""
-
     seen: set[tuple] = set()
     assigned = []
     for record in records:
@@ -332,7 +323,6 @@ def assign_passes(records: list[dict]) -> list[dict]:
 
 def ane_gate() -> dict:
     """The depth report does not convert a drafter. Absence is not zero utilization."""
-
     try:
         import importlib
 
@@ -397,10 +387,9 @@ def render_report(records: list[dict], prefix: dict | None, cpu: dict | None) ->
 
 
 def execute(
-    output, cycles: int, max_tokens: int, executable: str, measure_devices: bool = True
+    output, cycles: int, max_tokens: int, executable: str, *, measure_devices: bool = True
 ) -> dict:
     """Run each trial in a new interpreter so compile state does not leak across arms."""
-
     import json
     import subprocess
     from pathlib import Path
@@ -411,7 +400,7 @@ def execute(
     for index, spec in enumerate(trial_plan(cycles=cycles)):
         destination = output / f"trial-{index:03d}.json"
         print(f"trial {index + 1} {spec['segment']} {spec['engine']} depth {spec['depth']}", flush=True)
-        completed = subprocess.run(
+        completed = subprocess.run(  # noqa: S603
             [
                 executable,
                 "-m",
@@ -444,7 +433,7 @@ def execute(
                 }
             )
     prefix_path = output / "prefix.json"
-    prefix_run = subprocess.run(
+    prefix_run = subprocess.run(  # noqa: S603
         [
             executable,
             "-m",
@@ -471,7 +460,7 @@ def execute(
         }
     )
     cpu_path = output / "cpu.json"
-    cpu_run = subprocess.run(
+    cpu_run = subprocess.run(  # noqa: S603
         [
             executable,
             "-m",

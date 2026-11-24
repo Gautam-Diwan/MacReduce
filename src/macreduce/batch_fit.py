@@ -1,4 +1,5 @@
-"""Pick a QLoRA microbatch by steady tokens per second.
+"""
+Pick a QLoRA microbatch by steady tokens per second.
 
 Each candidate runs in its own process, so an out-of-memory kill does not
 end the search. The uncheckpointed step is tried first. Gradient
@@ -35,7 +36,6 @@ DESCENDING = ()
 
 def steady_tokens_per_second(rates: list[float]) -> float:
     """Median tokens/s after the first report. The first report includes compile."""
-
     if not rates:
         raise ValueError("no token rates")
     body = rates[1:] or rates
@@ -44,7 +44,6 @@ def steady_tokens_per_second(rates: list[float]) -> float:
 
 def select_trial(trials: list[dict]) -> dict:
     """Fastest successful trial. Ties go to the larger batch."""
-
     ok = [trial for trial in trials if trial.get("status") == "ok"]
     if not ok:
         raise RuntimeError("no batch size completed a step under the memory limit")
@@ -66,7 +65,6 @@ def choose_batch(
     recipe: dict | None = None,
 ) -> dict:
     """Search batch size. ``grad_checkpoint=None`` tries the fast step, then checkpointing."""
-
     if memory_limit_bytes < 1:
         raise ValueError("memory limit must be positive")
     sizes = list(batch_sizes) if batch_sizes else list(ASCENDING)
@@ -125,7 +123,6 @@ def choose_batch(
 
 def run_probe(spec: dict) -> dict:
     """One microbatch measurement. Called in a child process."""
-
     import mlx.core as mx
     import mlx.optimizers as optim
     from mlx_lm.tuner.datasets import CacheDataset, load_dataset
@@ -270,7 +267,7 @@ def _child(batch_size: int, **kwargs) -> dict:
         "result_path": str(result_path),
     }
     try:
-        proc = subprocess.run(
+        proc = subprocess.run(  # noqa: S603
             [sys.executable, "-m", "macreduce.batch_fit", json.dumps(spec)],
             cwd=str(Path(__file__).resolve().parents[2]),
             text=True,
@@ -279,15 +276,15 @@ def _child(batch_size: int, **kwargs) -> dict:
             check=False,
         )
     except subprocess.TimeoutExpired:
-        return _failed(batch_size, kwargs["grad_checkpoint"], "timeout")
+        return _failed(batch_size, grad_checkpoint=kwargs["grad_checkpoint"], error="timeout")
     if result_path.is_file():
         return json.loads(result_path.read_text())
     detail = (proc.stderr or proc.stdout or "").strip().splitlines()
     tail = detail[-1] if detail else f"exit {proc.returncode}"
-    return _failed(batch_size, kwargs["grad_checkpoint"], tail)
+    return _failed(batch_size, grad_checkpoint=kwargs["grad_checkpoint"], error=tail)
 
 
-def _failed(batch_size: int, grad_checkpoint: bool, error: str) -> dict:
+def _failed(batch_size: int, *, grad_checkpoint: bool, error: str) -> dict:
     return {
         "batch_size": batch_size,
         "grad_checkpoint": grad_checkpoint,
@@ -311,8 +308,12 @@ def main() -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     try:
         result = run_probe(spec)
-    except Exception as exc:
-        result = _failed(int(spec["batch_size"]), bool(spec["grad_checkpoint"]), f"{type(exc).__name__}: {exc}")
+    except Exception as exc:  # noqa: BLE001
+        result = _failed(
+            int(spec["batch_size"]),
+            grad_checkpoint=bool(spec["grad_checkpoint"]),
+            error=f"{type(exc).__name__}: {exc}",
+        )
     destination.write_text(json.dumps(result))
 
 

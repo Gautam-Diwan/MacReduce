@@ -1,4 +1,5 @@
-"""Later Qwen blocks on the Neural Engine, earlier blocks on the GPU.
+"""
+Later Qwen blocks on the Neural Engine, earlier blocks on the GPU.
 
 A rank-8 product is under the engine's dispatch floor, and one call per
 linear flushes the GPU graph. This path compiles a suffix of full decoder
@@ -48,8 +49,7 @@ def ane_stats() -> dict:
 
 def enable_ane_suffix(model, max_seq_length: int) -> dict:
     """Compile the longest suffix that fits on the Neural Engine and patch Qwen."""
-
-    global _ENGINE
+    global _ENGINE  # noqa: PLW0603
     if max_seq_length < 2:
         raise ValueError("max sequence length must be at least 2")
     inner = getattr(model, "model", None)
@@ -107,11 +107,7 @@ class SuffixEngine:
         for width in widths:
             try:
                 self._compile_width(af, width)
-                self.suffix_layers = width
-                self.cut = self.n_layers - width
-                self.summary = _summary(self.cut, self.n_layers, self.max_seq)
-                return
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 _release(self.forward_program)
                 _release(self.backward_program)
                 self.forward_program = None
@@ -119,6 +115,11 @@ class SuffixEngine:
                 message = f"{width} blocks: {type(exc).__name__}: {exc}"
                 errors.append(message)
                 print(f"neural engine suffix did not compile ({message})", flush=True)
+            else:
+                self.suffix_layers = width
+                self.cut = self.n_layers - width
+                self.summary = _summary(self.cut, self.n_layers, self.max_seq)
+                return
         raise RuntimeError("no Qwen suffix compiled for the Neural Engine:\n" + "\n".join(errors))
 
     def forward(self, hidden, loras):
@@ -143,10 +144,7 @@ class SuffixEngine:
     def run_model(self, inner, inputs, input_embeddings):
         from mlx_lm.models.base import create_attention_mask
 
-        if input_embeddings is not None:
-            hidden = input_embeddings
-        else:
-            hidden = inner.embed_tokens(inputs)
+        hidden = input_embeddings if input_embeddings is not None else inner.embed_tokens(inputs)
         mask = create_attention_mask(hidden, None)
         for layer in inner.layers[: self.cut]:
             hidden = layer(hidden, mask, None)
@@ -163,11 +161,11 @@ class SuffixEngine:
             f"compiling neural engine suffix: {width} blocks, sequence {self.max_seq}",
             flush=True,
         )
-        hidden, mask, loras, _, out = self._tensors(af, False)
+        hidden, mask, loras, _, out = self._tensors(af, with_upstream=False)
         program = af.compile(out)
         _require_ane(program, "forward")
         self.forward_program = program
-        hidden, mask, loras, upstream, out = self._tensors(af, True)
+        hidden, mask, loras, upstream, out = self._tensors(af, with_upstream=True)
         from aneforge.autograd import backward_from
 
         leaves = [hidden, *loras]
@@ -182,7 +180,7 @@ class SuffixEngine:
         self._bwd_loras = loras
         self._bwd_upstream = upstream
 
-    def _tensors(self, af, with_upstream: bool):
+    def _tensors(self, af, *, with_upstream: bool):
         hidden = af.input((self.max_seq, self.dim))
         mask = af.input((self.max_seq, self.max_seq))
         loras = [af.input(shape) for shape in self.lora_shapes]
@@ -204,9 +202,11 @@ class SuffixEngine:
         host = _host(hidden)
         batch, length, _dim = host.shape
         if length > self.max_seq:
-            raise ValueError(f"sequence {length} is longer than the compiled suffix {self.max_seq}")
+            msg = f"sequence {length} is longer than the compiled suffix {self.max_seq}"
+            raise ValueError(msg)
         if len(loras) != len(self.lora_shapes):
-            raise RuntimeError(f"expected {len(self.lora_shapes)} LoRA tensors, got {len(loras)}")
+            msg = f"expected {len(self.lora_shapes)} LoRA tensors, got {len(loras)}"
+            raise RuntimeError(msg)
         padded = _pad(host, self.max_seq)
         factors = [_host(value) for value in loras]
         mask = _attention_mask(length, self.max_seq)
@@ -218,13 +218,15 @@ class SuffixEngine:
             if upstream is None:
                 produced = self._engine_call(
                     "forward",
-                    lambda: np.asarray(self.forward_program(*feed), dtype=np.float32),
+                    lambda feed=feed: np.asarray(self.forward_program(*feed), dtype=np.float32),
                 )
                 rows.append(produced.reshape(self.max_seq, self.dim))
                 continue
             pieces = self._engine_call(
                 "backward",
-                lambda: self._run_backward(padded[index], mask, factors, upstream[index]),
+                lambda index=index: self._run_backward(
+                    padded[index], mask, factors, upstream[index]
+                ),
             )
             rows.append(pieces[0].reshape(self.max_seq, self.dim))
             for slot, grad in enumerate(pieces[1:]):
@@ -233,7 +235,7 @@ class SuffixEngine:
         hidden_out = mx.array(stacked).astype(hidden.dtype)
         if cotangent is None:
             return hidden_out, batch
-        grads = [mx.array(value).astype(source.dtype) for value, source in zip(accumulated, loras)]
+        grads = [mx.array(value).astype(source.dtype) for value, source in zip(accumulated, loras, strict=False)]
         return (hidden_out, *grads), batch
 
     def _run_backward(self, row, mask, factors, upstream):
@@ -245,7 +247,7 @@ class SuffixEngine:
                 continue
             try:
                 values = self.backward_program(*self._backward_feed(row, mask, factors, scaled))
-            except Exception:
+            except Exception:  # noqa: BLE001
                 tried.append(target)
                 continue
             pieces = [
@@ -256,7 +258,8 @@ class SuffixEngine:
                 self._note_peak(target)
                 return pieces
             tried.append(target)
-        raise RuntimeError(f"neural engine backward is not finite at peaks {tried}")
+        msg = f"neural engine backward is not finite at peaks {tried}"
+        raise RuntimeError(msg)
 
     def _note_peak(self, target: float) -> None:
         if target == _BACKWARD_PEAKS[0]:
@@ -273,7 +276,7 @@ class SuffixEngine:
             id(self._bwd_mask): mask,
             id(self._bwd_upstream): upstream,
         }
-        for tensor, value in zip(self._bwd_loras, factors):
+        for tensor, value in zip(self._bwd_loras, factors, strict=False):
             known[id(tensor)] = value
         feed = []
         for tensor in self.backward_program.input_tensors:
@@ -286,13 +289,13 @@ class SuffixEngine:
 
 
 def _widths(n_layers: int) -> list[int]:
-    """How many trailing blocks to fuse onto the Neural Engine.
+    """
+    How many trailing blocks to fuse onto the Neural Engine.
 
     On this M4 a two-block backward overflowed and a four-block backward
     failed to execute. One full block stays finite, and its compile is above
     the dispatch floor.
     """
-
     if n_layers < 1:
         raise ValueError("the model has no decoder blocks")
     return [1]
@@ -313,7 +316,7 @@ def _summary(cut: int, n_layers: int, sequence: int) -> str:
 
 
 def _patch_qwen() -> None:
-    global _ORIGINAL
+    global _ORIGINAL  # noqa: PLW0603
     from mlx_lm.models.qwen3 import Qwen3Model
 
     if getattr(Qwen3Model, "_macreduce_suffix", False):
@@ -333,7 +336,7 @@ def _patch_qwen() -> None:
 
 
 def _install_function() -> None:
-    global _FN
+    global _FN  # noqa: PLW0603
     if _FN is not None:
         return
     import mlx.core as mx
@@ -419,7 +422,7 @@ def _layer_spec(layer) -> dict:
     scales = []
     shapes = []
     names = ("q", "k", "v", "o", "gate", "up", "down")
-    for name, proj in zip(names, _projections(layer)):
+    for name, proj in zip(names, _projections(layer), strict=False):
         weights[name] = _dense(proj)
         scales.append(float(proj.scale))
         shapes.append(tuple(int(dim) for dim in proj.lora_a.shape))
@@ -496,14 +499,14 @@ _BACKWARD_PEAKS = (1.0, 0.25, 0.0625, 0.015625)
 
 
 def _candidate_scales(upstream: np.ndarray) -> list[tuple[float, float]]:
-    """Scales that bring the cotangent peak down this ladder.
+    """
+    Scales that bring the cotangent peak down this ladder.
 
     A WikiText cotangent on block 27 peaks near 1e-3. Left there, the fp16
     query gradient pointed the wrong way. Peak 1 matched float32, and peak
     0.25 did too. Peak 16 overflowed, and a later training batch overflowed
     at peak 1, so the backward tries the smaller peaks before it gives up.
     """
-
     if upstream.size == 0:
         return [(1.0, 1.0)]
     peak = float(np.max(np.abs(upstream)))
@@ -516,7 +519,6 @@ def _candidate_scales(upstream: np.ndarray) -> list[tuple[float, float]]:
 
 def _loss_scale(upstream: np.ndarray) -> float:
     """The first backward scale, which targets a cotangent peak of 1."""
-
     return _candidate_scales(upstream)[0][1]
 
 
@@ -536,7 +538,8 @@ def _rope(sequence: int, head_dim: int, base: float, scaling):
 def _require_ane(program, kind: str) -> None:
     masks = _device_masks(program)
     if not masks or any(mask != ANE_MASK for mask in masks):
-        raise RuntimeError(f"{kind} suffix compiled off the Neural Engine: {[hex(item) for item in masks]}")
+        msg = f"{kind} suffix compiled off the Neural Engine: {[hex(item) for item in masks]}"
+        raise RuntimeError(msg)
 
 
 def _device_masks(program) -> list[int]:
@@ -558,5 +561,5 @@ def _release(program) -> None:
         return
     try:
         program.release()
-    except Exception:
+    except Exception:  # noqa: BLE001
         return

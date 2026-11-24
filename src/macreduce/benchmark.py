@@ -8,7 +8,7 @@ import numpy as np
 
 def accelerate_matmul(size=512, repeats=10):
     if not 16 <= size <= 2048 or not 1 <= repeats <= 1000:
-        raise ValueError("size must be 16–2048 and repeats 1–1000")
+        raise ValueError("size must be 16-2048 and repeats 1-1000")
     library = ctypes.CDLL("/System/Library/Frameworks/Accelerate.framework/Accelerate")
     fn = library.cblas_sgemm
     ptr = ctypes.POINTER(ctypes.c_float)

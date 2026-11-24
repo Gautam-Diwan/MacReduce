@@ -1,4 +1,5 @@
-"""System power, memory, and energy from mactop.
+"""
+System power, memory, and energy from mactop.
 
 Headless JSON is the series used for plots. Prometheus scrapes of
 ``mactop_power_watts`` are stored beside it. Both are system-wide.
@@ -6,6 +7,7 @@ Headless JSON is the series used for plots. Prometheus scrapes of
 
 from __future__ import annotations
 
+import itertools
 import json
 import re
 import subprocess
@@ -14,6 +16,7 @@ import time
 import urllib.request
 from datetime import datetime
 from pathlib import Path
+from typing import Self
 
 _POWER = re.compile(r'^mactop_power_watts\{component="([^"]+)"\}\s+(\S+)')
 _RAILS = ("gpu", "gpu_sram", "ane", "cpu", "dram")
@@ -21,7 +24,6 @@ _RAILS = ("gpu", "gpu_sram", "ane", "cpu", "dram")
 
 def parse_prometheus(text: str) -> dict[str, float]:
     """Read mactop power gauges from a Prometheus text scrape."""
-
     power: dict[str, float] = {}
     for line in text.splitlines():
         match = _POWER.match(line)
@@ -32,10 +34,9 @@ def parse_prometheus(text: str) -> dict[str, float]:
 
 def integrate_joules(samples: list[dict], key: str) -> float | None:
     """Trapezoid integral of one power series. None when two stamps are missing."""
-
     total = 0.0
     used = 0
-    for left, right in zip(samples, samples[1:]):
+    for left, right in itertools.pairwise(samples):
         start, end = left.get("t"), right.get("t")
         if start is None or end is None or end <= start:
             continue
@@ -51,14 +52,13 @@ def integrate_joules(samples: list[dict], key: str) -> float | None:
 
 def cumulative_joules(samples: list[dict], key: str) -> list[tuple[float, float]]:
     """Elapsed seconds and cumulative joules. The first point is zero."""
-
     stamped = [row for row in samples if row.get("t") is not None and row.get(key) is not None]
     if len(stamped) < 2:
         return []
     origin = float(stamped[0]["t"])
     total = 0.0
     points = [(0.0, 0.0)]
-    for left, right in zip(stamped, stamped[1:]):
+    for left, right in itertools.pairwise(stamped):
         dt = float(right["t"]) - float(left["t"])
         if dt <= 0:
             continue
@@ -69,7 +69,6 @@ def cumulative_joules(samples: list[dict], key: str) -> list[tuple[float, float]
 
 def headless_series(text: str) -> list[dict]:
     """Parse mactop JSON, stopping before a trailing partial write."""
-
     decoder = json.JSONDecoder()
     rows: list[dict] = []
     remaining = text.lstrip()
@@ -106,7 +105,6 @@ def _sample_row(sample: dict) -> dict:
 
 def energy_summary(samples: list[dict], prometheus: list[dict] | None = None) -> dict:
     """Joules and average watts over the mactop sample span."""
-
     prometheus = prometheus or []
     summary = {
         "source": "mactop headless soc_metrics, trapezoid over sample timestamps",
@@ -146,7 +144,7 @@ class SystemTrace:
         self._thread: threading.Thread | None = None
         self._stdout = None
 
-    def __enter__(self) -> SystemTrace:
+    def __enter__(self) -> Self:
         self.directory.mkdir(parents=True, exist_ok=True)
         self._stdout = (self.directory / "mactop.raw.json").open("w")
         command = [
@@ -161,7 +159,7 @@ class SystemTrace:
             "--interval",
             str(self.interval_ms),
         ]
-        self._process = subprocess.Popen(
+        self._process = subprocess.Popen(  # noqa: S603
             command,
             stdout=self._stdout,
             stderr=subprocess.PIPE,

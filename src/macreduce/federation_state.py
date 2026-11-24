@@ -57,9 +57,9 @@ def unpack_adapter(raw: bytes, schema: dict | None = None) -> dict:
 def tensor_digest(names, arrays):
     digest = hashlib.sha256()
     for name, array in zip(names, arrays, strict=True):
-        array = np.asarray(array)
-        digest.update(json.dumps([name, str(array.dtype), list(array.shape)]).encode())
-        digest.update(array.tobytes(order="C"))
+        tensor = np.asarray(array)
+        digest.update(json.dumps([name, str(tensor.dtype), list(tensor.shape)]).encode())
+        digest.update(tensor.tobytes(order="C"))
     return digest.hexdigest()
 
 

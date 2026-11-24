@@ -1,4 +1,5 @@
-"""Training figures: loss, perplexity, power, memory, and latency.
+"""
+Training figures: loss, perplexity, power, memory, and latency.
 
 Matplotlib writes the files. Seaborn sets the theme and draws the lines.
 Power and system memory are the mactop readings at each sample. Loss, MLX
@@ -15,7 +16,6 @@ _LOCK = threading.Lock()
 
 def write_run_figures(directory: Path, history: dict | None, samples: list[dict] | None) -> list[Path]:
     """Write every figure that has at least two points. Return the paths."""
-
     directory.mkdir(parents=True, exist_ok=True)
     history = history or {}
     samples = samples or []
@@ -37,7 +37,6 @@ def write_run_figures(directory: Path, history: dict | None, samples: list[dict]
 
 def plot_energy_comparison(path: Path, cases: dict) -> Path | None:
     """Grouped GPU and Neural Engine joules for the three one-Mac cases."""
-
     gpu = (cases.get("1_gpu") or {}).get("energy") or {}
     both = (cases.get("1_gpu_plus_ane") or {}).get("energy") or {}
     split = cases.get("1_gpu_and_1_ane") or {}
@@ -72,9 +71,9 @@ def plot_energy_comparison(path: Path, cases: dict) -> Path | None:
 
 
 def _use_backend() -> None:
-    import matplotlib
+    import matplotlib as mpl
 
-    matplotlib.use("Agg", force=False)
+    mpl.use("Agg", force=False)
 
 
 def _theme() -> None:

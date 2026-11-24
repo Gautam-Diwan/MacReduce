@@ -1,4 +1,5 @@
-"""Plans for distributed QLoRA and explicit Neural Engine placement.
+"""
+Plans for distributed QLoRA and explicit Neural Engine placement.
 
 A plan is not a measurement. Probing an import does not show that the Neural
 Engine ran. A missing explicit stack stays missing: this module does not
@@ -84,13 +85,15 @@ class TrainPlan:
 
 def validate(plan: TrainPlan) -> None:
     """Reject a plan that smuggles in a backend or a topology it does not name."""
-
     if plan.question not in QUESTIONS:
-        raise ValueError(f"unknown question {plan.question}")
+        msg = f"unknown question {plan.question}"
+        raise ValueError(msg)
     if plan.topology not in TOPOLOGIES:
-        raise ValueError(f"unknown topology {plan.topology}")
+        msg = f"unknown topology {plan.topology}"
+        raise ValueError(msg)
     if plan.schedule not in SCHEDULES:
-        raise ValueError(f"unknown schedule {plan.schedule}")
+        msg = f"unknown schedule {plan.schedule}"
+        raise ValueError(msg)
     if plan.local_steps < 1:
         raise ValueError("local steps must be positive")
     if plan.topology == "local_sgd" and plan.local_steps < 2:
@@ -105,9 +108,8 @@ def validate(plan: TrainPlan) -> None:
     inferred = [seat for seat in plan.seats if seat.infer_backend]
     for seat in plan.seats:
         _check_seat(seat)
-    if plan.topology == "single":
-        if plan.needs_second_mac() or len(trainers) != 1 or servers:
-            raise ValueError("single is one trainer on one Mac")
+    if plan.topology == "single" and (plan.needs_second_mac() or len(trainers) != 1 or servers):
+        raise ValueError("single is one trainer on one Mac")
     if plan.topology == "ring_allreduce":
         if len(trainers) < 2:
             raise ValueError("ring all-reduce needs two trainers")
@@ -127,7 +129,8 @@ def validate(plan: TrainPlan) -> None:
             by_host.setdefault(seat.host, set()).add(seat.train_backend or "")
         for host, backends in by_host.items():
             if not (backends & set(GPU_TRAINERS)) or not (backends & set(EXPLICIT_ANE)):
-                raise ValueError(f"{host} must sum a GPU rank and an explicit Neural Engine rank first")
+                msg = f"{host} must sum a GPU rank and an explicit Neural Engine rank first"
+                raise ValueError(msg)
     if plan.topology == "tree_allreduce" and len(trainers) < 3:
         raise ValueError("a tree needs at least three trainers")
     if plan.topology == "local_sgd" and len(trainers) < 2:
@@ -142,17 +145,18 @@ def validate(plan: TrainPlan) -> None:
         gpu = [seat for seat in trainers if seat.train_backend in GPU_TRAINERS]
         if not gpu or not inferred:
             raise ValueError("overlap needs a GPU trainer and a Neural Engine inference path")
-    if plan.question == "explicit_ane_trainer":
-        if not any(seat.train_backend in EXPLICIT_ANE for seat in trainers):
-            raise ValueError("an explicit plan has to name ANEForge, Orion, or maderix")
-    if plan.question == "baseline":
-        if any(seat.train_backend not in GPU_TRAINERS for seat in trainers):
-            raise ValueError("the baseline trains on MLX")
+    if plan.question == "explicit_ane_trainer" and not any(
+        seat.train_backend in EXPLICIT_ANE for seat in trainers
+    ):
+        raise ValueError("an explicit plan has to name ANEForge, Orion, or maderix")
+    if plan.question == "baseline" and any(
+        seat.train_backend not in GPU_TRAINERS for seat in trainers
+    ):
+        raise ValueError("the baseline trains on MLX")
 
 
 def comparison_plans() -> tuple[TrainPlan, ...]:
     """The comparisons the course proposal commits to. None is a result."""
-
     plans = (
         _plan("gpu_one_mac", "baseline", "single", "train_only", (_trainer("m4", LOCAL, "mlx_gpu"),)),
         _plan(
@@ -253,7 +257,6 @@ def comparison_plans() -> tuple[TrainPlan, ...]:
 
 def probe_backends() -> list[dict]:
     """Say which stacks import. Importing one is not Neural Engine residency."""
-
     rows = []
     for name, spec in BACKENDS.items():
         module = spec["module"]
@@ -282,7 +285,6 @@ def probe_backends() -> list[dict]:
 
 def report() -> dict:
     """The plan and the probe. ``status`` is planned, not a training result."""
-
     plans = comparison_plans()
     return {
         "status": "planned",
@@ -316,14 +318,17 @@ def _plan(name, question, topology, schedule, seats, local_steps=1) -> TrainPlan
 
 def _check_seat(seat: Seat) -> None:
     if seat.role not in ("train", "server", "infer"):
-        raise ValueError(f"unknown role {seat.role}")
+        msg = f"unknown role {seat.role}"
+        raise ValueError(msg)
     allowed = (*GPU_TRAINERS, *EXPLICIT_ANE, *IMPLICIT_ANE)
     if seat.role == "train" and seat.train_backend not in allowed:
-        raise ValueError(f"unknown train backend {seat.train_backend}")
+        msg = f"unknown train backend {seat.train_backend}"
+        raise ValueError(msg)
     if seat.role != "train" and seat.train_backend is not None:
         raise ValueError("only a trainer has a train backend")
     if seat.infer_backend is not None and seat.infer_backend not in (*EXPLICIT_ANE, *IMPLICIT_ANE):
-        raise ValueError(f"unknown infer backend {seat.infer_backend}")
+        msg = f"unknown infer backend {seat.infer_backend}"
+        raise ValueError(msg)
     if seat.role == "infer" and seat.infer_backend is None:
         raise ValueError("an inference seat needs a Neural Engine backend")
 

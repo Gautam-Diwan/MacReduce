@@ -1,4 +1,5 @@
-"""Qwen LoRA branch on the Neural Engine.
+"""
+Qwen LoRA branch on the Neural Engine.
 
 The frozen 4-bit base stays on the GPU. The trainable product
 ``(x @ A) @ B`` and its gradients run as ANEForge programs on device mask
@@ -32,7 +33,6 @@ def ane_stats() -> dict:
 
 def enable_ane_lora() -> None:
     """Send every LoRA branch through the Neural Engine. The base linear stays on the GPU."""
-
     from mlx_lm.tuner.lora import LoRALinear
 
     if getattr(LoRALinear, "_macreduce_ane", False):
@@ -54,7 +54,6 @@ def enable_ane_lora() -> None:
 @mx.custom_function
 def lora_product(x, left, right):
     """``(x @ left) @ right`` on the Neural Engine."""
-
     return _forward(x, left, right)
 
 
@@ -117,18 +116,19 @@ def _program(kind: str, rows: int, in_dim: int, rank: int, out_dim: int):
             d_features = d_hidden @ left.transpose((1, 0))
             program = compile_multi([d_features, d_left, d_right])
         else:
-            raise ValueError(f"unknown LoRA program {kind}")
+            msg = f"unknown LoRA program {kind}"
+            raise ValueError(msg)
         mask = _device_mask(program)
         if mask != ANE_MASK:
             program.release()
-            raise RuntimeError(f"{kind} LoRA compiled off the Neural Engine: {hex(mask)}")
+            msg = f"{kind} LoRA compiled off the Neural Engine: {hex(mask)}"
+            raise RuntimeError(msg)
         _CACHE[key] = program
         return program
 
 
 def _check_mask() -> None:
     """Compile one tiny program so a bad device mask fails before the long run."""
-
     features = mx.zeros((2, 4))
     left = mx.zeros((4, 2))
     right = mx.zeros((2, 4))

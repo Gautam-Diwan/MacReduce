@@ -1,4 +1,5 @@
-"""Train Qwen3 QLoRA from a YAML config.
+"""
+Train Qwen3 QLoRA from a YAML config.
 
     python main.py --config configs/qlora_m4.yaml
 
@@ -27,7 +28,8 @@ def load_config(path: Path) -> dict:
     with path.open() as handle:
         config = yaml.safe_load(handle)
     if not isinstance(config, dict):
-        raise ValueError(f"{path} did not contain a mapping")
+        msg = f"{path} did not contain a mapping"
+        raise ValueError(msg)
     return config
 
 

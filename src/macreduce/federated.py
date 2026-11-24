@@ -1,4 +1,5 @@
-"""Heterogeneous federated learning for MacReduce.
+"""
+Heterogeneous federated learning for MacReduce.
 
 Clients differ by device, not by data mixture. A client is a GPU, a
 combined GPU and Neural Engine, or a Neural Engine alone. Several Macs
@@ -52,16 +53,17 @@ class Client:
 
 
 def cohort(n_macs: int, mode: str) -> tuple[Client, ...]:
-    """The clients for ``n_macs`` machines that all use ``mode``.
+    """
+    The clients for ``n_macs`` machines that all use ``mode``.
 
     ``gpu`` is one GPU client per Mac. ``gpu_ane`` is one combined client
     per Mac. ``split`` is a GPU client and a Neural Engine client on every Mac.
     """
-
     if n_macs < 1:
         raise ValueError("a cohort needs at least one Mac")
     if mode not in MODES:
-        raise ValueError(f"unknown intra-Mac mode {mode}")
+        msg = f"unknown intra-Mac mode {mode}"
+        raise ValueError(msg)
     clients = []
     for mac in range(n_macs):
         if mode == "gpu":
@@ -76,7 +78,6 @@ def cohort(n_macs: int, mode: str) -> tuple[Client, ...]:
 
 def iid_shards(n_records: int, n_clients: int, seed: int) -> tuple[np.ndarray, ...]:
     """Disjoint shards of one mixture. The shuffle seed is the only randomness."""
-
     if n_clients < 1:
         raise ValueError("shard count must be positive")
     if n_records < n_clients:
@@ -90,12 +91,12 @@ def fednova_average(
     steps: list[int],
     weights: list[float] | None = None,
 ) -> np.ndarray:
-    """Average adapter deltas after dividing out each client's step count.
+    """
+    Average adapter deltas after dividing out each client's step count.
 
     Equal step counts reduce to a weighted mean of the deltas. This is the
     plain-SGD normalization from FedNova, not a claim about Adam.
     """
-
     if not deltas or len(deltas) != len(steps):
         raise ValueError("each delta needs a step count")
     if any(count < 1 for count in steps):
@@ -113,12 +114,12 @@ def fednova_average(
 
 
 def quantize_int8(delta: np.ndarray, residual: np.ndarray) -> tuple[np.ndarray, float, np.ndarray]:
-    """Quantize ``delta + residual`` and return the new residual.
+    """
+    Quantize ``delta + residual`` and return the new residual.
 
     The residual keeps the part int8 could not represent, so later rounds
     can send it. The scale travels with the int8 values.
     """
-
     pending = np.asarray(delta, dtype=np.float64) + np.asarray(residual, dtype=np.float64)
     peak = float(np.max(np.abs(pending))) if pending.size else 0.0
     scale = peak / 127.0 if peak > 0 else 1.0
@@ -133,14 +134,12 @@ def dequantize_int8(codes: np.ndarray, scale: float) -> np.ndarray:
 
 def star_average(deltas: list[np.ndarray]) -> np.ndarray:
     """Equal-weight mean. The coordinator is the hub."""
-
     _same_shape(deltas)
     return np.mean(np.stack([np.asarray(delta, dtype=np.float64) for delta in deltas]), axis=0)
 
 
 def ring_average(deltas: list[np.ndarray]) -> np.ndarray:
     """Ring all-reduce of equal-sized vectors. The result is their mean."""
-
     _same_shape(deltas)
     stacked = [np.asarray(delta, dtype=np.float64) for delta in deltas]
     width = stacked[0].size
@@ -162,7 +161,6 @@ def ring_average(deltas: list[np.ndarray]) -> np.ndarray:
 
 def tree_average(deltas: list[np.ndarray]) -> np.ndarray:
     """Binary-tree reduction. A parent average is weighted by subtree size."""
-
     _same_shape(deltas)
     nodes = [(np.asarray(delta, dtype=np.float64), 1) for delta in deltas]
     while len(nodes) > 1:
@@ -186,16 +184,17 @@ def average(deltas: list[np.ndarray], topology: str) -> np.ndarray:
         return ring_average(deltas)
     if topology == "tree":
         return tree_average(deltas)
-    raise ValueError(f"unknown topology {topology}")
+    msg = f"unknown topology {topology}"
+    raise ValueError(msg)
 
 
 def communication_rounds(optimizer_steps: int, local_steps: int) -> dict[str, int]:
-    """How many times a cohort sends an adapter delta.
+    """
+    How many times a cohort sends an adapter delta.
 
     All-reduce sends one delta per optimizer step. FedAvg sends one delta
     after each block of local steps, so the same work uses fewer rounds.
     """
-
     if optimizer_steps < 1 or local_steps < 1:
         raise ValueError("step counts must be positive")
     if optimizer_steps % local_steps != 0:
@@ -203,13 +202,13 @@ def communication_rounds(optimizer_steps: int, local_steps: int) -> dict[str, in
     return {"allreduce": optimizer_steps, "fedavg": optimizer_steps // local_steps}
 
 
-def payload_bytes(n_params: int, quantized: bool, n_tensors: int = 1) -> int:
-    """Bytes of one adapter delta. The base model is not included.
+def payload_bytes(n_params: int, *, quantized: bool, n_tensors: int = 1) -> int:
+    """
+    Bytes of one adapter delta. The base model is not included.
 
     A quantized tensor also sends an 8-byte scale. ``n_tensors`` is the
     number of those scales.
     """
-
     if n_params < 1 or n_tensors < 1:
         raise ValueError("an adapter delta needs parameters")
     scales = 8 * n_tensors if quantized else 0
@@ -220,16 +219,17 @@ def round_wire_bytes(
     n_clients: int,
     n_params: int,
     topology: str,
+    *,
     quantized: bool,
     n_tensors: int = 1,
 ) -> int:
     """Bytes moved to give every client the average, counting both directions."""
-
     if topology not in TOPOLOGIES:
-        raise ValueError(f"unknown topology {topology}")
+        msg = f"unknown topology {topology}"
+        raise ValueError(msg)
     if n_clients < 1:
         raise ValueError("a round needs a client")
-    one = payload_bytes(n_params, quantized, n_tensors)
+    one = payload_bytes(n_params, quantized=quantized, n_tensors=n_tensors)
     if n_clients == 1 or topology == "star":
         return 0 if n_clients == 1 else 2 * n_clients * one
     if topology == "ring":
@@ -239,7 +239,6 @@ def round_wire_bytes(
 
 def study() -> dict:
     """The rubric. ``measured`` is false until a run writes its own evidence."""
-
     arms = []
     for n_macs in (1, 2):
         for mode in MODES:
@@ -293,8 +292,11 @@ def _same_shape(deltas: list[np.ndarray]) -> None:
         raise ValueError("adapter deltas must share a shape")
 
 
-class PeerRequired(RuntimeError):
+class PeerRequiredError(RuntimeError):
     """A multi-Mac round was asked for without a connected peer."""
+
+
+PeerRequired = PeerRequiredError
 
 
 @dataclass(frozen=True)
@@ -330,10 +332,10 @@ def aggregate_deltas(
     deltas: list[dict[str, np.ndarray]],
     steps: list[int],
     topology: str,
+    *,
     normalize: bool,
 ) -> dict[str, np.ndarray]:
     """Average each adapter tensor. FedNova rescales before the topology mean."""
-
     if len(deltas) != len(steps):
         raise ValueError("each delta needs a step count")
     keys = _same_keys(*deltas)
@@ -350,14 +352,16 @@ def aggregate_deltas(
 def encode_tree(
     delta: dict[str, np.ndarray],
     residual: dict[str, np.ndarray],
+    *,
     quantize: bool,
 ) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], int]:
     """Return the tree a peer can reconstruct, the new residual, and its bytes."""
-
     _same_keys(delta, residual)
     if not quantize:
         width = sum(int(np.asarray(value).size) for value in delta.values())
-        return copy_state(delta), copy_state(residual), payload_bytes(width, False, len(delta))
+        return copy_state(delta), copy_state(residual), payload_bytes(
+            width, quantized=False, n_tensors=len(delta)
+        )
     reconstructed = {}
     updated = {}
     width = 0
@@ -365,21 +369,21 @@ def encode_tree(
         codes, scale, updated[key] = quantize_int8(value, residual[key])
         reconstructed[key] = dequantize_int8(codes, scale)
         width += int(np.asarray(value).size)
-    return reconstructed, updated, payload_bytes(width, True, len(delta))
+    return reconstructed, updated, payload_bytes(width, quantized=True, n_tensors=len(delta))
 
 
 def merge_device_updates(start: dict[str, np.ndarray], updates: list[LocalResult]) -> LocalResult:
-    """One delta for a Mac whose GPU and Neural Engine both stepped.
+    """
+    One delta for a Mac whose GPU and Neural Engine both stepped.
 
     The device step counts are normalized here. The returned step count is 1
     so a later cohort average does not divide that work out a second time.
     """
-
     if len(updates) < 2:
         raise ValueError("a combined client needs both devices")
     deltas = [state_delta(update.state, start) for update in updates]
     steps = [update.steps for update in updates]
-    merged = aggregate_deltas(deltas, steps, "star", True)
+    merged = aggregate_deltas(deltas, steps, "star", normalize=True)
     losses = [update.loss for update in updates if update.loss is not None]
     loss = float(np.mean(losses)) if losses else None
     return LocalResult(state_add(start, merged), 1, loss)
@@ -387,7 +391,6 @@ def merge_device_updates(start: dict[str, np.ndarray], updates: list[LocalResult
 
 def pack_state(state: dict[str, np.ndarray]) -> bytes:
     """Serialize an adapter delta. The base weights are not in this buffer."""
-
     buffer = io.BytesIO()
     np.savez(buffer, **{key: np.asarray(value) for key, value in state.items()})
     raw = buffer.getvalue()
@@ -404,7 +407,8 @@ def unpack_state(raw: bytes) -> dict[str, np.ndarray]:
 
 
 class AdapterRelay:
-    """Collect one adapter payload per client.
+    """
+    Collect one adapter payload per client.
 
     ``start`` listens on loopback. A loopback relay is a transport test, not a
     second Mac. ``publish`` is the in-process path the round loop uses.
@@ -425,7 +429,8 @@ class AdapterRelay:
 
     def publish(self, name: str, payload: bytes) -> dict[str, bytes] | None:
         if name not in self.names:
-            raise ValueError(f"unknown client {name}")
+            msg = f"unknown client {name}"
+            raise ValueError(msg)
         if type(payload) is not bytes or not 1 <= len(payload) <= self.max_bytes:
             raise ValueError("adapter delta is empty or exceeds the size cap")
         with self._lock:
@@ -465,7 +470,7 @@ class AdapterRelay:
                     return
                 self._json({"complete": True, "clients": list(relay.names)})
 
-            def log_message(self, fmt, *args):
+            def log_message(self, *_args, **_kwargs):
                 return
 
             def _allowed(self) -> bool:
@@ -517,15 +522,16 @@ def run_federated(
     base_nbytes: int = 0,
     trainer: str = "injected",
 ) -> dict:
-    """Run FedAvg or per-step all-reduce over adapter deltas.
+    """
+    Run FedAvg or per-step all-reduce over adapter deltas.
 
     One Mac aggregates in process. More than one Mac requires ``relay``.
     This function does not invent the missing machine. ``measured`` stays
     false: a caller that ran QLoRA writes its own evidence file.
     """
-
     if algorithm not in ALGORITHMS:
-        raise ValueError(f"unknown algorithm {algorithm}")
+        msg = f"unknown algorithm {algorithm}"
+        raise ValueError(msg)
     if optimizer_steps < 1 or local_steps < 1:
         raise ValueError("step counts must be positive")
     if eval_every is not None and eval_every < 1:
@@ -563,7 +569,7 @@ def run_federated(
         for client, result in zip(clients, results, strict=True):
             delta = state_delta(result.state, global_state)
             reconstructed, residuals[client.name], nbytes = encode_tree(
-                delta, residuals[client.name], quantize
+                delta, residuals[client.name], quantize=quantize
             )
             encoded.append(reconstructed)
             payload += nbytes
@@ -576,19 +582,19 @@ def run_federated(
             encoded = [unpack_state(done[client.name]) for client in clients]
         steps = [result.steps for result in results]
         global_state = state_add(
-            global_state, aggregate_deltas(encoded, steps, topology, normalize)
+            global_state, aggregate_deltas(encoded, steps, topology, normalize=normalize)
         )
         row = {
             "round": round_index,
-            "client_steps": {client.name: result.steps for client, result in zip(clients, results)},
-            "client_loss": {client.name: result.loss for client, result in zip(clients, results)},
+            "client_steps": {client.name: result.steps for client, result in zip(clients, results, strict=False)},
+            "client_loss": {client.name: result.loss for client, result in zip(clients, results, strict=False)},
             "payload_bytes": payload,
             "wire_bytes": round_wire_bytes(
                 len(clients),
                 _width(global_state),
                 topology,
-                quantize,
-                len(global_state),
+                quantized=quantize,
+                n_tensors=len(global_state),
             ),
             "base_weights_sent": False,
         }
@@ -625,7 +631,6 @@ def reference_update(
     lr: float = 1.0,
 ) -> LocalResult:
     """CPU SGD toward a client target. This is the numerical reference, not QLoRA."""
-
     del records
     if lr <= 0 or steps < 1:
         raise ValueError("learning rate and steps must be positive")

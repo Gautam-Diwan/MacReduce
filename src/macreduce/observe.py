@@ -18,7 +18,9 @@ import psutil
 
 def probe(command, timeout=10):
     try:
-        r = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
+        r = subprocess.run(  # noqa: S603
+            command, capture_output=True, text=True, timeout=timeout, check=False
+        )
         return {
             "status": "available" if r.returncode == 0 else "unavailable",
             "value": r.stdout.strip() if r.returncode == 0 else None,
@@ -28,7 +30,7 @@ def probe(command, timeout=10):
         return {"status": "unavailable", "value": None, "reason": str(exc)}
 
 
-def capabilities(smoke=False):
+def capabilities(*, smoke=False):
     chip = probe(["sysctl", "-n", "machdep.cpu.brand_string"])
     # system_profiler often remains readable when sysctl is sandbox restricted.
     info = probe(["system_profiler", "SPHardwareDataType", "-json"])
@@ -66,9 +68,9 @@ def capabilities(smoke=False):
             [
                 sys.executable,
                 "-c",
-                "import mlx.core as m; "
+                ("import mlx.core as m; "
                 "m.set_default_device(m.gpu); "
-                "print((m.ones((16,16))@m.ones((16,16))).sum().item())",
+                "print((m.ones((16,16))@m.ones((16,16))).sum().item())"),
             ]
         )
         mlx["execution"] = mlx["probe"]["status"]
@@ -257,7 +259,9 @@ def collect_mactop(directory, seconds=10, interval_ms=1000):
         str(interval_ms),
     ]
     try:
-        r = subprocess.run(command, capture_output=True, text=True, env=env, timeout=seconds + 20)
+        r = subprocess.run(  # noqa: S603
+            command, capture_output=True, text=True, env=env, timeout=seconds + 20, check=False
+        )
         (path / "mactop.raw.json").write_text(r.stdout)
         (path / "mactop.stderr.txt").write_text(r.stderr)
         status = {
@@ -297,11 +301,11 @@ def report(directory):
     lines = [
         "# MacReduce run report",
         "",
-        "Timings are local monotonic durations. Cross-node clocks "
+        ("Timings are local monotonic durations. Cross-node clocks "
         "are not synchronized. Transfer timings include request and server overhead; byte counts "
-        "are application payload, not radio traffic.",
-        "Nested phases overlap (for example HTTP polling inside barrier wait); do not add all rows "
-        "to estimate total elapsed time. First-step timings include warmup effects.",
+        "are application payload, not radio traffic."),
+        ("Nested phases overlap (for example HTTP polling inside barrier wait); do not add all rows "
+        "to estimate total elapsed time. First-step timings include warmup effects."),
         "",
         "| Node | Phase | Count | Total s | p50 ms | p95 ms |",
         "|---|---|---:|---:|---:|---:|",
@@ -352,8 +356,8 @@ def report(directory):
             "",
             "These are compute-only rates, including warmup, not end-to-end cluster throughput.",
             f"Committed tokens: {summary['committed_tokens']}. Retry events: {len(retries)}.",
-            f"Successful request payloads: {summary['successful_request_payload_sent_bytes']} "
-            f"bytes sent and {summary['successful_request_payload_received_bytes']} bytes received.",
+            (f"Successful request payloads: {summary['successful_request_payload_sent_bytes']} "
+            f"bytes sent and {summary['successful_request_payload_received_bytes']} bytes received."),
             "Failed-attempt bytes are not included because delivery is unknown.",
         ]
     )
@@ -367,8 +371,8 @@ def report(directory):
         f"Peak observed single-process RSS: {max(rss) if rss else 'unavailable'} bytes.",
         "This is sampled, not the allocator peak or summed cluster RAM.",
         "",
-        "System power is only available if separately captured. ANE activity and M5 tensor "
-        "dispatch cannot be inferred from these training spans.",
+        ("System power is only available if separately captured. ANE activity and M5 tensor "
+        "dispatch cannot be inferred from these training spans."),
         "",
     ]
     (root / "report.md").write_text("\n".join(lines))
@@ -385,7 +389,7 @@ def report(directory):
                 "tid": 1,
                 "ts": (e["start_ns"] - origin) / 1000,
                 "dur": e["duration_ns"] / 1000,
-                "args": {k: v for k, v in e.items() if k not in ("phase",)},
+                "args": {k: v for k, v in e.items() if k != "phase"},
             }
             for e in local
         ]

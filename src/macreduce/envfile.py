@@ -7,11 +7,11 @@ from pathlib import Path
 
 
 def env_path(start: Path | None = None) -> Path | None:
-    """Nearest ``.env`` walking up from cwd, else the repo root.
+    """
+    Nearest ``.env`` walking up from cwd, else the repo root.
 
     If ``start`` is set, only that directory is checked (tests).
     """
-
     if start is not None:
         candidate = Path(start).resolve() / ".env"
         return candidate if candidate.is_file() else None
@@ -28,7 +28,6 @@ def env_path(start: Path | None = None) -> Path | None:
 
 def load_project_env(start: Path | None = None) -> Path | None:
     """Apply KEY=VALUE lines with setdefault. Returns the file that was read."""
-
     path = env_path(start)
     if path is None:
         return None
