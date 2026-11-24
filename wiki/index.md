@@ -2,13 +2,13 @@
 title: "MacReduce knowledge index"
 type: index
 status: active
-updated: 2026-11-17
+updated: 2026-11-23
 sources: []
 ---
 
 # MacReduce knowledge index
 
-MacReduce is a course project on Apple Silicon. As of [decision 0003](decisions/0003-build-target.md) the build target is a per-request phase-placement scheduler for LLM serving (drafter engine, speculation depth, prefix-KV source) plus the benchmark that tests it against the strongest static configuration. The earlier Wi-Fi local-SGD trainer is retained as a measured prototype, not the research claim. Known hardware is one M4 (macOS 26.5, MLX 0.32.4); other Macs and links are unknown. A one-M4 Qwen2.5 depth sweep, warm prefix reload, and CPU draft trial are recorded in [state](project/state.md). The joint speed hypothesis was not met. The serving pin is now Qwen3, with a token check rather than a new sweep. A Qwen3 depth sweep is recorded beside the Qwen2.5 study. A convolution under `CPU_AND_NE` produced several consecutive mactop samples of Neural Engine power and bandwidth, while `CPU_ONLY` stayed at zero. A later decoder run placed attention on the Neural Engine for two mactop samples; the three-sample gate left that time out of the ranking. A 28-layer forward at the Qwen3-0.6B widths ran once on the Neural Engine, and saving the package failed because the disk is full. The pinned Qwen3 weights are still not converted, and a second Mac is still absent. Decision 0003 now allows a private-API ANE stack when it addresses an open gap, and the training baseline is QLoRA of Qwen3-0.6B on WikiText-2. The 10-805 proposal, lead Gautam Diwan (gdiwan), is heterogeneous federated learning under the name MacReduce. A client is a GPU, a combined GPU and Neural Engine, or those devices as two clients, and every Mac repeats that choice. The payload is a LoRA adapter delta. The curve is three epochs on the first 4,096 WikiText-2 training lines. Multi-Mac cells wait for a second machine. Serving stays as future scope.
+MacReduce is a course project on Apple Silicon. As of [decision 0003](decisions/0003-build-target.md) the build target is a per-request phase-placement scheduler for LLM serving (drafter engine, speculation depth, prefix-KV source) plus the benchmark that tests it against the strongest static configuration. The earlier Wi-Fi local-SGD trainer is retained as a measured prototype, not the research claim. The earlier measured inventory is one M4 (macOS 26.5, MLX 0.32.4). On 2026-11-12 the team reported an M4 Air 24 GB, M4 Pro 16 GB, and M1 Air 8 GB; their wireless federation is a [proposed study](research/three-mac-wireless-federation.md), not a new hardware measurement. A one-M4 Qwen2.5 depth sweep, warm prefix reload, and CPU draft trial are recorded in [state](project/state.md). The joint speed hypothesis was not met. The serving pin is now Qwen3, with a token check rather than a new sweep. A Qwen3 depth sweep is recorded beside the Qwen2.5 study. A convolution under `CPU_AND_NE` produced several consecutive mactop samples of Neural Engine power and bandwidth, while `CPU_ONLY` stayed at zero. A later decoder run placed attention on the Neural Engine for two mactop samples; the three-sample gate left that time out of the ranking. A 28-layer forward at the Qwen3-0.6B widths ran once on the Neural Engine, and saving the package failed because the disk is full. In that earlier measurement, the pinned Qwen3 weights were not converted and no second Mac participated. Decision 0003 now allows a private-API ANE stack when it addresses an open gap, and the training baseline is QLoRA of Qwen3-0.6B on WikiText-2. The 10-805 proposal, lead Gautam Diwan (gdiwan), is heterogeneous federated learning under the name MacReduce. A client is a GPU, a combined GPU and Neural Engine, or those devices as two clients, and every Mac repeats that choice. The payload is a LoRA adapter delta. The curve is three epochs on the first 4,096 WikiText-2 training lines. A new Flower remote-worker path is documented in the [Tailscale runbook](guides/tailscale-federation.md); physical validation on all three reported Macs remains open. Serving stays as future scope.
 
 **Start with [decision 0003](decisions/0003-build-target.md), then [current state](project/state.md), [the dated roadmap](project/roadmap.md), and [research candidates](research/novelty.md).** For the proposal, read [the active project proposal](../docs/proposal.md). For runnable commands, use [the project README](../README.md).
 
@@ -28,6 +28,7 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 ## Implementation guides
 
 - [Validate the MLX path on the M4](guides/mlx-validation.md)
+- [Run three-Mac federation over Tailscale with Flower](guides/tailscale-federation.md)
 - [Run and characterize a physical WiFi cluster](guides/wifi.md)
 - [Move beyond the synthetic Transformer](guides/model-scaling.md)
 - [Schedule unequal Macs without hiding objective changes](guides/heterogeneity.md)
@@ -41,6 +42,8 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 - [Optimizer state DiLoCo and adapter aggregation](guides/optimizers-adapters.md)
 
 ## Research
+
+- [Three-Mac wireless federation: comparable recipe and networking (AWS background)](research/three-mac-wireless-federation.md)
 
 - [Related work and limits on novelty](research/related-work.md)
 - [Research contribution candidates and falsification plans](research/novelty.md)
@@ -195,3 +198,47 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 - [S123 — ANE guide 35. Per-family code generation](sources/S123.md)
 - [S124 — ANE guide 36. Predicted upper tier](sources/S124.md)
 - [S125 — ANE guide References](sources/S125.md)
+
+- [S162 — FedAvg publisher paper](sources/S162.md)
+
+- [S163 — FedNova publisher paper](sources/S163.md)
+
+- [S164 — FLoRA v1 aggregation method](sources/S164.md)
+
+- [S165 — FedEx-LoRA v4 exact aggregation](sources/S165.md)
+
+- [S166 — Tailscale connection types](sources/S166.md)
+
+- [S167 — Tailscale pricing November 2026](sources/S167.md)
+
+- [S168 — Tailscale Peer Relays](sources/S168.md)
+
+- [S169 — AWS EC2 Mac instances November 2026](sources/S169.md)
+
+- [S170 — AWS Mac Dedicated Host price extract Virginia](sources/S170.md)
+
+- [S171 — AWS Lightsail pricing November 2026](sources/S171.md)
+
+- [S172 — AWS EC2 transfer pricing November 2026](sources/S172.md)
+
+- [S173 — AWS VPC IPv4 and NAT pricing](sources/S173.md)
+
+- [S174 — AWS EBS pricing](sources/S174.md)
+
+- [S175 — MLX LM v0.32.2 LoRA documentation](sources/S175.md)
+
+- [S176 — MLX 0.32.4 distributed communication](sources/S176.md)
+
+- [S177 — Flower deployment runtime November 2026](sources/S177.md)
+
+- [S178 — Flower TLS deployment November 2026](sources/S178.md)
+
+- [S179 — Apple M1 MacBook Air specifications](sources/S179.md)
+
+- [S180 — OpenSSH port forwarding manual](sources/S180.md)
+
+- [S181 — Tailscale CLI command reference](sources/S181.md)
+
+- [S182 — Flower 1.43.0 published package metadata](sources/S182.md)
+
+- [S183 — Flower 1.43.0 transport and lifecycle source excerpts](sources/S183.md)

@@ -2,11 +2,15 @@
 title: "Scale transport and preserve recovery semantics"
 type: implementation
 status: active
-updated: 2026-10-24
+updated: 2026-11-12
 sources: ["S05"]
 ---
 
 # Scale transport and preserve recovery semantics
+
+**Remote adapter path 2026-11-12:** [the Tailscale/Flower runbook](tailscale-federation.md) describes the new remote QLoRA path. It reuses Flower RPC rather than adding a second HTTP service, limits whole messages/tensors to 64 MiB, serializes fp32 deltas, authenticates run/version/client envelopes and stops on any incomplete cohort. Durable client generations preserve optimizer/sampler state and exact outgoing deltas. The chunked protocol below remains the retained local-SGD transport, not the new Flower format.
+
+**Planning update 2026-11-12:** the [wireless federation research](../research/three-mac-wireless-federation.md) distinguishes this prototype artifact protocol from the unfinished QLoRA remote-worker path. It identifies float64 serialization and reconstructed-float int8 payloads as accounting risks, and plans SSH/VPN connectivity plus persistent receipts, optimizer/sampler state and fault injection. These are inspected gaps and proposed changes, not new transport measurements.
 
 Checkpoints remain complete uncompressed NumPy archives, now with an embedded model config. Workers download and upload those archives as chunked artifacts. A single HTTP response is capped at 1 MiB for control messages and at 256 KiB for one chunk. The whole artifact is rejected above 64 MiB before a payload buffer is allocated. The coordinator still retains each validated worker update until the round commits. Compression, blockwise deltas, and physical Wi-Fi timing are not implemented.
 

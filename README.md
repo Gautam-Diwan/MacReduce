@@ -1,12 +1,12 @@
 # MacReduce
 
-A working research prototype for observable local-SGD training across heterogeneous Macs. Workers train locally for several steps, then exchange models through a coordinator. The transport works over ordinary TCP/IP, including Wi-Fi.
+MacReduce is a research prototype for federated training across heterogeneous Macs. Each worker holds a full model, trains locally, and sends LoRA adapter updates to a coordinator. The [three-Mac setup below](#train-across-different-networks) uses Flower over Tailscale, with the M4 Air 24 GB hosting both the coordinator and its own worker.
 
-**The course project** is heterogeneous federated learning, and the name is MacReduce. A client is a GPU, a GPU and Neural Engine combined, or those two devices as separate clients. Every Mac in a run uses the same choice. The payload is the LoRA adapter delta. FedAvg is the communication reduction. A per-step all-reduce is the control. `macreduce federate` writes that rubric. A missing stack is reported missing. Decision 0003 in the wiki states the hypothesis. The 29,888-parameter local-SGD trainer remains a measured prototype. Every training worker holds the entire model.
+The course proposal compares GPU clients, combined GPU+Neural Engine clients, and separate GPU and Neural Engine clients. Remote GPU and combined training are implemented. Separate ANE training remains blocked by a missing backend. Hardware batch sizes and synchronization settings still need calibration. The earlier 29,888-parameter synthetic trainer remains available as a separate demonstration.
 
 ## Research wiki
 
-Start with the [knowledge index](wiki/index.md), [implementation roadmap](wiki/project/roadmap.md), and [research contribution candidates](wiki/research/novelty.md). The wiki includes 22 source snapshots, source notes with reading scope, implementation gates, experiment plans, and maintenance instructions. The active [proposal](docs/proposal.md) is retained alongside historical artifacts under `docs/archive/`.
+Start with the [knowledge index](wiki/index.md), [implementation roadmap](wiki/project/roadmap.md), and [research contribution candidates](wiki/research/novelty.md). The wiki includes source snapshots, notes with reading scope, implementation gates, experiment plans, and maintenance instructions. The active [proposal](docs/proposal.md) is retained alongside historical artifacts under `docs/archive/`.
 
 ```sh
 python tools/wiki.py search 'ANE optimizer'
@@ -19,7 +19,9 @@ See [how to maintain the wiki](wiki/how-to-use.md) for source intake and agent p
 
 Two independent CPU worker processes completed eight rounds over real loopback HTTP with batch sizes 2 and 4. Fixed synthetic validation loss decreased from **6.0587 to 1.7681**. Tests verify the pooled-SGD numerical identity at one local step, causal masking, weighted reduction, checkpoint validation, recovery, authentication, and idempotent retries after a lost response.
 
-On 2026-10-24 the same M4 ran `macreduce doctor --smoke` (Metal matmul result 4096.0), the opt-in MLX parity test for the default model and a 2-layer config, and a loopback `mlx-gpu` demo of 3 rounds and 4 steps (validation loss 6.058713912963867 to 3.713829755783081). That demo is one machine. There is no Metal capture: `xctrace` was not installed. Wi-Fi, multiple physical Macs, ANE execution, and M5 GPU neural accelerators have not been tested. The CPU operator trace and Apple Accelerate matrix probe did run. See [evidence/mlx-validation](evidence/mlx-validation/README.md).
+On 2026-10-24 the same M4 passed the Metal smoke check, optional MLX parity tests, and a three-round GPU loopback demo. Validation loss fell from 6.058713912963867 to 3.713829755783081. That demo used one machine. `xctrace` was unavailable, so no Metal capture exists for it. The CPU operator trace and Apple Accelerate matrix probe ran. See [evidence/mlx-validation](evidence/mlx-validation/README.md).
+
+On 2026-11-12 the default test suite passed 106 tests with eight optional skips. Three targeted hardware recovery tests passed on the local M4 Air 24 GB. The pinned Qwen3 model passed GPU and combined GPU+ANE forward/backward preflights there. Loopback transport tests covered three and six simulated clients. A physical three-Mac run and execution on the M1 remain untested. See the [federation validation record](evidence/tailscale-federation-2026-11-12/README.md).
 
 See [evidence](evidence/README.md) for measured results and [the profiling guide](docs/profiling.md) for measurement methods and limitations.
 
@@ -36,12 +38,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 From this folder:
 
 ```sh
-uv sync --extra cpu --extra mlx --extra serve --extra ane --extra dev
+uv sync --extra cpu --extra mlx --extra serve --extra ane --extra dev --extra federation
 uv run macreduce doctor --smoke --output runs/hardware.json
 uv run pytest -q
 ```
 
-`cpu` is the PyTorch CPU reference backend. `mlx` pins MLX on arm64 macOS. `serve` pins `mlx-lm` and `coremltools`. `ane` pins `aneforge` for `placement.mode: gpu_ane` training. `dev` adds pytest and ruff.
+`cpu` is the PyTorch CPU reference backend. `mlx` pins MLX on arm64 macOS. `serve` pins `mlx-lm` and `coremltools`. `ane` pins `aneforge` for combined GPU+ANE training. `dev` adds pytest and ruff. `federation` pins Flower 1.43.0 for remote workers. Keep the lockfile and dependencies identical across all three Macs.
 
 Use `uv run` before commands (`uv run python main.py ...`, `uv run macreduce demo ...`) or activate the environment:
 
@@ -55,7 +57,7 @@ Without uv, use a normal venv and pip (no lockfile):
 ```sh
 python3.12 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[cpu,mlx,serve,ane,dev]'
+python -m pip install -e '.[cpu,mlx,serve,ane,dev,federation]'
 ```
 
 `serve` pins `mlx-lm==0.32.2` and `coremltools==9.0`. Placement math does not need either. `macreduce equivalence` downloads the pinned Qwen3 1.7B and 0.6B 4-bit MLX models on first use. `macreduce ane` converts a small convolution and reads its compute plan. `macreduce ane-workload` times one decoder block on CPU, GPU, and the Neural Engine and ranks those measured times. `macreduce infer` times a 28-layer forward at the Qwen3-0.6B widths on those same devices, then generates with the pinned Qwen3 pair. Train from the repo root with a YAML config:
@@ -83,6 +85,153 @@ MACREDUCE_TEST_MLX=1 pytest -q tests/test_mlx_optional.py
 
 This check is skipped by default. When explicitly enabled, an unavailable GPU causes a failure rather than a false pass.
 
+## Train across different networks
+
+This setup uses only your three Macs. They can share a network or connect from separate networks. The M4 Air 24 GB needs two terminals. The Pro and the M1 each need one.
+
+| Machine | RAM | Processes | GPU client ID |
+|---|---|---|---|
+| M4 MacBook Air | 24 GB | Coordinator and local worker | `m4-air-gpu` |
+| M4 MacBook Pro | 16 GB | Worker | `m4-pro-gpu` |
+| M1 MacBook Air | 8 GB | Worker | `m1-air-gpu` |
+
+These client IDs are config labels. They do not create Tailscale hostnames.
+
+### 1. Connect the Macs with Tailscale
+
+Install Tailscale on every Mac and join one authorized tailnet. Invite your teammates with their own accounts and approve their devices if your tailnet requires it. Keep the machines plugged in and awake.
+
+On the M4 Air 24 GB, get its Tailscale IPv4 address:
+
+```sh
+tailscale ip -4
+tailscale status
+```
+
+On the Pro and the M1, replace `AIR_TAILSCALE_IP_OR_NAME` with that address or the Air's MagicDNS name:
+
+```sh
+tailscale ping AIR_TAILSCALE_IP_OR_NAME
+```
+
+Allow the Pro and the M1 to reach TCP port 8765 on the M4 Air in your tailnet policy and macOS firewall. The coordinator uses Tailscale's encrypted connection. You do not need router port forwarding, an SSH server, or an AWS coordinator.
+
+### 2. Install and prepare on every Mac
+
+Use the same MacReduce source, `configs/federation.yaml`, and `uv.lock` on all three machines. Run these commands from the project root after installing uv as described above:
+
+```sh
+uv sync --extra cpu --extra mlx --extra serve --extra ane --extra dev --extra federation
+uv run macreduce federation plan --mode gpu
+uv run macreduce federation prepare
+```
+
+`prepare` downloads the pinned WikiText-2 data. Each Mac downloads and caches the pinned Qwen3-0.6B 4-bit base model on its first hardware check. Training exchanges adapter updates. It does not move the corpus or base model between Macs each round.
+
+The [default config](configs/federation.yaml) runs three rounds with two local optimizer updates per round. It uses microbatch 1 and accumulation 1 on every machine, with gradient checkpointing on the M1. These are connectivity test settings. Per-machine batches, data allocation, objective weights, and sync frequency remain [pinned TODOs](wiki/project/roadmap.md) for the study.
+
+### 3. Put the shared token in `.env` on every Mac
+
+Copy the example file at the project root, then put the same token on all three machines:
+
+```sh
+cp .env.example .env
+uv run python -c 'import secrets; print(secrets.token_urlsafe(32))'
+```
+
+Paste the generated value into `MACREDUCE_TOKEN=` in `.env`. Share that file contents with your teammates through a private channel, not Git or chat with an assistant. `.env` is gitignored. `macreduce` loads it from the project root automatically. An already-exported `MACREDUCE_TOKEN` in the shell still wins.
+
+### 4. Check each machine's GPU
+
+Run only the command for the Mac you are using:
+
+```sh
+# M4 Pro
+uv run macreduce federation check --mode gpu --client m4-pro-gpu --execute
+
+# M4 Air
+uv run macreduce federation check --mode gpu --client m4-air-gpu --execute
+
+# M1 Air
+uv run macreduce federation check --mode gpu --client m1-air-gpu --execute
+```
+
+Each check must report `forward_backward_preflight` as `passed`. Resolve failures before starting the cohort. The first check may take longer while the model downloads. A check on one Mac does not establish compatibility or memory fit on the others.
+
+### 5. Start the M4 Air's coordinator
+
+In the M4 Air's first terminal, with the shared token exported:
+
+```sh
+uv run macreduce federation coordinator --mode gpu --host tailscale \
+  --output runs/federation-gpu/coordinator
+```
+
+Wait for `Flower coordinator listening`. Startup initializes a common adapter on the Air's GPU, then releases the base model. The coordinator averages updates on CPU. It waits for all three workers before training.
+
+### 6. Start one worker on each Mac
+
+Replace `AIR_TAILSCALE_IP_OR_NAME` in all commands with the M4 Air's real Tailscale address or MagicDNS name. Use `HOST:8765` without an `http://` or `https://` prefix. The Air's worker uses the same address as the Pro and the M1.
+
+```sh
+# M4 Air, second terminal
+uv run macreduce federation worker --mode gpu \
+  --server AIR_TAILSCALE_IP_OR_NAME:8765 --client m4-air-gpu \
+  --output runs/federation-gpu/m4-air-gpu
+
+# M4 Pro
+uv run macreduce federation worker --mode gpu \
+  --server AIR_TAILSCALE_IP_OR_NAME:8765 --client m4-pro-gpu \
+  --output runs/federation-gpu/m4-pro-gpu
+
+# M1 Air
+uv run macreduce federation worker --mode gpu \
+  --server AIR_TAILSCALE_IP_OR_NAME:8765 --client m1-air-gpu \
+  --output runs/federation-gpu/m1-air-gpu
+```
+
+All three workers must join with the same mode, plan, data hash, and token. A round commits only after all expected clients succeed. Missing or failed clients stop the run rather than produce a partial average.
+
+If a worker cannot connect, run this after the coordinator starts:
+
+```sh
+uv run macreduce federation check --mode gpu \
+  --server AIR_TAILSCALE_IP_OR_NAME:8765
+```
+
+This checks TCP reachability. Worker admission checks the token, plan, and data separately. For a failed connection, check `tailscale status`, `tailscale ping`, the Air's address, and TCP 8765 permissions. `tailscale netcheck` can help diagnose a relayed connection.
+
+### Use GPU+ANE or inspect split mode
+
+For combined GPU+ANE training, change every command's mode to `--mode gpu_ane`. Use client IDs `m4-pro-gpu_ane`, `m4-air-gpu_ane`, and `m1-air-gpu_ane`. Run the hardware checks again on all three Macs. Use a new output root, such as `runs/federation-gpu-ane`, for both coordinator and workers.
+
+Combined mode places an early model prefix on GPU and a decoder suffix on ANE. ANE forward and backward checks must pass. A failure stops that client without a GPU fallback. This mode does not establish simultaneous GPU and ANE execution.
+
+```sh
+# Example combined preflight on the M1
+uv run macreduce federation check --mode gpu_ane --client m1-air-gpu_ane --execute
+
+# Inspect the proposed six-client layout without loading a model
+uv run macreduce federation plan --mode split
+```
+
+Split mode assigns separate GPU and ANE clients to each Mac. Its standalone ANE Qwen3 trainer is missing. Coordinator and worker startup reject this mode. Six-client planning and transport tests do not establish six-device training support.
+
+### Resume an interrupted run
+
+Keep the coordinator directory on the M4 Air and each worker's directory on its own Mac. After fixing the failure, restart the coordinator with the original settings and `--resume`:
+
+```sh
+uv run macreduce federation coordinator --mode gpu --host tailscale \
+  --output runs/federation-gpu/coordinator --resume
+```
+
+Restart all workers with their original commands and output directories. Export the shared token again in any new terminal. Workers retain their adapter, optimizer moments, sampler position, and pending update. Do not delete a worker's state or run two processes against its directory. Reconnect attempts are bounded, so a long outage can require these manual restarts.
+
+For a fresh experiment or a config change, choose new output directories for every participant. The coordinator's `state.json` identifies the committed global `adapter-*.npz`. Worker checkpoints contain local recovery state. All `runs/` outputs are git-ignored.
+
+This pilot does not yet reproduce the proposal's three-epoch curve or run centralized validation and test evaluation. See the [full runbook](wiki/guides/tailscale-federation.md) for recovery semantics, transport limits, and the Flower dependency boundary. `macreduce federation ...` is the remote QLoRA command family. `macreduce federate --execute` is an earlier one-Mac experiment.
+
 ## Run the local demonstration
 
 ```sh
@@ -98,7 +247,7 @@ To try MLX after the parity check passes:
 macreduce demo --backend mlx-gpu --output runs/mlx-demo
 ```
 
-## Connect two Macs over Wi-Fi
+## Run the synthetic demo on two Macs over Wi-Fi
 
 Install the same source version and dependencies on both machines. The coordinator can also run a worker. These commands run the synthetic demonstration workload; both workers must connect before training begins.
 
@@ -142,7 +291,9 @@ macreduce report runs/wifi
 
 Use unique node names and one run per report directory. Node clocks are not assumed synchronized.
 
-## Observe a live run
+## Observe a synthetic demo run
+
+This section describes the synthetic demo's HTTP coordinator. The Flower federation coordinator uses the commands and output files described above.
 
 `GET /status` returns current version, worker membership, pending submissions, validation loss, and any failure. `GET /metrics` exposes Prometheus gauges for version, pending workers, validation loss, and failure. Both require the same bearer token:
 
@@ -165,13 +316,13 @@ macreduce matmul --size 512 --repeats 10 --output runs/accelerate.json
 
 The [profiling guide](docs/profiling.md) covers Instruments, Metal captures, powermetrics, interpretation of ANE activity, and CPU matrix-unit uncertainty.
 
-## Train on local text
+## Train the synthetic model on local text
 
 Workers accept `--train-text /path/to/train-shard.txt`; the coordinator accepts `--validation-text /path/to/validation.txt`. Each must contain at least 1,024 bytes. The tokenizer is fixed UTF-8 bytes, the sequence length is 32, and the model remains the small demonstration architecture. Prepare a disjoint validation split yourself. Input text stays on each worker; model updates still travel over the network.
 
 Each worker samples random windows from its local corpus. The synthetic default uses separate generator seeds for training and validation, but combinations can overlap. It is a learning smoke test, not a benchmark of generalization. With different corpus sizes or domains, token weighting gives more influence to workers that process more tokens; it is not automatically equivalent to sampling uniformly from the concatenated corpus.
 
-## Recovery and algorithm semantics
+## Synthetic trainer recovery and algorithm semantics
 
 - Membership, batch sizes, backend choices, data fingerprints, learning rate, and local steps are fixed during a run. Faster workers may have larger configured batches, but automatic calibration is future work.
 - Each accepted update is identified by run ID, model version, node, token count, and content checksum. A lost-response retry reuses the exact update bytes. A different update for the same identity is rejected.
@@ -185,6 +336,6 @@ Each worker samples random windows from its local corpus. The synthetic default 
 
 `model.py` defines `ModelConfig`, the shared model, and the CPU/MLX backends. `artifacts.py` hashes and assembles chunked checkpoints. `cluster.py` owns membership, reduction, and durable state. `worker.py` trains and retries requests. `observe.py` records events, inventories hardware, collects telemetry, and builds reports. `benchmark.py` probes public Accelerate BLAS.
 
-The default trainer is still local SGD with token-weighted averaging of the 29,888-parameter model. The next milestones are a second physical Mac over Wi-Fi, the remaining MLX gradient and capture checks, a real corpus, calibrated batch selection, and an ANE adapter with independent gradient checks. Automatic memory admission, compression, LoRA, dynamic membership, and sharded large-model inference are not implemented. Artifacts larger than 64 MiB are rejected. Do not treat a wider model as finished scaling until memory and a real data split are measured.
+The synthetic demo uses token-weighted local SGD on the 29,888-parameter model. The remote QLoRA path uses `federation_plan.py`, `federation_backend.py`, `flower_federation.py`, and `federation_state.py`. It keeps each worker's AdamW state across broadcasts and reduces adapter updates with explicit objective weights. Its next milestones are physical three-Mac validation, hardware calibration, the standalone ANE trainer, and the proposal's matched evaluation. See the [roadmap](wiki/project/roadmap.md). Both transports reject artifacts larger than 64 MiB.
 
 The hardware inventory distinguishes M5 GPU neural accelerators from ANE and detects CPU SME/SME2 features where permitted. It also records media engines as a future preprocessing opportunity. Inferred presence never counts as verified execution, and unknown future chip generations are not automatically declared supported.

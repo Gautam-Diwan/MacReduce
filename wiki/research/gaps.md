@@ -2,11 +2,13 @@
 title: "Unknowns contradictions and next literature searches"
 type: research-ledger
 status: active
-updated: 2026-10-27
+updated: 2026-11-12
 sources: ["S02", "S03", "S06", "S07", "S08", "S09", "S10", "S12", "S25", "S27", "S28", "S29", "S30", "S31", "S33", "S36"]
 ---
 
 # Unknowns contradictions and next literature searches
+
+**Research update 2026-11-12:** the [three-Mac wireless study](three-mac-wireless-federation.md) records the now-reported M4 Air 24 GB, M4 Pro 16 GB and M1 Air 8 GB. Open measurements are M1 QLoRA memory fit, sustained thermal speed, concurrent LAN/WAN goodput and relay paths. Open implementation work includes independent concurrent workers, recipe parity, optimizer/sampler persistence, true wire encoding and a shared-state gradient control. Availability of three machines is not evidence those gates have passed.
 
 This ledger distinguishes missing implementation, missing evidence, and incomplete literature coverage. It is not a backlog of already solved research problems. Entries are reprioritized for [decision 0003](../decisions/0003-build-target.md).
 

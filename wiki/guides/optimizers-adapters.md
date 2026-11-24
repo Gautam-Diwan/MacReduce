@@ -2,11 +2,13 @@
 title: "Optimizer state DiLoCo and adapter aggregation"
 type: implementation
 status: proposed
-updated: 2026-10-23
+updated: 2026-11-12
 sources: ["S04", "S19", "S20"]
 ---
 
 # Optimizer state DiLoCo and adapter aggregation
+
+**Planning update 2026-11-12:** the [three-Mac study](../research/three-mac-wireless-federation.md) reviews FLoRA and FedEx-LoRA method sections, documents factor FedAvg as a parameter-space baseline, and distinguishes local AdamW averaging from shared-state gradient all-reduce. The local-SGD description below concerns the retained prototype; the federated QLoRA path has additional unvalidated recipe and state semantics.
 
 MacReduce currently uses local SGD without momentum and averages full parameters. There is no optimizer-state merge. Choose one extension at a time; naming it correctly makes comparisons interpretable.
 

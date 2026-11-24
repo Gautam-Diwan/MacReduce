@@ -2,17 +2,19 @@
 title: "Schedule unequal Macs without hiding objective changes"
 type: implementation
 status: proposed
-updated: 2026-10-23
+updated: 2026-11-12
 sources: ["S06", "S07", "S08"]
 ---
 
 # Schedule unequal Macs without hiding objective changes
 
+**Planning update 2026-11-12:** the [three-Mac study](../research/three-mac-wireless-federation.md) applies this objective/throughput distinction to an M4 Air 24 GB, M4 Pro 16 GB, and M1 Air 8 GB. Its revised main arm calibrates different microbatch/accumulation settings and proportional random shards to balance round duration, with common K, a fixed total data objective, matched controls and separate two-M4 versus three-Mac measurements. Uniform batch-1 work is retained as a control only. M1 fit/speed is unverified.
+
 The current system permits different worker batch sizes but fixes K and learning rate for the run. It weights parameters by processed tokens. Increasing a worker's contribution can also increase the influence of its local domain. Decide the desired data distribution before optimizing scheduling.
 
 ## Stage one preserves the simplest semantics
 
-Define per-worker dataset weight p_i explicitly, with weights summing to one. Begin with equal effective local batches and common K. Allow different microbatch sizes and accumulation counts to fit different memory capacities; accumulate the mean gradient using actual token counts and make exactly one optimizer update per effective batch. This separates memory adaptation from a change in the statistical objective.
+Define per-worker dataset weight p_i explicitly, with weights summing to one. Keep a common K initially, but calibrate microbatch sizes and accumulation counts for each device. Equal effective batches are a useful control, not a requirement for the main throughput arm. For the shared-public-corpus study, larger effective batches can be paired with proportionally larger random shards, preserving the full data union while balancing update counts per epoch. Accumulate/reduce mean gradients using actual supervised-token counts and document objective weights independently of hardware throughput. Different effective batches change optimization noise, so include matched centralized and uniform controls.
 
 Implement a `WorkerProfile` with measured warmed step-time quantiles, available memory, backend, dtype, and calibration timestamp. Add a `RoundPlan` containing run ID, version, expected workers, effective batch, microbatch/accumulation settings, K, optimizer configuration, dataset weights, and a plan hash. Workers echo the plan hash; the coordinator rejects mismatched plans. Persist plans with checkpoints.
 

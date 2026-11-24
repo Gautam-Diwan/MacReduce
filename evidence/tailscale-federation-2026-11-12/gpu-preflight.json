@@ -1,0 +1,62 @@
+{
+  "plan": {
+    "schema": 1,
+    "mode": "gpu",
+    "clients": [
+      {
+        "id": "m4-pro-gpu",
+        "machine": "m4-pro",
+        "device": "gpu",
+        "microbatch": 1,
+        "accumulation": 1,
+        "grad_checkpoint": false,
+        "weight": 0.3333333333333333
+      },
+      {
+        "id": "m4-air-gpu",
+        "machine": "m4-air",
+        "device": "gpu",
+        "microbatch": 1,
+        "accumulation": 1,
+        "grad_checkpoint": false,
+        "weight": 0.3333333333333333
+      },
+      {
+        "id": "m1-air-gpu",
+        "machine": "m1-air",
+        "device": "gpu",
+        "microbatch": 1,
+        "accumulation": 1,
+        "grad_checkpoint": true,
+        "weight": 0.3333333333333333
+      }
+    ],
+    "implementation_sha256": "1934c84eac08ea4da7631abd91ba06e8e75bbebe8d4ac151eba35b62ae5363a5",
+    "model": "mlx-community/Qwen3-0.6B-4bit",
+    "model_revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+    "dataset_revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "train_examples": 4096,
+    "seed": 1,
+    "max_seq_length": 512,
+    "rounds": 3,
+    "local_steps": 2,
+    "learning_rate": 0.0001,
+    "round_timeout": 1800,
+    "recipe": {
+      "rank": 8,
+      "scale": 2.0,
+      "dropout": 0.0,
+      "weight_decay": 0.01,
+      "max_grad_norm": 1.0,
+      "lr_schedule": null
+    },
+    "scope": "explicit fixed-round pilot; hardware batch/sync calibration is TODO"
+  },
+  "network": "not checked",
+  "backend": {
+    "forward_backward_preflight": "passed",
+    "placement": {
+      "device": "gpu"
+    }
+  }
+}

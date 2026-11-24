@@ -2,11 +2,13 @@
 title: "Training architecture and extension points"
 type: design
 status: active
-updated: 2026-10-25
+updated: 2026-11-23
 sources: ["S04", "S20"]
 ---
 
 # Training architecture and extension points
+
+**Remote federation addition 2026-11-12:** [the Tailscale/Flower path](../guides/tailscale-federation.md) separates `federation_plan.py` (cohort/identity), `federation_backend.py` (resident local trainer), `federation_state.py` (bounded arrays/atomic commit), `flower_federation.py` (pinned RPC adapter, auth and recovery), and `federation_cli.py` (commands). The M4 Air 24 GB coordinator and GPU worker are separate processes on the same machine. The Pro and M1 are workers only. The description below is the historical local-SGD architecture.
 
 **Scope note 2026-10-25:** this is the retained local-SGD trainer, a measured prototype. The coordinator, chunked artifact transfer, and manifests are the pieces [decision 0003](../decisions/0003-build-target.md) expects to reuse for telemetry and prefix-KV file movement; the training loop itself is not the deliverable.
 
