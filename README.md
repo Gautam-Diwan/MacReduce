@@ -334,8 +334,14 @@ Each worker samples random windows from its local corpus. The synthetic default 
 
 ## Development layout and next milestones
 
-`model.py` defines `ModelConfig`, the shared model, and the CPU/MLX backends. `artifacts.py` hashes and assembles chunked checkpoints. `cluster.py` owns membership, reduction, and durable state. `worker.py` trains and retries requests. `observe.py` records events, inventories hardware, collects telemetry, and builds reports. `benchmark.py` probes public Accelerate BLAS.
+Install the Git pre-commit hook so a commit is refused unless `ruff check .` and `python -m pytest -q` both pass:
 
-The synthetic demo uses token-weighted local SGD on the 29,888-parameter model. The remote QLoRA path uses `federation_plan.py`, `federation_backend.py`, `flower_federation.py`, and `federation_state.py`. It keeps each worker's AdamW state across broadcasts and reduces adapter updates with explicit objective weights. Its next milestones are physical three-Mac validation, hardware calibration, the standalone ANE trainer, and the proposal's matched evaluation. See the [roadmap](wiki/project/roadmap.md). Both transports reject artifacts larger than 64 MiB.
+```sh
+sh tools/install-git-hooks.sh
+```
+
+The hook lives in `.githooks/pre-commit` and uses the project Ruff config and the default pytest suite (MLX tests stay opt-in). `cli.py` is the composition root. Packages are `cluster` (local-SGD prototype), `train` (QLoRA curve), `federation` (Flower/Tailscale), `ane`, `serve`, and `observe`.
+
+The synthetic demo uses token-weighted local SGD on the 29,888-parameter model. The remote QLoRA path is `macreduce.federation`. It keeps each worker's AdamW state across broadcasts and reduces adapter updates with explicit objective weights. Its next milestones are physical three-Mac validation, hardware calibration, the standalone ANE trainer, and the proposal's matched evaluation. See the [roadmap](wiki/project/roadmap.md). Both transports reject artifacts larger than 64 MiB.
 
 The hardware inventory distinguishes M5 GPU neural accelerators from ANE and detects CPU SME/SME2 features where permitted. It also records media engines as a future preprocessing opportunity. Inferred presence never counts as verified execution, and unknown future chip generations are not automatically declared supported.

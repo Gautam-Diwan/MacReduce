@@ -1,0 +1,25 @@
+#!/bin/sh
+# Block commits unless the project's Ruff rules and default pytest suite pass.
+set -e
+
+root=$(git rev-parse --show-toplevel)
+cd "$root"
+
+PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
+if command -v uv >/dev/null 2>&1; then
+  ruff_cmd="uv run ruff check ."
+  pytest_cmd="uv run python -m pytest -q"
+elif [ -x .venv/bin/ruff ] && [ -x .venv/bin/python ]; then
+  ruff_cmd=".venv/bin/ruff check ."
+  pytest_cmd=".venv/bin/python -m pytest -q"
+else
+  echo "pre-commit: install uv or create .venv (see README)" >&2
+  exit 1
+fi
+
+echo "pre-commit: $ruff_cmd"
+$ruff_cmd
+echo "pre-commit: $pytest_cmd"
+$pytest_cmd
+echo "pre-commit: ruff and tests passed"
