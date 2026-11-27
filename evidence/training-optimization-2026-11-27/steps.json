@@ -1,0 +1,111 @@
+{
+  "host": {
+    "machine": "arm64",
+    "mac_ver": "26.5",
+    "device": "Apple M4",
+    "memory_bytes": 25769803776
+  },
+  "mlx": "0.32.4",
+  "steps": 40,
+  "warmup": 5,
+  "results": [
+    {
+      "config": "line-eager",
+      "pack": 0,
+      "batch": 1,
+      "compile": false,
+      "checkpoint": false,
+      "steps": 40,
+      "target_tokens": 5437,
+      "seconds": 12.590393962003873,
+      "median_step_s": 0.2591516670072451,
+      "tokens_per_second": 431.8371622371897,
+      "tokens_per_step": 135.925,
+      "peak_memory_bytes": 1829127768
+    },
+    {
+      "config": "line-compiled",
+      "pack": 0,
+      "batch": 1,
+      "compile": true,
+      "checkpoint": false,
+      "steps": 40,
+      "target_tokens": 5437,
+      "seconds": 11.174012624978786,
+      "median_step_s": 0.2233961250021821,
+      "tokens_per_second": 486.57543019469443,
+      "tokens_per_step": 135.925,
+      "peak_memory_bytes": 1662602646
+    },
+    {
+      "config": "pack512-eager",
+      "pack": 512,
+      "batch": 1,
+      "compile": false,
+      "checkpoint": false,
+      "steps": 40,
+      "target_tokens": 20480,
+      "seconds": 40.55501374602318,
+      "median_step_s": 1.0207694169948809,
+      "tokens_per_second": 504.9930479189707,
+      "tokens_per_step": 512.0,
+      "peak_memory_bytes": 2456905308
+    },
+    {
+      "config": "pack512-compiled",
+      "pack": 512,
+      "batch": 1,
+      "compile": true,
+      "checkpoint": false,
+      "steps": 40,
+      "target_tokens": 20480,
+      "seconds": 36.71452424900781,
+      "median_step_s": 0.9159496249994845,
+      "tokens_per_second": 557.8173875030795,
+      "tokens_per_step": 512.0,
+      "peak_memory_bytes": 2263290050
+    },
+    {
+      "config": "pack512x4-compiled",
+      "pack": 512,
+      "batch": 4,
+      "compile": true,
+      "checkpoint": false,
+      "steps": 40,
+      "target_tokens": 81920,
+      "seconds": 160.96624078902823,
+      "median_step_s": 4.139852271000564,
+      "tokens_per_second": 508.92658981437694,
+      "tokens_per_step": 2048.0,
+      "peak_memory_bytes": 6913836202
+    },
+    {
+      "config": "line-eager-checkpoint",
+      "pack": 0,
+      "batch": 1,
+      "compile": false,
+      "checkpoint": true,
+      "steps": 40,
+      "target_tokens": 5437,
+      "seconds": 17.312935586989624,
+      "median_step_s": 0.35510918750514975,
+      "tokens_per_second": 314.04264012197984,
+      "tokens_per_step": 135.925,
+      "peak_memory_bytes": 1001314392
+    },
+    {
+      "config": "pack512-eager-checkpoint",
+      "pack": 512,
+      "batch": 1,
+      "compile": false,
+      "checkpoint": true,
+      "steps": 40,
+      "target_tokens": 20480,
+      "seconds": 57.49580141702609,
+      "median_step_s": 1.4299469790057628,
+      "tokens_per_second": 356.19992234659605,
+      "tokens_per_step": 512.0,
+      "peak_memory_bytes": 1284410460
+    }
+  ]
+}

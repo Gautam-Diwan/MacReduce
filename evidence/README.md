@@ -1,6 +1,6 @@
 # Local validation evidence
 
-Later records live beside this October 22 inventory. The physical three-Mac GPU Flower/Tailscale pilot is [tailscale-federation-2026-11-24](tailscale-federation-2026-11-24/README.md). The earlier one-Mac loopback/preflight suite is [tailscale-federation-2026-11-12](tailscale-federation-2026-11-12/README.md).
+Later records live beside this October 22 inventory. The physical three-Mac GPU Flower/Tailscale pilot is [tailscale-federation-2026-11-24](tailscale-federation-2026-11-24/README.md). The earlier one-Mac loopback/preflight suite is [tailscale-federation-2026-11-12](tailscale-federation-2026-11-12/README.md). Offline step-cost and delta-codec measurements for the optimization plan are [training-optimization-2026-11-27](training-optimization-2026-11-27/README.md).
 
 Collected October 22, 2026 on an Apple M4 MacBook Air, 24 GiB RAM, macOS 26.5, Python 3.12.12. The source package includes exact dependency versions in `requirements-tested.txt`.
 

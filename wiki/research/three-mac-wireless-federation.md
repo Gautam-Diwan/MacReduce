@@ -2,13 +2,15 @@
 title: "Three-Mac wireless federated QLoRA: recipe and networking; AWS background"
 type: research
 status: proposed
-updated: 2026-11-25
+updated: 2026-11-27
 sources: ["S162", "S163", "S164", "S165", "S166", "S167", "S168", "S169", "S170", "S171", "S172", "S173", "S174", "S175", "S176", "S177", "S178", "S179", "S180"]
 ---
 
 # Three-Mac wireless federated QLoRA: recipe and networking; AWS background
 
 **Implementation follow-up:** the [Tailscale + Flower runbook](../guides/tailscale-federation.md) supplies a remote pilot path with persistent local trainers. On 2026-11-24 the three Macs completed that GPU pilot ([report](../experiments/2026-11-24-three-mac-gpu-federation.md)). The code-gap audit below still describes the older `federate --execute` path. Batch/sync/data-allocation calibration remains [pinned as TODO](../project/roadmap.md). Standalone ANE remains gated. The pilot does not replace the calibrated study below.
+
+**Optimization follow-up 2026-11-27:** the [training optimization strategy](training-optimization-strategy.md) ranks the pilot's bottlenecks and proposes a phased plan: sync interval and packing first, then wire codecs, outer momentum, and heterogeneous time budgets. It is proposed, not validated.
 
 ## Recommendation and inspected scope
 

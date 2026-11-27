@@ -1816,5 +1816,41 @@
     "status": "retrieved",
     "sha256": "dea127bea61f5f1e0c32df16e7c95c96d03880141784da33e856c6325f5a4eba",
     "bytes": 25051
+  },
+  {
+    "id": "S184",
+    "title": "DiLoCo v3 full text",
+    "url": "https://arxiv.org/html/2311.08105v3",
+    "scope": "unread; intake only",
+    "retrieved_at": "2026-11-27T23:36:19.291047+00:00",
+    "mutable_url": true,
+    "path": "raw/sources/S184.html",
+    "status": "retrieved",
+    "sha256": "4b8e47a0424ff02b2a1466b72bff9dac677b68f2eb22011394a9d518858f5526",
+    "bytes": 195508
+  },
+  {
+    "id": "S185",
+    "title": "Streaming DiLoCo v1 full text",
+    "url": "https://arxiv.org/html/2501.18512v1",
+    "scope": "unread; intake only",
+    "retrieved_at": "2026-11-27T23:36:19.337439+00:00",
+    "mutable_url": true,
+    "path": "raw/sources/S185.html",
+    "status": "retrieved",
+    "sha256": "72739764260f9ed9dcc66d6c291debca79c020067fd634b0575d721ac3bbaba5",
+    "bytes": 385855
+  },
+  {
+    "id": "S186",
+    "title": "FFA-LoRA v1 full text",
+    "url": "https://arxiv.org/html/2403.12313v1",
+    "scope": "unread; intake only",
+    "retrieved_at": "2026-11-27T23:36:19.382378+00:00",
+    "mutable_url": true,
+    "path": "raw/sources/S186.html",
+    "status": "retrieved",
+    "sha256": "73d90fb688876ea8e80a68fe3464b7c75fe892ad83da8e2d97cb579451fbbb6f",
+    "bytes": 334273
   }
 ]

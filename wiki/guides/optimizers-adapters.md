@@ -2,11 +2,13 @@
 title: "Optimizer state DiLoCo and adapter aggregation"
 type: implementation
 status: proposed
-updated: 2026-11-12
-sources: ["S04", "S19", "S20"]
+updated: 2026-11-27
+sources: ["S04", "S19", "S20", "S184", "S186"]
 ---
 
 # Optimizer state DiLoCo and adapter aggregation
+
+**Planning update 2026-11-27:** the DiLoCo full text ([S184](../sources/S184.md)) and FFA-LoRA ([S186](../sources/S186.md)) were read. Outer Nesterov momentum and the freeze-A arm are now proposed arms in the [training optimization strategy](../research/training-optimization-strategy.md), each needing its own controls.
 
 **Planning update 2026-11-12:** the [three-Mac study](../research/three-mac-wireless-federation.md) reviews FLoRA and FedEx-LoRA method sections, documents factor FedAvg as a parameter-space baseline, and distinguishes local AdamW averaging from shared-state gradient all-reduce. The local-SGD description below concerns the retained prototype; the federated QLoRA path has additional unvalidated recipe and state semantics.
 

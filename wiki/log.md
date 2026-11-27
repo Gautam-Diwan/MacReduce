@@ -417,3 +417,19 @@ GitHub pull request #3 (`gautam/tailscale`) merged to `main` as `15b79c3`. The b
 On 2026-11-24 the M4 Air 24 GB, M4 Pro 16 GB, and M1 Air 8 GB completed `macreduce federation` in GPU mode: three rounds, two local AdamW steps, pinned Qwen3-0.6B-4bit LoRA, `committed_version: 3`, 0 failures. Coordinator on the Air. About twenty minutes of wait before the Pro joined, then 61 s / 55 s / 87 s round barriers. Air local steps were 1–4 s. Evaluation was skipped. Tailscale path, energy, and M1 three-epoch memory are unknown, not zero.
 
 Added [experiment report](experiments/2026-11-24-three-mac-gpu-federation.md) and [evidence](../evidence/tailscale-federation-2026-11-24/README.md) with receipts, hashes, and redacted Air terminals. Adapter tensors stay in gitignored `runs/`. Updated state, index, roadmap (GPU-pilot checkbox), Tailscale runbook, transport, architecture, three-Mac study, gaps, Wi-Fi guide, heterogeneity guide, and README verification paragraph. Combined GPU+ANE, split, and the three-epoch curve remain unrun. `python tools/wiki.py lint` passed: 185 pages, 151 sources, no errors or warnings. Structural lint is not a novelty or quality claim.
+
+## 2026-11-27T23:36:19.291047+00:00 — Intake S184
+
+Added [S184](sources/S184.md) as unread; source synthesis is pending.
+
+## 2026-11-27T23:36:19.337439+00:00 — Intake S185
+
+Added [S185](sources/S185.md) as unread; source synthesis is pending.
+
+## 2026-11-27T23:36:19.382378+00:00 — Intake S186
+
+Added [S186](sources/S186.md) as unread; source synthesis is pending.
+
+## 2026-11-27 — Training optimization study after the three-Mac run
+
+Committed the 2026-11-24 record first (`8790e34`). Read the full text of DiLoCo v3 ([S184](sources/S184.md)), Streaming DiLoCo v1 ([S185](sources/S185.md)), and FFA-LoRA v1 ([S186](sources/S186.md)); reading scopes are on each card, and the abstract-only S04/S05 cards now point to them. Added `tools/bench_local_step.py` and `tools/delta_codecs.py`. On the M4 Air, packed 512-token compiled steps ran 558 target tok/s against 432 for the current line-per-step eager step; batch 4 gave 509; gradient checkpointing cost 27–29%. On the Air's recorded deltas, int8 g64 error was 0.3–0.4% and int4 5–7%; the deltas are dense. MLX AdamW defaults to no bias correction, which explains the round-0 delta maximum. Wrote the [training optimization strategy](research/training-optimization-strategy.md) and linked it from the index, roadmap, gaps, three-Mac study, and adapter guide. Record: [evidence/training-optimization-2026-11-27](../evidence/training-optimization-2026-11-27/README.md). No convergence run, Pro/M1 measurement, or transport measurement was made.

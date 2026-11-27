@@ -2,7 +2,7 @@
 title: "MacReduce knowledge index"
 type: index
 status: active
-updated: 2026-11-25
+updated: 2026-11-27
 sources: []
 ---
 
@@ -45,6 +45,7 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 ## Research
 
 - [Three-Mac wireless federation: comparable recipe and networking (AWS background)](research/three-mac-wireless-federation.md)
+- [Training optimization strategy for federated QLoRA](research/training-optimization-strategy.md)
 
 - [Related work and limits on novelty](research/related-work.md)
 - [Research contribution candidates and falsification plans](research/novelty.md)
@@ -243,3 +244,9 @@ This wiki contains maintained synthesis, not a claim that every linked source ha
 - [S182 — Flower 1.43.0 published package metadata](sources/S182.md)
 
 - [S183 — Flower 1.43.0 transport and lifecycle source excerpts](sources/S183.md)
+
+- [S184 — DiLoCo v3 full text](sources/S184.md)
+
+- [S185 — Streaming DiLoCo v1 full text](sources/S185.md)
+
+- [S186 — FFA-LoRA v1 full text](sources/S186.md)

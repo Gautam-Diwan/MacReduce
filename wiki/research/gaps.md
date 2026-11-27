@@ -2,13 +2,15 @@
 title: "Unknowns contradictions and next literature searches"
 type: research-ledger
 status: active
-updated: 2026-11-25
+updated: 2026-11-27
 sources: ["S02", "S03", "S06", "S07", "S08", "S09", "S10", "S12", "S25", "S27", "S28", "S29", "S30", "S31", "S33", "S36"]
 ---
 
 # Unknowns contradictions and next literature searches
 
 **Research update 2026-11-25:** the three reported Macs completed a GPU Flower/Tailscale pilot ([report](../experiments/2026-11-24-three-mac-gpu-federation.md)). Open measurements remain M1 QLoRA memory for a three-epoch curve, sustained thermal speed, Tailscale direct-vs-relay goodput, and combined GPU+ANE on the Pro and M1. Independent concurrent GPU workers now exist for the six-step pilot; recipe calibration and a shared-state gradient control do not.
+
+**Research update 2026-11-27:** the [training optimization strategy](training-optimization-strategy.md) adds open measurements: the per-client split of the 55–87 s round barrier, Pro and M1 step rates and memory without checkpointing, codec error on longer-interval deltas, and the perplexity effect of packing, larger K, compressed transport, outer momentum, and FFA-LoRA. Only offline Air step costs and codec errors on the 2026-11-24 deltas are measured.
 
 This ledger distinguishes missing implementation, missing evidence, and incomplete literature coverage. It is not a backlog of already solved research problems. Entries are reprioritized for [decision 0003](../decisions/0003-build-target.md).
 
