@@ -2,7 +2,7 @@
 title: "Training architecture and extension points"
 type: design
 status: active
-updated: 2026-11-23
+updated: 2026-11-25
 sources: ["S04", "S20"]
 ---
 
@@ -19,7 +19,7 @@ The package is grouped by seam. `macreduce.cli` is the composition root. Optiona
 | [serve](../../src/macreduce/serve/__init__.py) | Phase-placement scheduler and mlx-lm executor | Serving remains future course scope |
 | [observe](../../src/macreduce/observe/__init__.py) | Host events, mactop traces, plots, Accelerate SGEMM probe | Thermal/memory sampling, uncertainty |
 
-**Remote federation:** [the Tailscale/Flower path](../guides/tailscale-federation.md) lives under `macreduce.federation`. The M4 Air 24 GB coordinator and GPU worker are separate processes on the same machine. The Pro and M1 are workers only.
+**Remote federation:** [the Tailscale/Flower path](../guides/tailscale-federation.md) lives under `macreduce.federation`. The M4 Air 24 GB coordinator and GPU worker are separate processes on the same machine. The Pro and M1 are workers only. That layout ran on 2026-11-24 for a three-round GPU pilot.
 
 **Scope note 2026-10-25:** the local-SGD trainer is a measured prototype. The coordinator, chunked artifact transfer, and manifests are the pieces [decision 0003](../decisions/0003-build-target.md) expects to reuse for telemetry and prefix-KV file movement; the training loop itself is not the serving deliverable.
 

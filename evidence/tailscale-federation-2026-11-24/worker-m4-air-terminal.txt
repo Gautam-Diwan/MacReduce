@@ -1,0 +1,25 @@
+uv run macreduce federation worker --mode gpu \
+  --server TAILSCALE_IPV4:8765 --client m4-air-gpu \
+  --output runs/federation-gpu/m4-air-gpu
+Fetching 9 files: 100%
+Download complete
+Reconstruction complete
+INFO :      Received: get_properties message dc89b2e1-d66d-4bee-a818-f7a0ad1ebf94
+INFO :      Sent reply
+INFO :      Received: train message afe701cc-c0ec-4854-95e8-ecad808a7b4f
+INFO :      Sent reply
+INFO :      Received: get_properties message de8cabae-d64e-43fc-a3e6-e3f3072959ec
+INFO :      Sent reply
+INFO :      Received: train message 9724a5e0-71d6-49f8-8023-54c632e41154
+INFO :      Sent reply
+INFO :      Received: get_properties message e59aeded-30b4-466c-9f8c-84dde054cbda
+INFO :      Sent reply
+INFO :      Received: train message f78a0f67-cb5b-4625-b5b6-d01cb76e4322
+INFO :      Sent reply
+INFO :      Received: reconnect message dfed5f2b-5a93-4551-a955-25546977fa97
+INFO :      Disconnect and shut down
+{
+  "client": "m4-air-gpu",
+  "checkpoint": "runs/federation-gpu/m4-air-gpu",
+  "scope": "explicit fixed-round pilot; hardware batch/sync calibration is TODO"
+}

@@ -2,7 +2,7 @@
 title: "MacReduce wiki change log"
 type: log
 status: active
-updated: 2026-11-23
+updated: 2026-11-25
 sources: ["S01"]
 ---
 
@@ -403,3 +403,17 @@ Added tracked [`.env.example`](../.env.example) at the project root. `macreduce`
 ## 2026-11-23 Package layout under src/macreduce
 
 Moved the flat module list into `cluster`, `train`, `federation`, `ane`, `serve`, and `observe`. `cli.py` remains the composition root. No training, transport, or recovery behavior is claimed to have changed; this is a layout refactor. Wiki links that pointed at the old file paths were updated so they resolve. Earlier log prose is otherwise unchanged.
+
+## 2026-11-23 Ruff gates and pre-commit hook
+
+Enabled the explicit Ruff select set in `pyproject.toml` and a tracked Git hook at `.githooks/pre-commit` that refuses commits unless `ruff check .` and `python -m pytest -q` both pass. Install with `sh tools/install-git-hooks.sh`. MLX tests stay opt-in. No training result is claimed.
+
+## 2026-11-24 Merge Flower/Tailscale branch to main
+
+GitHub pull request #3 (`gautam/tailscale`) merged to `main` as `15b79c3`. The branch had been pushed without an open PR; the merge used a newly opened PR after review. `.env` was not tracked.
+
+## 2026-11-25 Record the 2026-11-24 three-Mac GPU pilot
+
+On 2026-11-24 the M4 Air 24 GB, M4 Pro 16 GB, and M1 Air 8 GB completed `macreduce federation` in GPU mode: three rounds, two local AdamW steps, pinned Qwen3-0.6B-4bit LoRA, `committed_version: 3`, 0 failures. Coordinator on the Air. About twenty minutes of wait before the Pro joined, then 61 s / 55 s / 87 s round barriers. Air local steps were 1–4 s. Evaluation was skipped. Tailscale path, energy, and M1 three-epoch memory are unknown, not zero.
+
+Added [experiment report](experiments/2026-11-24-three-mac-gpu-federation.md) and [evidence](../evidence/tailscale-federation-2026-11-24/README.md) with receipts, hashes, and redacted Air terminals. Adapter tensors stay in gitignored `runs/`. Updated state, index, roadmap (GPU-pilot checkbox), Tailscale runbook, transport, architecture, three-Mac study, gaps, Wi-Fi guide, heterogeneity guide, and README verification paragraph. Combined GPU+ANE, split, and the three-epoch curve remain unrun. `python tools/wiki.py lint` passed: 185 pages, 151 sources, no errors or warnings. Structural lint is not a novelty or quality claim.

@@ -1,0 +1,165 @@
+{
+  "scope": "physical three-Mac GPU Flower/Tailscale connectivity pilot; not a three-epoch quality or throughput study",
+  "measured": {
+    "date_local": "2026-11-24",
+    "timezone": "America/New_York",
+    "git_head_at_analysis": "92b3cffd7dbbcef26933702468956cdc2df9044b",
+    "run_id": "ce017ce1-1a68-489a-bc09-a8bcdd299cc2",
+    "plan_hash": "363bf4131bb10391da561d50ed096f4049a389cd01c2b6ea85a80cbda122b1b3",
+    "data_hash": "fc4f0c8e3ad44e79114ebe4d962d92f7f66e622366cdae59ee7e3a8b996df5c8",
+    "implementation_sha256": "5358a8ac3fee3de9d5bc312fd090ac9c20329f05d5167bb1d8927e716441a207",
+    "committed_version": 3,
+    "mode": "gpu",
+    "model": "mlx-community/Qwen3-0.6B-4bit",
+    "model_revision": "73e3e38d981303bc594367cd910ea6eb48349da8",
+    "dataset_revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "train_examples": 4096,
+    "rounds": 3,
+    "local_steps": 2,
+    "max_seq_length": 512,
+    "learning_rate": 0.0001,
+    "recipe": {
+      "rank": 8,
+      "scale": 2.0,
+      "dropout": 0.0,
+      "weight_decay": 0.01,
+      "max_grad_norm": 1.0,
+      "lr_schedule": null
+    },
+    "clients": [
+      {
+        "id": "m4-pro-gpu",
+        "machine": "m4-pro",
+        "device": "gpu",
+        "microbatch": 1,
+        "accumulation": 1,
+        "grad_checkpoint": false,
+        "weight": 0.3333333333333333
+      },
+      {
+        "id": "m4-air-gpu",
+        "machine": "m4-air",
+        "device": "gpu",
+        "microbatch": 1,
+        "accumulation": 1,
+        "grad_checkpoint": false,
+        "weight": 0.3333333333333333
+      },
+      {
+        "id": "m1-air-gpu",
+        "machine": "m1-air",
+        "device": "gpu",
+        "microbatch": 1,
+        "accumulation": 1,
+        "grad_checkpoint": true,
+        "weight": 0.3333333333333333
+      }
+    ],
+    "coordinator": "m4-air",
+    "failures": 0,
+    "cohort_commits": 3,
+    "trainable_parameters": 5046272,
+    "adapter_tensors": 392,
+    "total_supervised_tokens_all_clients": 1931,
+    "coordinator_bind": "Tailscale IPv4 in 100.64.0.0/10 via --host tailscale; concrete address omitted from this record",
+    "evaluation": "Flower configure_evaluate skipped; no validation or test perplexity"
+  },
+  "unknown": [
+    "direct vs relayed Tailscale path",
+    "gRPC/WireGuard overhead beyond serialized_tensor_bytes",
+    "per-client GPU time on M1 and M4 Pro (copied mtimes unusable)",
+    "energy, mactop, memory traces",
+    "M1 8 GB fit for a three-epoch curve",
+    "gpu_ane and split modes"
+  ],
+  "wall_clock_local_air_and_coordinator": {
+    "adapter-000000": "2026-11-24T22:10:49",
+    "m4-air-gpu-initial": "2026-11-24T22:30:22",
+    "m4-air-gpu-round-000000": "2026-11-24T22:30:26",
+    "adapter-000001": "2026-11-24T22:31:23",
+    "m4-air-gpu-round-000001": "2026-11-24T22:31:24",
+    "adapter-000002": "2026-11-24T22:32:18",
+    "m4-air-gpu-round-000002": "2026-11-24T22:32:21",
+    "adapter-000003": "2026-11-24T22:33:45",
+    "note": "bootstrap at 22:10:49; cohort training 22:30:22\u201322:33:45. Round barriers 61s, 55s, 87s. About 20 minutes of wait before the Pro joined."
+  },
+  "adapters": [
+    {
+      "file": "adapter-000000.npz",
+      "bytes": 20305118,
+      "sha256": "0ba42502f2e65acad1b6a0fa07dc563993f548458797e4f9a87e25cb66f29a69",
+      "mtime_local": "2026-11-24T22:10:49",
+      "tensors": 392,
+      "params": 5046272,
+      "l2": 22.85321312481052,
+      "finite": true
+    },
+    {
+      "file": "adapter-000001.npz",
+      "bytes": 20305118,
+      "sha256": "b3ae80a395be219d69ca91239ebd02f17a620c7f8224b3e5f7e381f3530f2d4e",
+      "mtime_local": "2026-11-24T22:31:23",
+      "tensors": 392,
+      "params": 5046272,
+      "l2": 22.86481027806116,
+      "finite": true,
+      "l2_delta_from_previous": 0.6599000828572469
+    },
+    {
+      "file": "adapter-000002.npz",
+      "bytes": 20305118,
+      "sha256": "7440a449fb77d97e40c42c22c504b8ccf81e49cc837653760c1da1d0cd5e5610",
+      "mtime_local": "2026-11-24T22:32:18",
+      "tensors": 392,
+      "params": 5046272,
+      "l2": 22.9096718261251,
+      "finite": true,
+      "l2_delta_from_previous": 0.9117804014549434
+    },
+    {
+      "file": "adapter-000003.npz",
+      "bytes": 20305118,
+      "sha256": "1dcb692f5ab8d844825a55a3c001dcabbaf0e5261d8c700de5e348fb606581fd",
+      "mtime_local": "2026-11-24T22:33:45",
+      "tensors": 392,
+      "params": 5046272,
+      "l2": 22.972559690910412,
+      "finite": true,
+      "l2_delta_from_previous": 0.8231356850401202
+    }
+  ],
+  "air_deltas": [
+    {
+      "round": "round-000000",
+      "bytes": 20305118,
+      "params": 5046272,
+      "nonzero": 5046272,
+      "l2": 1.0016228149361728,
+      "finite": true,
+      "sha256": "2bf88c7dd93d87e360f3a93c2e00b1248312f6b945eab52feee10c0df5c45adb",
+      "mtime_local": "2026-11-24T22:30:26"
+    },
+    {
+      "round": "round-000001",
+      "bytes": 20305118,
+      "params": 5046272,
+      "nonzero": 5046270,
+      "l2": 1.2594189332835566,
+      "finite": true,
+      "sha256": "307cdaaa3da2737f3be52277e5df2c4039ba160c984059357e7c8a2f0c32e850",
+      "mtime_local": "2026-11-24T22:31:24"
+    },
+    {
+      "round": "round-000002",
+      "bytes": 20305118,
+      "params": 5046272,
+      "nonzero": 5046268,
+      "l2": 1.1832590076163585,
+      "finite": true,
+      "sha256": "0a1a6665dc7ff1e256b51e9b98a267f36af3b799642bdef24caec98fb42dcd2b",
+      "mtime_local": "2026-11-24T22:32:21"
+    }
+  ],
+  "file_sha256_state": "dba515347c4c4dec923b12a42b27fd10c2106f9b0cd62a63b577e2a930bfb9cd",
+  "file_sha256_final_adapter": "1dcb692f5ab8d844825a55a3c001dcabbaf0e5261d8c700de5e348fb606581fd"
+}

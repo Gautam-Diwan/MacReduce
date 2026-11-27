@@ -1,0 +1,107 @@
+{
+  "0": {
+    "m4-pro-gpu": {
+      "tokens": 148,
+      "loss": 4.0672798543363005,
+      "optimizer_updates": 2,
+      "cursor": 2,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "221cb2f804d503698ff071e928bcd121f40924a6064afb9c3ace850723cda20e"
+    },
+    "m4-air-gpu": {
+      "tokens": 27,
+      "loss": 7.279079931753653,
+      "optimizer_updates": 2,
+      "cursor": 2,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "3ff111203df3f48aca4fd7eb400454eadcfd672a022a23d4e8bac2658950fa0d"
+    },
+    "m1-air-gpu": {
+      "tokens": 599,
+      "loss": 3.7152038679298056,
+      "optimizer_updates": 2,
+      "cursor": 2,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "d5093a718972ceb1237777ee88c325a3f6772939b0c5f0988f57bb81cffd9ef5"
+    }
+  },
+  "1": {
+    "m4-pro-gpu": {
+      "tokens": 248,
+      "loss": 4.0472403687815515,
+      "optimizer_updates": 4,
+      "cursor": 4,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "7309aef9886d2b7f4b398ab5d7a1bdf3521427917cfd1bcead230281e0a75a29"
+    },
+    "m4-air-gpu": {
+      "tokens": 104,
+      "loss": 4.473631194004645,
+      "optimizer_updates": 4,
+      "cursor": 4,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "7425990d8a73acaa4d1d3c99e29ed59fdde151194918e93bf60186259df8bd65"
+    },
+    "m1-air-gpu": {
+      "tokens": 108,
+      "loss": 3.3282758306573936,
+      "optimizer_updates": 4,
+      "cursor": 4,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "2e9641654953ce2c6980cd3f24bff8eca80b99137f11c6a7a67b508661afc31b"
+    }
+  },
+  "2": {
+    "m4-pro-gpu": {
+      "tokens": 83,
+      "loss": 4.504368569477495,
+      "optimizer_updates": 6,
+      "cursor": 6,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "699c96c785acf6986caf78568c476e8a6fe17602cb4bf25f2d7be2a245cf6170"
+    },
+    "m4-air-gpu": {
+      "tokens": 242,
+      "loss": 3.7098576175279856,
+      "optimizer_updates": 6,
+      "cursor": 6,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "8dfdc5f2c8d786d7eead160f3afdd8b121dd1098771728c77cad019e4b2fc871"
+    },
+    "m1-air-gpu": {
+      "tokens": 372,
+      "loss": 3.048440432035795,
+      "optimizer_updates": 6,
+      "cursor": 6,
+      "placement": {
+        "device": "gpu"
+      },
+      "serialized_tensor_bytes": 20235264,
+      "delta_hash": "bcdb2852dd618155943bae75f89d8a5555f306b9642f7bfbe91dd7f2a84096ad"
+    }
+  }
+}

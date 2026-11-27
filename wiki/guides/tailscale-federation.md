@@ -2,7 +2,7 @@
 title: "Run three-Mac federation over Tailscale with Flower"
 type: implementation
 status: active
-updated: 2026-11-23
+updated: 2026-11-25
 sources: ["S166", "S175", "S181", "S182", "S183"]
 ---
 
@@ -10,7 +10,7 @@ sources: ["S166", "S175", "S181", "S182", "S183"]
 
 The M4 Air 24 GB runs a CPU NumPy coordinator **and a separate local training process**. The M4 Pro 16 GB and M1 Air run one training process each. No AWS instance or fourth machine is used. Tailscale provides the encrypted network; Flower 1.43.0 provides gRPC dispatch/array transport. MacReduce supplies the trainer, signed logical identities, fixed-cohort reduction and persistent recovery state. Config `coordinator: m4-air` records this host; it is a machine label, not a Tailscale hostname.
 
-**Scope:** this is an explicit fixed-round connectivity/trainer pilot, not the finalized proposal experiment. The [hardware batch/accumulation, data allocation, schedule and synchronization calibration is pinned as a TODO](../project/roadmap.md). The example uses three rounds and two local optimizer updates. It deliberately does not claim three epochs, validation perplexity, a speedup, or a completed physical three-Mac run.
+**Scope:** this is an explicit fixed-round connectivity/trainer pilot, not the finalized proposal experiment. The [hardware batch/accumulation, data allocation, schedule and synchronization calibration is pinned as a TODO](../project/roadmap.md). The example uses three rounds and two local optimizer updates. A [physical GPU pilot on 2026-11-24](../experiments/2026-11-24-three-mac-gpu-federation.md) completed that example on the three Macs. It does not claim three epochs, validation perplexity, or a speedup.
 
 ## Backend and cohort support
 
@@ -136,4 +136,4 @@ The independent library review found official Flower MLX examples and a working 
 
 This route uses two pinned compatibility internals (client session and gRPC lifecycle). Upstream's public wrapper is deprecated and starts telemetry threads even with sending disabled; its macOS platform subprocesses caused an observed threaded-gRPC startup failure during validation. The adapter bypasses that wrapper rather than monkey-patching upstream code. Version checks and integration tests guard the boundary. Migration to a supported resident-worker deployment architecture remains a maintenance TODO; do not upgrade Flower independently on one Mac.
 
-See the [validation record](../../evidence/tailscale-federation-2026-11-12/README.md), [current state](../project/state.md), [transport guide](transport.md) and [deferred study design](../research/three-mac-wireless-federation.md).
+See the [2026-11-24 physical GPU pilot](../../evidence/tailscale-federation-2026-11-24/README.md), the [2026-11-12 one-Mac loopback/preflight record](../../evidence/tailscale-federation-2026-11-12/README.md), [current state](../project/state.md), [transport guide](transport.md) and [deferred study design](../research/three-mac-wireless-federation.md).

@@ -1,0 +1,30 @@
+uv run macreduce federation coordinator --mode gpu --host tailscale \
+  --output runs/federation-gpu/coordinator
+Fetching 9 files: 100%
+Download complete
+Reconstruction complete
+Flower coordinator listening on TAILSCALE_IPV4:8765; mode=gpu; version=0; clients=m1-air-gpu,m4-air-gpu,m4-pro-gpu
+INFO :      [INIT]
+INFO :      Using initial global parameters provided by strategy
+INFO :      Starting evaluation of initial global parameters
+INFO :      Evaluation returned no results (`None`)
+INFO :      [ROUND 1]
+INFO :      configure_fit: strategy sampled 3 clients (out of 3)
+INFO :      aggregate_fit: received 3 results and 0 failures
+committed global version 1/3
+INFO :      configure_evaluate: no clients selected, skipping evaluation
+INFO :      [ROUND 2]
+INFO :      configure_fit: strategy sampled 3 clients (out of 3)
+INFO :      aggregate_fit: received 3 results and 0 failures
+committed global version 2/3
+INFO :      configure_evaluate: no clients selected, skipping evaluation
+INFO :      [ROUND 3]
+INFO :      configure_fit: strategy sampled 3 clients (out of 3)
+INFO :      aggregate_fit: received 3 results and 0 failures
+committed global version 3/3
+INFO :      configure_evaluate: no clients selected, skipping evaluation
+{
+  "run_id": "ce017ce1-1a68-489a-bc09-a8bcdd299cc2",
+  "committed_version": 3,
+  "scope": "explicit fixed-round pilot; hardware batch/sync calibration is TODO"
+}

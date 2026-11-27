@@ -1,0 +1,116 @@
+{
+  "m4-air-gpu": {
+    "run_id": "ce017ce1-1a68-489a-bc09-a8bcdd299cc2",
+    "client": "m4-air-gpu",
+    "plan_hash": "363bf4131bb10391da561d50ed096f4049a389cd01c2b6ea85a80cbda122b1b3",
+    "data_hash": "fc4f0c8e3ad44e79114ebe4d962d92f7f66e622366cdae59ee7e3a8b996df5c8",
+    "prepared_version": 2,
+    "generation": "round-000002",
+    "start_hash": "79c3453588c794934bbeee3d0222ddf9839dac794e315f809b65a0f5214f8d5e",
+    "delta_file_hash": "0a1a6665dc7ff1e256b51e9b98a267f36af3b799642bdef24caec98fb42dcd2b",
+    "metrics": {
+      "tokens": 242,
+      "loss": 3.7098576175279856,
+      "optimizer_updates": 6,
+      "cursor": 6,
+      "placement": {
+        "device": "gpu"
+      }
+    },
+    "trainer": {
+      "initial": {
+        "cursor": 0,
+        "updates": 0
+      },
+      "round-000000": {
+        "cursor": 2,
+        "updates": 2
+      },
+      "round-000001": {
+        "cursor": 4,
+        "updates": 4
+      },
+      "round-000002": {
+        "cursor": 6,
+        "updates": 6
+      }
+    },
+    "mtime_note": "m1-air-gpu and m4-pro-gpu trainer/worker mtimes on this checkout are copy time (2026-11-24T23:03), not original training time"
+  },
+  "m4-pro-gpu": {
+    "run_id": "ce017ce1-1a68-489a-bc09-a8bcdd299cc2",
+    "client": "m4-pro-gpu",
+    "plan_hash": "363bf4131bb10391da561d50ed096f4049a389cd01c2b6ea85a80cbda122b1b3",
+    "data_hash": "fc4f0c8e3ad44e79114ebe4d962d92f7f66e622366cdae59ee7e3a8b996df5c8",
+    "prepared_version": 2,
+    "generation": "round-000002",
+    "start_hash": "79c3453588c794934bbeee3d0222ddf9839dac794e315f809b65a0f5214f8d5e",
+    "delta_file_hash": "ac7adfb3746202853c57c86feda66a0c57628416c46eeb085286f2f8fe62bc4b",
+    "metrics": {
+      "tokens": 83,
+      "loss": 4.504368569477495,
+      "optimizer_updates": 6,
+      "cursor": 6,
+      "placement": {
+        "device": "gpu"
+      }
+    },
+    "trainer": {
+      "initial": {
+        "cursor": 0,
+        "updates": 0
+      },
+      "round-000000": {
+        "cursor": 2,
+        "updates": 2
+      },
+      "round-000001": {
+        "cursor": 4,
+        "updates": 4
+      },
+      "round-000002": {
+        "cursor": 6,
+        "updates": 6
+      }
+    },
+    "mtime_note": "m1-air-gpu and m4-pro-gpu trainer/worker mtimes on this checkout are copy time (2026-11-24T23:03), not original training time"
+  },
+  "m1-air-gpu": {
+    "run_id": "ce017ce1-1a68-489a-bc09-a8bcdd299cc2",
+    "client": "m1-air-gpu",
+    "plan_hash": "363bf4131bb10391da561d50ed096f4049a389cd01c2b6ea85a80cbda122b1b3",
+    "data_hash": "fc4f0c8e3ad44e79114ebe4d962d92f7f66e622366cdae59ee7e3a8b996df5c8",
+    "prepared_version": 2,
+    "generation": "round-000002",
+    "start_hash": "79c3453588c794934bbeee3d0222ddf9839dac794e315f809b65a0f5214f8d5e",
+    "delta_file_hash": "63cd39fa64ce62cc95621299f1085eb8c68655091d5864f6ea0bad3b1d3712f5",
+    "metrics": {
+      "tokens": 372,
+      "loss": 3.048440432035795,
+      "optimizer_updates": 6,
+      "cursor": 6,
+      "placement": {
+        "device": "gpu"
+      }
+    },
+    "trainer": {
+      "initial": {
+        "cursor": 0,
+        "updates": 0
+      },
+      "round-000000": {
+        "cursor": 2,
+        "updates": 2
+      },
+      "round-000001": {
+        "cursor": 4,
+        "updates": 4
+      },
+      "round-000002": {
+        "cursor": 6,
+        "updates": 6
+      }
+    },
+    "mtime_note": "m1-air-gpu and m4-pro-gpu trainer/worker mtimes on this checkout are copy time (2026-11-24T23:03), not original training time"
+  }
+}

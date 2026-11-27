@@ -21,7 +21,9 @@ Two independent CPU worker processes completed eight rounds over real loopback H
 
 On 2026-10-24 the same M4 passed the Metal smoke check, optional MLX parity tests, and a three-round GPU loopback demo. Validation loss fell from 6.058713912963867 to 3.713829755783081. That demo used one machine. `xctrace` was unavailable, so no Metal capture exists for it. The CPU operator trace and Apple Accelerate matrix probe ran. See [evidence/mlx-validation](evidence/mlx-validation/README.md).
 
-On 2026-11-12 the default test suite passed 106 tests with eight optional skips. Three targeted hardware recovery tests passed on the local M4 Air 24 GB. The pinned Qwen3 model passed GPU and combined GPU+ANE forward/backward preflights there. Loopback transport tests covered three and six simulated clients. A physical three-Mac run and execution on the M1 remain untested. See the [federation validation record](evidence/tailscale-federation-2026-11-12/README.md).
+On 2026-11-12 the default test suite passed 106 tests with eight optional skips. Three targeted hardware recovery tests passed on the local M4 Air 24 GB. The pinned Qwen3 model passed GPU and combined GPU+ANE forward/backward preflights there. Loopback transport tests covered three and six simulated clients. See the [one-Mac federation validation record](evidence/tailscale-federation-2026-11-12/README.md).
+
+On 2026-11-24 the three reported Macs completed a GPU Flower/Tailscale connectivity pilot: three rounds, two local AdamW steps, pinned Qwen3-0.6B-4bit LoRA, zero failed clients. That is not a three-epoch curve, validation perplexity, or energy result. Combined GPU+ANE and split were not run. See the [physical three-Mac record](evidence/tailscale-federation-2026-11-24/README.md).
 
 See [evidence](evidence/README.md) for measured results and [the profiling guide](docs/profiling.md) for measurement methods and limitations.
 
@@ -342,6 +344,6 @@ sh tools/install-git-hooks.sh
 
 The hook lives in `.githooks/pre-commit` and uses the project Ruff config and the default pytest suite (MLX tests stay opt-in). `cli.py` is the composition root. Packages are `cluster` (local-SGD prototype), `train` (QLoRA curve), `federation` (Flower/Tailscale), `ane`, `serve`, and `observe`.
 
-The synthetic demo uses token-weighted local SGD on the 29,888-parameter model. The remote QLoRA path is `macreduce.federation`. It keeps each worker's AdamW state across broadcasts and reduces adapter updates with explicit objective weights. Its next milestones are physical three-Mac validation, hardware calibration, the standalone ANE trainer, and the proposal's matched evaluation. See the [roadmap](wiki/project/roadmap.md). Both transports reject artifacts larger than 64 MiB.
+The synthetic demo uses token-weighted local SGD on the 29,888-parameter model. The remote QLoRA path is `macreduce.federation`. It keeps each worker's AdamW state across broadcasts and reduces adapter updates with explicit objective weights. A three-Mac GPU connectivity pilot is recorded; remaining milestones are hardware calibration, the standalone ANE trainer, and the proposal's matched evaluation. See the [roadmap](wiki/project/roadmap.md). Both transports reject artifacts larger than 64 MiB.
 
 The hardware inventory distinguishes M5 GPU neural accelerators from ANE and detects CPU SME/SME2 features where permitted. It also records media engines as a future preprocessing opportunity. Inferred presence never counts as verified execution, and unknown future chip generations are not automatically declared supported.

@@ -2,26 +2,26 @@
 title: "Unknowns contradictions and next literature searches"
 type: research-ledger
 status: active
-updated: 2026-11-12
+updated: 2026-11-25
 sources: ["S02", "S03", "S06", "S07", "S08", "S09", "S10", "S12", "S25", "S27", "S28", "S29", "S30", "S31", "S33", "S36"]
 ---
 
 # Unknowns contradictions and next literature searches
 
-**Research update 2026-11-12:** the [three-Mac wireless study](three-mac-wireless-federation.md) records the now-reported M4 Air 24 GB, M4 Pro 16 GB and M1 Air 8 GB. Open measurements are M1 QLoRA memory fit, sustained thermal speed, concurrent LAN/WAN goodput and relay paths. Open implementation work includes independent concurrent workers, recipe parity, optimizer/sampler persistence, true wire encoding and a shared-state gradient control. Availability of three machines is not evidence those gates have passed.
+**Research update 2026-11-25:** the three reported Macs completed a GPU Flower/Tailscale pilot ([report](../experiments/2026-11-24-three-mac-gpu-federation.md)). Open measurements remain M1 QLoRA memory for a three-epoch curve, sustained thermal speed, Tailscale direct-vs-relay goodput, and combined GPU+ANE on the Pro and M1. Independent concurrent GPU workers now exist for the six-step pilot; recipe calibration and a shared-state gradient control do not.
 
 This ledger distinguishes missing implementation, missing evidence, and incomplete literature coverage. It is not a backlog of already solved research problems. Entries are reprioritized for [decision 0003](../decisions/0003-build-target.md).
 
 | Priority | Gap or contradiction | Why it matters | Resolution |
 |---|---|---|---|
 | P0 | **Explicit ANE training is unpinned.** ANEForge, Orion, and maderix are named in `macreduce train-plan`. Orion and maderix have no import to probe. None has been executed | The course comparison is explicit call versus GPU | Pin one commit in a separate environment, run one step, and require a compute plan or power trace before keeping a perplexity |
-| P0 | **No second Mac** | Multi-Mac FedAvg and all-reduce cannot be measured. The one-Mac GPU, combined, and split clients do not need one | Report multi-Mac cells as not run until a peer exists |
+| P0 | **No second Mac** | Multi-Mac FedAvg could not be measured until 2026-11-24. A GPU connectivity pilot now exists; the three-epoch / all-reduce cells do not | Keep full-curve and all-reduce cells as not run; do not treat the six-step pilot as those results |
 | P0 | **Overlap of Neural Engine inference and GPU training is unmeasured** | Future scope, not the course rubric | Leave it out of the scored table |
 | P0 | **Scheduler code exists; the course question moved.** Placement for serving is implemented. The 10-805 proposal is federated QLoRA, not the serving sweep | The old "nothing is built" line was stale | [federated](../../src/macreduce/federation/federated.py), [proposal](../../docs/proposal.md) |
 | P0 | **Does the serving drafter execute on the ANE of this M4?** A decoder block's linear and matmul ops are planned on the Neural Engine. The saved run had two bandwidth samples at 14 GB/s, and the three-sample gate left that 0.000170 s time out of the ranking ([decoder](../../evidence/ane-decoder/README.md)). A 28-layer Qwen3-0.6B-shaped forward compiled once at 0.0207 s with 1,213 Neural Engine ops; the package was not saved because the disk is full ([infer](../../evidence/infer-qwen3/README.md)) | The pinned Qwen3 weights are still not the Core ML weights. mactop remains system-wide | Free enough disk to save the 28-layer package, then compare a converted draft's tokens with MLX |
 | P0 | **Stock speculative decoding** matches greedy tokens for Qwen2.5 at the depths in the old sweep, and for Qwen3 at depths 1, 2, and 4. Qwen3 depth 8 mismatches the short prompt at token 26 ([Qwen3 check](../../evidence/serve-equivalence-qwen3/README.md)). [S33](../sources/S33.md) lists other divergences | A speed number at a diverging depth is invalid | Keep the token diff on every depth. Do not score Qwen3 depth 8 until the short-prompt mismatch is gone |
 | P0 | **Literature on adaptive speculation depth and KV reuse policies not searched** | The primary candidate could duplicate a published rule | Searches listed in [related work](related-work.md); read nearest two papers in full; log results |
-| P1 | **Second Mac, RAM, and link are unknown** | D3's remote arm and machine choice cannot be planned | Record exact hardware when known; measure the link; do not assume Thunderbolt 5 RDMA ([S28](../sources/S28.md) lists JACCL provider bugs) |
+| P1 | **Second Mac, RAM, and link are unknown** | D3's remote arm still needs a measured link. Training peers now exist; Tailscale path (direct vs relay) was not captured on 2026-11-24 | Record `tailscale ping` / `netcheck`; do not assume Thunderbolt 5 RDMA ([S28](../sources/S28.md) lists JACCL provider bugs) |
 | P1 | **Disaggregation crossovers disagree:** [S30](../sources/S30.md) favors the split up to 8K ctx; [S31](../sources/S31.md) favors it only from about 32K on code | A single crossover number is workload- and hardware-specific | Treat crossover as the output of the D3 rule, parameterized by prefix length, bytes, link rate, local prefill rate |
 | P1 | **Hidden runtime state changes costs:** KV dtype mismatch slow path ([S30](../sources/S30.md)); rotating-cache path divergence ([S33](../sources/S33.md)); Core ML compile cache 0.7–1.4 GB per bucket and minutes of cold compile ([S29](../sources/S29.md)) | A cost model that ignores state will be wrong | Log dtype, cache type, compile state, and warm or cold in every run manifest |
 | P1 | **Energy telemetry:** `powermetrics` is package-level and needs privileges; no per-process attribution | Joules can only be a labeled estimate | Report as estimate with method, or omit; never zero |

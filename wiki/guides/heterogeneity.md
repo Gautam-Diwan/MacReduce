@@ -2,13 +2,13 @@
 title: "Schedule unequal Macs without hiding objective changes"
 type: implementation
 status: proposed
-updated: 2026-11-12
+updated: 2026-11-25
 sources: ["S06", "S07", "S08"]
 ---
 
 # Schedule unequal Macs without hiding objective changes
 
-**Planning update 2026-11-12:** the [three-Mac study](../research/three-mac-wireless-federation.md) applies this objective/throughput distinction to an M4 Air 24 GB, M4 Pro 16 GB, and M1 Air 8 GB. Its revised main arm calibrates different microbatch/accumulation settings and proportional random shards to balance round duration, with common K, a fixed total data objective, matched controls and separate two-M4 versus three-Mac measurements. Uniform batch-1 work is retained as a control only. M1 fit/speed is unverified.
+**Planning update 2026-11-12:** the [three-Mac study](../research/three-mac-wireless-federation.md) applies this objective/throughput distinction to an M4 Air 24 GB, M4 Pro 16 GB, and M1 Air 8 GB. Its revised main arm calibrates different microbatch/accumulation settings and proportional random shards to balance round duration, with common K, a fixed total data objective, matched controls and separate two-M4 versus three-Mac measurements. Uniform batch-1 work is retained as a control only. The 2026-11-24 GPU pilot used that uniform control for six local steps; M1 three-epoch fit/speed is still unverified.
 
 The current system permits different worker batch sizes but fixes K and learning rate for the run. It weights parameters by processed tokens. Increasing a worker's contribution can also increase the influence of its local domain. Decide the desired data distribution before optimizing scheduling.
 

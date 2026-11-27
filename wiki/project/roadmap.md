@@ -2,7 +2,7 @@
 title: "Implementation order and completion gates"
 type: plan
 status: active
-updated: 2026-11-23
+updated: 2026-11-25
 sources: ["S27", "S32", "S33"]
 ---
 
@@ -11,7 +11,7 @@ sources: ["S27", "S32", "S33"]
 ## Pinned TODO — return after remote connectivity is established
 
 - [ ] **Calibrate the heterogeneous study:** measure each Mac's warmed microbatch/accumulation throughput and memory; choose objective-preserving data allocation/weights, data-progress schedule, common-K or justified unequal-work policy, and a sync sweep. The [revised research](../research/three-mac-wireless-federation.md) is proposed; no 1/2/4 ratio or K is finalized. The user explicitly deferred this work.
-- [ ] **Validate the three physical Macs:** follow the [Tailscale/Flower runbook](../guides/tailscale-federation.md), retain actual network paths, failed/retried rounds, M1 memory fit and GPU/combined backend preflight results. No separate coordinator host.
+- [x] **Validate the three physical Macs (GPU pilot):** 2026-11-24 Flower/Tailscale GPU cohort completed three rounds with 0 failures ([report](../experiments/2026-11-24-three-mac-gpu-federation.md)). Remaining: Tailscale direct-vs-relay capture, M1 three-epoch memory, GPU+ANE preflight on Pro and M1, failed/retried-round evidence. No separate coordinator host.
 - [ ] **Implement and verify standalone ANE Qwen3 training:** six-client split orchestration exists, but actual split execution must fail closed until this backend exists; combined GPU+ANE is not a substitute.
 - [ ] **Complete the scientific experiment runner:** exact three-epoch/tail schedule, full validation/test, matched centralized gradient control and time-to-quality accounting. The current remote config is a fixed-round connectivity pilot.
 - [ ] **Maintain the Flower boundary:** migrate the pinned compatibility client/server lifecycle to a supported architecture that preserves resident trainers and durable state; keep auth/cohort/replay tests when upgrading.

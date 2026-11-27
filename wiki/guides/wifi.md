@@ -2,7 +2,7 @@
 title: "Run and characterize a physical WiFi cluster"
 type: implementation
 status: proposed
-updated: 2026-11-23
+updated: 2026-11-25
 sources: ["S03", "S04", "S05"]
 ---
 
@@ -11,6 +11,8 @@ sources: ["S03", "S04", "S05"]
 **Current executable path:** for QLoRA over different networks, use [Tailscale + Flower](tailscale-federation.md). Its default example is explicitly a connectivity pilot; the measurements below still need to be performed on the actual three Macs.
 
 **Planning update 2026-11-12:** the active proposal again includes physical federated training. The team now reports two M4s and an 8 GB M1. See the [three-Mac wireless study](../research/three-mac-wireless-federation.md) for LAN/SSH, optional Tailscale, the M4 Air 24 GB as coordinator and training client, adapter-sized transfer calculations, and fixed-work experiments. Older scope notes below describe their dates, not a new exclusion of wireless federation.
+
+**Measured 2026-11-24:** a GPU Flower/Tailscale pilot ran on those three Macs. This Wi-Fi characterization protocol was not used; Tailscale path (direct vs relay) was not recorded. [Report](../experiments/2026-11-24-three-mac-gpu-federation.md).
 
 **Scope note 2026-10-25:** under [decision 0003](../decisions/0003-build-target.md) Wi-Fi is no longer the research question. Keep this page as the operational procedure for any multi-Mac measurement (for example the remote arm of the prefix-source decision); the link rate is a measured parameter, not a claim.
 

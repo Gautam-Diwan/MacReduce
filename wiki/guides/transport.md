@@ -2,13 +2,13 @@
 title: "Scale transport and preserve recovery semantics"
 type: implementation
 status: active
-updated: 2026-11-12
+updated: 2026-11-25
 sources: ["S05"]
 ---
 
 # Scale transport and preserve recovery semantics
 
-**Remote adapter path 2026-11-12:** [the Tailscale/Flower runbook](tailscale-federation.md) describes the new remote QLoRA path. It reuses Flower RPC rather than adding a second HTTP service, limits whole messages/tensors to 64 MiB, serializes fp32 deltas, authenticates run/version/client envelopes and stops on any incomplete cohort. Durable client generations preserve optimizer/sampler state and exact outgoing deltas. The chunked protocol below remains the retained local-SGD transport, not the new Flower format.
+**Remote adapter path 2026-11-12 / 2026-11-24:** [the Tailscale/Flower runbook](tailscale-federation.md) describes the remote QLoRA path. It reuses Flower RPC rather than adding a second HTTP service, limits whole messages/tensors to 64 MiB, serializes fp32 deltas, authenticates run/version/client envelopes and stops on any incomplete cohort. Durable client generations preserve optimizer/sampler state and exact outgoing deltas. A physical three-Mac GPU pilot committed three such rounds ([evidence](../../evidence/tailscale-federation-2026-11-24/README.md)); payload size was `serialized_tensor_bytes = 20235264` per update. gRPC/WireGuard overhead is unknown, not zero. The chunked protocol below remains the retained local-SGD transport, not the new Flower format.
 
 **Planning update 2026-11-12:** the [wireless federation research](../research/three-mac-wireless-federation.md) distinguishes this prototype artifact protocol from the unfinished QLoRA remote-worker path. It identifies float64 serialization and reconstructed-float int8 payloads as accounting risks, and plans SSH/VPN connectivity plus persistent receipts, optimizer/sampler state and fault injection. These are inspected gaps and proposed changes, not new transport measurements.
 

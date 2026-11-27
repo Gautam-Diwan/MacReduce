@@ -2,13 +2,13 @@
 title: "Three-Mac wireless federated QLoRA: recipe and networking; AWS background"
 type: research
 status: proposed
-updated: 2026-11-23
+updated: 2026-11-25
 sources: ["S162", "S163", "S164", "S165", "S166", "S167", "S168", "S169", "S170", "S171", "S172", "S173", "S174", "S175", "S176", "S177", "S178", "S179", "S180"]
 ---
 
 # Three-Mac wireless federated QLoRA: recipe and networking; AWS background
 
-**Implementation follow-up:** the [Tailscale + Flower runbook](../guides/tailscale-federation.md) now supplies a remote pilot path with persistent local trainers. The code-gap audit below describes the older `federate --execute` path. The user deferred batch/sync/data-allocation calibration; it is [pinned as TODO](../project/roadmap.md). Standalone ANE remains gated.
+**Implementation follow-up:** the [Tailscale + Flower runbook](../guides/tailscale-federation.md) supplies a remote pilot path with persistent local trainers. On 2026-11-24 the three Macs completed that GPU pilot ([report](../experiments/2026-11-24-three-mac-gpu-federation.md)). The code-gap audit below still describes the older `federate --execute` path. Batch/sync/data-allocation calibration remains [pinned as TODO](../project/roadmap.md). Standalone ANE remains gated. The pilot does not replace the calibrated study below.
 
 ## Recommendation and inspected scope
 
@@ -16,9 +16,11 @@ sources: ["S162", "S163", "S164", "S165", "S166", "S167", "S168", "S169", "S170"
 
 **Proposed:** start with GPU-only QLoRA on three full replicas, an uncompressed fp32 adapter payload, a common optimizer-update horizon, and per-device microbatch/accumulation settings calibrated to balance round duration. The M4 Air 24 GB runs both its training client and a lightweight coordinator process; the M4 Pro 16 GB and M1 Air 8 GB run training clients. Use a shared reachable Wi-Fi LAN plus SSH forwarding first. If the Macs are on separate networks, use Tailscale private addresses to reach the same M4 Air, without an additional application server. Compare two M4s with all three Macs. Treat GPU+ANE and separate ANE clients as subsequent feasibility-gated arms.
 
-**Hardware reported by the team on November 12:** M4 MacBook Air 24 GB, M4 MacBook Pro 16 GB, M1 MacBook Air 8 GB. The team can work on shared or separate networks; SSH is acceptable. These are user-reported inventories, not three locally inspected `doctor` outputs. The exact M1 GPU variant, OS versions, available RAM, sustained training speed, uplinks, and access-point behavior remain unknown. Apple lists Wi-Fi 6 and a 16-core Neural Engine for the M1 Air; neither is a training-throughput guarantee. [S179](../sources/S179.md)
+**Hardware reported by the team on November 12:** M4 MacBook Air 24 GB, M4 MacBook Pro 16 GB, M1 MacBook Air 8 GB. Those three machines ran the 2026-11-24 GPU connectivity pilot. The exact M1 GPU variant, OS versions, available RAM, sustained training speed, uplinks, and whether Tailscale was direct or relayed remain unknown. Apple lists Wi-Fi 6 and a 16-core Neural Engine for the M1 Air; neither is a training-throughput guarantee. [S179](../sources/S179.md)
 
-**Inspected locally:** the [proposal](../../docs/proposal.md), [current config](../../configs/qlora_m4.yaml), [saved successful M4 curve](../../evidence/qwen3-0.6b-curve/2026-10-29T00-07-18/result.json), `federated.py`, `lora_client.py`, `artifacts.py`, and the heterogeneity, Wi-Fi, transport and optimizer guides. Read the M4 16 GB report from remote-tracking branch `origin/edmund/m4-16gb-baseline` at `a80a4ac`; its measurements are collaborator-reported here, not rerun. Inspected 19 newly saved primary sources with scope in [S162–S180](../sources/S162.md). No wireless experiment, M1 training run, cloud instance, or new ANE validation was performed. Numerical examples below are calculated planning scenarios, not measurements. No novelty claim is made.
+**Inspected locally:** the [proposal](../../docs/proposal.md), [current config](../../configs/qlora_m4.yaml), [saved successful M4 curve](../../evidence/qwen3-0.6b-curve/2026-10-29T00-07-18/result.json), `federated.py`, `lora_client.py`, `artifacts.py`, and the heterogeneity, Wi-Fi, transport and optimizer guides. Read the M4 16 GB report from remote-tracking branch `origin/edmund/m4-16gb-baseline` at `a80a4ac`; its measurements are collaborator-reported here, not rerun. Inspected 19 newly saved primary sources with scope in [S162–S180](../sources/S162.md). Numerical examples in the recipe sections below are calculated planning scenarios, not measurements. No novelty claim is made.
+
+**Measured 2026-11-24:** GPU Flower/Tailscale pilot, three rounds × two local steps, 0 failures. Not a calibrated K, not three epochs, not ANE. [Report](../experiments/2026-11-24-three-mac-gpu-federation.md).
 
 ## 1. What needs to be comparable
 
