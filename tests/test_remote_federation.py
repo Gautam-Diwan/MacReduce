@@ -17,7 +17,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from macreduce.federation.backend import ResidentLoraClient, collate, sample_indices
+from macreduce.federation.backend import ResidentLoraClient, collate, packed_rows, sample_indices
 from macreduce.federation.lora_client import BackendUnavailable
 from macreduce.federation.plan import bind_address, fingerprint, load_plan, shard_indices
 from macreduce.federation.state import RunState, pack_adapter, unpack_adapter
@@ -34,6 +34,7 @@ from macreduce.federation.flower import (  # noqa: E402
     signed,
     verified,
 )
+from macreduce.federation.wire import encode, layout  # noqa: E402
 
 SECRET = "a-test-secret-with-at-least-24-characters"
 DATA_HASH = fingerprint(["fixed test corpus"])
@@ -46,9 +47,10 @@ def no_upstream_analytics(monkeypatch):
     monkeypatch.setattr(telemetry, "FLWR_TELEMETRY_ENABLED", "0")
 
 
-def plan(mode="gpu", rounds=2):
+def plan(mode="gpu", rounds=2, wire="fp32"):
     result = load_plan(Path("configs/federation.yaml"), mode)
-    result.update(rounds=rounds, local_steps=2, round_timeout=10)
+    result.update(rounds=rounds, local_steps=2, round_timeout=10, wire=wire,
+                  pack_sequences=False, keep_generations=2)
     return result
 
 
@@ -93,7 +95,10 @@ def jobs_for(state, clients):
         cid=str(i), get_properties=lambda ins, timeout, group_id, c=client: c.get_properties(ins)
     ) for i, client in enumerate(clients)}
     manager = SimpleNamespace(wait_for=lambda *args, **kwargs: True, all=lambda: proxies)
-    return strategy, strategy.configure_fit(1, ndarrays_to_parameters(state.arrays), manager)
+    encoded = encode(state.adapter, state.plan["wire"])
+    form = layout(state.meta["schema"], state.plan["wire"])
+    payload = ndarrays_to_parameters([encoded[name] for name in form.names])
+    return strategy, strategy.configure_fit(1, payload, manager)
 
 
 def test_modes_configurable_batches_and_disjoint_shards():
@@ -125,6 +130,9 @@ def test_sampler_continues_without_resetting_at_round_boundaries():
     assert batch.shape == (2, 5)
     np.testing.assert_array_equal(lengths, [[0, 4], [0, 5]])
     assert batch[0, 3] == 1
+    rows = packed_rows([{"text": "aa"}, {"text": "bbbb"}], tok, 4)
+    assert rows[0] == [2, 2, 1, 2, 2]
+    assert all(len(row) == 5 for row in rows)
 
 
 def test_standalone_ane_fails_before_any_hardware_import():
@@ -331,12 +339,16 @@ def test_resident_mlx_optimizer_and_broadcast_resume(
     config = plan("gpu" if device == "gpu" else "gpu_ane")
     config.update(max_seq_length=16, local_steps=1)
     spec = config["clients"][0]
-    spec.update(microbatch=microbatch, accumulation=accumulation)
+    spec.update(microbatch=microbatch, accumulation=accumulation, compute_dtype="float16")
     records = [{"text": "tiny deterministic text"}] * 12
     first = ResidentLoraClient(config, spec, records)
     initial = first.setup()
     local, metrics = first.train_round(initial)
     assert metrics["tokens"] > 0
+    from mlx.utils import tree_flatten
+    assert {str(value.dtype) for _, value in tree_flatten(first.model.trainable_parameters())} == {
+        "mlx.core.float16"
+    }
     first.save(tmp_path / "checkpoint")
     broadcast = {key: value + np.float32(1e-5) for key, value in local.items()}
     after, _ = first.train_round(broadcast)
@@ -352,6 +364,18 @@ def test_resident_mlx_optimizer_and_broadcast_resume(
         assert second.placement()["backward_calls"] >= 2
         assert second.placement()["ane_mask"] == "0x4"
     mx.eval(first.model.parameters(), second.model.parameters())
+
+
+def test_int8_wire_roundtrips_through_flower_commit(tmp_path):
+    config = plan(rounds=1, wire="int8")
+    state = RunState(tmp_path / "server", config, DATA_HASH, {"adapter": np.zeros(2, np.float32)})
+    clients = clients_for(tmp_path, config)
+    strategy, jobs = jobs_for(state, clients)
+    results = [(proxy, clients[int(proxy.cid)].fit(ins)) for proxy, ins in jobs]
+    strategy.aggregate_fit(1, results, [])
+    np.testing.assert_allclose(state.adapter["adapter"], [4, 4], atol=1e-5)
+    assert clients[0].meta["metrics"]["wire"] == "int8"
+    assert clients[0].meta["metrics"]["encoded_bytes"] < 4096
 
 
 def test_explicit_objective_weights_are_used_not_hardware_or_token_counts(tmp_path):

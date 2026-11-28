@@ -433,3 +433,11 @@ Added [S186](sources/S186.md) as unread; source synthesis is pending.
 ## 2026-11-27 — Training optimization study after the three-Mac run
 
 Committed the 2026-11-24 record first (`8790e34`). Read the full text of DiLoCo v3 ([S184](sources/S184.md)), Streaming DiLoCo v1 ([S185](sources/S185.md)), and FFA-LoRA v1 ([S186](sources/S186.md)); reading scopes are on each card, and the abstract-only S04/S05 cards now point to them. Added `tools/bench_local_step.py` and `tools/delta_codecs.py`. On the M4 Air, packed 512-token compiled steps ran 558 target tok/s against 432 for the current line-per-step eager step; batch 4 gave 509; gradient checkpointing cost 27–29%. On the Air's recorded deltas, int8 g64 error was 0.3–0.4% and int4 5–7%; the deltas are dense. MLX AdamW defaults to no bias correction, which explains the round-0 delta maximum. Wrote the [training optimization strategy](research/training-optimization-strategy.md) and linked it from the index, roadmap, gaps, three-Mac study, and adapter guide. Record: [evidence/training-optimization-2026-11-27](../evidence/training-optimization-2026-11-27/README.md). No convergence run, Pro/M1 measurement, or transport measurement was made.
+
+## 2026-11-27 — Per-Mac compute dtype, int8 wire, K = 8
+
+Compute dtype is now a per-client setting: bfloat16 on the M4s (matches the 4-bit Qwen3 scales; fp16 input promotes those matmuls to fp32), float16 on the M1 (bf16 is emulated there). Snapshots stay fp32; the wire stays int8 with error feedback. Local steps are 8 packed rows so the smaller payload buys more aggregations rather than fewer. Combined ANE still requires float16. Not yet run on three Macs.
+
+## 2026-11-27 — Implement packed int8 federated training
+
+`configs/federation.yaml` now uses 32 local steps, packed 512-token rows, int8 gRPC payloads with error feedback, and keeps two worker generations. Master LoRA/AdamW stay fp32; the coordinator still commits fp32. GPU clients compile the packed step. Transport tests still run the fp32 path bit-exactly; a new int8 numerical-client test and `tests/test_wire.py` cover the codec. 113 default tests passed. No three-Mac run of this config yet.

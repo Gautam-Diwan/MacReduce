@@ -13,6 +13,7 @@ import io
 import json
 import math
 import secrets
+import shutil
 import time
 from importlib.metadata import version
 from pathlib import Path
@@ -38,7 +39,8 @@ from macreduce.cluster.artifacts import CONTROL_RESPONSE_BYTES, MAX_ARTIFACT_BYT
 from macreduce.cluster.coordinator import atomic_write
 
 from .plan import client_spec, fingerprint
-from .state import RunState, pack_adapter, tensor_digest, unpack_adapter
+from .state import RunState, tensor_digest
+from .wire import decode, encode, layout, pack_encoded, quantize_delta, unpack_encoded
 
 
 def check_flower_version():
@@ -63,8 +65,9 @@ def verified(raw, token):
     return json.loads(body)
 
 
-def decode_parameters(parameters, names, schema):
+def decode_parameters(parameters, names, schema, dtypes=None):
     """Bound/validate NPY headers before Flower/NumPy allocates array buffers."""
+    expected = dtypes or {name: np.dtype(np.float32) for name in names}
     if len(parameters.tensors) != len(names):
         raise ValueError("tensor count differs from the adapter")
     if sum(map(len, parameters.tensors)) > MAX_ARTIFACT_BYTES:
@@ -77,11 +80,11 @@ def decode_parameters(parameters, names, schema):
         if reader is None:
             raise ValueError("unsupported NPY header")
         shape, fortran, dtype = reader(stream)
-        if (dtype != np.float32 or list(shape) != schema[key] or fortran
+        if (np.dtype(dtype) != np.dtype(expected[key]) or list(shape) != schema[key] or fortran
                 or math.prod(shape) * dtype.itemsize != len(raw) - stream.tell()):
             raise ValueError("invalid tensor dtype/shape/length")
     arrays = parameters_to_ndarrays(parameters)
-    if not all(np.isfinite(value).all() for value in arrays):
+    if not all(np.isfinite(value).all() for value in arrays if np.issubdtype(value.dtype, np.floating)):
         raise ValueError("adapter contains nonfinite values")
     return dict(zip(names, arrays, strict=True))
 
@@ -100,6 +103,32 @@ class PersistentClient(Client):
                     or self.meta["data_hash"] != data_hash):
                 raise ValueError("worker checkpoint identity differs; use a new output directory")
             self.backend.restore(self.root / self.meta.get("generation", "initial"))
+        self.residual = self._load_residual()
+
+    def _adapter_schema(self):
+        snapshot = self.backend.snapshot()
+        return {name: list(value.shape) for name, value in snapshot.items()}, list(snapshot)
+
+    def _wire_layout(self):
+        schema, _ = self._adapter_schema()
+        return layout(schema, self.plan["wire"])
+
+    def _load_residual(self):
+        if self.meta is None:
+            return None
+        path = self.root / self.meta.get("generation", "initial") / "residual.npz"
+        if not path.exists():
+            return None
+        with np.load(path, allow_pickle=False) as archive:
+            return {name: archive[name].astype(np.float32) for name in archive.files}
+
+    def _prune(self):
+        keep = self.plan["keep_generations"]
+        rounds = sorted(path for path in self.root.glob("round-*") if path.is_dir())
+        current = self.meta.get("generation") if self.meta else None
+        for stale in rounds[:-keep]:
+            if stale.name != current:
+                shutil.rmtree(stale)
 
     def _request(self, config, op):
         body = verified(config["envelope"], self.token)
@@ -132,12 +161,13 @@ class PersistentClient(Client):
         request = self._request(ins.config, "fit")
         if request["client"] != self.name:
             raise ValueError("fit request is for a different client")
-        names = list(self.backend.snapshot())
-        schema = {k: list(v.shape) for k, v in self.backend.snapshot().items()}
-        start = decode_parameters(ins.parameters, names, schema)
-        digest = tensor_digest(names, [start[k] for k in names])
+        schema, names = self._adapter_schema()
+        form = layout(schema, self.plan["wire"])
+        encoded_start = decode_parameters(ins.parameters, form.names, form.shapes, form.dtypes)
+        digest = tensor_digest(form.names, [encoded_start[key] for key in form.names])
         if digest != request["start_hash"]:
             raise ValueError("broadcast checksum mismatch")
+        start = decode(encoded_start, self.plan["wire"], schema)
         version = request["version"]
         if self.meta["prepared_version"] == version:
             if self.meta["start_hash"] != digest:
@@ -146,28 +176,34 @@ class PersistentClient(Client):
             raw = (directory / "delta.npz").read_bytes()
             if hashlib.sha256(raw).hexdigest() != self.meta["delta_file_hash"]:
                 raise ValueError("pending update checksum mismatch")
-            delta = unpack_adapter(raw, schema)
+            encoded = unpack_encoded(raw, form.names)
             metrics = self.meta["metrics"]
         else:
             baseline = self.root / self.meta.get("generation", "initial")
             try:
                 after, metrics = self.backend.train_round(start)
                 delta = {key: np.asarray(after[key] - start[key], dtype=np.float32) for key in names}
-                raw = pack_adapter(delta)
+                encoded, self.residual = quantize_delta(delta, self.residual, self.plan["wire"])
+                raw = pack_encoded(encoded)
                 directory = self.root / f"round-{version:06d}"
                 self.backend.save(directory)
                 atomic_write(directory / "delta.npz", raw)
+                np.savez(directory / "residual.npz", **self.residual)
+                metrics = {**metrics, "wire": self.plan["wire"],
+                           "encoded_bytes": len(raw)}
                 candidate = {**self.meta, "prepared_version": version, "start_hash": digest,
                              "generation": directory.name, "metrics": metrics,
                              "delta_file_hash": hashlib.sha256(raw).hexdigest()}
                 atomic_write(self.root / "worker.json", json.dumps(candidate, allow_nan=False).encode())
                 self.meta = candidate
+                self._prune()
             except Exception:
                 self.backend.restore(baseline)
+                self.residual = self._load_residual()
                 raise
-        arrays = [delta[key] for key in names]
+        arrays = [encoded[key] for key in form.names]
         response = {**request, "op": "update", "client": self.name,
-                    "delta_hash": tensor_digest(names, arrays), "metrics": metrics}
+                    "delta_hash": tensor_digest(form.names, arrays), "metrics": metrics}
         examples = self.spec["microbatch"] * self.spec["accumulation"] * self.plan["local_steps"]
         return FitRes(Status(Code.OK, "prepared"), ndarrays_to_parameters(arrays), examples,
                       {"envelope": signed(response, self.token)})
@@ -179,9 +215,12 @@ class FixedCohort(FedAvg):
         self.state, self.token = state, token
         self.expected = {row["id"] for row in state.plan["clients"]}
         self.assignments = {}
+        encoded = encode(state.adapter, state.plan["wire"])
+        form = layout(state.meta["schema"], state.plan["wire"])
         super().__init__(fraction_evaluate=0, min_fit_clients=len(self.expected),
                          min_available_clients=len(self.expected), accept_failures=False,
-                         initial_parameters=ndarrays_to_parameters(state.arrays))
+                         initial_parameters=ndarrays_to_parameters(
+                             [encoded[name] for name in form.names]))
 
     def _body(self, op):
         return {"op": op, "run_id": self.state.meta["run_id"], "version": self.state.version,
@@ -213,7 +252,10 @@ class FixedCohort(FedAvg):
         jobs = []
         self.assignments = {}
         for name, proxy in by_name.items():
-            body = {**self._body("fit"), "client": name, "start_hash": self.state.digest}
+            form = layout(self.state.meta["schema"], self.state.plan["wire"])
+            sent = decode_parameters(parameters, form.names, form.shapes, form.dtypes)
+            digest = tensor_digest(form.names, [sent[key] for key in form.names])
+            body = {**self._body("fit"), "client": name, "start_hash": digest}
             self.assignments[proxy.cid] = body
             jobs.append((proxy, FitIns(parameters, {"envelope": signed(body, self.token)})))
         return jobs
@@ -229,19 +271,23 @@ class FixedCohort(FedAvg):
             base = {k: response[k] for k in request}
             if result.status.code != Code.OK or base != {**request, "op": "update"}:
                 raise ValueError("update identity/authentication mismatch")
-            delta = decode_parameters(result.parameters, self.state.meta["names"],
-                                      self.state.meta["schema"])
-            digest = tensor_digest(self.state.meta["names"], list(delta.values()))
+            form = layout(self.state.meta["schema"], self.state.plan["wire"])
+            encoded = decode_parameters(result.parameters, form.names, form.shapes, form.dtypes)
+            digest = tensor_digest(form.names, [encoded[key] for key in form.names])
             if response["delta_hash"] != digest or name in updates:
                 raise ValueError("conflicting or duplicate client update")
             tokens = response["metrics"]["tokens"]
             if type(tokens) is not int or tokens < 1:
                 raise ValueError("invalid supervised-token count")
+            delta = decode(encoded, self.state.plan["wire"], self.state.meta["schema"])
             updates[name] = (delta, {"delta_hash": digest, "metrics": response["metrics"],
                                     "serialized_tensor_bytes": sum(map(len, result.parameters.tensors))})
         self.state.commit(updates)
         print(f"committed global version {self.state.version}/{self.state.plan['rounds']}", flush=True)
-        return ndarrays_to_parameters(self.state.arrays), {"global_version": self.state.version}
+        encoded = encode(self.state.adapter, self.state.plan["wire"])
+        form = layout(self.state.meta["schema"], self.state.plan["wire"])
+        return (ndarrays_to_parameters([encoded[name] for name in form.names]),
+                {"global_version": self.state.version})
 
 
 def serve(state: RunState, address: str, token: str):

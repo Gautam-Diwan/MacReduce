@@ -2,7 +2,7 @@
 title: "Run three-Mac federation over Tailscale with Flower"
 type: implementation
 status: active
-updated: 2026-11-25
+updated: 2026-11-27
 sources: ["S166", "S175", "S181", "S182", "S183"]
 ---
 
@@ -10,7 +10,7 @@ sources: ["S166", "S175", "S181", "S182", "S183"]
 
 The M4 Air 24 GB runs a CPU NumPy coordinator **and a separate local training process**. The M4 Pro 16 GB and M1 Air run one training process each. No AWS instance or fourth machine is used. Tailscale provides the encrypted network; Flower 1.43.0 provides gRPC dispatch/array transport. MacReduce supplies the trainer, signed logical identities, fixed-cohort reduction and persistent recovery state. Config `coordinator: m4-air` records this host; it is a machine label, not a Tailscale hostname.
 
-**Scope:** this is an explicit fixed-round connectivity/trainer pilot, not the finalized proposal experiment. The [hardware batch/accumulation, data allocation, schedule and synchronization calibration is pinned as a TODO](../project/roadmap.md). The example uses three rounds and two local optimizer updates. A [physical GPU pilot on 2026-11-24](../experiments/2026-11-24-three-mac-gpu-federation.md) completed that example on the three Macs. It does not claim three epochs, validation perplexity, or a speedup.
+**Scope:** this is an explicit fixed-round remote path, not the finalized proposal experiment. The [hardware batch/accumulation, data allocation, and synchronization calibration is still a TODO](../project/roadmap.md). `configs/federation.yaml` now runs three rounds of 8 packed local steps with int8 deltas, error feedback, bfloat16 compute on the M4s, and float16 compute on the M1. A [physical GPU pilot on 2026-11-24](../experiments/2026-11-24-three-mac-gpu-federation.md) completed three fp32 rounds of two local steps. The packed int8 config has not been run on the three Macs. It does not claim three epochs, validation perplexity, or a speedup.
 
 ## Backend and cohort support
 
@@ -74,7 +74,7 @@ uv run macreduce federation check --mode gpu --client m1-air-gpu --execute
 
 For combined mode, replace `--mode gpu` with `--mode gpu_ane` and the final `-gpu` client suffix with `-gpu_ane`. A passed combined check requires ANE forward and backward counters to advance under the existing device-mask gate. Run this independently on every actual Mac/OS. A local M4 test does not validate M1 compatibility. This checks finite execution, not a full numerical-quality or power-attribution study.
 
-## Start a GPU connectivity pilot
+## Start a GPU run
 
 Start the M4 Air's coordinator first and wait for its **Flower coordinator listening** message. It bootstraps a common adapter on GPU once, then releases the base model; reduction itself is NumPy on CPU. The Air's training client is a separate terminal/process.
 

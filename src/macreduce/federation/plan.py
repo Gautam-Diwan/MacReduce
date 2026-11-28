@@ -16,7 +16,10 @@ import yaml
 from macreduce.serve.serving import MODEL_REVISIONS
 from macreduce.train.finetune import DATASET_REVISION, DEFAULT_RECIPE, TRAIN_MODEL, validate_recipe
 
+from .wire import CODECS
+
 MODES = {"gpu": ("gpu",), "gpu_ane": ("gpu_ane",), "split": ("gpu", "ane")}
+COMPUTE_DTYPES = ("float32", "float16", "bfloat16")
 
 
 def fingerprint(value) -> str:
@@ -70,11 +73,18 @@ def load_plan(path: Path, mode: str | None = None) -> dict:
                 raise ValueError("objective weight must be numeric")
             if not math.isfinite(weight) or weight <= 0:
                 raise ValueError("objective weight must be finite and positive")
+            compute_dtype = local.get("compute_dtype", "float32")
+            if compute_dtype not in COMPUTE_DTYPES:
+                msg = f"compute_dtype must be one of {COMPUTE_DTYPES}"
+                raise ValueError(msg)
+            if device == "gpu_ane" and compute_dtype != "float16":
+                raise ValueError("gpu_ane requires compute_dtype float16; ANEForge programs are fp16")
             clients.append({
                 "id": f"{machine}-{device}", "machine": machine, "device": device,
                 "microbatch": positive(local.get("microbatch", 1), "microbatch", 64),
                 "accumulation": positive(local.get("accumulation", 1), "accumulation", 64),
                 "grad_checkpoint": checkpoint, "weight": float(weight),
+                "compute_dtype": compute_dtype,
             })
     total = sum(row["weight"] for row in clients)
     for row in clients:
@@ -94,6 +104,16 @@ def load_plan(path: Path, mode: str | None = None) -> dict:
     sequence = positive(training.get("max_seq_length", 512), "sequence", 4096)
     if sequence < 2:
         raise ValueError("sequence must be at least two tokens")
+    codec = training.get("wire", "fp32")
+    if codec not in CODECS:
+        msg = f"wire must be one of {CODECS}"
+        raise ValueError(msg)
+    packed = training.get("pack_sequences", False)
+    if type(packed) is not bool:
+        raise ValueError("pack_sequences must be true or false")
+    keep = training.get("keep_generations", 2)
+    if type(keep) is not int or keep < 1:
+        raise ValueError("keep_generations must be a positive integer")
     return {
         "schema": 1, "mode": mode, "coordinator": coordinator, "clients": clients,
         "implementation_sha256": implementation_hash(),
@@ -105,6 +125,7 @@ def load_plan(path: Path, mode: str | None = None) -> dict:
         "max_seq_length": sequence,
         "rounds": positive(training.get("rounds", 3), "rounds", 100000),
         "local_steps": positive(training.get("local_steps", 2), "local_steps", 10000),
+        "wire": codec, "pack_sequences": packed, "keep_generations": keep,
         "learning_rate": float(lr), "round_timeout": deadline, "recipe": recipe,
         "scope": "explicit fixed-round pilot; hardware batch/sync calibration is TODO",
     }

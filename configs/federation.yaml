@@ -1,8 +1,10 @@
-# Connectivity pilot only. TODO: calibrate each device's batches, objective
-# weights/data allocation, and sync frequency before the proposal experiments.
+# Three precision layers, not one:
+#   compute_dtype  per Mac (GPU fast path). Need not match across machines.
+#   snapshot/Adam  float32 (stability, common aggregation space).
+#   wire           int8 with error feedback (bytes, so we can sync more often).
+# Packed 512-token rows, 8 local steps, 3 rounds. Not a three-epoch curve.
 # Tokens/credentials/Tailscale IPs do not belong in this shared file.
-# The coordinator process runs on m4-air (M4 MacBook Air 24 GB) together with
-# that machine's training worker. The Pro and M1 are workers only.
+# Coordinator runs on m4-air together with that machine's training worker.
 schema: 1
 mode: gpu
 coordinator: m4-air
@@ -11,20 +13,30 @@ machines:
     microbatch: 1
     accumulation: 1
     grad_checkpoint: false
+    compute_dtype: bfloat16
     weight: 1.0
+    gpu_ane:
+      compute_dtype: float16
   m4-air:
     microbatch: 1
     accumulation: 1
     grad_checkpoint: false
+    compute_dtype: bfloat16
     weight: 1.0
+    gpu_ane:
+      compute_dtype: float16
   m1-air:
     microbatch: 1
     accumulation: 1
     grad_checkpoint: true
+    compute_dtype: float16
     weight: 1.0
 training:
   rounds: 3
-  local_steps: 2
+  local_steps: 8
+  pack_sequences: true
+  wire: int8
+  keep_generations: 2
   max_seq_length: 512
   learning_rate: 0.0001
   seed: 1
@@ -37,5 +49,3 @@ recipe:
   dropout: 0.0
   weight_decay: 0.01
   max_grad_norm: 1.0
-  # A fixed learning rate for this short transport pilot. Study schedule is TODO.
-  lr_schedule: null

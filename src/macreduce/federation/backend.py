@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 import math
+import time
+from functools import partial
 from importlib.metadata import version
 from pathlib import Path
 
@@ -50,13 +52,44 @@ def collate(records: list[dict], tokenizer, max_length: int):
     return batch, lengths
 
 
+def packed_rows(records: list[dict], tokenizer, pack: int) -> list[list[int]]:
+    """Concatenate shard lines, then cut fixed (pack + 1)-token windows."""
+    stream = []
+    for record in records:
+        ids = list(tokenizer.encode(record["text"]))
+        if not ids or ids[-1] != tokenizer.eos_token_id:
+            ids.append(tokenizer.eos_token_id)
+        stream.extend(ids[:pack])
+    rows = [stream[index:index + pack + 1] for index in range(0, len(stream) - pack, pack)]
+    if not rows:
+        raise ValueError("shard is too short to fill one packed sequence")
+    return rows
+
+
+def apply_compute_dtype(model, mx, dtype_name: str) -> str:
+    """Cast floating parameters to one compute dtype. Packed 4-bit codes stay uint32."""
+    dtype = {"float32": mx.float32, "float16": mx.float16, "bfloat16": mx.bfloat16}[dtype_name]
+    from mlx.utils import tree_map
+
+    def cast(value):
+        if getattr(value, "dtype", None) in (mx.float32, mx.float16, mx.bfloat16):
+            return value.astype(dtype)
+        return value
+
+    model.update(tree_map(cast, model.parameters()))
+    mx.eval(model.parameters())
+    return dtype_name
+
+
 class ResidentLoraClient:
     def __init__(self, plan: dict, spec: dict, records: list[dict]):
         self.plan, self.spec = plan, spec
         self.records = [records[i] for i in shard_indices(plan, spec["id"], len(records))]
+        self.packed = None
         self.cursor = 0
         self.updates = 0
         self.model = None
+        self._compiled_step = None
 
     def setup(self) -> dict:
         if self.spec["device"] == "ane":
@@ -91,6 +124,7 @@ class ResidentLoraClient:
         linear_to_lora_layers(self.model, -1, {
             "rank": recipe["rank"], "scale": recipe["scale"], "dropout": recipe["dropout"],
         }, use_dora=False)
+        apply_compute_dtype(self.model, mx, self.spec["compute_dtype"])
         if self.spec["device"] == "gpu_ane":
             from macreduce.ane.stack import enable_ane_suffix
 
@@ -105,9 +139,13 @@ class ResidentLoraClient:
         self.loss_and_grad = nn.value_and_grad(self.model, default_loss)
         self.model.train()
         mx.eval(self.model.parameters())
+        if self.plan["pack_sequences"]:
+            self.packed = packed_rows(self.records, self.tokenizer, self.plan["max_seq_length"])
+        self._compile_step()
         # A real forward AND backward must succeed before a client joins a cohort.
         before = self.placement()
-        loss, grads, _tokens = self._grad(self.records[:1])
+        batch, lengths = collate(self.records[:1], self.tokenizer, self.plan["max_seq_length"])
+        loss, grads, _tokens = self._grad(batch, lengths)
         mx.eval(loss, grads)
         if not math.isfinite(float(loss)) or not self._finite(grads):
             raise RuntimeError("backend preflight returned nonfinite loss/gradients")
@@ -121,9 +159,10 @@ class ResidentLoraClient:
 
     def placement(self):
         if self.spec["device"] == "gpu":
-            return {"device": "gpu"}
+            return {"device": "gpu", "compute_dtype": self.spec["compute_dtype"]}
         engine = self.model.model._ane_stack
-        return {"device": "gpu_ane", "ane_mask": "0x4", "suffix_layers": engine.suffix_layers,
+        return {"device": "gpu_ane", "compute_dtype": self.spec["compute_dtype"],
+                "ane_mask": "0x4", "suffix_layers": engine.suffix_layers,
                 "forward_calls": engine.calls["forward"], "backward_calls": engine.calls["backward"]}
 
     def _finite(self, tree):
@@ -153,8 +192,19 @@ class ResidentLoraClient:
         self.model.load_weights(pairs, strict=False)
         self.mx.eval(self.model.parameters())
 
-    def _grad(self, records):
-        batch, lengths = collate(records, self.tokenizer, self.plan["max_seq_length"])
+    def _batch(self, count: int):
+        source = self.packed if self.packed is not None else self.records
+        indices = sample_indices(len(source), self.cursor, count, self.plan["seed"])
+        self.cursor += len(indices)
+        chosen = [source[index] for index in indices]
+        if self.packed is not None:
+            pack = self.plan["max_seq_length"]
+            batch = np.array(chosen, dtype=np.int32)
+            lengths = np.array([(0, pack + 1)] * len(chosen), dtype=np.int32)
+            return batch, lengths
+        return collate(chosen, self.tokenizer, self.plan["max_seq_length"])
+
+    def _grad(self, batch, lengths):
         (loss, tokens), grads = self.loss_and_grad(
             self.model, self.mx.array(batch), self.mx.array(lengths)
         )
@@ -164,16 +214,26 @@ class ResidentLoraClient:
     def train_round(self, start: dict) -> tuple[dict, dict]:
         from mlx.utils import tree_map
 
+        started = time.perf_counter()
         self.load_adapter(start)
         tokens_total, loss_total = 0, 0.0
         for _ in range(self.plan["local_steps"]):
+            if self._compiled_step is not None:
+                batch, lengths = self._batch(self.spec["microbatch"])
+                loss, tokens = self._compiled_step(self.mx.array(batch), self.mx.array(lengths))
+                self.mx.eval(loss, tokens, self.model.parameters(), self.optimizer.state)
+                used = int(tokens)
+                if used < 1 or not math.isfinite(float(loss)):
+                    raise RuntimeError("nonfinite local update; refusing to publish")
+                tokens_total += used
+                loss_total += float(loss) * used
+                self.updates += 1
+                continue
             accumulated = None
             update_tokens = 0
             for _ in range(self.spec["accumulation"]):
-                indices = sample_indices(len(self.records), self.cursor, self.spec["microbatch"],
-                                         self.plan["seed"])
-                examples = [self.records[index] for index in indices]
-                loss, grad, tokens = self._grad(examples)
+                batch, lengths = self._batch(self.spec["microbatch"])
+                loss, grad, tokens = self._grad(batch, lengths)
                 if tokens < 1 or not math.isfinite(float(loss)) or not self._finite(grad):
                     raise RuntimeError("nonfinite local update; refusing to publish")
                 weighted = tree_map(lambda value, tokens=tokens: value * tokens, grad)
@@ -183,7 +243,6 @@ class ResidentLoraClient:
                 update_tokens += tokens
                 tokens_total += tokens
                 loss_total += float(loss) * tokens
-                self.cursor += len(examples)
             grad = tree_map(
                 lambda value, update_tokens=update_tokens: value / update_tokens, accumulated
             )
@@ -198,6 +257,8 @@ class ResidentLoraClient:
             raise RuntimeError("nonfinite adapter after local optimizer update")
         return after, {"tokens": tokens_total, "loss": loss_total / tokens_total,
                        "optimizer_updates": self.updates, "cursor": self.cursor,
+                       "compute_s": time.perf_counter() - started,
+                       "pack_sequences": self.plan["pack_sequences"],
                        "placement": self.placement()}
 
     def save(self, path: Path):
@@ -230,3 +291,22 @@ class ResidentLoraClient:
         self.optimizer.init(self.model.trainable_parameters())
         self.mx.eval(self.model.parameters(), self.optimizer.state)
         self.cursor, self.updates = info["cursor"], info["updates"]
+        self._compile_step()
+
+    def _compile_step(self):
+        self._compiled_step = None
+        if not (self.plan["pack_sequences"] and self.spec["accumulation"] == 1
+                and self.spec["device"] == "gpu"):
+            return
+        state = [self.model.state, self.optimizer.state]
+        clip = self.plan["recipe"]["max_grad_norm"]
+
+        @partial(self.mx.compile, inputs=state, outputs=state)
+        def fused(tokens, lengths):
+            (loss, tokens_used), grad = self.loss_and_grad(self.model, tokens, lengths)
+            if clip is not None:
+                grad, _ = self.optim.clip_grad_norm(grad, clip)
+            self.optimizer.update(self.model, grad)
+            return loss, tokens_used
+
+        self._compiled_step = fused

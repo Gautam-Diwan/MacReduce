@@ -8,7 +8,19 @@ sources: ["S04", "S05", "S06", "S07", "S08", "S163", "S164", "S165", "S184", "S1
 
 # Training optimization strategy for federated QLoRA
 
-**Status:** proposed. The bottleneck numbers come from the [2026-11-24 three-Mac run](../experiments/2026-11-24-three-mac-gpu-federation.md) and the [2026-11-27 offline measurements](../../evidence/training-optimization-2026-11-27/README.md). No optimization below has been implemented or validated end to end.
+**Status:** proposed. The bottleneck numbers come from the [2026-11-24 three-Mac run](../experiments/2026-11-24-three-mac-gpu-federation.md) and the [2026-11-27 offline measurements](../../evidence/training-optimization-2026-11-27/README.md). Packed 512-token steps, a compiled GPU step, int8 wire with error feedback, per-Mac compute dtypes, K = 8, and checkpoint pruning are implemented in `macreduce federation` and covered by CPU tests. They have not been run on the three Macs. Perplexity under these settings is unknown.
+
+Compute, aggregation, and the wire are three different precisions. They do not have to match across machines.
+
+| Layer | Role | This cohort |
+|---|---|---|
+| Compute | GPU/ANE fast path on that Mac | M4: bfloat16 (the 4-bit Qwen3 scales are already bf16; fp16 in promotes the matmul to fp32). M1: float16 (bf16 is emulated on M1 Metal). Combined ANE: float16. |
+| Master / AdamW snapshot | Stable common space for FedAvg | float32 on every client before encode |
+| Wire | Bytes per round, so more aggregations fit in the same wall clock | int8 affine, group 64, error feedback |
+
+FP8 is not used. MLX's mxfp8 path is a weight codec, not an M1/M4 GPU MMA datatype. Mixing fp16 and bf16 *inside one process* promotes to fp32 and is slower than either 16-bit format. Heterogeneous *across* machines is fine: each client casts the dequantized fp32 broadcast into its own compute dtype, then snapshots back to fp32.
+
+Int8 is about 4× smaller than fp32, so the same transfer budget supports more rounds. K = 8 packed steps (~4k tokens between syncs) is that trade: more aggregation than K = 32, far fewer bytes than tonight's K = 2 fp32 run.
 
 ## Bottom line
 
